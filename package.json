@@ -1,0 +1,26 @@
+{
+  "name": "autoscale-aws",
+  "version": "3.1.0-alpha.0",
+  "description": "Fortinet Autoscale Project AWS module.",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc mocha './{,!(node_modules|dist|scripts)/**/}test/mocha*/*.js'",
+    "check": "node node_modules/ftnt-devops-ci/bin/ftnt-devops-ci.js c  -F .prettierignore -L .eslintignore \"{*,**/*}{.js,.json,.ts}\"",
+    "pre-commit": "npm run check && npm audit && npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/fortinet/autoscale-aws.git"
+  },
+  "author": "Fortinet <github@fortinet.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fortinet/autoscale-aws/issues"
+  },
+  "homepage": "https://github.com/fortinet/autoscale-aws#readme",
+  "devDependencies": {
+    "ftnt-devops-ci": "github:fortinet/ftnt-devops-ci",
+    "mocha": "^7.0.1",
+    "nyc": "^15.0.0"
+  }
+}
