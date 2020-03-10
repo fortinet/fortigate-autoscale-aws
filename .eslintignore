@@ -109,10 +109,17 @@ dist
 # VSCode project configuration
 .vscode
 
+# VSCode workspace file
+*.code-workspace
+
 # end of github suggested gitignore
 
 # project-specific gitignore
 # local dev directory
 local
+dist
+out
+
+# npm package.json and package-lock.json
 package.json
 package-lock.json
