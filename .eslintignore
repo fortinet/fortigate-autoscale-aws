@@ -123,3 +123,5 @@ out
 # npm package.json and package-lock.json
 package.json
 package-lock.json
+
+*.d.ts

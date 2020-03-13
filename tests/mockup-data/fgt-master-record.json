@@ -1,0 +1,10 @@
+{
+    "id": "fake-id",
+    "instanceId": "i-000000000000slave",
+    "ip": "10.0.0.1",
+    "scalingGroupName": "fake-scaling-group-name",
+    "virtualNetworkId": "vpc-00000000000000001",
+    "subnetId": "subnet-00000000000000001",
+    "voteEndTime": 999999999999999,
+    "voteState": "done"
+}

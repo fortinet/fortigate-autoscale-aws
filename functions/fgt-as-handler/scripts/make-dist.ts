@@ -1,5 +1,5 @@
 import path from 'path';
-import CodePackman from './code-packman';
+import CodePackman from 'autoscale-core/scripts/code-packman';
 (async () => {
     const projectRoot = path.resolve(path.dirname(__filename), '../../');
     const outDir = path.resolve(projectRoot, 'out');
