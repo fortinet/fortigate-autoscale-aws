@@ -1,0 +1,44 @@
+{
+    "NetworkInterfaces": [
+        {
+            "Status": "in-use",
+            "MacAddress": "0a:9a:60:47:e6:8c",
+            "SourceDestCheck": true,
+            "AvailabilityZone": "ap-south-1b",
+            "Description": "mockup network interface",
+            "NetworkInterfaceId": "eni-0fd3e92c4188f7243",
+            "VpcId": "vpc-0d9bc9b1d0e8270ba",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-1-55.ap-south-1.compute.internal",
+                    "Primary": true,
+                    "PrivateIpAddress": "192.168.1.55"
+                }
+            ],
+            "RequesterManaged": false,
+            "PrivateDnsName": "ip-192-168-1-55.ap-south-1.compute.internal",
+            "RequesterId": "AIDAJLY3B3XPNJQYWZSKC",
+            "InterfaceType": "interface",
+            "Attachment": {
+                "Status": "attached",
+                "DeviceIndex": 1,
+                "AttachTime": "2020-04-06T23:58:51.000Z",
+                "InstanceId": "i-0c6cb881aad1a8d79",
+                "DeleteOnTermination": false,
+                "AttachmentId": "eni-attach-0608c1d6dab3349d8",
+                "InstanceOwnerId": "123456789012"
+            },
+            "Groups": [
+                {
+                    "GroupName": "fortigate-autoscale-tgw-dev-ab-StackMainWorkload-1OQ7VYI0B3HVA-FgtAsgSecurityGroup-16W9B0TDAGMTS",
+                    "GroupId": "sg-0d779adf9b1a625df"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "SubnetId": "subnet-05c8f61050d91d24f",
+            "TagSet": [],
+            "PrivateIpAddress": "192.168.1.55"
+        }
+    ]
+}

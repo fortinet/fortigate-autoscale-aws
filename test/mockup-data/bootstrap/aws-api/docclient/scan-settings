@@ -1,0 +1,1044 @@
+{
+    "Count": 51,
+    "Items": [
+        {
+            "settingValue": {
+                "S": "300"
+            },
+            "settingKey": {
+                "S": "master-election-timeout"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "The FortiGate master election timtout time in second."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "0"
+            },
+            "settingKey": {
+                "S": "scaling-group-min-size"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "PAYG Scaling group min size."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-FortiGateAutoscale,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-FortiGateMasterElection,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-FortiGateLifecycleItem,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-Settings,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-CustomLog,,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-NicAttachment,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-LicenseStock,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-LicenseUsage,,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-FortiAnalyzer"
+            },
+            "settingKey": {
+                "S": "required-db-table"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "A comma-delimited list of required DB table names."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": ""
+            },
+            "settingKey": {
+                "S": "asset-storage-name"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "Asset storage name."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "rtb-0b756d332e3c7d6ce"
+            },
+            "settingKey": {
+                "S": "egress-traffic-route-table"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "The route table associated with the protected private subnets, which should bet configured to contain a route 0.0.0.0/0 to the master fortigate to handle egress traffic."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-byol-auto-scaling-group"
+            },
+            "settingKey": {
+                "S": "byol-scaling-group-name"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "The name of the BYOL auto scaling group."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "1"
+            },
+            "settingKey": {
+                "S": "byol-scaling-group-min-size"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "BYOL Scaling group min size."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "2"
+            },
+            "settingKey": {
+                "S": "heartbeat-delay-allowance"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "The FortiGate sync heartbeat delay allowance time in second."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-byol-auto-scaling-group"
+            },
+            "settingKey": {
+                "S": "master-scaling-group-name"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "The name of the master auto scaling group."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "60ackIt060-69e58ed0-service-elb-a9001ad667854e20.elb.ap-south-1.amazonaws.com"
+            },
+            "settingKey": {
+                "S": "fortigate-protected-internal-elb-dns"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "The DNS name of the elastic load balancer for the scaling groups of services protected by FortiGate"
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "false"
+            },
+            "settingKey": {
+                "S": "enable-fortianalyzer-integration"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "Enable FortiAnalyzer integration with the FortiGates cluster in the Autoscale."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "https://j3si9drpz5.execute-api.ap-south-1.amazonaws.com/prod/fgt-asg-handler"
+            },
+            "settingKey": {
+                "S": "autoscale-handler-url"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "The FortiGate Autoscale handler URL."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-payg-auto-scaling-group"
+            },
+            "settingKey": {
+                "S": "payg-scaling-group-name"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "The name of the PAYG auto scaling group."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "600"
+            },
+            "settingKey": {
+                "S": "get-license-grace-period"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "The period (time in seconds) for preventing a newly assigned  license to be recycled."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "true"
+            },
+            "settingKey": {
+                "S": "enable-fortigate-elb"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "Toggle ON / OFF the elastic load balancing for the FortiGate scaling groups."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "i-098716d5c0ac0c24d"
+            },
+            "settingKey": {
+                "S": "fortigate-default-password"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "default password comes from the new elected master."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "subnet-0a8360148ad1450ec"
+            },
+            "settingKey": {
+                "S": "fortigate-autoscale-subnet-2"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "The ID of the subnet 2 (in the second selected AZ) of the FortiGate Autoscale."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "N/A"
+            },
+            "settingKey": {
+                "S": "faz-handler-name"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "The FortiGate Autoscale - FortiAnalyzer handler function name."
+            },
+            "jsonEncoded": {
+                "BOOL": false
+            }
+        },
+        {
+            "settingValue": {
+                "S": "443"
+            },
+            "settingKey": {
+                "S": "fortigate-traffic-port"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "The port number for load balancer to route traffic through FortiGate to the protected services behind the load balancer."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "1234567890"
+            },
+            "settingKey": {
+                "S": "fortigate-psk-secret"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "The PSK for FortiGate Autoscale Synchronization."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "false"
+            },
+            "settingKey": {
+                "S": "enable-vm-info-cache"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "Toggle ON / OFF the vm info cache feature. It caches the vm info in db to reduce API calls to query a vm from the platform."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "6"
+            },
+            "settingKey": {
+                "S": "scaling-group-max-size"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "PAYG Scaling group max size."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "N/A"
+            },
+            "settingKey": {
+                "S": "required-configset"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "A comma-delimited list of required configsets."
+            },
+            "jsonEncoded": {
+                "BOOL": false
+            }
+        },
+        {
+            "settingValue": {
+                "S": "0"
+            },
+            "settingKey": {
+                "S": "scaling-group-desired-capacity"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "PAYG Scaling group desired capacity."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "subnet-07e2a6e5943476930"
+            },
+            "settingKey": {
+                "S": "fortigate-autoscale-protected-subnet1"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "The ID of the protected subnet 1 (in the first selected AZ) of the FortiGate Autoscale."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "8443"
+            },
+            "settingKey": {
+                "S": "fortigate-admin-port"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "The port number for administrative login to FortiGate."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "2"
+            },
+            "settingKey": {
+                "S": "byol-scaling-group-max-size"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "BYOL Scaling group max size."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "30"
+            },
+            "settingKey": {
+                "S": "heartbeat-interval"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "The FortiGate sync heartbeat interval in second."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingKey": {
+                "S": "subnet-pair"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "Subnet pair."
+            },
+            "settingValue": {
+                "S": "[{\"subnetId\":\"subnet-0411ee229f3cd0d9c\",\"pairId\":\"subnet-07e2a6e5943476930\"},{\"subnetId\":\"subnet-0a8360148ad1450ec\",\"pairId\":\"subnet-0740b297cc09fed36\"}]"
+            },
+            "jsonEncoded": {
+                "S": "true"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "1"
+            },
+            "settingKey": {
+                "S": "byol-scaling-group-desired-capacity"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "BYOL Scaling group desired capacity."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "true"
+            },
+            "settingKey": {
+                "S": "enable-integrated-egress-nat-gateway"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "Toggle ON / OFF the feature for using master FortiGate in the scaling group as the NAT gateway for egress traffic from protected private subnets."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "assets"
+            },
+            "settingKey": {
+                "S": "asset-storage-key-prefix"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "Asset storage key prefix."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "60ackIt060-69e58ed0-frontend-elb-07e7cc19a3e11ff5.elb.ap-south-1.amazonaws.com"
+            },
+            "settingKey": {
+                "S": "fortigate-autoscale-elb-dns"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "The DNS name of the elastic load balancer for the FortiGate scaling groups."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0"
+            },
+            "settingKey": {
+                "S": "resource-tag-prefix"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "Resource tag prefix."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "arn:aws:elasticloadbalancing:ap-south-1:123456789012:targetgroup/60ackIt060-69e58ed0-frontend-tg/befb4b0bb546c08a"
+            },
+            "settingKey": {
+                "S": "fortigate-autoscale-target-group-arn"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "The ARN of the target group for FortiGate to receive load balanced traffic."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "subnet-0740b297cc09fed36"
+            },
+            "settingKey": {
+                "S": "fortigate-autoscale-protected-subnet2"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "The ID of the protected subnet 2 (in the second selected AZ) of the FortiGate Autoscale."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "port1"
+            },
+            "settingKey": {
+                "S": "fortigate-sync-interface"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "The interface the FortiGate uses for configuration synchronization."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "480"
+            },
+            "settingKey": {
+                "S": "lifecycle-hook-timeout"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "The auto scaling group lifecycle hook timeout time in second."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "vpc-066ec3dc1f4a32167"
+            },
+            "settingKey": {
+                "S": "fortigate-autoscale-vpc-id"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "VPC ID of the FortiGate Autoscale."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "true"
+            },
+            "settingKey": {
+                "S": "deployment-settings-saved"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "A flag setting item that indicates all deployment settings have been saved."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "true"
+            },
+            "settingKey": {
+                "S": "enable-internal-elb"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "Toggle ON / OFF the internal elastic load balancing for the protected services by FortiGate."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "3600"
+            },
+            "settingKey": {
+                "S": "vm-info-cache-time"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "The vm info cache time in seconds."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "69e58ed0"
+            },
+            "settingKey": {
+                "S": "unique-id"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "Unique ID."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "subnet-0411ee229f3cd0d9c"
+            },
+            "settingKey": {
+                "S": "fortigate-autoscale-subnet-1"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "The ID of the subnet 1 (in the first selected AZ) of the FortiGate Autoscale."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "60ackIt060"
+            },
+            "settingKey": {
+                "S": "custom-id"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "Custom Identifier."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "true"
+            },
+            "settingKey": {
+                "S": "enable-hybrid-licensing"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "Toggle ON / OFF the hybrid licensing feature."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "fgt-asg-license"
+            },
+            "settingKey": {
+                "S": "fortigate-license-storage-key-prefix"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "The key prefix for FortiGate licenses in the access storage."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "false"
+            },
+            "settingKey": {
+                "S": "enable-transit-gateway-vpn"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "Toggle ON / OFF the Transit Gateway VPN creation on each FortiGate instance"
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "9999"
+            },
+            "settingKey": {
+                "S": "heartbeat-loss-count"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "The FortiGate sync heartbeat loss count."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "true"
+            },
+            "settingKey": {
+                "S": "master-election-no-wait"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "Do not wait for the new master to come up. This FortiGate can receive the new master ip in one of its following heartbeat sync."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "true"
+            },
+            "settingKey": {
+                "S": "enable-second-nic"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "Toggle ON / OFF the secondary eni creation on each FortiGate instance"
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "65432"
+            },
+            "settingKey": {
+                "S": "aws-vpn-bgp-asn"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "The BGP Autonomous System Number of the Customer Gateway of each FortiGate instance in the Auto Scaling Group."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "tgw-02c276ed71878c044"
+            },
+            "settingKey": {
+                "S": "transit-gateway-id"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "The ID of the Transit Gateway the FortiGate Autoscale is attached to."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "true"
+            },
+            "settingKey": {
+                "S": "enable-transit-gateway-vpn"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "Toggle ON / OFF the Transit Gateway VPN creation on each FortiGate instance."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "tgw-rtb-0f6059152d6227b70"
+            },
+            "settingKey": {
+                "S": "transit-gateway-route-table-inbound"
+            },
+            "editable": {
+                "S": "true"
+            },
+            "description": {
+                "S": "The Id of the Transit Gateway inbound route table."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "tgw-rtb-0e382f2f6740ac313"
+            },
+            "settingKey": {
+                "S": "transit-gateway-route-table-outbound"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "The Id of the Transit Gateway outbound route table."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "fgtASG-67036c10-fortigate-transit-gateway-vpn-handler"
+            },
+            "settingKey": {
+                "S": "transit-gateway-vpn-handler-name"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "The Transit Gateway VPN handler function name."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "custom-assets"
+            },
+            "settingKey": {
+                "S": "custom-asset-directory"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "Custom assets directory."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": ""
+            },
+            "settingKey": {
+                "S": "custom-asset-container"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "Custom assets container."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": ""
+            },
+            "settingKey": {
+                "S": "custom-configset-name"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "Custom configset names. Format: name1-yes[,name2-yes[,...]]"
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        },
+        {
+            "settingValue": {
+                "S": "fgt-license"
+            },
+            "settingKey": {
+                "S": "license-file-directory"
+            },
+            "editable": {
+                "S": "false"
+            },
+            "description": {
+                "S": "Custom assets directory."
+            },
+            "jsonEncoded": {
+                "S": "false"
+            }
+        }
+    ],
+    "ScannedCount": 60,
+    "ConsumedCapacity": null
+}

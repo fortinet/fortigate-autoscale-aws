@@ -1,0 +1,422 @@
+{
+    "NetworkInterfaces": [
+        {
+            "Status": "in-use",
+            "MacAddress": "0a:e3:93:c6:f7:82",
+            "SourceDestCheck": false,
+            "AvailabilityZone": "ap-south-1b",
+            "Description": "",
+            "NetworkInterfaceId": "eni-0cb6a7d07041f9922",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-1-215.ap-south-1.compute.internal",
+                    "PrivateIpAddress": "192.168.1.215",
+                    "Primary": true,
+                    "Association": {
+                        "PublicIp": "13.233.147.56",
+                        "PublicDnsName": "ec2-13-233-147-56.ap-south-1.compute.amazonaws.com",
+                        "IpOwnerId": "amazon"
+                    }
+                }
+            ],
+            "RequesterManaged": false,
+            "PrivateDnsName": "ip-192-168-1-215.ap-south-1.compute.internal",
+            "VpcId": "vpc-0d9bc9b1d0e8270ba",
+            "InterfaceType": "interface",
+            "Attachment": {
+                "Status": "attached",
+                "DeviceIndex": 0,
+                "AttachTime": "2020-04-01T00:34:29.000Z",
+                "InstanceId": "i-027fc98e702ed3878",
+                "DeleteOnTermination": true,
+                "AttachmentId": "eni-attach-06847a59c6ea64406",
+                "InstanceOwnerId": "123456789012"
+            },
+            "Groups": [
+                {
+                    "GroupName": "fortigate-autoscale-tgw-dev-ab-StackMainWorkload-1OQ7VYI0B3HVA-FgtAsgSecurityGroup-16W9B0TDAGMTS",
+                    "GroupId": "sg-0d779adf9b1a625df"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "PrivateIpAddress": "192.168.1.215",
+            "SubnetId": "subnet-05c8f61050d91d24f",
+            "TagSet": [],
+            "Association": {
+                "PublicIp": "13.233.147.56",
+                "PublicDnsName": "ec2-13-233-147-56.ap-south-1.compute.amazonaws.com",
+                "IpOwnerId": "amazon"
+            }
+        },
+        {
+            "Status": "in-use",
+            "MacAddress": "0a:23:c4:34:d3:f6",
+            "SourceDestCheck": false,
+            "AvailabilityZone": "ap-south-1b",
+            "Description": "Network Interface for Transit Gateway Attachment tgw-attach-0f34dcdb03fd8b1ed",
+            "NetworkInterfaceId": "eni-0f2897a7d7fc787cf",
+            "VpcId": "vpc-0d9bc9b1d0e8270ba",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-1-140.ap-south-1.compute.internal",
+                    "Primary": true,
+                    "PrivateIpAddress": "192.168.1.140"
+                }
+            ],
+            "RequesterManaged": false,
+            "PrivateDnsName": "ip-192-168-1-140.ap-south-1.compute.internal",
+            "RequesterId": "900492487183",
+            "InterfaceType": "transit_gateway",
+            "Attachment": {
+                "Status": "attached",
+                "DeviceIndex": 1,
+                "DeleteOnTermination": false,
+                "AttachmentId": "ela-attach-940d2fbf",
+                "InstanceOwnerId": "amazon-aws"
+            },
+            "Groups": [],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "SubnetId": "subnet-05c8f61050d91d24f",
+            "TagSet": [],
+            "PrivateIpAddress": "192.168.1.140"
+        },
+        {
+            "Status": "in-use",
+            "MacAddress": "0a:10:9b:f6:45:9e",
+            "SourceDestCheck": true,
+            "AvailabilityZone": "ap-south-1b",
+            "Description": "VPC Endpoint Interface vpce-047b1277136d8736e",
+            "NetworkInterfaceId": "eni-0f6d50fdee401beb8",
+            "VpcId": "vpc-0d9bc9b1d0e8270ba",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-1-5.ap-south-1.compute.internal",
+                    "Primary": true,
+                    "PrivateIpAddress": "192.168.1.5"
+                }
+            ],
+            "RequesterManaged": true,
+            "PrivateDnsName": "ip-192-168-1-5.ap-south-1.compute.internal",
+            "RequesterId": "727180483921",
+            "InterfaceType": "vpc_endpoint",
+            "Attachment": {
+                "Status": "attached",
+                "DeviceIndex": 1,
+                "DeleteOnTermination": false,
+                "AttachmentId": "ela-attach-2e1e3c05",
+                "InstanceOwnerId": "amazon-aws"
+            },
+            "Groups": [
+                {
+                    "GroupName": "fortigate-autoscale-tgw-dev-ab-StackMainWorkload-1OQ7VYI0B3HVA-FgtAsgSecurityGroup-16W9B0TDAGMTS",
+                    "GroupId": "sg-0d779adf9b1a625df"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "SubnetId": "subnet-05c8f61050d91d24f",
+            "TagSet": [],
+            "PrivateIpAddress": "192.168.1.5"
+        },
+        {
+            "Status": "in-use",
+            "MacAddress": "02:3e:6f:4e:fa:08",
+            "SourceDestCheck": true,
+            "AvailabilityZone": "ap-south-1a",
+            "Description": "",
+            "NetworkInterfaceId": "eni-024ea6798375f0ba3",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-172-31-21-171.ap-south-1.compute.internal",
+                    "PrivateIpAddress": "172.31.21.171",
+                    "Primary": true,
+                    "Association": {
+                        "PublicIp": "13.127.229.178",
+                        "PublicDnsName": "ec2-13-127-229-178.ap-south-1.compute.amazonaws.com",
+                        "IpOwnerId": "amazon"
+                    }
+                }
+            ],
+            "RequesterManaged": false,
+            "PrivateDnsName": "ip-172-31-21-171.ap-south-1.compute.internal",
+            "VpcId": "vpc-4230b02b",
+            "InterfaceType": "interface",
+            "Attachment": {
+                "Status": "attached",
+                "DeviceIndex": 0,
+                "AttachTime": "2019-12-17T22:34:38.000Z",
+                "InstanceId": "i-0162f5a07339a24f2",
+                "DeleteOnTermination": true,
+                "AttachmentId": "eni-attach-06a549c3a9536468b",
+                "InstanceOwnerId": "123456789012"
+            },
+            "Groups": [
+                {
+                    "GroupName": "Fortinet FortiAnalyzer Centralized Logging-Reporting-6-2-2-AutogenByAWSMP-",
+                    "GroupId": "sg-087f618e309d05663"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "PrivateIpAddress": "172.31.21.171",
+            "SubnetId": "subnet-cbe26fa2",
+            "TagSet": [],
+            "Association": {
+                "PublicIp": "13.127.229.178",
+                "PublicDnsName": "ec2-13-127-229-178.ap-south-1.compute.amazonaws.com",
+                "IpOwnerId": "amazon"
+            }
+        },
+        {
+            "Status": "in-use",
+            "MacAddress": "02:79:55:7f:6e:96",
+            "SourceDestCheck": false,
+            "AvailabilityZone": "ap-south-1a",
+            "Description": "Network Interface for Transit Gateway Attachment tgw-attach-0f34dcdb03fd8b1ed",
+            "NetworkInterfaceId": "eni-045c6dc31cb03e349",
+            "VpcId": "vpc-0d9bc9b1d0e8270ba",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-0-66.ap-south-1.compute.internal",
+                    "Primary": true,
+                    "PrivateIpAddress": "192.168.0.66"
+                }
+            ],
+            "RequesterManaged": false,
+            "PrivateDnsName": "ip-192-168-0-66.ap-south-1.compute.internal",
+            "RequesterId": "900492487183",
+            "InterfaceType": "transit_gateway",
+            "Attachment": {
+                "Status": "attached",
+                "DeviceIndex": 1,
+                "DeleteOnTermination": false,
+                "AttachmentId": "ela-attach-d4727d8b",
+                "InstanceOwnerId": "amazon-aws"
+            },
+            "Groups": [],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "SubnetId": "subnet-092c194fe49c08ffb",
+            "TagSet": [],
+            "PrivateIpAddress": "192.168.0.66"
+        },
+        {
+            "Status": "in-use",
+            "MacAddress": "0a:78:0b:66:ab:aa",
+            "SourceDestCheck": false,
+            "AvailabilityZone": "ap-south-1b",
+            "Description": "",
+            "NetworkInterfaceId": "eni-02462110dc3772a37",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-1-220.ap-south-1.compute.internal",
+                    "PrivateIpAddress": "192.168.1.220",
+                    "Primary": true,
+                    "Association": {
+                        "PublicIp": "35.154.90.117",
+                        "PublicDnsName": "ec2-35-154-90-117.ap-south-1.compute.amazonaws.com",
+                        "IpOwnerId": "amazon"
+                    }
+                }
+            ],
+            "RequesterManaged": false,
+            "PrivateDnsName": "ip-192-168-1-220.ap-south-1.compute.internal",
+            "VpcId": "vpc-0d9bc9b1d0e8270ba",
+            "InterfaceType": "interface",
+            "Attachment": {
+                "Status": "attached",
+                "DeviceIndex": 0,
+                "AttachTime": "2020-04-01T00:34:29.000Z",
+                "InstanceId": "i-0c6cb881aad1a8d79",
+                "DeleteOnTermination": true,
+                "AttachmentId": "eni-attach-0f81fd466959789d7",
+                "InstanceOwnerId": "123456789012"
+            },
+            "Groups": [
+                {
+                    "GroupName": "fortigate-autoscale-tgw-dev-ab-StackMainWorkload-1OQ7VYI0B3HVA-FgtAsgSecurityGroup-16W9B0TDAGMTS",
+                    "GroupId": "sg-0d779adf9b1a625df"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "PrivateIpAddress": "192.168.1.220",
+            "SubnetId": "subnet-05c8f61050d91d24f",
+            "TagSet": [],
+            "Association": {
+                "PublicIp": "35.154.90.117",
+                "PublicDnsName": "ec2-35-154-90-117.ap-south-1.compute.amazonaws.com",
+                "IpOwnerId": "amazon"
+            }
+        },
+        {
+            "Status": "in-use",
+            "MacAddress": "02:be:45:81:c6:68",
+            "SourceDestCheck": false,
+            "AvailabilityZone": "ap-south-1a",
+            "Description": "",
+            "NetworkInterfaceId": "eni-0826500960c4104c1",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-0-133.ap-south-1.compute.internal",
+                    "PrivateIpAddress": "192.168.0.133",
+                    "Primary": true,
+                    "Association": {
+                        "PublicIp": "13.232.125.26",
+                        "PublicDnsName": "ec2-13-232-125-26.ap-south-1.compute.amazonaws.com",
+                        "IpOwnerId": "amazon"
+                    }
+                }
+            ],
+            "RequesterManaged": false,
+            "PrivateDnsName": "ip-192-168-0-133.ap-south-1.compute.internal",
+            "VpcId": "vpc-0d9bc9b1d0e8270ba",
+            "InterfaceType": "interface",
+            "Attachment": {
+                "Status": "attached",
+                "DeviceIndex": 0,
+                "AttachTime": "2020-04-01T00:34:29.000Z",
+                "InstanceId": "i-0b99d2275c9bed168",
+                "DeleteOnTermination": true,
+                "AttachmentId": "eni-attach-0e0516486be853a0f",
+                "InstanceOwnerId": "123456789012"
+            },
+            "Groups": [
+                {
+                    "GroupName": "fortigate-autoscale-tgw-dev-ab-StackMainWorkload-1OQ7VYI0B3HVA-FgtAsgSecurityGroup-16W9B0TDAGMTS",
+                    "GroupId": "sg-0d779adf9b1a625df"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "PrivateIpAddress": "192.168.0.133",
+            "SubnetId": "subnet-092c194fe49c08ffb",
+            "TagSet": [],
+            "Association": {
+                "PublicIp": "13.232.125.26",
+                "PublicDnsName": "ec2-13-232-125-26.ap-south-1.compute.amazonaws.com",
+                "IpOwnerId": "amazon"
+            }
+        },
+        {
+            "Status": "available",
+            "MacAddress": "0a:9a:60:47:e6:8c",
+            "SourceDestCheck": true,
+            "AvailabilityZone": "ap-south-1b",
+            "Description": "mockup network interface",
+            "NetworkInterfaceId": "eni-0fd3e92c4188f7243",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-1-55.ap-south-1.compute.internal",
+                    "Primary": true,
+                    "PrivateIpAddress": "192.168.1.55"
+                }
+            ],
+            "RequesterManaged": false,
+            "PrivateDnsName": "ip-192-168-1-55.ap-south-1.compute.internal",
+            "VpcId": "vpc-0d9bc9b1d0e8270ba",
+            "InterfaceType": "interface",
+            "RequesterId": "AIDAJLY3B3XPNJQYWZSKC",
+            "Groups": [
+                {
+                    "GroupName": "fortigate-autoscale-tgw-dev-ab-StackMainWorkload-1OQ7VYI0B3HVA-FgtAsgSecurityGroup-16W9B0TDAGMTS",
+                    "GroupId": "sg-0d779adf9b1a625df"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "SubnetId": "subnet-05c8f61050d91d24f",
+            "TagSet": [],
+            "PrivateIpAddress": "192.168.1.55"
+        },
+        {
+            "Status": "in-use",
+            "MacAddress": "02:98:e9:7b:b4:74",
+            "SourceDestCheck": false,
+            "AvailabilityZone": "ap-south-1a",
+            "Description": "",
+            "NetworkInterfaceId": "eni-09d9f2b3e63acade9",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-0-20.ap-south-1.compute.internal",
+                    "PrivateIpAddress": "192.168.0.20",
+                    "Primary": true,
+                    "Association": {
+                        "PublicIp": "13.233.106.18",
+                        "PublicDnsName": "ec2-13-233-106-18.ap-south-1.compute.amazonaws.com",
+                        "IpOwnerId": "amazon"
+                    }
+                }
+            ],
+            "RequesterManaged": false,
+            "PrivateDnsName": "ip-192-168-0-20.ap-south-1.compute.internal",
+            "VpcId": "vpc-0d9bc9b1d0e8270ba",
+            "InterfaceType": "interface",
+            "Attachment": {
+                "Status": "attached",
+                "DeviceIndex": 0,
+                "AttachTime": "2020-04-01T00:34:29.000Z",
+                "InstanceId": "i-0e9899505e4092dda",
+                "DeleteOnTermination": true,
+                "AttachmentId": "eni-attach-0659987fbbb8e7b70",
+                "InstanceOwnerId": "123456789012"
+            },
+            "Groups": [
+                {
+                    "GroupName": "fortigate-autoscale-tgw-dev-ab-StackMainWorkload-1OQ7VYI0B3HVA-FgtAsgSecurityGroup-16W9B0TDAGMTS",
+                    "GroupId": "sg-0d779adf9b1a625df"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "PrivateIpAddress": "192.168.0.20",
+            "SubnetId": "subnet-092c194fe49c08ffb",
+            "TagSet": [],
+            "Association": {
+                "PublicIp": "13.233.106.18",
+                "PublicDnsName": "ec2-13-233-106-18.ap-south-1.compute.amazonaws.com",
+                "IpOwnerId": "amazon"
+            }
+        },
+        {
+            "Status": "in-use",
+            "MacAddress": "02:2d:58:9d:8f:2c",
+            "SourceDestCheck": true,
+            "AvailabilityZone": "ap-south-1a",
+            "Description": "VPC Endpoint Interface vpce-047b1277136d8736e",
+            "NetworkInterfaceId": "eni-021d6ef3c1c895f85",
+            "VpcId": "vpc-0d9bc9b1d0e8270ba",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-0-209.ap-south-1.compute.internal",
+                    "Primary": true,
+                    "PrivateIpAddress": "192.168.0.209"
+                }
+            ],
+            "RequesterManaged": true,
+            "PrivateDnsName": "ip-192-168-0-209.ap-south-1.compute.internal",
+            "RequesterId": "727180483921",
+            "InterfaceType": "vpc_endpoint",
+            "Attachment": {
+                "Status": "attached",
+                "DeviceIndex": 1,
+                "DeleteOnTermination": false,
+                "AttachmentId": "ela-attach-637b743c",
+                "InstanceOwnerId": "amazon-aws"
+            },
+            "Groups": [
+                {
+                    "GroupName": "fortigate-autoscale-tgw-dev-ab-StackMainWorkload-1OQ7VYI0B3HVA-FgtAsgSecurityGroup-16W9B0TDAGMTS",
+                    "GroupId": "sg-0d779adf9b1a625df"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "SubnetId": "subnet-092c194fe49c08ffb",
+            "TagSet": [],
+            "PrivateIpAddress": "192.168.0.209"
+        }
+    ]
+}

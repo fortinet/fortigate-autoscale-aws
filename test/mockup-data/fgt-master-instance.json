@@ -58,7 +58,7 @@
     "NetworkInterfaces": [
         {
             "Association": {
-                "IpOwnerId": "123073262904",
+                "IpOwnerId": "123456789012",
                 "PublicDnsName": "",
                 "PublicIp": "34.213.98.131"
             },
@@ -83,12 +83,12 @@
             ],
             "MacAddress": "02:c1:29:62:7d:06",
             "NetworkInterfaceId": "eni-013225e2e3c9f534e",
-            "OwnerId": "123073262904",
+            "OwnerId": "123456789012",
             "PrivateIpAddress": "10.253.0.173",
             "PrivateIpAddresses": [
                 {
                     "Association": {
-                        "IpOwnerId": "123073262904",
+                        "IpOwnerId": "123456789012",
                         "PublicDnsName": "",
                         "PublicIp": "34.213.98.131"
                     },
@@ -119,7 +119,7 @@
             "Ipv6Addresses": [],
             "MacAddress": "02:46:4e:1a:e1:0e",
             "NetworkInterfaceId": "eni-0d851ecf54668d86e",
-            "OwnerId": "123073262904",
+            "OwnerId": "123456789012",
             "PrivateIpAddress": "10.253.1.10",
             "PrivateIpAddresses": [
                 {
