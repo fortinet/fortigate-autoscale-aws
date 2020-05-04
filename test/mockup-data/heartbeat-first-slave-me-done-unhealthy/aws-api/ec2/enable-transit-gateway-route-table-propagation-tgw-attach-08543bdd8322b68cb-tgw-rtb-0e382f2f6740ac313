@@ -1,0 +1,9 @@
+{
+    "Propagation": {
+        "ResourceType": "vpn",
+        "ResourceId": "vpn-05d7645008b6ab211",
+        "State": "enabled",
+        "TransitGatewayRouteTableId": "tgw-rtb-0e382f2f6740ac313",
+        "TransitGatewayAttachmentId": "tgw-attach-08543bdd8322b68cb"
+    }
+}

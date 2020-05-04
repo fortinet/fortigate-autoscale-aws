@@ -1,0 +1,17 @@
+{
+    "Count": 1,
+    "Items": [
+        {
+            "attachmentState":"attached",
+            "instanceId":"i-0000000000byol001",
+            "nicId":"eni-0000000byol001nic001"
+        },
+        {
+            "attachmentState":"attached",
+            "instanceId":"i-0000000000byol001",
+            "nicId":"eni-00000000000000002"
+        }
+    ],
+    "ScannedCount": 1,
+    "ConsumedCapacity": null
+}

@@ -1,0 +1,17 @@
+{
+    "Count": 1,
+    "Items": [
+        {
+            "id": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-byol-auto-scaling-group:i-084d2681eb1587d93:1588208859339",
+            "vmId":"i-0c6cb881aad1a8d79",
+            "ip":"192.168.1.220",
+            "scalingGroupName":"fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-byol-auto-scaling-group",
+            "virtualNetworkId":"vpc-0d9bc9b1d0e8270ba",
+            "subnetId":"subnet-05c8f61050d91d24f",
+            "voteEndTime":"1588209959339",
+            "voteState":"done",
+        }
+    ],
+    "ScannedCount": 1,
+    "ConsumedCapacity": null
+}

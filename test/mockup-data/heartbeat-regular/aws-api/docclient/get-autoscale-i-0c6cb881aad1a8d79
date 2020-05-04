@@ -1,0 +1,13 @@
+{
+    "Item": {
+        "heartBeatInterval":"30",
+        "heartBeatLossCount":"0",
+        "instanceId":"i-084d2681eb1587d93",
+        "ip":"192.168.0.208",
+        "masterIp":"192.168.0.208",
+        "heartBeatLossCount":"084d2681eb1587d93",
+        "nextHeartBeatTime":"1588224351096",
+        "scalingGroupName":"fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-byol-auto-scaling-group"",
+        "syncState":"in-sync",
+    }
+}
