@@ -83,7 +83,7 @@
                 }
             ],
             "MaxSize": 2,
-            "VPCZoneIdentifier": "subnet-0a8360148ad1450ec,subnet-0411ee229f3cd0d9c",
+            "VPCZoneIdentifier": "subnet-00vpc001subnet002,subnet-00vpc001subnet001",
             "HealthCheckGracePeriod": 300,
             "LoadBalancerNames": [],
             "CreatedTime": "2020-04-08T19:22:03.751Z",

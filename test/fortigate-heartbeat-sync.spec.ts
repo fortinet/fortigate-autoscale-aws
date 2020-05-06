@@ -5,11 +5,7 @@ import { describe, it } from 'mocha';
 import Sinon from 'sinon';
 import * as HttpStatusCode from 'http-status-codes';
 import { APIGatewayProxyEvent, Context, APIGatewayProxyResult } from 'aws-lambda';
-import {
-    AwsPlatformAdapter,
-    AutoscaleEnvironment
-    // CloudFunctionResponseBody
-} from 'autoscale-core';
+import { AwsPlatformAdapter, AutoscaleEnvironment } from 'autoscale-core';
 import {
     AwsTestMan,
     MockEC2,

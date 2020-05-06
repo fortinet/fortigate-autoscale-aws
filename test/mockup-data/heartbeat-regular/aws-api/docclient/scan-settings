@@ -275,7 +275,7 @@
         },
         {
             "settingValue": {
-                "S": "subnet-0a8360148ad1450ec"
+                "S": "subnet-00vpc001subnet002"
             },
             "settingKey": {
                 "S": "fortigate-autoscale-subnet-2"
@@ -411,7 +411,7 @@
         },
         {
             "settingValue": {
-                "S": "subnet-07e2a6e5943476930"
+                "S": "subnet-00vpc001subnet003"
             },
             "settingKey": {
                 "S": "fortigate-autoscale-protected-subnet1"
@@ -488,7 +488,7 @@
                 "S": "Subnet pair."
             },
             "settingValue": {
-                "S": "[{\"subnetId\":\"subnet-0411ee229f3cd0d9c\",\"pairId\":\"subnet-07e2a6e5943476930\"},{\"subnetId\":\"subnet-0a8360148ad1450ec\",\"pairId\":\"subnet-0740b297cc09fed36\"}]"
+                "S": "[{\"subnetId\":\"subnet-00vpc001subnet001\",\"pairId\":\"subnet-00vpc001subnet003\"},{\"subnetId\":\"subnet-00vpc001subnet002\",\"pairId\":\"subnet-00vpc001subnet004\"}]"
             },
             "jsonEncoded": {
                 "S": "true"
@@ -598,7 +598,7 @@
         },
         {
             "settingValue": {
-                "S": "subnet-0740b297cc09fed36"
+                "S": "subnet-00vpc001subnet004"
             },
             "settingKey": {
                 "S": "fortigate-autoscale-protected-subnet2"
@@ -734,7 +734,7 @@
         },
         {
             "settingValue": {
-                "S": "subnet-0411ee229f3cd0d9c"
+                "S": "subnet-00vpc001subnet001"
             },
             "settingKey": {
                 "S": "fortigate-autoscale-subnet-1"

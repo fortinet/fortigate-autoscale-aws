@@ -12,7 +12,7 @@
         "build": "npm-run-all clear-dist compile",
         "make-dist": "node dist/scripts/make-dist.js",
         "build-artifacts": "npm-run-all build make-dist",
-        "test": "mocha -r ts-node/register test/*.spec.ts",
+        "test": "mocha --timeout 3600000 -r ts-node/register test/*.spec.ts",
         "lint-check": "node node_modules/ftnt-devops-ci/bin/ftnt-devops-ci.js c -fl  -F .eslintignore -L .eslintignore \"{*,**/*}{.js,.json,.ts}\"",
         "lint-fix": "node node_modules/ftnt-devops-ci/bin/ftnt-devops-ci.js f -fl  -F .eslintignore -L .eslintignore \"**/*{.js,.json,.ts}\""
     },
