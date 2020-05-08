@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/consistent-type-assertions */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import * as path from 'path';
 import { describe, it } from 'mocha';
+import * as HttpStatusCode from 'http-status-codes';
 import { APIGatewayProxyEvent, Context, APIGatewayProxyResult } from 'aws-lambda';
 import { AwsPlatformAdapter, AutoscaleEnvironment } from 'autoscale-core';
-import { AwsFortiGateAutoscale } from 'autoscale-core/dist/fortigate-autoscale/aws/aws-fortigate-autoscale';
 import {
     AwsTestMan,
     MockEC2,
@@ -17,12 +19,14 @@ import {
 
 import { TestAwsPlatformAdaptee } from './test-helper-class/test-aws-platform-adaptee';
 import { TestAwsApiGatewayEventProxy } from './test-helper-class/test-aws-api-gateway-event-proxy';
+import Sinon from 'sinon';
+import { TestAwsFortiGateAutoscale } from './test-helper-class/test-aws-fortigate-autoscale';
 
 export const createAwsApiGatewayEventHandler = (
     event: APIGatewayProxyEvent,
     context: Context
 ): {
-    autoscale: AwsFortiGateAutoscale<APIGatewayProxyEvent, Context, APIGatewayProxyResult>;
+    autoscale: TestAwsFortiGateAutoscale<APIGatewayProxyEvent, Context, APIGatewayProxyResult>;
     env: AutoscaleEnvironment;
     platformAdaptee: TestAwsPlatformAdaptee;
     platformAdapter: AwsPlatformAdapter;
@@ -32,7 +36,7 @@ export const createAwsApiGatewayEventHandler = (
     const proxy = new TestAwsApiGatewayEventProxy(event, context);
     const p = new TestAwsPlatformAdaptee();
     const pa = new AwsPlatformAdapter(p, proxy);
-    const autoscale = new AwsFortiGateAutoscale<
+    const autoscale = new TestAwsFortiGateAutoscale<
         APIGatewayProxyEvent,
         Context,
         APIGatewayProxyResult
@@ -58,7 +62,7 @@ describe('FortiGate get bootstrap configuration.', () => {
     let mockDataDir: string;
     let context: Context;
     let event: APIGatewayProxyEvent;
-    let autoscale: AwsFortiGateAutoscale<APIGatewayProxyEvent, Context, APIGatewayProxyResult>;
+    let autoscale: TestAwsFortiGateAutoscale<APIGatewayProxyEvent, Context, APIGatewayProxyResult>;
     let env: AutoscaleEnvironment;
     let awsPlatformAdaptee: TestAwsPlatformAdaptee;
     let awsPlatformAdapter: AwsPlatformAdapter;
@@ -101,7 +105,6 @@ describe('FortiGate get bootstrap configuration.', () => {
         } = awsPlatformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
-        console.log('done');
     });
     it('Bootstrap from an instance in non-master group.', async () => {
         mockDataDir = path.resolve(mockDataRootDir, 'bootstrap-non-master-group-instance');
@@ -128,6 +131,53 @@ describe('FortiGate get bootstrap configuration.', () => {
         } = awsPlatformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
-        console.log('done');
+    });
+    it('When FortiGate vm request the bootstrap config, it should include the port2config portion.', async () => {
+        mockDataDir = path.resolve(mockDataRootDir, 'bootstrap-non-master-group-instance');
+        event = await awsTestMan.fakeApiGatewayRequest(
+            path.resolve(mockDataDir, 'request/event-fgt-get-config.json')
+        );
+        context = await awsTestMan.fakeApiGatewayContext();
+
+        ({
+            autoscale,
+            env,
+            platformAdaptee: awsPlatformAdaptee,
+            platformAdapter: awsPlatformAdapter,
+            proxy
+        } = await createAwsApiGatewayEventHandler(event, context));
+
+        ({
+            s3: mockS3,
+            ec2: mockEC2,
+            autoscaling: mockAutoscaling,
+            elbv2: mockElbv2,
+            lambda: mockLambda,
+            docClient: mocDocClient
+        } = awsPlatformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
+
+        const { bootstrapConfigStrategy } = autoscale.expose();
+
+        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+
+        const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
+        const spyLoadPort2Config = Sinon.spy(bootstrapConfigStrategy, <any>'loadPort2');
+
+        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+
+        const promisedPort2Config = await spyLoadPort2Config.returnValues[0];
+
+        // ASSERT: bootstrap config strategy loadPort2() is called.
+        Sinon.assert.match(spyLoadPort2Config.called, true);
+        // ASSERT: bootstrap config strategy loadPort2() returns expected value
+        Sinon.assert.match(
+            promisedPort2Config.includes('config sys interface\n    edit "port2"'),
+            true
+        );
+        // ASSERT: proxy responds with http code 200 and a string value
+        Sinon.assert.match(
+            spyProxyFormatResponse.calledWith(HttpStatusCode.OK, Sinon.match.string),
+            true
+        );
     });
 });
