@@ -1,0 +1,9 @@
+{
+    "CustomerGateway": {
+        "CustomerGatewayId": "cgw-00000000000cgw001",
+        "IpAddress": "10.100.0.1",
+        "State": "available",
+        "Type": "ipsec.1",
+        "BgpAsn": "65432"
+    }
+}

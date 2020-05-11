@@ -139,11 +139,11 @@
                             "Key": "aws:ec2launchtemplate:version"
                         },
                         {
-                            "Value": "fortigate-autoscale-tgw-dev-ab-67036c10",
+                            "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0",
                             "Key": "ResourceGroup"
                         },
                         {
-                            "Value": "fortigate-autoscale-tgw-dev-ab-67036c10-fortigate-auto-scaling-group",
+                            "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-auto-scaling-group",
                             "Key": "aws:autoscaling:groupName"
                         },
                         {

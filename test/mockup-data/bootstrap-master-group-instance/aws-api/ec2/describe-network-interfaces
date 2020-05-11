@@ -215,7 +215,7 @@
                     "PrivateIpAddress": "192.168.1.220",
                     "Primary": true,
                     "Association": {
-                        "PublicIp": "35.154.90.117",
+                        "PublicIp": "7.7.7.1",
                         "PublicDnsName": "ec2-35-154-90-117.ap-south-1.compute.amazonaws.com",
                         "IpOwnerId": "amazon"
                     }
@@ -246,7 +246,7 @@
             "SubnetId": "subnet-05c8f61050d91d24f",
             "TagSet": [],
             "Association": {
-                "PublicIp": "35.154.90.117",
+                "PublicIp": "7.7.7.1",
                 "PublicDnsName": "ec2-35-154-90-117.ap-south-1.compute.amazonaws.com",
                 "IpOwnerId": "amazon"
             }

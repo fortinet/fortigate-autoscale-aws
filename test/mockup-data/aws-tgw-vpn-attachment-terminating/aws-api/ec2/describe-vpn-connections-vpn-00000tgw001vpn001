@@ -1,0 +1,48 @@
+{
+    "VpnConnections": [
+        {
+            "CustomerGatewayConfiguration": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<vpn_connection id=\"vpn-00000tgw001vpn001\">\n  <customer_gateway_id>cgw-00000000000cgw001</customer_gateway_id>\n  <vpn_gateway_id></vpn_gateway_id>\n  <vpn_connection_type>ipsec.1</vpn_connection_type>\n  <ipsec_tunnel>\n    <customer_gateway>\n      <tunnel_outside_address>\n        <ip_address>7.7.7.1</ip_address>\n      </tunnel_outside_address>\n      <tunnel_inside_address>\n        <ip_address>169.254.127.206</ip_address>\n        <network_mask>255.255.255.252</network_mask>\n        <network_cidr>30</network_cidr>\n      </tunnel_inside_address>\n      <bgp>\n        <asn>65348</asn>\n        <hold_time>30</hold_time>\n      </bgp>\n    </customer_gateway>\n    <vpn_gateway>\n      <tunnel_outside_address>\n        <ip_address>13.235.35.107</ip_address>\n      </tunnel_outside_address>\n      <tunnel_inside_address>\n        <ip_address>169.254.127.205</ip_address>\n        <network_mask>255.255.255.252</network_mask>\n        <network_cidr>30</network_cidr>\n      </tunnel_inside_address>\n      <bgp>\n        <asn>64512</asn>\n        <hold_time>30</hold_time>\n      </bgp>\n    </vpn_gateway>\n    <ike>\n      <authentication_protocol>sha1</authentication_protocol>\n      <encryption_protocol>aes-128-cbc</encryption_protocol>\n      <lifetime>28800</lifetime>\n      <perfect_forward_secrecy>group2</perfect_forward_secrecy>\n      <mode>main</mode>\n      <pre_shared_key>d8g3UD6uFpAvoFQ2V6JbBBl8RbNBt8si</pre_shared_key>\n    </ike>\n    <ipsec>\n      <protocol>esp</protocol>\n      <authentication_protocol>hmac-sha1-96</authentication_protocol>\n      <encryption_protocol>aes-128-cbc</encryption_protocol>\n      <lifetime>3600</lifetime>\n      <perfect_forward_secrecy>group2</perfect_forward_secrecy>\n      <mode>tunnel</mode>\n      <clear_df_bit>true</clear_df_bit>\n      <fragmentation_before_encryption>true</fragmentation_before_encryption>\n      <tcp_mss_adjustment>1379</tcp_mss_adjustment>\n      <dead_peer_detection>\n        <interval>10</interval>\n        <retries>3</retries>\n      </dead_peer_detection>\n    </ipsec>\n  </ipsec_tunnel>\n  <ipsec_tunnel>\n    <customer_gateway>\n      <tunnel_outside_address>\n        <ip_address>7.7.7.1</ip_address>\n      </tunnel_outside_address>\n      <tunnel_inside_address>\n        <ip_address>169.254.157.22</ip_address>\n        <network_mask>255.255.255.252</network_mask>\n        <network_cidr>30</network_cidr>\n      </tunnel_inside_address>\n      <bgp>\n        <asn>65348</asn>\n        <hold_time>30</hold_time>\n      </bgp>\n    </customer_gateway>\n    <vpn_gateway>\n      <tunnel_outside_address>\n        <ip_address>13.235.125.5</ip_address>\n      </tunnel_outside_address>\n      <tunnel_inside_address>\n        <ip_address>169.254.157.21</ip_address>\n        <network_mask>255.255.255.252</network_mask>\n        <network_cidr>30</network_cidr>\n      </tunnel_inside_address>\n      <bgp>\n        <asn>64512</asn>\n        <hold_time>30</hold_time>\n      </bgp>\n    </vpn_gateway>\n    <ike>\n      <authentication_protocol>sha1</authentication_protocol>\n      <encryption_protocol>aes-128-cbc</encryption_protocol>\n      <lifetime>28800</lifetime>\n      <perfect_forward_secrecy>group2</perfect_forward_secrecy>\n      <mode>main</mode>\n      <pre_shared_key>sO2l0KxyTJylbx2SZuTYT2jYnIocMY55</pre_shared_key>\n    </ike>\n    <ipsec>\n      <protocol>esp</protocol>\n      <authentication_protocol>hmac-sha1-96</authentication_protocol>\n      <encryption_protocol>aes-128-cbc</encryption_protocol>\n      <lifetime>3600</lifetime>\n      <perfect_forward_secrecy>group2</perfect_forward_secrecy>\n      <mode>tunnel</mode>\n      <clear_df_bit>true</clear_df_bit>\n      <fragmentation_before_encryption>true</fragmentation_before_encryption>\n      <tcp_mss_adjustment>1379</tcp_mss_adjustment>\n      <dead_peer_detection>\n        <interval>10</interval>\n        <retries>3</retries>\n      </dead_peer_detection>\n    </ipsec>\n  </ipsec_tunnel>\n</vpn_connection>",
+            "CustomerGatewayId": "cgw-00000000000cgw001",
+            "Category": "VPN",
+            "State": "available",
+            "Type": "ipsec.1",
+            "VpnConnectionId": "vpn-00000tgw001vpn001",
+            "TransitGatewayId": "tgw-00000000000tgw001",
+            "Options": {
+                "EnableAcceleration": false,
+                "StaticRoutesOnly": false
+            },
+            "Routes": [],
+            "Tags": [
+                {
+                    "Key": "FortiGateAutoscaleTgwVpnAttachment",
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0"
+                },
+                {
+                    "Key": "ResourceGroup",
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-autoscale-vpn-7.7.7.1"
+                }
+            ],
+            "VgwTelemetry": [
+                {
+                    "AcceptedRouteCount": 2,
+                    "LastStatusChange": "2020-05-08T05:05:40+00:00",
+                    "OutsideIpAddress": "13.235.35.107",
+                    "Status": "UP",
+                    "StatusMessage": "2 BGP ROUTES"
+                },
+                {
+                    "AcceptedRouteCount": 2,
+                    "LastStatusChange": "2020-05-08T05:05:42+00:00",
+                    "OutsideIpAddress": "13.235.125.5",
+                    "Status": "UP",
+                    "StatusMessage": "2 BGP ROUTES"
+                }
+            ]
+        }
+    ]
+}

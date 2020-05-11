@@ -1,7 +1,8 @@
 import {
     AwsFortiGateAutoscale,
     MasterElectionStrategy,
-    BootstrapConfigurationStrategy
+    BootstrapConfigurationStrategy,
+    HeartbeatSyncStrategy
 } from 'autoscale-core';
 
 export class TestAwsFortiGateAutoscale<TReq, TContext, TRes> extends AwsFortiGateAutoscale<
@@ -11,10 +12,12 @@ export class TestAwsFortiGateAutoscale<TReq, TContext, TRes> extends AwsFortiGat
 > {
     expose(): {
         masterElectionStrategy: MasterElectionStrategy;
+        heartbeatSyncStrategy: HeartbeatSyncStrategy;
         bootstrapConfigStrategy: BootstrapConfigurationStrategy;
     } {
         return {
             masterElectionStrategy: this.masterElectionStrategy,
+            heartbeatSyncStrategy: this.heartbeatSyncStrategy,
             bootstrapConfigStrategy: this.bootstrapConfigStrategy
         };
     }

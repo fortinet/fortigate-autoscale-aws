@@ -1,9 +1,9 @@
 {
     "Association": {
         "ResourceType": "vpn",
-        "ResourceId": "vpn-05d7645008b6ab211",
+        "ResourceId": "vpn-00000tgw001vpn001",
         "State": "associating",
-        "TransitGatewayRouteTableId": "tgw-rtb-0f6059152d6227b70",
+        "TransitGatewayRouteTableId": "tgw-rtb-00000tgw001rtb001",
         "TransitGatewayAttachmentId": "tgw-attach-08543bdd8322b68cb"
     }
 }

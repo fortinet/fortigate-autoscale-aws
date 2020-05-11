@@ -114,7 +114,7 @@ describe('FortiGate secondary ENI attachment.', () => {
         Sinon.assert.match(spyProxyFormatResponse.calledWith(HttpStatusCode.OK, ''), true);
     });
 
-    it('Attach the 2nd ENI to a FortiGate vm. Terminate the instance if attachment failed.', async () => {
+    it('Attach the 2nd ENI to a FortiGate vm. Abandon the lifecycle hook if attachment failed.', async () => {
         mockDataDir = path.resolve(mockDataRootDir, 'nic-attachment-launching');
         event = await awsTestMan.fakeLaunchingVmRequest(
             path.resolve(mockDataDir, 'request/event-launching-vm.json')

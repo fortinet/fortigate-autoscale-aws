@@ -14,7 +14,7 @@
         "Tenancy": "default"
     },
     "PrivateDnsName": "ip-10-253-0-173.us-west-2.compute.internal",
-    "PrivateIpAddress": "10.0.0.1",
+    "PrivateIpAddress": "10.100.0.1",
     "ProductCodes": [
         {
             "ProductCodeId": "dlaioq277sglm5mw1y1dmeuqa",

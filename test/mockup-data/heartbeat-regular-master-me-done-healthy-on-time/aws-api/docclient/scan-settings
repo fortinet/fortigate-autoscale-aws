@@ -370,14 +370,14 @@
             "jsonEncoded": false
         },
         {
-            "settingValue": "tgw-02c276ed71878c044",
+            "settingValue": "tgw-00000000000tgw001",
             "settingKey": "transit-gateway-id",
             "editable": false,
             "description": "The ID of the Transit Gateway the FortiGate Autoscale is attached to.",
             "jsonEncoded": false
         },
         {
-            "settingValue": "tgw-rtb-0f6059152d6227b70",
+            "settingValue": "tgw-rtb-00000tgw001rtb001",
             "settingKey": "transit-gateway-route-table-inbound",
             "editable": true,
             "description": "The Id of the Transit Gateway inbound route table.",

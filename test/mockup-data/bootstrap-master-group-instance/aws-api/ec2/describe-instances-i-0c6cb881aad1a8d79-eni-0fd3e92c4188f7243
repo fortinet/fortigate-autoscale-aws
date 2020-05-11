@@ -13,7 +13,7 @@
                     },
                     "EbsOptimized": false,
                     "LaunchTime": "2020-04-01T00:34:29.000Z",
-                    "PublicIpAddress": "35.154.90.117",
+                    "PublicIpAddress": "7.7.7.1",
                     "PrivateIpAddress": "192.168.1.220",
                     "ProductCodes": [
                         {
@@ -58,7 +58,7 @@
                                     "PrivateIpAddress": "192.168.1.220",
                                     "Primary": true,
                                     "Association": {
-                                        "PublicIp": "35.154.90.117",
+                                        "PublicIp": "7.7.7.1",
                                         "PublicDnsName": "ec2-35-154-90-117.ap-south-1.compute.amazonaws.com",
                                         "IpOwnerId": "amazon"
                                     }
@@ -84,7 +84,7 @@
                             "PrivateIpAddress": "192.168.1.220",
                             "SubnetId": "subnet-05c8f61050d91d24f",
                             "Association": {
-                                "PublicIp": "35.154.90.117",
+                                "PublicIp": "7.7.7.1",
                                 "PublicDnsName": "ec2-35-154-90-117.ap-south-1.compute.amazonaws.com",
                                 "IpOwnerId": "amazon"
                             }
@@ -161,7 +161,7 @@
                     "VirtualizationType": "hvm",
                     "Tags": [
                         {
-                            "Value": "fortigate-autoscale-tgw-dev-ab-67036c10-fortigate-auto-scaling-group",
+                            "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-auto-scaling-group",
                             "Key": "aws:autoscaling:groupName"
                         },
                         {
@@ -177,7 +177,7 @@
                             "Key": "aws:ec2launchtemplate:id"
                         },
                         {
-                            "Value": "fortigate-autoscale-tgw-dev-ab-67036c10",
+                            "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0",
                             "Key": "ResourceGroup"
                         },
                         {
