@@ -17,14 +17,14 @@ import {
 } from 'autoscale-core/dist/scripts/aws-testman';
 
 import { TestAwsPlatformAdaptee } from './test-helper-class/test-aws-platform-adaptee';
-import { TestAwsFortiGateAutoscale } from './test-helper-class/test-aws-fortigate-autoscale';
+import { TestAwsTgwFortiGateAutoscale } from './test-helper-class/test-aws-fortigate-autoscale';
 import { TestAwsScheduledEventProxy } from './test-helper-class/test-aws-scheduled-event-proxy';
 
-export const createTestAwsScheduledEventHandler = (
+export const createTestAwsTgwScheduledEventHandler = (
     event: ScheduledEvent,
     context: Context
 ): {
-    autoscale: TestAwsFortiGateAutoscale<ScheduledEvent, Context, void>;
+    autoscale: TestAwsTgwFortiGateAutoscale<ScheduledEvent, Context, void>;
     env: AutoscaleEnvironment;
     platformAdaptee: TestAwsPlatformAdaptee;
     platformAdapter: AwsPlatformAdapter;
@@ -34,7 +34,11 @@ export const createTestAwsScheduledEventHandler = (
     const proxy = new TestAwsScheduledEventProxy(event, context);
     const p = new TestAwsPlatformAdaptee();
     const pa = new AwsPlatformAdapter(p, proxy);
-    const autoscale = new TestAwsFortiGateAutoscale<ScheduledEvent, Context, void>(pa, env, proxy);
+    const autoscale = new TestAwsTgwFortiGateAutoscale<ScheduledEvent, Context, void>(
+        pa,
+        env,
+        proxy
+    );
     return {
         autoscale: autoscale,
         env: env,
@@ -56,15 +60,9 @@ describe('FortiGate Transit Gateway VPN attachment.', () => {
     let mockDataDir: string;
     let context: Context;
     let event: ScheduledEvent;
-    let autoscale: TestAwsFortiGateAutoscale<ScheduledEvent, Context, void>;
-    let env: AutoscaleEnvironment;
-    let awsPlatformAdaptee: TestAwsPlatformAdaptee;
-    let awsPlatformAdapter: AwsPlatformAdapter;
-    let proxy: TestAwsScheduledEventProxy;
     before(function() {
         mockDataRootDir = path.resolve(__dirname, './mockup-data');
         awsTestMan = new AwsTestMan(mockDataRootDir);
-        awsPlatformAdaptee = new TestAwsPlatformAdaptee();
     });
     after(function() {
         mockEC2.restoreAll();
@@ -82,13 +80,13 @@ describe('FortiGate Transit Gateway VPN attachment.', () => {
         );
         context = await awsTestMan.fakeApiGatewayContext();
 
-        ({
+        const {
             autoscale,
             env,
             platformAdaptee: awsPlatformAdaptee,
             platformAdapter: awsPlatformAdapter,
             proxy
-        } = await createTestAwsScheduledEventHandler(event, context));
+        } = await createTestAwsTgwScheduledEventHandler(event, context);
 
         ({
             s3: mockS3,
@@ -119,13 +117,13 @@ describe('FortiGate Transit Gateway VPN attachment.', () => {
             );
             context = await awsTestMan.fakeApiGatewayContext();
 
-            ({
+            const {
                 autoscale,
                 env,
                 platformAdaptee: awsPlatformAdaptee,
                 platformAdapter: awsPlatformAdapter,
                 proxy
-            } = await createTestAwsScheduledEventHandler(event, context));
+            } = await createTestAwsTgwScheduledEventHandler(event, context);
 
             ({
                 s3: mockS3,
@@ -169,13 +167,13 @@ describe('FortiGate Transit Gateway VPN attachment.', () => {
         );
         context = await awsTestMan.fakeApiGatewayContext();
 
-        ({
+        const {
             autoscale,
             env,
             platformAdaptee: awsPlatformAdaptee,
             platformAdapter: awsPlatformAdapter,
             proxy
-        } = await createTestAwsScheduledEventHandler(event, context));
+        } = await createTestAwsTgwScheduledEventHandler(event, context);
 
         ({
             s3: mockS3,

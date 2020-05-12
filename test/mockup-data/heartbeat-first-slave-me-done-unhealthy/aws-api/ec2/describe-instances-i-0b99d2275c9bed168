@@ -6,7 +6,7 @@
                     "Monitoring": {
                         "State": "disabled"
                     },
-                    "PublicDnsName": "ec2-13-232-125-26.ap-south-1.compute.amazonaws.com",
+                    "PublicDnsName": "ec2-13-232-125-26.no-where-1.compute.amazonaws.com",
                     "State": {
                         "Code": 16,
                         "Name": "running"
@@ -17,11 +17,11 @@
                     "PrivateIpAddress": "192.168.0.133",
                     "ProductCodes": [
                         {
-                            "ProductCodeId": "2wqkpek696qhdeo7lbbjncqli",
+                            "ProductCodeId": "",
                             "ProductCodeType": "marketplace"
                         }
                     ],
-                    "VpcId": "vpc-0d9bc9b1d0e8270ba",
+                    "VpcId": "vpc-00000000000000001",
                     "CpuOptions": {
                         "CoreCount": 1,
                         "ThreadsPerCore": 2
@@ -29,13 +29,13 @@
                     "StateTransitionReason": "",
                     "InstanceId": "i-0b99d2275c9bed168",
                     "EnaSupport": true,
-                    "ImageId": "ami-0b71271bc53238423",
-                    "PrivateDnsName": "ip-192-168-0-133.ap-south-1.compute.internal",
-                    "KeyName": "mockup-all-purposes-ap-south-1",
+                    "ImageId": "ami-00000000000000001",
+                    "PrivateDnsName": "ip-192-168-0-133.no-where-1.compute.internal",
+                    "KeyName": "mockup-all-purposes-no-where-1",
                     "SecurityGroups": [
                         {
-                            "GroupName": "fortigate-autoscale-tgw-dev-ab-StackMainWorkload-1OQ7VYI0B3HVA-FgtAsgSecurityGroup-16W9B0TDAGMTS",
-                            "GroupId": "sg-0d779adf9b1a625df"
+                            "GroupName": "mockup-security-group-name-001",
+                            "GroupId": "sg-00000000000000001"
                         }
                     ],
                     "ClientToken": "cd85c4cc-a4ab-e4d9-022e-0cf3f641180e",
@@ -49,22 +49,22 @@
                             "Status": "in-use",
                             "MacAddress": "02:be:45:81:c6:68",
                             "SourceDestCheck": false,
-                            "VpcId": "vpc-0d9bc9b1d0e8270ba",
+                            "VpcId": "vpc-00000000000000001",
                             "Description": "",
                             "NetworkInterfaceId": "eni-0826500960c4104c1",
                             "PrivateIpAddresses": [
                                 {
-                                    "PrivateDnsName": "ip-192-168-0-133.ap-south-1.compute.internal",
+                                    "PrivateDnsName": "ip-192-168-0-133.no-where-1.compute.internal",
                                     "PrivateIpAddress": "192.168.0.133",
                                     "Primary": true,
                                     "Association": {
                                         "PublicIp": "13.232.125.26",
-                                        "PublicDnsName": "ec2-13-232-125-26.ap-south-1.compute.amazonaws.com",
+                                        "PublicDnsName": "ec2-13-232-125-26.no-where-1.compute.amazonaws.com",
                                         "IpOwnerId": "amazon"
                                     }
                                 }
                             ],
-                            "PrivateDnsName": "ip-192-168-0-133.ap-south-1.compute.internal",
+                            "PrivateDnsName": "ip-192-168-0-133.no-where-1.compute.internal",
                             "InterfaceType": "interface",
                             "Attachment": {
                                 "Status": "attached",
@@ -75,8 +75,8 @@
                             },
                             "Groups": [
                                 {
-                                    "GroupName": "fortigate-autoscale-tgw-dev-ab-StackMainWorkload-1OQ7VYI0B3HVA-FgtAsgSecurityGroup-16W9B0TDAGMTS",
-                                    "GroupId": "sg-0d779adf9b1a625df"
+                                    "GroupName": "mockup-security-group-name-001",
+                                    "GroupId": "sg-00000000000000001"
                                 }
                             ],
                             "Ipv6Addresses": [],
@@ -85,7 +85,7 @@
                             "SubnetId": "subnet-092c194fe49c08ffb",
                             "Association": {
                                 "PublicIp": "13.232.125.26",
-                                "PublicDnsName": "ec2-13-232-125-26.ap-south-1.compute.amazonaws.com",
+                                "PublicDnsName": "ec2-13-232-125-26.no-where-1.compute.amazonaws.com",
                                 "IpOwnerId": "amazon"
                             }
                         }
@@ -94,7 +94,7 @@
                     "Placement": {
                         "Tenancy": "default",
                         "GroupName": "",
-                        "AvailabilityZone": "ap-south-1a"
+                        "AvailabilityZone": "no-where-1a"
                     },
                     "Hypervisor": "xen",
                     "BlockDeviceMappings": [
@@ -151,7 +151,7 @@
                             "Key": "aws:cloudformation:logical-id"
                         },
                         {
-                            "Value": "arn:aws:cloudformation:ap-south-1:123456789012:stack/fortigate-autoscale-tgw-dev-ab-StackMainWorkload-StackCreateFortiGateAutoScalingGroup-R1KKJ5VW1LJ/3abf37f0-73b0-11ea-bf93-027feff0383e",
+                            "Value": "arn:aws:cloudformation:no-where-1:123456789012:stack/fortigate-autoscale-tgw-dev-ab-StackMainWorkload-StackCreateFortiGateAutoScalingGroup-R1KKJ5VW1LJ/3abf37f0-73b0-11ea-bf93-027feff0383e",
                             "Key": "aws:cloudformation:stack-id"
                         }
                     ],

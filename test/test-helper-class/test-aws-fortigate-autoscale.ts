@@ -2,7 +2,9 @@ import {
     AwsFortiGateAutoscale,
     MasterElectionStrategy,
     BootstrapConfigurationStrategy,
-    HeartbeatSyncStrategy
+    HeartbeatSyncStrategy,
+    AwsFortiGateAutoscaleTgw,
+    AwsFortiGateBootstrapTgwStrategy
 } from 'autoscale-core';
 
 export class TestAwsFortiGateAutoscale<TReq, TContext, TRes> extends AwsFortiGateAutoscale<
@@ -19,6 +21,25 @@ export class TestAwsFortiGateAutoscale<TReq, TContext, TRes> extends AwsFortiGat
             masterElectionStrategy: this.masterElectionStrategy,
             heartbeatSyncStrategy: this.heartbeatSyncStrategy,
             bootstrapConfigStrategy: this.bootstrapConfigStrategy
+        };
+    }
+}
+
+export class TestAwsTgwFortiGateAutoscale<TReq, TContext, TRes> extends AwsFortiGateAutoscaleTgw<
+    TReq,
+    TContext,
+    TRes
+> {
+    expose(): {
+        masterElectionStrategy: MasterElectionStrategy;
+        heartbeatSyncStrategy: HeartbeatSyncStrategy;
+        bootstrapConfigStrategy: AwsFortiGateBootstrapTgwStrategy;
+    } {
+        return {
+            masterElectionStrategy: this.masterElectionStrategy,
+            heartbeatSyncStrategy: this.heartbeatSyncStrategy,
+            bootstrapConfigStrategy: this
+                .bootstrapConfigStrategy as AwsFortiGateBootstrapTgwStrategy
         };
     }
 }

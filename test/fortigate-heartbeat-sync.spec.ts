@@ -61,15 +61,9 @@ describe('FortiGate first heartbeat sync.', () => {
     let mockDataDir: string;
     let context: Context;
     let event: APIGatewayProxyEvent;
-    let autoscale: TestAwsFortiGateAutoscale<APIGatewayProxyEvent, Context, APIGatewayProxyResult>;
-    let env: AutoscaleEnvironment;
-    let awsPlatformAdaptee: TestAwsPlatformAdaptee;
-    let awsPlatformAdapter: AwsPlatformAdapter;
-    let proxy: TestAwsApiGatewayEventProxy;
     before(function() {
         mockDataRootDir = path.resolve(__dirname, './mockup-data');
         awsTestMan = new AwsTestMan(mockDataRootDir);
-        awsPlatformAdaptee = new TestAwsPlatformAdaptee();
     });
     after(function() {
         mockEC2.restoreAll();
@@ -87,13 +81,13 @@ describe('FortiGate first heartbeat sync.', () => {
         );
         context = await awsTestMan.fakeApiGatewayContext();
 
-        ({
+        const {
             autoscale,
             env,
-            platformAdaptee: awsPlatformAdaptee,
-            platformAdapter: awsPlatformAdapter,
+            platformAdaptee,
+            platformAdapter,
             proxy
-        } = await createTestAwsApiGatewayEventHandler(event, context));
+        } = await createTestAwsApiGatewayEventHandler(event, context);
 
         ({
             s3: mockS3,
@@ -102,13 +96,13 @@ describe('FortiGate first heartbeat sync.', () => {
             elbv2: mockElbv2,
             lambda: mockLambda,
             docClient: mocDocClient
-        } = awsPlatformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
+        } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const candidate = masterElectionResult.candidate;
@@ -138,13 +132,13 @@ describe('FortiGate first heartbeat sync.', () => {
         );
         context = await awsTestMan.fakeApiGatewayContext();
 
-        ({
+        const {
             autoscale,
             env,
-            platformAdaptee: awsPlatformAdaptee,
-            platformAdapter: awsPlatformAdapter,
+            platformAdaptee,
+            platformAdapter,
             proxy
-        } = await createTestAwsApiGatewayEventHandler(event, context));
+        } = await createTestAwsApiGatewayEventHandler(event, context);
 
         ({
             s3: mockS3,
@@ -153,13 +147,13 @@ describe('FortiGate first heartbeat sync.', () => {
             elbv2: mockElbv2,
             lambda: mockLambda,
             docClient: mocDocClient
-        } = awsPlatformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
+        } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const newMaster = masterElectionResult.newMaster;
@@ -183,13 +177,13 @@ describe('FortiGate first heartbeat sync.', () => {
         );
         context = await awsTestMan.fakeApiGatewayContext();
 
-        ({
+        const {
             autoscale,
             env,
-            platformAdaptee: awsPlatformAdaptee,
-            platformAdapter: awsPlatformAdapter,
+            platformAdaptee,
+            platformAdapter,
             proxy
-        } = await createTestAwsApiGatewayEventHandler(event, context));
+        } = await createTestAwsApiGatewayEventHandler(event, context);
 
         ({
             s3: mockS3,
@@ -198,13 +192,13 @@ describe('FortiGate first heartbeat sync.', () => {
             elbv2: mockElbv2,
             lambda: mockLambda,
             docClient: mocDocClient
-        } = awsPlatformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
+        } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const candidate = masterElectionResult.candidate;
@@ -234,13 +228,13 @@ describe('FortiGate first heartbeat sync.', () => {
         );
         context = await awsTestMan.fakeApiGatewayContext();
 
-        ({
+        const {
             autoscale,
             env,
-            platformAdaptee: awsPlatformAdaptee,
-            platformAdapter: awsPlatformAdapter,
+            platformAdaptee,
+            platformAdapter,
             proxy
-        } = await createTestAwsApiGatewayEventHandler(event, context));
+        } = await createTestAwsApiGatewayEventHandler(event, context);
 
         ({
             s3: mockS3,
@@ -249,13 +243,13 @@ describe('FortiGate first heartbeat sync.', () => {
             elbv2: mockElbv2,
             lambda: mockLambda,
             docClient: mocDocClient
-        } = awsPlatformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
+        } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const newMaster = masterElectionResult.newMaster;
@@ -288,13 +282,13 @@ describe('FortiGate first heartbeat sync.', () => {
         );
         context = await awsTestMan.fakeApiGatewayContext();
 
-        ({
+        const {
             autoscale,
             env,
-            platformAdaptee: awsPlatformAdaptee,
-            platformAdapter: awsPlatformAdapter,
+            platformAdaptee,
+            platformAdapter,
             proxy
-        } = await createTestAwsApiGatewayEventHandler(event, context));
+        } = await createTestAwsApiGatewayEventHandler(event, context);
 
         ({
             s3: mockS3,
@@ -303,13 +297,13 @@ describe('FortiGate first heartbeat sync.', () => {
             elbv2: mockElbv2,
             lambda: mockLambda,
             docClient: mocDocClient
-        } = awsPlatformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
+        } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const candidate = masterElectionResult.candidate;
@@ -339,13 +333,13 @@ describe('FortiGate first heartbeat sync.', () => {
         );
         context = await awsTestMan.fakeApiGatewayContext();
 
-        ({
+        const {
             autoscale,
             env,
-            platformAdaptee: awsPlatformAdaptee,
-            platformAdapter: awsPlatformAdapter,
+            platformAdaptee,
+            platformAdapter,
             proxy
-        } = await createTestAwsApiGatewayEventHandler(event, context));
+        } = await createTestAwsApiGatewayEventHandler(event, context);
 
         ({
             s3: mockS3,
@@ -354,13 +348,13 @@ describe('FortiGate first heartbeat sync.', () => {
             elbv2: mockElbv2,
             lambda: mockLambda,
             docClient: mocDocClient
-        } = awsPlatformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
+        } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const newMaster = masterElectionResult.newMaster;
 
@@ -384,15 +378,9 @@ describe('FortiGate regular heartbeat sync.', () => {
     let mockDataDir: string;
     let context: Context;
     let event: APIGatewayProxyEvent;
-    let autoscale: TestAwsFortiGateAutoscale<APIGatewayProxyEvent, Context, APIGatewayProxyResult>;
-    let env: AutoscaleEnvironment;
-    let awsPlatformAdaptee: TestAwsPlatformAdaptee;
-    let awsPlatformAdapter: AwsPlatformAdapter;
-    let proxy: TestAwsApiGatewayEventProxy;
     before(function() {
         mockDataRootDir = path.resolve(__dirname, './mockup-data');
         awsTestMan = new AwsTestMan(mockDataRootDir);
-        awsPlatformAdaptee = new TestAwsPlatformAdaptee();
     });
     after(function() {
         mockEC2.restoreAll();
@@ -413,13 +401,13 @@ describe('FortiGate regular heartbeat sync.', () => {
         );
         context = await awsTestMan.fakeApiGatewayContext();
 
-        ({
+        const {
             autoscale,
             env,
-            platformAdaptee: awsPlatformAdaptee,
-            platformAdapter: awsPlatformAdapter,
+            platformAdaptee,
+            platformAdapter,
             proxy
-        } = await createTestAwsApiGatewayEventHandler(event, context));
+        } = await createTestAwsApiGatewayEventHandler(event, context);
 
         ({
             s3: mockS3,
@@ -428,13 +416,13 @@ describe('FortiGate regular heartbeat sync.', () => {
             elbv2: mockElbv2,
             lambda: mockLambda,
             docClient: mocDocClient
-        } = awsPlatformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
+        } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const newMaster = masterElectionResult.newMaster;
@@ -462,13 +450,13 @@ describe('FortiGate regular heartbeat sync.', () => {
         );
         context = await awsTestMan.fakeApiGatewayContext();
 
-        ({
+        const {
             autoscale,
             env,
-            platformAdaptee: awsPlatformAdaptee,
-            platformAdapter: awsPlatformAdapter,
+            platformAdaptee,
+            platformAdapter,
             proxy
-        } = await createTestAwsApiGatewayEventHandler(event, context));
+        } = await createTestAwsApiGatewayEventHandler(event, context);
 
         ({
             s3: mockS3,
@@ -477,13 +465,13 @@ describe('FortiGate regular heartbeat sync.', () => {
             elbv2: mockElbv2,
             lambda: mockLambda,
             docClient: mocDocClient
-        } = awsPlatformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
+        } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const newMaster = masterElectionResult.newMaster;
@@ -515,15 +503,9 @@ describe('FortiGate irregular heartbeat sync.', () => {
     let mockDataDir: string;
     let context: Context;
     let event: APIGatewayProxyEvent;
-    let autoscale: TestAwsFortiGateAutoscale<APIGatewayProxyEvent, Context, APIGatewayProxyResult>;
-    let env: AutoscaleEnvironment;
-    let awsPlatformAdaptee: TestAwsPlatformAdaptee;
-    let awsPlatformAdapter: AwsPlatformAdapter;
-    let proxy: TestAwsApiGatewayEventProxy;
     before(function() {
         mockDataRootDir = path.resolve(__dirname, './mockup-data');
         awsTestMan = new AwsTestMan(mockDataRootDir);
-        awsPlatformAdaptee = new TestAwsPlatformAdaptee();
     });
     after(function() {
         mockEC2.restoreAll();
@@ -541,13 +523,13 @@ describe('FortiGate irregular heartbeat sync.', () => {
         );
         context = await awsTestMan.fakeApiGatewayContext();
 
-        ({
+        const {
             autoscale,
             env,
-            platformAdaptee: awsPlatformAdaptee,
-            platformAdapter: awsPlatformAdapter,
+            platformAdaptee,
+            platformAdapter,
             proxy
-        } = await createTestAwsApiGatewayEventHandler(event, context));
+        } = await createTestAwsApiGatewayEventHandler(event, context);
 
         ({
             s3: mockS3,
@@ -556,13 +538,13 @@ describe('FortiGate irregular heartbeat sync.', () => {
             elbv2: mockElbv2,
             lambda: mockLambda,
             docClient: mocDocClient
-        } = awsPlatformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
+        } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const newMaster = masterElectionResult.newMaster;
@@ -587,13 +569,13 @@ describe('FortiGate irregular heartbeat sync.', () => {
         );
         context = await awsTestMan.fakeApiGatewayContext();
 
-        ({
+        const {
             autoscale,
             env,
-            platformAdaptee: awsPlatformAdaptee,
-            platformAdapter: awsPlatformAdapter,
+            platformAdaptee,
+            platformAdapter,
             proxy
-        } = await createTestAwsApiGatewayEventHandler(event, context));
+        } = await createTestAwsApiGatewayEventHandler(event, context);
 
         ({
             s3: mockS3,
@@ -602,18 +584,18 @@ describe('FortiGate irregular heartbeat sync.', () => {
             elbv2: mockElbv2,
             lambda: mockLambda,
             docClient: mocDocClient
-        } = awsPlatformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
+        } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
         const spyPADeleteVmFromScalingGroup = Sinon.spy(
-            awsPlatformAdapter,
+            platformAdapter,
             'deleteVmFromScalingGroup'
         );
 
-        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const newMaster = masterElectionResult.newMaster;
@@ -643,13 +625,13 @@ describe('FortiGate irregular heartbeat sync.', () => {
         );
         context = await awsTestMan.fakeApiGatewayContext();
 
-        ({
+        const {
             autoscale,
             env,
-            platformAdaptee: awsPlatformAdaptee,
-            platformAdapter: awsPlatformAdapter,
+            platformAdaptee,
+            platformAdapter,
             proxy
-        } = await createTestAwsApiGatewayEventHandler(event, context));
+        } = await createTestAwsApiGatewayEventHandler(event, context);
 
         ({
             s3: mockS3,
@@ -658,13 +640,13 @@ describe('FortiGate irregular heartbeat sync.', () => {
             elbv2: mockElbv2,
             lambda: mockLambda,
             docClient: mocDocClient
-        } = awsPlatformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
+        } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const newMaster = masterElectionResult.newMaster;
@@ -689,13 +671,13 @@ describe('FortiGate irregular heartbeat sync.', () => {
         );
         context = await awsTestMan.fakeApiGatewayContext();
 
-        ({
+        const {
             autoscale,
             env,
-            platformAdaptee: awsPlatformAdaptee,
-            platformAdapter: awsPlatformAdapter,
+            platformAdaptee,
+            platformAdapter,
             proxy
-        } = await createTestAwsApiGatewayEventHandler(event, context));
+        } = await createTestAwsApiGatewayEventHandler(event, context);
 
         ({
             s3: mockS3,
@@ -704,18 +686,18 @@ describe('FortiGate irregular heartbeat sync.', () => {
             elbv2: mockElbv2,
             lambda: mockLambda,
             docClient: mocDocClient
-        } = awsPlatformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
+        } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
         const spyPADeleteVmFromScalingGroup = Sinon.spy(
-            awsPlatformAdapter,
+            platformAdapter,
             'deleteVmFromScalingGroup'
         );
 
-        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const newMaster = masterElectionResult.newMaster;

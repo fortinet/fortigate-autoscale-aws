@@ -15,7 +15,7 @@
                     "Key": "ResourceGroup"
                 },
                 {
-                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-autoscale-tgw-attachment-vpn-7.7.7.1",
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-autoscale-tgw-attachment-vpn-10.100.0.1",
                     "Key": "Name"
                 }
             ],

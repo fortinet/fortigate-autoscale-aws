@@ -29,7 +29,7 @@
                     "StateTransitionReason": "",
                     "InstanceId": "i-0000000000payg001",
                     "EnaSupport": true,
-                    "ImageId": "ami-0b71271bc53238423",
+                    "ImageId": "ami-00000000000000001",
                     "PrivateDnsName": "ip-192-168-0-101.no-where-1.compute.internal",
                     "KeyName": "mockup-all-purposes-no-where-1",
                     "SecurityGroups": [

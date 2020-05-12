@@ -65,7 +65,7 @@
             "jsonEncoded": false
         },
         {
-            "settingValue": "60ackIt060-69e58ed0-service-elb-a9001ad667854e20.elb.ap-south-1.amazonaws.com",
+            "settingValue": "60ackIt060-69e58ed0-service-elb-a9001ad667854e20.elb.no-where-1.amazonaws.com",
             "settingKey": "fortigate-protected-internal-elb-dns",
             "editable": true,
             "description": "The DNS name of the elastic load balancer for the scaling groups of services protected by FortiGate",
@@ -79,7 +79,7 @@
             "jsonEncoded": false
         },
         {
-            "settingValue": "https://j3si9drpz5.execute-api.ap-south-1.amazonaws.com/prod/fgt-asg-handler",
+            "settingValue": "https://j3si9drpz5.execute-api.no-where-1.amazonaws.com/prod/fgt-asg-handler",
             "settingKey": "autoscale-handler-url",
             "editable": false,
             "description": "The FortiGate Autoscale handler URL.",
@@ -230,7 +230,7 @@
             "jsonEncoded": false
         },
         {
-            "settingValue": "60ackIt060-69e58ed0-frontend-elb-07e7cc19a3e11ff5.elb.ap-south-1.amazonaws.com",
+            "settingValue": "60ackIt060-69e58ed0-frontend-elb-07e7cc19a3e11ff5.elb.no-where-1.amazonaws.com",
             "settingKey": "fortigate-autoscale-elb-dns",
             "editable": false,
             "description": "The DNS name of the elastic load balancer for the FortiGate scaling groups.",
@@ -244,7 +244,7 @@
             "jsonEncoded": false
         },
         {
-            "settingValue": "arn:aws:elasticloadbalancing:ap-south-1:123456789012:targetgroup/60ackIt060-69e58ed0-frontend-tg/befb4b0bb546c08a",
+            "settingValue": "arn:aws:elasticloadbalancing:no-where-1:123456789012:targetgroup/60ackIt060-69e58ed0-frontend-tg/befb4b0bb546c08a",
             "settingKey": "fortigate-autoscale-target-group-arn",
             "editable": false,
             "description": "The ARN of the target group for FortiGate to receive load balanced traffic.",

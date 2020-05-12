@@ -4,23 +4,23 @@
     "httpMethod": "GET",
     "headers": {
         "Accept": "*/*",
-        "Fos-instance-id": "i-0c6cb881aad1a8d79",
-        "Host": "xulnw2q6s9.execute-api.ap-south-1.amazonaws.com",
+        "Fos-instance-id": "i-0000000000byol001",
+        "Host": "mockup.execute-api.no-where-1.amazonaws.com",
         "x-amzn-cipher-suite": "ECDHE-RSA-AES128-GCM-SHA256",
-        "x-amzn-vpc-id": "vpc-0d9bc9b1d0e8270ba",
+        "x-amzn-vpc-id": "vpc-00000000000000001",
         "x-amzn-vpce-config": "1",
-        "x-amzn-vpce-id": "vpce-029f76ea682aab8be",
-        "X-Forwarded-For": "192.168.0.186"
+        "x-amzn-vpce-id": "vpce-00000000000000001",
+        "X-Forwarded-For": "192.168.0.1"
     },
     "multiValueHeaders": {
         "Accept": ["*/*"],
-        "Fos-instance-id": ["i-0c6cb881aad1a8d79"],
-        "Host": ["xulnw2q6s9.execute-api.ap-south-1.amazonaws.com"],
+        "Fos-instance-id": ["i-0000000000byol001"],
+        "Host": ["mockup.execute-api.no-where-1.amazonaws.com"],
         "x-amzn-cipher-suite": ["ECDHE-RSA-AES128-GCM-SHA256"],
-        "x-amzn-vpc-id": ["vpc-0d9bc9b1d0e8270ba"],
+        "x-amzn-vpc-id": ["vpc-00000000000000001"],
         "x-amzn-vpce-config": ["1"],
-        "x-amzn-vpce-id": ["vpce-029f76ea682aab8be"],
-        "X-Forwarded-For": ["192.168.0.186"]
+        "x-amzn-vpce-id": ["vpce-00000000000000001"],
+        "X-Forwarded-For": ["192.168.0.1"]
     },
     "queryStringParameters": null,
     "multiValueQueryStringParameters": null,
@@ -36,27 +36,27 @@
         "accountId": "123456789012",
         "protocol": "HTTP/1.1",
         "stage": "prod",
-        "domainPrefix": "xulnw2q6s9",
+        "domainPrefix": "mockup",
         "requestTimeEpoch": 1579571974704,
         "requestId": "a6f859d5-86c4-40d8-8752-97c29e6e667b",
         "identity": {
             "cognitoIdentityPoolId": null,
             "cognitoIdentityId": null,
-            "vpceId": "vpce-029f76ea682aab8be",
+            "vpceId": "vpce-00000000000000001",
             "principalOrgId": null,
             "cognitoAuthenticationType": null,
             "userArn": null,
             "userAgent": null,
             "accountId": null,
             "caller": null,
-            "sourceIp": "192.168.0.186",
+            "sourceIp": "192.168.0.1",
             "accessKey": null,
-            "vpcId": "vpc-0d9bc9b1d0e8270ba",
+            "vpcId": "vpc-00000000000000001",
             "cognitoAuthenticationProvider": null,
             "user": null
         },
-        "domainName": "xulnw2q6s9.execute-api.ap-south-1.amazonaws.com",
-        "apiId": "xulnw2q6s9"
+        "domainName": "mockup.execute-api.no-where-1.amazonaws.com",
+        "apiId": "mockup"
     },
     "body": null,
     "isBase64Encoded": false

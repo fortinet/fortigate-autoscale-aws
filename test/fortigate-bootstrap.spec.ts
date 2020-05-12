@@ -20,7 +20,10 @@ import {
 import { TestAwsPlatformAdaptee } from './test-helper-class/test-aws-platform-adaptee';
 import { TestAwsApiGatewayEventProxy } from './test-helper-class/test-aws-api-gateway-event-proxy';
 import Sinon from 'sinon';
-import { TestAwsFortiGateAutoscale } from './test-helper-class/test-aws-fortigate-autoscale';
+import {
+    TestAwsFortiGateAutoscale,
+    TestAwsTgwFortiGateAutoscale
+} from './test-helper-class/test-aws-fortigate-autoscale';
 
 export const createAwsApiGatewayEventHandler = (
     event: APIGatewayProxyEvent,
@@ -50,6 +53,34 @@ export const createAwsApiGatewayEventHandler = (
     };
 };
 
+export const createAwsTgwApiGatewayEventHandler = (
+    event: APIGatewayProxyEvent,
+    context: Context
+): {
+    autoscale: TestAwsTgwFortiGateAutoscale<APIGatewayProxyEvent, Context, APIGatewayProxyResult>;
+    env: AutoscaleEnvironment;
+    platformAdaptee: TestAwsPlatformAdaptee;
+    platformAdapter: AwsPlatformAdapter;
+    proxy: TestAwsApiGatewayEventProxy;
+} => {
+    const env = {} as AutoscaleEnvironment;
+    const proxy = new TestAwsApiGatewayEventProxy(event, context);
+    const p = new TestAwsPlatformAdaptee();
+    const pa = new AwsPlatformAdapter(p, proxy);
+    const autoscale = new TestAwsTgwFortiGateAutoscale<
+        APIGatewayProxyEvent,
+        Context,
+        APIGatewayProxyResult
+    >(pa, env, proxy);
+    return {
+        autoscale: autoscale,
+        env: env,
+        platformAdaptee: p,
+        platformAdapter: pa,
+        proxy: proxy
+    };
+};
+
 describe('FortiGate get bootstrap configuration.', () => {
     let mockDataRootDir: string;
     let awsTestMan: AwsTestMan;
@@ -62,15 +93,10 @@ describe('FortiGate get bootstrap configuration.', () => {
     let mockDataDir: string;
     let context: Context;
     let event: APIGatewayProxyEvent;
-    let autoscale: TestAwsFortiGateAutoscale<APIGatewayProxyEvent, Context, APIGatewayProxyResult>;
-    let env: AutoscaleEnvironment;
-    let awsPlatformAdaptee: TestAwsPlatformAdaptee;
-    let awsPlatformAdapter: AwsPlatformAdapter;
-    let proxy: TestAwsApiGatewayEventProxy;
+
     before(function() {
         mockDataRootDir = path.resolve(__dirname, './mockup-data');
         awsTestMan = new AwsTestMan(mockDataRootDir);
-        awsPlatformAdaptee = new TestAwsPlatformAdaptee();
     });
     after(function() {
         mockEC2.restoreAll();
@@ -87,13 +113,13 @@ describe('FortiGate get bootstrap configuration.', () => {
         );
         context = await awsTestMan.fakeApiGatewayContext();
 
-        ({
+        const {
             autoscale,
             env,
             platformAdaptee: awsPlatformAdaptee,
             platformAdapter: awsPlatformAdapter,
             proxy
-        } = await createAwsApiGatewayEventHandler(event, context));
+        } = await createAwsApiGatewayEventHandler(event, context);
 
         ({
             s3: mockS3,
@@ -113,13 +139,13 @@ describe('FortiGate get bootstrap configuration.', () => {
         );
         context = await awsTestMan.fakeApiGatewayContext();
 
-        ({
+        const {
             autoscale,
             env,
             platformAdaptee: awsPlatformAdaptee,
             platformAdapter: awsPlatformAdapter,
             proxy
-        } = await createAwsApiGatewayEventHandler(event, context));
+        } = await createAwsApiGatewayEventHandler(event, context);
 
         ({
             s3: mockS3,
@@ -132,52 +158,211 @@ describe('FortiGate get bootstrap configuration.', () => {
 
         await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
     });
-    it('When FortiGate vm request the bootstrap config, it should include the port2config portion.', async () => {
-        mockDataDir = path.resolve(mockDataRootDir, 'bootstrap-non-master-group-instance');
-        event = await awsTestMan.fakeApiGatewayRequest(
-            path.resolve(mockDataDir, 'request/event-fgt-get-config.json')
-        );
-        context = await awsTestMan.fakeApiGatewayContext();
+    it(
+        'When FortiGate vm request the bootstrap config, it should include the port2config portion ' +
+            '(enable-second-nic is set to true)',
+        async () => {
+            mockDataDir = path.resolve(mockDataRootDir, 'bootstrap-settings-switches');
+            event = await awsTestMan.fakeApiGatewayRequest(
+                path.resolve(mockDataDir, 'request/event-fgt-get-config.json')
+            );
+            context = await awsTestMan.fakeApiGatewayContext();
 
-        ({
-            autoscale,
-            env,
-            platformAdaptee: awsPlatformAdaptee,
-            platformAdapter: awsPlatformAdapter,
-            proxy
-        } = await createAwsApiGatewayEventHandler(event, context));
+            const {
+                autoscale,
+                env,
+                platformAdaptee,
+                platformAdapter,
+                proxy
+            } = await createAwsApiGatewayEventHandler(event, context);
 
-        ({
-            s3: mockS3,
-            ec2: mockEC2,
-            autoscaling: mockAutoscaling,
-            elbv2: mockElbv2,
-            lambda: mockLambda,
-            docClient: mocDocClient
-        } = awsPlatformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
+            ({
+                s3: mockS3,
+                ec2: mockEC2,
+                autoscaling: mockAutoscaling,
+                elbv2: mockElbv2,
+                lambda: mockLambda,
+                docClient: mocDocClient
+            } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
-        const { bootstrapConfigStrategy } = autoscale.expose();
+            const { bootstrapConfigStrategy } = autoscale.expose();
 
-        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+            // mocDocClient.callSubOnNthFake('scan')
+            const stubAdapteeLoadSettings = Sinon.stub(platformAdaptee, 'loadSettings');
 
-        const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
-        const spyLoadPort2Config = Sinon.spy(bootstrapConfigStrategy, <any>'loadPort2');
+            stubAdapteeLoadSettings.callsFake(async () => {
+                const callCount = mocDocClient.getStub('scan').callCount;
+                mocDocClient.callSubOnNthFake(
+                    'scan',
+                    callCount + 1,
+                    'enable-second-nic-true',
+                    true
+                );
+                stubAdapteeLoadSettings.restore();
+                return await platformAdaptee.loadSettings();
+            });
 
-        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+            const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
+            const spyLoadConfig = Sinon.spy(bootstrapConfigStrategy, <any>'loadConfig');
+            const spyLoadPort2Config = Sinon.spy(bootstrapConfigStrategy, <any>'loadPort2');
 
-        const promisedPort2Config = await spyLoadPort2Config.returnValues[0];
+            await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
 
-        // ASSERT: bootstrap config strategy loadPort2() is called.
-        Sinon.assert.match(spyLoadPort2Config.called, true);
-        // ASSERT: bootstrap config strategy loadPort2() returns expected value
-        Sinon.assert.match(
-            promisedPort2Config.includes('config sys interface\n    edit "port2"'),
-            true
-        );
-        // ASSERT: proxy responds with http code 200 and a string value
-        Sinon.assert.match(
-            spyProxyFormatResponse.calledWith(HttpStatusCode.OK, Sinon.match.string),
-            true
-        );
-    });
+            const promisedConfig = await spyLoadConfig.returnValues[0];
+
+            // ASSERT: bootstrap config strategy loadPort2() is called.
+            Sinon.assert.match(spyLoadPort2Config.called, true);
+            // ASSERT: bootstrap config strategy loadPort2() returns expected value
+            Sinon.assert.match(
+                promisedConfig.includes('config sys interface\n    edit "port2"'),
+                true
+            );
+            // ASSERT: proxy responds with http code 200 and a string value
+            Sinon.assert.match(
+                spyProxyFormatResponse.calledWith(HttpStatusCode.OK, Sinon.match.string),
+                true
+            );
+            stubAdapteeLoadSettings.restore();
+            spyProxyFormatResponse.restore();
+            spyLoadConfig.restore();
+            spyLoadPort2Config.restore();
+        }
+    );
+    it(
+        'When FortiGate vm request the bootstrap config, it should include the port2config portion ' +
+            '(enable-second-nic is set to false)',
+        async () => {
+            mockDataDir = path.resolve(mockDataRootDir, 'bootstrap-settings-switches');
+            event = await awsTestMan.fakeApiGatewayRequest(
+                path.resolve(mockDataDir, 'request/event-fgt-get-config.json')
+            );
+            context = await awsTestMan.fakeApiGatewayContext();
+
+            const {
+                autoscale,
+                env,
+                platformAdaptee,
+                platformAdapter,
+                proxy
+            } = await createAwsApiGatewayEventHandler(event, context);
+
+            ({
+                s3: mockS3,
+                ec2: mockEC2,
+                autoscaling: mockAutoscaling,
+                elbv2: mockElbv2,
+                lambda: mockLambda,
+                docClient: mocDocClient
+            } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
+
+            const { bootstrapConfigStrategy } = autoscale.expose();
+
+            // mocDocClient.callSubOnNthFake('scan')
+            const stubAdapteeLoadSettings = Sinon.stub(platformAdaptee, 'loadSettings');
+
+            stubAdapteeLoadSettings.callsFake(async () => {
+                const callCount = mocDocClient.getStub('scan').callCount;
+                mocDocClient.callSubOnNthFake(
+                    'scan',
+                    callCount + 1,
+                    'enable-second-nic-false',
+                    true
+                );
+                stubAdapteeLoadSettings.restore();
+                return await platformAdaptee.loadSettings();
+            });
+
+            const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
+            const spyLoadConfig = Sinon.spy(bootstrapConfigStrategy, <any>'loadConfig');
+            const spyLoadPort2Config = Sinon.spy(bootstrapConfigStrategy, <any>'loadPort2');
+
+            await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
+
+            const promisedConfig = await spyLoadConfig.returnValues[0];
+
+            // ASSERT: bootstrap config strategy loadPort2() isn't called.
+            Sinon.assert.match(spyLoadPort2Config.called, false);
+            // ASSERT: bootstrap config strategy loadPort2() returns expected value
+            Sinon.assert.match(
+                promisedConfig.includes('config sys interface\n    edit "port2"'),
+                false
+            );
+            // ASSERT: proxy responds with http code 200 and a string value
+            Sinon.assert.match(
+                spyProxyFormatResponse.calledWith(HttpStatusCode.OK, Sinon.match.string),
+                true
+            );
+            stubAdapteeLoadSettings.restore();
+            spyProxyFormatResponse.restore();
+            spyLoadConfig.restore();
+            spyLoadPort2Config.restore();
+        }
+    );
+    it(
+        'When FortiGate vm request the bootstrap config, it should include the vpn portion ' +
+            '(enable-transit-gateway-vpn is set to true)',
+        async () => {
+            mockDataDir = path.resolve(mockDataRootDir, 'bootstrap-settings-switches');
+            event = await awsTestMan.fakeApiGatewayRequest(
+                path.resolve(mockDataDir, 'request/event-fgt-get-config.json')
+            );
+            context = await awsTestMan.fakeApiGatewayContext();
+
+            const {
+                autoscale,
+                env,
+                platformAdaptee,
+                platformAdapter,
+                proxy
+            } = await createAwsTgwApiGatewayEventHandler(event, context);
+
+            ({
+                s3: mockS3,
+                ec2: mockEC2,
+                autoscaling: mockAutoscaling,
+                elbv2: mockElbv2,
+                lambda: mockLambda,
+                docClient: mocDocClient
+            } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
+
+            const { bootstrapConfigStrategy } = autoscale.expose();
+
+            // mocDocClient.callSubOnNthFake('scan')
+            const stubAdapteeLoadSettings = Sinon.stub(platformAdaptee, 'loadSettings');
+
+            stubAdapteeLoadSettings.callsFake(async () => {
+                const callCount = mocDocClient.getStub('scan').callCount;
+                mocDocClient.callSubOnNthFake(
+                    'scan',
+                    callCount + 1,
+                    'enable-transit-gateway-vpn-true',
+                    true
+                );
+                stubAdapteeLoadSettings.restore();
+                return await platformAdaptee.loadSettings();
+            });
+
+            const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
+            const spyLoadConfig = Sinon.spy(bootstrapConfigStrategy, <any>'loadConfig');
+            const spyLoadVpnConfig = Sinon.spy(bootstrapConfigStrategy, <any>'loadVpn');
+
+            await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
+
+            const promisedConfig = await spyLoadConfig.returnValues[0];
+
+            // ASSERT: bootstrap config strategy loadVpn() is called.
+            Sinon.assert.match(spyLoadVpnConfig.called, true);
+            // ASSERT: bootstrap config strategy loadVpn() returns expected value
+            Sinon.assert.match(promisedConfig.includes('config vpn ipsec phase1-interface'), true);
+            // ASSERT: proxy responds with http code 200 and a string value
+            Sinon.assert.match(
+                spyProxyFormatResponse.calledWith(HttpStatusCode.OK, Sinon.match.string),
+                true
+            );
+            stubAdapteeLoadSettings.restore();
+            spyProxyFormatResponse.restore();
+            spyLoadConfig.restore();
+            spyLoadVpnConfig.restore();
+        }
+    );
 });

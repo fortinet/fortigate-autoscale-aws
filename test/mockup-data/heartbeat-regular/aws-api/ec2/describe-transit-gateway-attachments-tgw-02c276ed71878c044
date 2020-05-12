@@ -4,7 +4,7 @@
             "ResourceOwnerId": "123456789012",
             "TransitGatewayAttachmentId": "tgw-attach-0f34dcdb03fd8b1ed",
             "ResourceType": "vpc",
-            "ResourceId": "vpc-0d9bc9b1d0e8270ba",
+            "ResourceId": "vpc-00000000000000001",
             "Tags": [
                 {
                     "Value": "transitgatewayattachmentfgt-6m2r6gmiv91m",
@@ -138,7 +138,7 @@
                     "Key": "ResourceGroup"
                 },
                 {
-                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-autoscale-tgw-attachment-vpn-7.7.7.1",
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-autoscale-tgw-attachment-vpn-10.100.0.1",
                     "Key": "Name"
                 }
             ],
