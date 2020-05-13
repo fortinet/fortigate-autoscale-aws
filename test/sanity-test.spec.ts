@@ -3,18 +3,46 @@ import { describe, it } from 'mocha';
 import * as Sinon from 'sinon';
 import { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { AwsTestMan } from '../scripts/aws-testman';
-import { handlerEx } from '../functions/fgt-as-handler/index';
 import {
     VirtualMachine,
     HealthCheckRecord,
     MasterRecord,
     Settings,
     SettingItem,
-    FortiGateAutoscaleSetting
+    FortiGateAutoscaleSetting,
+    AutoscaleEnvironment,
+    FortiGateAutoscaleAws,
+    AwsPlatformAdapter,
+    AwsPlatform,
+    AwsLambdaProxy
 } from 'autoscale-core';
 import { EC2 } from 'aws-sdk';
 
 const atm = new AwsTestMan();
+
+export const createAwsApiGatewayEventHandler = (
+    event: APIGatewayProxyEvent,
+    context: Context
+): {
+    autoscale: FortiGateAutoscaleAws;
+    env: AutoscaleEnvironment;
+    platform: AwsPlatform;
+    platformAdapter: AwsPlatformAdapter;
+    proxy: AwsLambdaProxy;
+} => {
+    const env = {} as AutoscaleEnvironment;
+    const proxy = new AwsLambdaProxy(event, context);
+    const p = new AwsPlatform();
+    const pa = new AwsPlatformAdapter(p, proxy);
+    const autoscale = new FortiGateAutoscaleAws(pa, env, proxy);
+    return {
+        autoscale: autoscale,
+        env: env,
+        platform: p,
+        platformAdapter: pa,
+        proxy: proxy
+    };
+};
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -188,7 +216,13 @@ describe('sanity test', () => {
         );
     });
     it('FortiGate Autoscale handler', async () => {
-        const [autoscale, env, platform, platformAdapter, proxy] = await handlerEx(event, context);
+        const {
+            autoscale,
+            env,
+            platform,
+            platformAdapter,
+            proxy
+        } = await createAwsApiGatewayEventHandler(event, context);
         const stub1 = Sinon.stub(platformAdapter, 'getTargetVm').callsFake(
             async (): Promise<VirtualMachine> => {
                 const instance = (await atm.readFileAsJson(

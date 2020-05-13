@@ -15,7 +15,7 @@ node('devops-aws') {
     }
     stage('Audit Dependencies') {
         echo 'running npm audit...'
-        sh 'npm audit'
+        sh 'npm audit --production'
     }
     stage('Lint Source Code') {
         echo 'running linter...'
@@ -23,9 +23,9 @@ node('devops-aws') {
     }
     stage('Run Tests') {
         echo 'running test...'
-        echo 'disable testing for now because it requires an unpublished local project'
+        sh 'npm test'
     }
     stage('Verify Build Process') {
-        echo 'skipped verifying build because git project isn\'t available on GitHub yet.'
+        sh 'npm run build'
     }
 }
