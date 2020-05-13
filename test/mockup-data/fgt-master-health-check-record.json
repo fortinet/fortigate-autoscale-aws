@@ -1,0 +1,11 @@
+{
+    "instanceId": "i-00000000000master",
+    "ip": "10.0.0.1",
+    "masterIp": "10.0.0.1",
+    "heartbeatInterval": 30,
+    "heartbeatLossCount": 0,
+    "nextHeartbeatCheckTime": 999999999999999,
+    "syncState": "in-sync",
+    "healthy": true,
+    "inSync": true
+}

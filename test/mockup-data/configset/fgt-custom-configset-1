@@ -1,0 +1,5 @@
+# user custom configset 1 start
+config system global
+    set admin-sport {ADMIN_PORT}
+end
+# user custom configset 1 end

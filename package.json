@@ -5,10 +5,11 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
+        "pre-commit": "npm run lint-check && npm audit && npm test && npm run build && exit 0",
         "tsc": "tsc -d",
         "build": "rm -rf dist/{*,**/*}.d.ts; npm run tsc;",
         "build-artifacts": "npm run build; node dist/scripts/make-dist.js;",
-        "test": "mocha -r ts-node/register tests/*.spec.ts",
+        "test": "mocha -r ts-node/register test/*.spec.ts",
         "lint-check": "node node_modules/ftnt-devops-ci/bin/ftnt-devops-ci.js c -fl  -F .eslintignore -L .eslintignore \"{*,**/*}{.js,.json,.ts}\"",
         "lint-fix": "node node_modules/ftnt-devops-ci/bin/ftnt-devops-ci.js f -fl  -F .eslintignore -L .eslintignore \"**/*{.js,.json,.ts}\""
     },
@@ -29,7 +30,7 @@
         "eslint-plugin-mocha": "^6.3.0",
         "eslint-plugin-prettier": "^3.1.2",
         "ftnt-devops-ci": "github:fortinet/ftnt-devops-ci",
-        "mocha": "^7.1.0",
+        "mocha": "^7.1.1",
         "prettier": "^1.19.1",
         "shelljs": "^0.8.3",
         "sinon": "^9.0.0",
@@ -39,6 +40,7 @@
     "dependencies": {
         "@types/aws-lambda": "^8.10.44",
         "@types/node": "^13.7.5",
+        "autoscale-core": "git+ssh://gerrit.fortinet.com:29418/devops/multi-cloud/autoscale/core#dev_testing_dependency_rev_1",
         "aws-sdk": "^2.628.0",
         "http-status-codes": "^1.4.0"
     },
