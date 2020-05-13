@@ -1,0 +1,35 @@
+
+
+config firewall address
+    edit internal-elb-web
+        set type fqdn
+        set fqdn "{INTERNAL_ELB_DNS}"
+        set associated-interface "{EXTERNAL_INTERFACE}"
+    next
+end
+
+config firewall vip
+    edit internal-web
+        set type fqdn
+        set mapped-addr internal-elb-web
+        set portforward enable
+        set extintf {EXTERNAL_INTERFACE}
+        set extport {TRAFFIC_PORT}
+        set mappedport {TRAFFIC_PORT}
+    next
+end
+
+config firewall policy
+    edit 2
+        set name "internal-web-{HTTP_OR_HTTPS}"
+        set srcintf "{EXTERNAL_INTERFACE}"
+        set dstintf "{INTERNAL_INTERFACE}"
+        set srcaddr "all"
+        set dstaddr "internal-web"
+        set action accept
+        set schedule "always"
+        set service "{HTTP_OR_HTTPS}"
+        set fsso disable
+        set nat enable
+    next
+end

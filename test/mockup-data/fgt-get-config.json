@@ -1,0 +1,63 @@
+{
+    "resource": "/fgt-asg-handler",
+    "path": "/fgt-asg-handler",
+    "httpMethod": "GET",
+    "headers": {
+        "Accept": "*/*",
+        "Fos-instance-id": "i-0b1d4d4e6238813a7",
+        "Host": "xulnw2q6s9.execute-api.ap-south-1.amazonaws.com",
+        "x-amzn-cipher-suite": "ECDHE-RSA-AES128-GCM-SHA256",
+        "x-amzn-vpc-id": "vpc-039c2aa41bf1a2fcb",
+        "x-amzn-vpce-config": "1",
+        "x-amzn-vpce-id": "vpce-029f76ea682aab8be",
+        "X-Forwarded-For": "192.168.0.186"
+    },
+    "multiValueHeaders": {
+        "Accept": ["*/*"],
+        "Fos-instance-id": ["i-0b1d4d4e6238813a7"],
+        "Host": ["xulnw2q6s9.execute-api.ap-south-1.amazonaws.com"],
+        "x-amzn-cipher-suite": ["ECDHE-RSA-AES128-GCM-SHA256"],
+        "x-amzn-vpc-id": ["vpc-039c2aa41bf1a2fcb"],
+        "x-amzn-vpce-config": ["1"],
+        "x-amzn-vpce-id": ["vpce-029f76ea682aab8be"],
+        "X-Forwarded-For": ["192.168.0.186"]
+    },
+    "queryStringParameters": null,
+    "multiValueQueryStringParameters": null,
+    "pathParameters": null,
+    "stageVariables": null,
+    "requestContext": {
+        "resourceId": "y35dtl",
+        "resourcePath": "/fgt-asg-handler",
+        "httpMethod": "GET",
+        "extendedRequestId": "GoMpEFqGBcwFnUQ=",
+        "requestTime": "21/Jan/2020:01:59:34 +0000",
+        "path": "/prod/fgt-asg-handler",
+        "accountId": "123073262904",
+        "protocol": "HTTP/1.1",
+        "stage": "prod",
+        "domainPrefix": "xulnw2q6s9",
+        "requestTimeEpoch": 1579571974704,
+        "requestId": "a6f859d5-86c4-40d8-8752-97c29e6e667b",
+        "identity": {
+            "cognitoIdentityPoolId": null,
+            "cognitoIdentityId": null,
+            "vpceId": "vpce-029f76ea682aab8be",
+            "principalOrgId": null,
+            "cognitoAuthenticationType": null,
+            "userArn": null,
+            "userAgent": null,
+            "accountId": null,
+            "caller": null,
+            "sourceIp": "192.168.0.186",
+            "accessKey": null,
+            "vpcId": "vpc-039c2aa41bf1a2fcb",
+            "cognitoAuthenticationProvider": null,
+            "user": null
+        },
+        "domainName": "xulnw2q6s9.execute-api.ap-south-1.amazonaws.com",
+        "apiId": "xulnw2q6s9"
+    },
+    "body": null,
+    "isBase64Encoded": false
+}

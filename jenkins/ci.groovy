@@ -15,7 +15,7 @@ node('devops-aws') {
     }
     stage('Audit Dependencies') {
         echo 'running npm audit...'
-        sh 'npm audit'
+        sh 'npm audit --production'
     }
     stage('Lint Source Code') {
         echo 'running linter...'
@@ -26,7 +26,6 @@ node('devops-aws') {
         sh 'npm test'
     }
     stage('Verify Build Process') {
-        echo 'verifying build...'
         sh 'npm run build'
     }
 }
