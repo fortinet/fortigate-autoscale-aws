@@ -1,0 +1,13 @@
+{
+    "Item": {
+        "vmId":"i-0000000000byol002",
+        "scalingGroupName":"fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-byol-auto-scaling-group",
+        "heartBeatInterval":"30",
+        "heartBeatLossCount":"0",
+        "ip":"192.168.0.2",
+        "masterIp":"192.168.0.1",
+        "nextHeartBeatTime":"1588224351096",
+        "syncState":"in-sync",
+        "seq": "1"
+    }
+}

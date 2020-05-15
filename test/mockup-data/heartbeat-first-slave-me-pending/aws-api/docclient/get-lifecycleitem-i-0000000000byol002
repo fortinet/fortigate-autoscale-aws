@@ -1,0 +1,11 @@
+{
+    "Item": {
+        "vmId": "i-0000000000byol002",
+        "scalingGroupName": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-byol-auto-scaling-group",
+        "actionResult": "",
+        "actionToken": "11111111-1111-1111-1111-111111111111",
+        "hookName": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-lifecyle-hook-instance-launching",
+        "state": "launching",
+        "timestamp": "1588223232007"
+    }
+}

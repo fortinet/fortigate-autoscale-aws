@@ -1,0 +1,86 @@
+{
+    "AutoScalingGroups": [
+        {
+            "AutoScalingGroupARN": "arn:aws:autoscaling:no-where-1:123456789012:autoScalingGroup:90aae3f3-4574-4680-9760-0361b17fab0f:autoScalingGroupName/fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-payg-auto-scaling-group",
+            "ServiceLinkedRoleARN": "arn:aws:iam::123456789012:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling",
+            "TargetGroupARNs": [],
+            "SuspendedProcesses": [],
+            "LaunchTemplate": {
+                "LaunchTemplateName": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-payg-autoscale-launch-template",
+                "Version": "1",
+                "LaunchTemplateId": "lt-0e05086e8061c0b87"
+            },
+            "Tags": [
+                {
+                    "ResourceType": "auto-scaling-group",
+                    "ResourceId": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-payg-auto-scaling-group",
+                    "PropagateAtLaunch": false,
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-payg-auto-scaling-group",
+                    "Key": "Name"
+                },
+                {
+                    "ResourceType": "auto-scaling-group",
+                    "ResourceId": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-payg-auto-scaling-group",
+                    "PropagateAtLaunch": true,
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0",
+                    "Key": "ResourceGroup"
+                },
+                {
+                    "ResourceType": "auto-scaling-group",
+                    "ResourceId": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-payg-auto-scaling-group",
+                    "PropagateAtLaunch": true,
+                    "Value": "FgtAutoScalingGroupPayg",
+                    "Key": "aws:cloudformation:logical-id"
+                },
+                {
+                    "ResourceType": "auto-scaling-group",
+                    "ResourceId": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-payg-auto-scaling-group",
+                    "PropagateAtLaunch": true,
+                    "Value": "arn:aws:cloudformation:no-where-1:123456789012:stack/FortiGate-Autoscale-CI-1586373371339-StackMainWor-StackCreateFortiGateAutoScalingGroup-TZAI0W6I1BJR/31b41210-79ce-11ea-b787-06e4827d8e82",
+                    "Key": "aws:cloudformation:stack-id"
+                },
+                {
+                    "ResourceType": "auto-scaling-group",
+                    "ResourceId": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-payg-auto-scaling-group",
+                    "PropagateAtLaunch": true,
+                    "Value": "FortiGate-Autoscale-CI-1586373371339-StackMainWor-StackCreateFortiGateAutoScalingGroup-TZAI0W6I1BJR",
+                    "Key": "aws:cloudformation:stack-name"
+                }
+            ],
+            "EnabledMetrics": [],
+            "TerminationPolicies": [
+                "Default"
+            ],
+            "AutoScalingGroupName": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-payg-auto-scaling-group",
+            "DefaultCooldown": 300,
+            "MinSize": 0,
+            "Instances": [
+                {
+                    "ProtectedFromScaleIn": false,
+                    "AvailabilityZone": "no-where-1a",
+                    "LaunchTemplate": {
+                        "LaunchTemplateName": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-payg-autoscale-launch-template",
+                        "Version": "1",
+                        "LaunchTemplateId": "lt-0791658236ec9a6b8"
+                    },
+                    "InstanceId": "i-0b99d2275c9bed168",
+                    "HealthStatus": "Healthy",
+                    "LifecycleState": "InService",
+                    "InstanceType": "c5.large"
+                }
+            ],
+            "MaxSize": 6,
+            "VPCZoneIdentifier": "subnet-00vpc001subnet002,subnet-00vpc001subnet001",
+            "HealthCheckGracePeriod": 300,
+            "LoadBalancerNames": [],
+            "CreatedTime": "2020-04-08T19:22:03.319Z",
+            "AvailabilityZones": [
+                "no-where-1b",
+                "no-where-1a"
+            ],
+            "HealthCheckType": "EC2",
+            "NewInstancesProtectedFromScaleIn": false,
+            "DesiredCapacity": 0
+        }
+    ]
+}

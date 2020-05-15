@@ -1,0 +1,35 @@
+{
+    "NetworkInterfaces": [
+        {
+            "Status": "available",
+            "MacAddress": "0a:9a:60:47:e6:8c",
+            "SourceDestCheck": true,
+            "AvailabilityZone": "no-where-1b",
+            "Description": "mockup network interface",
+            "NetworkInterfaceId": "eni-0fd3e92c4188f7243",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-1-55.no-where-1.compute.internal",
+                    "Primary": true,
+                    "PrivateIpAddress": "192.168.1.55"
+                }
+            ],
+            "RequesterManaged": false,
+            "PrivateDnsName": "ip-192-168-1-55.no-where-1.compute.internal",
+            "VpcId": "vpc-00000000000000001",
+            "InterfaceType": "interface",
+            "RequesterId": "AIDAJLY3B3XPNJQYWZSKC",
+            "Groups": [
+                {
+                    "GroupName": "mockup-security-group-name-001",
+                    "GroupId": "sg-00000000000000001"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "SubnetId": "subnet-00vpc001subnet001",
+            "TagSet": [],
+            "PrivateIpAddress": "192.168.1.55"
+        }
+    ]
+}
