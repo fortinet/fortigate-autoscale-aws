@@ -1,6 +1,6 @@
 node('devops-aws') {
     stage('Clean up') {
-        sh 'rm -rf *'
+        sh 'ls -A1 | xargs rm -rf'
     }
     stage('Checkout Changes') {
         def changeBranch = "change-${GERRIT_CHANGE_NUMBER}-${GERRIT_PATCHSET_NUMBER}"
