@@ -62,6 +62,7 @@ describe('FortiGate first heartbeat sync.', () => {
     let context: Context;
     let event: APIGatewayProxyEvent;
     before(function() {
+        process.env.RESOURCE_TAG_PREFIX = '';
         mockDataRootDir = path.resolve(__dirname, './mockup-data');
         awsTestMan = new AwsTestMan(mockDataRootDir);
     });
@@ -102,7 +103,7 @@ describe('FortiGate first heartbeat sync.', () => {
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
+        await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const candidate = masterElectionResult.candidate;
@@ -153,7 +154,7 @@ describe('FortiGate first heartbeat sync.', () => {
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
+        await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const newMaster = masterElectionResult.newMaster;
@@ -198,7 +199,7 @@ describe('FortiGate first heartbeat sync.', () => {
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
+        await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const candidate = masterElectionResult.candidate;
@@ -249,7 +250,7 @@ describe('FortiGate first heartbeat sync.', () => {
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
+        await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const newMaster = masterElectionResult.newMaster;
@@ -303,7 +304,7 @@ describe('FortiGate first heartbeat sync.', () => {
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
+        await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const candidate = masterElectionResult.candidate;
@@ -354,7 +355,7 @@ describe('FortiGate first heartbeat sync.', () => {
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
+        await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const newMaster = masterElectionResult.newMaster;
 
@@ -422,7 +423,7 @@ describe('FortiGate regular heartbeat sync.', () => {
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
+        await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const newMaster = masterElectionResult.newMaster;
@@ -471,7 +472,7 @@ describe('FortiGate regular heartbeat sync.', () => {
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
+        await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const newMaster = masterElectionResult.newMaster;
@@ -544,7 +545,7 @@ describe('FortiGate irregular heartbeat sync.', () => {
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
+        await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const newMaster = masterElectionResult.newMaster;
@@ -595,7 +596,7 @@ describe('FortiGate irregular heartbeat sync.', () => {
             'deleteVmFromScalingGroup'
         );
 
-        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
+        await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const newMaster = masterElectionResult.newMaster;
@@ -646,7 +647,7 @@ describe('FortiGate irregular heartbeat sync.', () => {
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
+        await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const newMaster = masterElectionResult.newMaster;
@@ -697,7 +698,7 @@ describe('FortiGate irregular heartbeat sync.', () => {
             'deleteVmFromScalingGroup'
         );
 
-        await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
+        await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
         const newMaster = masterElectionResult.newMaster;

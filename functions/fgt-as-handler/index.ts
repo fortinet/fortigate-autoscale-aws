@@ -18,7 +18,7 @@ export const handler = (
         Context,
         APIGatewayProxyResult
     >(platform, env, proxy);
-    return autoscale.handleCloudFunctionRequest(proxy, platform, env);
+    return autoscale.handleAutoscaleRequest(proxy, platform, env);
 };
 
 // to handle cloudwatch scheduled event
@@ -31,6 +31,6 @@ export const scheduledEventhandler = (event: ScheduledEvent, context: Context): 
         env,
         proxy
     );
-    autoscale.handleCloudFunctionRequest(proxy, platform, env);
+    autoscale.handleAutoscaleRequest(proxy, platform, env);
     return Promise.resolve();
 };
