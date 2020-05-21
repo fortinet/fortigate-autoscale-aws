@@ -1,0 +1,15 @@
+{
+    "TransitGatewayAttachments": [
+        {
+            "ResourceOwnerId": "123456789012",
+            "TransitGatewayAttachmentId": "tgw-attach-08543bdd8322b68cb",
+            "ResourceType": "vpn",
+            "ResourceId": "vpn-00000tgw001vpn001",
+            "Tags": [],
+            "CreationTime": "2020-04-08T00:07:41.000Z",
+            "State": "available",
+            "TransitGatewayId": "tgw-00000000000tgw001",
+            "TransitGatewayOwnerId": "123456789012"
+        }
+    ]
+}
