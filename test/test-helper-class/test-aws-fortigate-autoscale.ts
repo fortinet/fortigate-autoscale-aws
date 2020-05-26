@@ -4,7 +4,8 @@ import {
     BootstrapConfigurationStrategy,
     HeartbeatSyncStrategy,
     AwsFortiGateAutoscaleTgw,
-    AwsFortiGateBootstrapTgwStrategy
+    AwsFortiGateBootstrapTgwStrategy,
+    LicensingStrategy
 } from 'autoscale-core';
 
 export class TestAwsFortiGateAutoscale<TReq, TContext, TRes> extends AwsFortiGateAutoscale<
@@ -16,11 +17,13 @@ export class TestAwsFortiGateAutoscale<TReq, TContext, TRes> extends AwsFortiGat
         masterElectionStrategy: MasterElectionStrategy;
         heartbeatSyncStrategy: HeartbeatSyncStrategy;
         bootstrapConfigStrategy: BootstrapConfigurationStrategy;
+        licensingStrategy: LicensingStrategy;
     } {
         return {
             masterElectionStrategy: this.masterElectionStrategy,
             heartbeatSyncStrategy: this.heartbeatSyncStrategy,
-            bootstrapConfigStrategy: this.bootstrapConfigStrategy
+            bootstrapConfigStrategy: this.bootstrapConfigStrategy,
+            licensingStrategy: this.licensingStrategy
         };
     }
 }

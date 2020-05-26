@@ -7,9 +7,9 @@
     "scripts": {
         "pre-commit": "npm-run-all lint-check audit-production test build",
         "audit-production": "npm audit --production",
-        "compile": "tsc -d",
-        "clear-dist": "rm -rf dist/{*,**/*}.d.ts",
-        "build": "npm-run-all clear-dist compile",
+        "compile": "tsc",
+        "clear-dist": "rimraf dist/{*,**/*}.d.ts",
+        "build": "npm run clear-dist && npm run compile",
         "make-dist": "node dist/scripts/make-dist.js",
         "build-artifacts": "npm-run-all build make-dist",
         "test": "mocha --timeout 3600000 -r ts-node/register test/*.spec.ts",
@@ -22,9 +22,10 @@
     "dependencies": {
         "@types/aws-lambda": "^8.10.46",
         "@types/node": "^13.9.2",
-        "autoscale-core": "git+ssh://gerrit.fortinet.com:29418/devops/multi-cloud/autoscale/core#dev_testing_dependency_rev_2",
+        "autoscale-core": "git+ssh://gerrit.fortinet.com:29418/devops/multi-cloud/autoscale/core#dev_testing_dependency_rev_3",
         "aws-sdk": "^2.657.0",
-        "http-status-codes": "^1.4.0"
+        "http-status-codes": "^1.4.0",
+        "rimraf": "^3.0.2"
     },
     "devDependencies": {
         "@types/comment-json": "^1.1.1",
