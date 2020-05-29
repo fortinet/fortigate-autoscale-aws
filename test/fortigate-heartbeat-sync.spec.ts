@@ -1,53 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import * as path from 'path';
-import { describe, it } from 'mocha';
-import Sinon from 'sinon';
-import * as HttpStatusCode from 'http-status-codes';
-import { APIGatewayProxyEvent, Context, APIGatewayProxyResult } from 'aws-lambda';
-import { AwsPlatformAdapter, AutoscaleEnvironment } from 'autoscale-core';
 import {
     AwsTestMan,
-    MockEC2,
-    MockS3,
+    compare,
+    createTestAwsApiGatewayEventHandler,
     MockAutoScaling,
+    MockDocClient,
+    MockEC2,
     MockElbv2,
     MockLambda,
-    MockDocClient
-} from 'autoscale-core/dist/scripts/aws-testman';
-
-import { TestAwsPlatformAdaptee } from './test-helper-class/test-aws-platform-adaptee';
-import { TestAwsApiGatewayEventProxy } from './test-helper-class/test-aws-api-gateway-event-proxy';
-import { TestAwsFortiGateAutoscale } from './test-helper-class/test-aws-fortigate-autoscale';
-import { compare } from 'autoscale-core/dist/helper-function';
-
-export const createTestAwsApiGatewayEventHandler = (
-    event: APIGatewayProxyEvent,
-    context: Context
-): {
-    autoscale: TestAwsFortiGateAutoscale<APIGatewayProxyEvent, Context, APIGatewayProxyResult>;
-    env: AutoscaleEnvironment;
-    platformAdaptee: TestAwsPlatformAdaptee;
-    platformAdapter: AwsPlatformAdapter;
-    proxy: TestAwsApiGatewayEventProxy;
-} => {
-    const env = {} as AutoscaleEnvironment;
-    const proxy = new TestAwsApiGatewayEventProxy(event, context);
-    const p = new TestAwsPlatformAdaptee();
-    const pa = new AwsPlatformAdapter(p, proxy);
-    const autoscale = new TestAwsFortiGateAutoscale<
-        APIGatewayProxyEvent,
-        Context,
-        APIGatewayProxyResult
-    >(pa, env, proxy);
-    return {
-        autoscale: autoscale,
-        env: env,
-        platformAdaptee: p,
-        platformAdapter: pa,
-        proxy: proxy
-    };
-};
+    MockS3
+} from 'autoscale-core';
+import { APIGatewayProxyEvent, Context } from 'aws-lambda';
+import * as HttpStatusCode from 'http-status-codes';
+import { describe, it } from 'mocha';
+import * as path from 'path';
+import Sinon from 'sinon';
 
 describe('FortiGate first heartbeat sync.', () => {
     let mockDataRootDir: string;
@@ -80,7 +48,7 @@ describe('FortiGate first heartbeat sync.', () => {
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
         );
-        context = await awsTestMan.fakeApiGatewayContext();
+        context = await awsTestMan.fakeLambdaContext();
 
         const {
             autoscale,
@@ -131,7 +99,7 @@ describe('FortiGate first heartbeat sync.', () => {
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
         );
-        context = await awsTestMan.fakeApiGatewayContext();
+        context = await awsTestMan.fakeLambdaContext();
 
         const {
             autoscale,
@@ -176,7 +144,7 @@ describe('FortiGate first heartbeat sync.', () => {
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
         );
-        context = await awsTestMan.fakeApiGatewayContext();
+        context = await awsTestMan.fakeLambdaContext();
 
         const {
             autoscale,
@@ -227,7 +195,7 @@ describe('FortiGate first heartbeat sync.', () => {
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
         );
-        context = await awsTestMan.fakeApiGatewayContext();
+        context = await awsTestMan.fakeLambdaContext();
 
         const {
             autoscale,
@@ -281,7 +249,7 @@ describe('FortiGate first heartbeat sync.', () => {
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
         );
-        context = await awsTestMan.fakeApiGatewayContext();
+        context = await awsTestMan.fakeLambdaContext();
 
         const {
             autoscale,
@@ -332,7 +300,7 @@ describe('FortiGate first heartbeat sync.', () => {
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
         );
-        context = await awsTestMan.fakeApiGatewayContext();
+        context = await awsTestMan.fakeLambdaContext();
 
         const {
             autoscale,
@@ -400,7 +368,7 @@ describe('FortiGate regular heartbeat sync.', () => {
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
         );
-        context = await awsTestMan.fakeApiGatewayContext();
+        context = await awsTestMan.fakeLambdaContext();
 
         const {
             autoscale,
@@ -449,7 +417,7 @@ describe('FortiGate regular heartbeat sync.', () => {
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
         );
-        context = await awsTestMan.fakeApiGatewayContext();
+        context = await awsTestMan.fakeLambdaContext();
 
         const {
             autoscale,
@@ -522,7 +490,7 @@ describe('FortiGate irregular heartbeat sync.', () => {
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
         );
-        context = await awsTestMan.fakeApiGatewayContext();
+        context = await awsTestMan.fakeLambdaContext();
 
         const {
             autoscale,
@@ -568,7 +536,7 @@ describe('FortiGate irregular heartbeat sync.', () => {
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
         );
-        context = await awsTestMan.fakeApiGatewayContext();
+        context = await awsTestMan.fakeLambdaContext();
 
         const {
             autoscale,
@@ -624,7 +592,7 @@ describe('FortiGate irregular heartbeat sync.', () => {
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
         );
-        context = await awsTestMan.fakeApiGatewayContext();
+        context = await awsTestMan.fakeLambdaContext();
 
         const {
             autoscale,
@@ -670,7 +638,7 @@ describe('FortiGate irregular heartbeat sync.', () => {
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
         );
-        context = await awsTestMan.fakeApiGatewayContext();
+        context = await awsTestMan.fakeLambdaContext();
 
         const {
             autoscale,

@@ -2,88 +2,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import * as path from 'path';
-import { describe, it } from 'mocha';
-import * as HttpStatusCode from 'http-status-codes';
-import { APIGatewayProxyEvent, Context, APIGatewayProxyResult } from 'aws-lambda';
 import {
-    AwsPlatformAdapter,
     AutoscaleEnvironment,
-    AwsFortiGateBootstrapTgwStrategy
-} from 'autoscale-core';
-import {
+    AwsFortiGateBootstrapTgwStrategy,
+    AwsPlatformAdapter,
     AwsTestMan,
-    MockEC2,
-    MockS3,
+    createAwsApiGatewayEventHandler,
+    createAwsTgwApiGatewayEventHandler,
     MockAutoScaling,
+    MockDocClient,
+    MockEC2,
     MockElbv2,
     MockLambda,
-    MockDocClient
-} from 'autoscale-core/dist/scripts/aws-testman';
-
-import { TestAwsPlatformAdaptee } from './test-helper-class/test-aws-platform-adaptee';
-import { TestAwsApiGatewayEventProxy } from './test-helper-class/test-aws-api-gateway-event-proxy';
-import Sinon from 'sinon';
-import {
-    TestAwsFortiGateAutoscale,
+    MockS3,
+    TestAwsApiGatewayEventProxy,
+    TestAwsPlatformAdaptee,
     TestAwsTgwFortiGateAutoscale
-} from './test-helper-class/test-aws-fortigate-autoscale';
-
-export const createAwsApiGatewayEventHandler = (
-    event: APIGatewayProxyEvent,
-    context: Context
-): {
-    autoscale: TestAwsFortiGateAutoscale<APIGatewayProxyEvent, Context, APIGatewayProxyResult>;
-    env: AutoscaleEnvironment;
-    platformAdaptee: TestAwsPlatformAdaptee;
-    platformAdapter: AwsPlatformAdapter;
-    proxy: TestAwsApiGatewayEventProxy;
-} => {
-    const env = {} as AutoscaleEnvironment;
-    const proxy = new TestAwsApiGatewayEventProxy(event, context);
-    const p = new TestAwsPlatformAdaptee();
-    const pa = new AwsPlatformAdapter(p, proxy);
-    const autoscale = new TestAwsFortiGateAutoscale<
-        APIGatewayProxyEvent,
-        Context,
-        APIGatewayProxyResult
-    >(pa, env, proxy);
-    return {
-        autoscale: autoscale,
-        env: env,
-        platformAdaptee: p,
-        platformAdapter: pa,
-        proxy: proxy
-    };
-};
-
-export const createAwsTgwApiGatewayEventHandler = (
-    event: APIGatewayProxyEvent,
-    context: Context
-): {
-    autoscale: TestAwsTgwFortiGateAutoscale<APIGatewayProxyEvent, Context, APIGatewayProxyResult>;
-    env: AutoscaleEnvironment;
-    platformAdaptee: TestAwsPlatformAdaptee;
-    platformAdapter: AwsPlatformAdapter;
-    proxy: TestAwsApiGatewayEventProxy;
-} => {
-    const env = {} as AutoscaleEnvironment;
-    const proxy = new TestAwsApiGatewayEventProxy(event, context);
-    const p = new TestAwsPlatformAdaptee();
-    const pa = new AwsPlatformAdapter(p, proxy);
-    const autoscale = new TestAwsTgwFortiGateAutoscale<
-        APIGatewayProxyEvent,
-        Context,
-        APIGatewayProxyResult
-    >(pa, env, proxy);
-    return {
-        autoscale: autoscale,
-        env: env,
-        platformAdaptee: p,
-        platformAdapter: pa,
-        proxy: proxy
-    };
-};
+} from 'autoscale-core';
+import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
+import * as HttpStatusCode from 'http-status-codes';
+import { describe, it } from 'mocha';
+import * as path from 'path';
+import Sinon from 'sinon';
 
 describe('FortiGate get bootstrap configuration.', () => {
     let mockDataRootDir: string;
@@ -116,7 +56,7 @@ describe('FortiGate get bootstrap configuration.', () => {
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-get-config.json')
         );
-        context = await awsTestMan.fakeApiGatewayContext();
+        context = await awsTestMan.fakeLambdaContext();
 
         const {
             autoscale,
@@ -145,7 +85,7 @@ describe('FortiGate get bootstrap configuration.', () => {
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-get-config.json')
         );
-        context = await awsTestMan.fakeApiGatewayContext();
+        context = await awsTestMan.fakeLambdaContext();
 
         const {
             autoscale,
@@ -177,7 +117,7 @@ describe('FortiGate get bootstrap configuration.', () => {
             event = await awsTestMan.fakeApiGatewayRequest(
                 path.resolve(mockDataDir, 'request/event-fgt-get-config.json')
             );
-            context = await awsTestMan.fakeApiGatewayContext();
+            context = await awsTestMan.fakeLambdaContext();
 
             const {
                 autoscale,
@@ -250,7 +190,7 @@ describe('FortiGate get bootstrap configuration.', () => {
             event = await awsTestMan.fakeApiGatewayRequest(
                 path.resolve(mockDataDir, 'request/event-fgt-get-config.json')
             );
-            context = await awsTestMan.fakeApiGatewayContext();
+            context = await awsTestMan.fakeLambdaContext();
 
             const {
                 autoscale,
@@ -323,7 +263,7 @@ describe('FortiGate get bootstrap configuration.', () => {
             event = await awsTestMan.fakeApiGatewayRequest(
                 path.resolve(mockDataDir, 'request/event-fgt-get-config.json')
             );
-            context = await awsTestMan.fakeApiGatewayContext();
+            context = await awsTestMan.fakeLambdaContext();
 
             const {
                 autoscale,
@@ -393,7 +333,7 @@ describe('FortiGate get bootstrap configuration.', () => {
             event = await awsTestMan.fakeApiGatewayRequest(
                 path.resolve(mockDataDir, 'request/event-fgt-get-config.json')
             );
-            context = await awsTestMan.fakeApiGatewayContext();
+            context = await awsTestMan.fakeLambdaContext();
 
             const {
                 autoscale,
@@ -470,7 +410,7 @@ describe('FortiGate get bootstrap configuration.', () => {
                 event = await awsTestMan.fakeApiGatewayRequest(
                     path.resolve(mockDataDir, 'request/event-fgt-get-config.json')
                 );
-                context = await awsTestMan.fakeApiGatewayContext();
+                context = await awsTestMan.fakeLambdaContext();
 
                 ({
                     autoscale,
