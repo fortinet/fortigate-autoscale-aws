@@ -64,7 +64,7 @@
                 },
                 {
                     "name": "templates",
-                    "copyFrom": "tempates",
+                    "copyFrom": "templates",
                     "saveTo": "./"
                 },
                 {
