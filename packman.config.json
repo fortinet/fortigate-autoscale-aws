@@ -47,6 +47,30 @@
                 }
             ],
             "syncVersion": true
+        },
+        {
+            "name": "simple-handler",
+            "source": {
+                "filename": "index.ts",
+                "location": "functions/simple-handler"
+            },
+            "output": {
+                "filename": "simple-handler",
+                "location": "functions"
+            },
+            "copyList": [
+                {
+                    "name": "license",
+                    "location": "./LICENSE",
+                    "fromSourceDir": true
+                },
+                {
+                    "name": "package.json",
+                    "location": "./package.json",
+                    "fromSourceDir": true
+                }
+            ],
+            "syncVersion": true
         }
     ],
     "bundle": {

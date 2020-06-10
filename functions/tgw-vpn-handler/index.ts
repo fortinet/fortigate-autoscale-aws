@@ -8,7 +8,7 @@ import { AwsScheduledEventProxy } from 'autoscale-core/dist/fortigate-autoscale/
 import { Context, ScheduledEvent } from 'aws-lambda';
 
 // to handle cloudwatch scheduled event
-export const tgwVpnHandler = (event: ScheduledEvent, context: Context): Promise<void> => {
+exports.tgwVpnHandler = (event: ScheduledEvent, context: Context): Promise<void> => {
     const env = {} as AutoscaleEnvironment;
     const proxy = new AwsScheduledEventProxy(event, context);
     const platform = new AwsPlatformAdapter(new AwsPlatformAdaptee(), proxy);

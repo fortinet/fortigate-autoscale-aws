@@ -18,7 +18,7 @@ import {
 } from 'aws-lambda';
 
 // API Gateway event handler for http requests coming from FortiGate callback
-export const autoscaleHandler = (
+exports.autoscaleHandler = (
     event: APIGatewayProxyEvent,
     context: Context
 ): Promise<APIGatewayProxyResult> => {
@@ -34,7 +34,7 @@ export const autoscaleHandler = (
 };
 
 // to handle cloudwatch scheduled event
-export const scheduledEventHandler = (event: ScheduledEvent, context: Context): Promise<void> => {
+exports.scheduledEventHandler = (event: ScheduledEvent, context: Context): Promise<void> => {
     const env = {} as AutoscaleEnvironment;
     const proxy = new AwsScheduledEventProxy(event, context);
     const platform = new AwsPlatformAdapter(new AwsPlatformAdaptee(), proxy);
@@ -49,7 +49,7 @@ export const scheduledEventHandler = (event: ScheduledEvent, context: Context): 
 
 // Transit Gateway Integration
 // API Gateway event handler for http requests coming from FortiGate callback
-export const autoscaleTgwHandler = (
+exports.autoscaleTgwHandler = (
     event: APIGatewayProxyEvent,
     context: Context
 ): Promise<APIGatewayProxyResult> => {
@@ -64,10 +64,7 @@ export const autoscaleTgwHandler = (
     return autoscale.handleAutoscaleRequest(proxy, platform, env);
 };
 
-export const scheduledEventTgwHandler = (
-    event: ScheduledEvent,
-    context: Context
-): Promise<void> => {
+exports.scheduledEventTgwHandler = (event: ScheduledEvent, context: Context): Promise<void> => {
     const env = {} as AutoscaleEnvironment;
     const proxy = new AwsScheduledEventProxy(event, context);
     const platform = new AwsPlatformAdapter(new AwsPlatformAdaptee(), proxy);
@@ -83,7 +80,7 @@ export const scheduledEventTgwHandler = (
 // to handle license assignment event
 // NOTE: both TGW integrated class and non-TGW integrated class share the same license assignment
 // logics. It's okay to use the non-TGW class for both.
-export const licenseHandler = (
+exports.licenseHandler = (
     event: APIGatewayProxyEvent,
     context: Context
 ): Promise<APIGatewayProxyResult> => {
@@ -101,7 +98,7 @@ export const licenseHandler = (
 // CloudFormation Custom Resource service provider
 // NOTE: both TGW integrated class and non-TGW integrated class share the same license assignment
 // logics. It's okay to use the non-TGW class for both.
-export const cfnServiceEventHandler = (
+exports.cfnServiceEventHandler = (
     event: CloudFormationCustomResourceEvent,
     context: Context
 ): Promise<void> => {
