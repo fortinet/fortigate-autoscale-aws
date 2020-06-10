@@ -646,20 +646,7 @@
                 "Role": {
                     "Fn::GetAtt": ["FgtAsgHandlerIamRole", "Arn"]
                 },
-                "Handler": {
-                    "Fn::Sub": [
-                        "index.${HandlerEntry}",
-                        {
-                            "HandlerEntry": {
-                                "Fn::If": [
-                                    "IfRequireTransitGatewayIntegration",
-                                    "scheduledEventTgwHandler",
-                                    "scheduledEventHandler"
-                                ]
-                            }
-                        }
-                    ]
-                },
+                "Handler": "index.cfnServiceEventHandler",
                 "Timeout": {
                     "Ref": "ServiceScriptTimeout"
                 },

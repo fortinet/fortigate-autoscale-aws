@@ -1,15 +1,22 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResult, Context, ScheduledEvent } from 'aws-lambda';
 import {
-    AwsPlatformAdapter,
+    AwsApiGatewayEventProxy,
+    AwsCloudFormationCustomResourceEventProxy,
     AwsFortiGateAutoscale,
+    AwsFortiGateAutoscaleServiceProvider,
+    AwsFortiGateAutoscaleTgw,
     AwsPlatformAdaptee,
-    AwsFortiGateAutoscaleTgw
+    AwsPlatformAdapter,
+    AwsScheduledEventProxy
 } from 'autoscale-core';
 import { AutoscaleEnvironment } from 'autoscale-core/dist/autoscale-environment';
 import {
-    AwsApiGatewayEventProxy,
-    AwsScheduledEventProxy
-} from 'autoscale-core/dist/fortigate-autoscale/aws/aws-cloud-function-proxy';
+    APIGatewayProxyEvent,
+    APIGatewayProxyResult,
+    CloudFormationCustomResourceEvent,
+    Context,
+    ScheduledEvent
+} from 'aws-lambda';
+
 // API Gateway event handler for http requests coming from FortiGate callback
 export const autoscaleHandler = (
     event: APIGatewayProxyEvent,
@@ -38,24 +45,6 @@ export const scheduledEventHandler = (event: ScheduledEvent, context: Context): 
     );
     autoscale.handleAutoscaleRequest(proxy, platform, env);
     return Promise.resolve();
-};
-
-// to handle license assignment event
-// NOTE: both TGW integrated class and non-TGW integrated class share the same license assignment
-// logics. It's okay to use the non-TGW class for both.
-export const licenseHandler = (
-    event: APIGatewayProxyEvent,
-    context: Context
-): Promise<APIGatewayProxyResult> => {
-    const env = {} as AutoscaleEnvironment;
-    const proxy = new AwsApiGatewayEventProxy(event, context);
-    const platform = new AwsPlatformAdapter(new AwsPlatformAdaptee(), proxy);
-    const autoscale = new AwsFortiGateAutoscale<
-        APIGatewayProxyEvent,
-        Context,
-        APIGatewayProxyResult
-    >(platform, env, proxy);
-    return autoscale.handleLicenseRequest(proxy, platform, env);
 };
 
 // Transit Gateway Integration
@@ -89,4 +78,43 @@ export const scheduledEventTgwHandler = (
     );
     autoscale.handleAutoscaleRequest(proxy, platform, env);
     return Promise.resolve();
+};
+
+// to handle license assignment event
+// NOTE: both TGW integrated class and non-TGW integrated class share the same license assignment
+// logics. It's okay to use the non-TGW class for both.
+export const licenseHandler = (
+    event: APIGatewayProxyEvent,
+    context: Context
+): Promise<APIGatewayProxyResult> => {
+    const env = {} as AutoscaleEnvironment;
+    const proxy = new AwsApiGatewayEventProxy(event, context);
+    const platform = new AwsPlatformAdapter(new AwsPlatformAdaptee(), proxy);
+    const autoscale = new AwsFortiGateAutoscale<
+        APIGatewayProxyEvent,
+        Context,
+        APIGatewayProxyResult
+    >(platform, env, proxy);
+    return autoscale.handleLicenseRequest(proxy, platform, env);
+};
+
+// CloudFormation Custom Resource service provider
+// NOTE: both TGW integrated class and non-TGW integrated class share the same license assignment
+// logics. It's okay to use the non-TGW class for both.
+export const cfnServiceEventHandler = (
+    event: CloudFormationCustomResourceEvent,
+    context: Context
+): Promise<void> => {
+    const env = {} as AutoscaleEnvironment;
+    const proxy = new AwsCloudFormationCustomResourceEventProxy(event, context);
+    const platform = new AwsPlatformAdapter(new AwsPlatformAdaptee(), proxy);
+    const autoscale = new AwsFortiGateAutoscale<CloudFormationCustomResourceEvent, Context, void>(
+        platform,
+        env,
+        proxy
+    );
+    const serviceProvider: AwsFortiGateAutoscaleServiceProvider = new AwsFortiGateAutoscaleServiceProvider(
+        autoscale
+    );
+    return serviceProvider.handleServiceRequest();
 };
