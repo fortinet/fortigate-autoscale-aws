@@ -1227,6 +1227,283 @@
                 },
                 "TimeoutInMinutes": "10"
             }
+        },
+        "SaveSettings": {
+            "Type": "AWS::CloudFormation::CustomResource",
+            "Properties": {
+                "ServiceToken": {
+                    "Fn::GetAtt": [
+                        "StackCreateAutoScaleHandler",
+                        "Outputs.FgtAsgHandlerServiceArn"
+                    ]
+                },
+                "ServiceType": "saveSettings",
+                "DeploymentSettingsSaved": "true",
+                "ResourceTagPrefix": {
+                    "Ref": "ResourceTagPrefix"
+                },
+                "CustomIdentifier": {
+                    "Ref": "CustomIdentifier"
+                },
+                "UniqueId": {
+                    "Ref": "UniqueId"
+                },
+                "AssetStorageName": {
+                    "Ref": "S3BucketName"
+                },
+                "AssetStorageKeyPrefix": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "S3KeyPrefix"
+                            },
+                            "assets"
+                        ]
+                    ]
+                },
+                "FortiGateAutoscaleVpcId": {
+                    "Ref": "VpcId"
+                },
+                "FortiGateAutoscaleSubnet1": {
+                    "Ref": "PublicSubnet1"
+                },
+                "FortiGateAutoscaleSubnet2": {
+                    "Ref": "PublicSubnet2"
+                },
+                "FortiGateAutoscaleProtectedSubnet1": {
+                    "Ref": "PrivateSubnet1"
+                },
+                "FortiGateAutoscaleProtectedSubnet2": {
+                    "Ref": "PrivateSubnet2"
+                },
+                "FortiGatePskSecret": {
+                    "Ref": "FortiGatePskSecret"
+                },
+                "FortiGateAdminPort": {
+                    "Ref": "FortiGateAdminPort"
+                },
+                "FortiGateSyncInterface": "port1",
+                "LifecycleHookTimeout": {
+                    "Ref": "LifecycleHookTimeout"
+                },
+                "MasterElectionTimeout": {
+                    "Ref": "MasterElectionTimeout"
+                },
+                "MasterElectionNoWait": "true",
+                "HeartBeatInterval": {
+                    "Ref": "HeartBeatInterval"
+                },
+                "HeartBeatLossCount": {
+                    "Ref": "HeartBeatLossCount"
+                },
+                "HeartBeatDelayAllowance": {
+                    "Ref": "HeartBeatDelayAllowance"
+                },
+                "AutoscaleHandlerUrl": {
+                    "Fn::GetAtt": [
+                        "StackCreateAutoScaleHandler",
+                        "Outputs.AutoscaleHandlerUrl"
+                    ]
+                },
+                "MasterScalingGroupName": {
+                    "Fn::If": [
+                        "IfPAYGOnly",
+                        {
+                            "Fn::GetAtt": [
+                                "StackCreateFortiGateAutoScalingGroup",
+                                "Outputs.AutoScalingGroupNamePayg"
+                            ]
+                        },
+                        {
+                            "Fn::GetAtt": [
+                                "StackCreateFortiGateAutoScalingGroup",
+                                "Outputs.AutoScalingGroupNameByol"
+                            ]
+                        }
+                    ]
+                },
+                "PAYGScalingGroupName": {
+                    "Fn::GetAtt": [
+                        "StackCreateFortiGateAutoScalingGroup",
+                        "Outputs.AutoScalingGroupNamePayg"
+                    ]
+                },
+                "BYOLScalingGroupName": {
+                    "Fn::GetAtt": [
+                        "StackCreateFortiGateAutoScalingGroup",
+                        "Outputs.AutoScalingGroupNameByol"
+                    ]
+                },
+                "ByolScalingGroupDesiredCapacity": {
+                    "Ref": "FgtAsgDesiredCapacityByol"
+                },
+                "ByolScalingGroupMinSize": {
+                    "Ref": "FgtAsgMinSizeByol"
+                },
+                "ByolScalingGroupMaxSize": {
+                    "Ref": "FgtAsgMaxSizeByol"
+                },
+                "ScalingGroupDesiredCapacity": {
+                    "Ref": "FgtAsgDesiredCapacityPayg"
+                },
+                "ScalingGroupMinSize": {
+                    "Ref": "FgtAsgMinSizePayg"
+                },
+                "ScalingGroupMaxSize": {
+                    "Ref": "FgtAsgMaxSizePayg"
+                },
+                "RequiredConfigset": {
+                    "Fn::GetAtt": [
+                        "StackCreateAutoScaleHandler",
+                        "Outputs.RequiredConfigsetList"
+                    ]
+                },
+                "RequiredDbTable": {
+                    "Fn::GetAtt": [
+                        "StackCreateDynamoDBTable",
+                        "Outputs.TableNameList"
+                    ]
+                },
+                "BgpAsn": {
+                    "Ref": "BgpAsn"
+                },
+                "TransitGatewayId": {
+                    "Fn::If": [
+                        "IfRequireTransitGatewayIntegration",
+                        {
+                            "Fn::GetAtt": [
+                                "StackCreateTransitGatewayComponents",
+                                "Outputs.TransitGatewayId"
+                            ]
+                        },
+                        ""
+                    ]
+                },
+                "TransitGatewayRouteTableInbound": {
+                    "Fn::If": [
+                        "IfRequireTransitGatewayIntegration",
+                        {
+                            "Fn::GetAtt": [
+                                "StackCreateTransitGatewayComponents",
+                                "Outputs.TransitGatewayRouteTableInbound"
+                            ]
+                        },
+                        ""
+                    ]
+                },
+                "TransitGatewayRouteTableOutbound": {
+                    "Fn::If": [
+                        "IfRequireTransitGatewayIntegration",
+                        {
+                            "Fn::GetAtt": [
+                                "StackCreateTransitGatewayComponents",
+                                "Outputs.TransitGatewayRouteTableOutbound"
+                            ]
+                        },
+                        ""
+                    ]
+                },
+                "EnableTransitGatewayVpn": {
+                    "Fn::If": [
+                        "IfRequireTransitGatewayIntegration",
+                        "true",
+                        "false"
+                    ]
+                },
+                "EnableSecondNic": {
+                    "Fn::If": [
+                        "IfRequireSecondNic",
+                        "true",
+                        "false"
+                    ]
+                },
+                "EnableFortiGateElb": {
+                    "Fn::If": [
+                        "IfRequireNetworkLoadBalancerIntegration",
+                        "true",
+                        "false"
+                    ]
+                },
+                "EnableInternalElb": {
+                    "Fn::If": [
+                        "IfNewInternalLoadBalancer",
+                        "true",
+                        "false"
+                    ]
+                },
+                "EnableHybridLicensing": "true",
+                "FortiGateAutoscaleElbDns": {
+                    "Fn::If": [
+                        "IfRequireNetworkLoadBalancerIntegration",
+                        {
+                            "Fn::GetAtt": [
+                                "StackCreateLoadBalancingComponents",
+                                "Outputs.FgtLoadBalancerDnsName"
+                            ]
+                        },
+                        ""
+                    ]
+                },
+                "FortiGateAutoscaleTargetGroupArn": {
+                    "Fn::If": [
+                        "IfRequireNetworkLoadBalancerIntegration",
+                        {
+                            "Fn::GetAtt": [
+                                "StackCreateLoadBalancingComponents",
+                                "Outputs.FgtTargetGroupArn"
+                            ]
+                        },
+                        ""
+                    ]
+                },
+                "FortigateProtectedInternalElbDns": {
+                    "Fn::If": [
+                        "IfNewInternalLoadBalancer",
+                        {
+                            "Fn::GetAtt": [
+                                "StackCreateLoadBalancingComponents",
+                                "Outputs.InternalLoadBalancerDnsName"
+                            ]
+                        },
+                        {
+                            "Ref": "InternalLoadBalancerDnsName"
+                        }
+                    ]
+                },
+                "EnableDynamicNatGateway": {
+                    "Fn::If": [
+                        "IfRequireTransitGatewayIntegration",
+                        "false",
+                        "true"
+                    ]
+                },
+                "DynamicNatGatewayRouteTables": {
+                    "Fn::Join": [
+                        ",",
+                        [
+                            {
+                                "Ref": "PrivateSubnetRouteTable"
+                            }
+                        ]
+                    ]
+                },
+                "EnableVmInfoCache": "false",
+                "VmInfoCacheTime": 3600,
+                "FortiGateLicenseStorageKeyPrefix": "fgt-asg-license",
+                "FortiGateTrafficPort": {
+                    "Fn::If": [
+                        "IfRequireNetworkLoadBalancerIntegration",
+                        {
+                            "Ref": "LoadBalancingTrafficPort"
+                        },
+                        ""
+                    ]
+                },
+                "GetLicenseGracePeriod": {
+                    "Ref": "GetLicenseGracePeriod"
+                }
+            }
         }
     },
     "Metadata": {
