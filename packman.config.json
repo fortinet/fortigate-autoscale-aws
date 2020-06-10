@@ -25,13 +25,13 @@
             "syncVersion": true
         },
         {
-            "name": "vpn-attachment",
+            "name": "tgw-vpn-handler",
             "source": {
                 "filename": "index.ts",
-                "location": "functions/vpn-attachment"
+                "location": "functions/tgw-vpn-handler"
             },
             "output": {
-                "filename": "vpn-attachment",
+                "filename": "tgw-vpn-handler",
                 "location": "functions"
             },
             "copyList": [
@@ -42,7 +42,7 @@
                 },
                 {
                     "name": "package.json",
-                    "location": "./package.json.template",
+                    "location": "./package.json",
                     "fromSourceDir": true
                 }
             ],
@@ -77,6 +77,10 @@
                 {
                     "name": "fgt-as-handler",
                     "ref": "fgt-as-handler"
+                },
+                {
+                    "name": "tgw-vpn-handler",
+                    "ref": "tgw-vpn-handler"
                 }
             ],
             "saveFunctionSource": false,
