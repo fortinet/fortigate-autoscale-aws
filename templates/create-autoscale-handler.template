@@ -63,10 +63,7 @@
         "TransitGatewayIntegration": {
             "Type": "String",
             "Default": "no",
-            "AllowedValues": [
-                "yes",
-                "no"
-            ],
+            "AllowedValues": ["yes", "no"],
             "ConstraintDescription": "must choose from the provided options.",
             "Description": "Will deploy with Transit Gateway Integration."
         }
@@ -120,7 +117,7 @@
                     "S3KeyPrefix": {
                         "Ref": "S3KeyPrefix"
                     },
-                    "ObjectPaths": "functions/packages/fgt-asg-handler.zip"
+                    "ObjectPaths": "functions/packages/fgt-as-handler.zip"
                 },
                 "TemplateURL": {
                     "Fn::Sub": [
@@ -184,7 +181,7 @@
                 "RestApiId": {
                     "Ref": "FgtAsgApiGateway"
                 },
-                "PathPart": "fgt-asg-handler",
+                "PathPart": "fgt-as-handler",
                 "ParentId": {
                     "Fn::GetAtt": ["FgtAsgApiGateway", "RootResourceId"]
                 }
@@ -576,7 +573,7 @@
                     "Fn::GetAtt": ["FgtAsgHandlerIamRole", "Arn"]
                 },
                 "Handler": {
-                    "Fn::Sub":[
+                    "Fn::Sub": [
                         "index.${HandlerEntry}",
                         {
                             "HandlerEntry": {
@@ -598,7 +595,7 @@
                     },
                     "S3Key": {
                         "Fn::Sub": [
-                            "${KeyPrefix}functions/packages/fgt-asg-handler.zip",
+                            "${KeyPrefix}functions/packages/fgt-as-handler.zip",
                             {
                                 "KeyPrefix": {
                                     "Fn::GetAtt": ["StackCopyLambdaSource", "Outputs.KeyPrefix"]
@@ -649,7 +646,20 @@
                 "Role": {
                     "Fn::GetAtt": ["FgtAsgHandlerIamRole", "Arn"]
                 },
-                "Handler": "cfn-service.handler",
+                "Handler": {
+                    "Fn::Sub": [
+                        "index.${HandlerEntry}",
+                        {
+                            "HandlerEntry": {
+                                "Fn::If": [
+                                    "IfRequireTransitGatewayIntegration",
+                                    "scheduledEventTgwHandler",
+                                    "scheduledEventHandler"
+                                ]
+                            }
+                        }
+                    ]
+                },
                 "Timeout": {
                     "Ref": "ServiceScriptTimeout"
                 },
@@ -659,7 +669,7 @@
                     },
                     "S3Key": {
                         "Fn::Sub": [
-                            "${KeyPrefix}functions/packages/fgt-asg-handler.zip",
+                            "${KeyPrefix}functions/packages/fgt-as-handler.zip",
                             {
                                 "KeyPrefix": {
                                     "Fn::GetAtt": ["StackCopyLambdaSource", "Outputs.KeyPrefix"]
@@ -737,7 +747,7 @@
                 "Role": {
                     "Fn::GetAtt": ["FgtAsgHandlerIamRole", "Arn"]
                 },
-                "Handler": "index.LicenseHandler",
+                "Handler": "index.licenseHandler",
                 "Timeout": {
                     "Ref": "HandlerScriptTimeout"
                 },
@@ -747,7 +757,7 @@
                     },
                     "S3Key": {
                         "Fn::Sub": [
-                            "${KeyPrefix}functions/packages/fgt-asg-handler.zip",
+                            "${KeyPrefix}functions/packages/fgt-as-handler.zip",
                             {
                                 "KeyPrefix": {
                                     "Fn::GetAtt": ["StackCopyLambdaSource", "Outputs.KeyPrefix"]
@@ -814,7 +824,7 @@
             "Description": "API Gateway URL of the FortiGate Autoscale Handler URL",
             "Value": {
                 "Fn::Sub": [
-                    "https://${gatewayId}.execute-api.${region}.amazonaws.com/prod/fgt-asg-handler",
+                    "https://${gatewayId}.execute-api.${region}.amazonaws.com/prod/fgt-as-handler",
                     {
                         "region": {
                             "Ref": "AWS::Region"

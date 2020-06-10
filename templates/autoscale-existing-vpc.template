@@ -76,9 +76,7 @@
         "FortiOSVersion": {
             "Type": "String",
             "Default": "6.2.3",
-            "AllowedValues": [
-                "6.2.3"
-            ],
+            "AllowedValues": ["6.2.3"],
             "ConstraintDescription": "must be a valid FortiOS version from the selection.",
             "Description": "FortiOS version."
         },
@@ -221,11 +219,7 @@
         "LoadBalancingTrafficProtocol": {
             "Type": "String",
             "Default": "HTTPS",
-            "AllowedValues": [
-                "HTTP",
-                "HTTPS",
-                "TCP"
-            ],
+            "AllowedValues": ["HTTP", "HTTPS", "TCP"],
             "ConstraintDescription": "value must be chosen from the provided options.",
             "Description": "Use this protocol to load balance traffic."
         },
@@ -538,11 +532,7 @@
                         "https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/autoscale-main.template",
                         {
                             "S3Region": {
-                                "Fn::If": [
-                                    "GovCloudCondition",
-                                    "s3-us-gov-west-1",
-                                    "s3"
-                                ]
+                                "Fn::If": ["GovCloudCondition", "s3-us-gov-west-1", "s3"]
                             }
                         }
                     ]
@@ -558,10 +548,7 @@
                     "Label": {
                         "default": "Resource tagging configuration"
                     },
-                    "Parameters": [
-                        "ResourceTagPrefix",
-                        "CustomIdentifier"
-                    ]
+                    "Parameters": ["ResourceTagPrefix", "CustomIdentifier"]
                 },
                 {
                     "Label": {
@@ -637,10 +624,7 @@
                     "Label": {
                         "default": "Deployment resources configuration"
                     },
-                    "Parameters": [
-                        "S3BucketName",
-                        "S3KeyPrefix"
-                    ]
+                    "Parameters": ["S3BucketName", "S3KeyPrefix"]
                 }
             ],
             "ParameterLabels": {
@@ -870,10 +854,7 @@
         "FgtLicensingModel": {
             "Description": "The FortiGate licensing model in the Auto Scaling group(s) for the initial deployment of this stack. (Options: PAYG-Only, BYOL-Only, Hybrid)",
             "Value": {
-                "Fn::GetAtt": [
-                    "StackMainWorkload",
-                    "Outputs.FgtLicensingModel"
-                ]
+                "Fn::GetAtt": ["StackMainWorkload", "Outputs.FgtLicensingModel"]
             }
         }
     }

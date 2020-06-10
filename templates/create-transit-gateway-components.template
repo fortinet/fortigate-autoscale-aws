@@ -26,10 +26,7 @@
         },
         "CreateNewTransitGateway": {
             "Type": "String",
-            "AllowedValues": [
-                "yes",
-                "no"
-            ],
+            "AllowedValues": ["yes", "no"],
             "Description": "Whether create a new Transit Gateway or use an existing one as provided to deploy the related components."
         },
         "TransitGatewayId": {
@@ -349,10 +346,7 @@
                         },
                         {
                             "Effect": "Allow",
-                            "Action": [
-                                "lambda:InvokeFunction",
-                                "lambda:InvokeAsync"
-                            ],
+                            "Action": ["lambda:InvokeFunction", "lambda:InvokeAsync"],
                             "Resource": {
                                 "Fn::Sub": [
                                     "arn:aws:lambda:${AWS_REGION}:${AWS_ACCOUNT_ID}:function:${CUSTOM_ID}-${UNIQUE_ID}*",

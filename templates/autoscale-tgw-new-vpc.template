@@ -71,9 +71,7 @@
         "FortiOSVersion": {
             "Type": "String",
             "Default": "6.2.3",
-            "AllowedValues": [
-                "6.2.3"
-            ],
+            "AllowedValues": ["6.2.3"],
             "ConstraintDescription": "must be a valid FortiOS version from the selection.",
             "Description": "FortiOS version."
         },
@@ -223,10 +221,7 @@
         "TransitGatewaySupportOptions": {
             "Type": "String",
             "Default": "create one",
-            "AllowedValues": [
-                "create one",
-                "use an existing one"
-            ],
+            "AllowedValues": ["create one", "use an existing one"],
             "ConstraintDescription": "must choose from the provided options.",
             "Description": "Create a Transit Gateway for the FortiGate Autoscale VPC to attach to, or specify to use an existing one."
         },
@@ -366,11 +361,7 @@
                         "https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-new-vpc.template",
                         {
                             "S3Region": {
-                                "Fn::If": [
-                                    "GovCloudCondition",
-                                    "s3-us-gov-west-1",
-                                    "s3"
-                                ]
+                                "Fn::If": ["GovCloudCondition", "s3-us-gov-west-1", "s3"]
                             },
                             "S3BucketName": {
                                 "Ref": "S3BucketName"
@@ -482,46 +473,25 @@
                         ]
                     },
                     "VpcCidr": {
-                        "Fn::GetAtt": [
-                            "StackCreateNewVPC",
-                            "Outputs.VpcCidr"
-                        ]
+                        "Fn::GetAtt": ["StackCreateNewVPC", "Outputs.VpcCidr"]
                     },
                     "VpcId": {
-                        "Fn::GetAtt": [
-                            "StackCreateNewVPC",
-                            "Outputs.VpcId"
-                        ]
+                        "Fn::GetAtt": ["StackCreateNewVPC", "Outputs.VpcId"]
                     },
                     "PublicSubnet1": {
-                        "Fn::GetAtt": [
-                            "StackCreateNewVPC",
-                            "Outputs.PublicSubnet1Id"
-                        ]
+                        "Fn::GetAtt": ["StackCreateNewVPC", "Outputs.PublicSubnet1Id"]
                     },
                     "PublicSubnet2": {
-                        "Fn::GetAtt": [
-                            "StackCreateNewVPC",
-                            "Outputs.PublicSubnet2Id"
-                        ]
+                        "Fn::GetAtt": ["StackCreateNewVPC", "Outputs.PublicSubnet2Id"]
                     },
                     "PrivateSubnet1": {
-                        "Fn::GetAtt": [
-                            "StackCreateNewVPC",
-                            "Outputs.PrivateSubnet1Id"
-                        ]
+                        "Fn::GetAtt": ["StackCreateNewVPC", "Outputs.PrivateSubnet1Id"]
                     },
                     "PrivateSubnet2": {
-                        "Fn::GetAtt": [
-                            "StackCreateNewVPC",
-                            "Outputs.PrivateSubnet2Id"
-                        ]
+                        "Fn::GetAtt": ["StackCreateNewVPC", "Outputs.PrivateSubnet2Id"]
                     },
                     "PrivateSubnetRouteTable": {
-                        "Fn::GetAtt": [
-                            "StackCreateNewVPC",
-                            "Outputs.PrivateSubnetRouteTableId"
-                        ]
+                        "Fn::GetAtt": ["StackCreateNewVPC", "Outputs.PrivateSubnetRouteTableId"]
                     },
                     "FortiGateInstanceType": {
                         "Ref": "FortiGateInstanceType"
@@ -644,11 +614,7 @@
                         "https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/autoscale-main.template",
                         {
                             "S3Region": {
-                                "Fn::If": [
-                                    "GovCloudCondition",
-                                    "s3-us-gov-west-1",
-                                    "s3"
-                                ]
+                                "Fn::If": ["GovCloudCondition", "s3-us-gov-west-1", "s3"]
                             }
                         }
                     ]
@@ -664,10 +630,7 @@
                     "Label": {
                         "default": "Resource tagging configuration"
                     },
-                    "Parameters": [
-                        "ResourceTagPrefix",
-                        "CustomIdentifier"
-                    ]
+                    "Parameters": ["ResourceTagPrefix", "CustomIdentifier"]
                 },
                 {
                     "Label": {
@@ -728,19 +691,13 @@
                     "Label": {
                         "default": "Transit Gateway configuration"
                     },
-                    "Parameters": [
-                        "TransitGatewaySupportOptions",
-                        "TransitGatewayId"
-                    ]
+                    "Parameters": ["TransitGatewaySupportOptions", "TransitGatewayId"]
                 },
                 {
                     "Label": {
                         "default": "Deployment resources configuration"
                     },
-                    "Parameters": [
-                        "S3BucketName",
-                        "S3KeyPrefix"
-                    ]
+                    "Parameters": ["S3BucketName", "S3KeyPrefix"]
                 }
             ],
             "ParameterLabels": {
@@ -952,10 +909,7 @@
         "FgtLicensingModel": {
             "Description": "The FortiGate licensing model in the Auto Scaling group(s) for the initial deployment of this stack. (Options: PAYG-Only, BYOL-Only, Hybrid)",
             "Value": {
-                "Fn::GetAtt": [
-                    "StackMainWorkload",
-                    "Outputs.FgtLicensingModel"
-                ]
+                "Fn::GetAtt": ["StackMainWorkload", "Outputs.FgtLicensingModel"]
             }
         }
     }

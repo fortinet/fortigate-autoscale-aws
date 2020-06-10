@@ -80,8 +80,8 @@
                 }
             ],
             "saveFunctionSource": false,
-            "functionPackageDir": "./functions/package",
-            "functionSourceDir": "./functions/source"
+            "functionPackageDir": "./functions/packages",
+            "functionSourceDir": "./functions/sources"
         }
     ],
     "output": {

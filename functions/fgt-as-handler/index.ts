@@ -40,6 +40,24 @@ export const scheduledEventHandler = (event: ScheduledEvent, context: Context): 
     return Promise.resolve();
 };
 
+// to handle license assignment event
+// NOTE: both TGW integrated class and non-TGW integrated class share the same license assignment
+// logics. It's okay to use the non-TGW class for both.
+export const licenseHandler = (
+    event: APIGatewayProxyEvent,
+    context: Context
+): Promise<APIGatewayProxyResult> => {
+    const env = {} as AutoscaleEnvironment;
+    const proxy = new AwsApiGatewayEventProxy(event, context);
+    const platform = new AwsPlatformAdapter(new AwsPlatformAdaptee(), proxy);
+    const autoscale = new AwsFortiGateAutoscale<
+        APIGatewayProxyEvent,
+        Context,
+        APIGatewayProxyResult
+    >(platform, env, proxy);
+    return autoscale.handleLicenseRequest(proxy, platform, env);
+};
+
 // Transit Gateway Integration
 // API Gateway event handler for http requests coming from FortiGate callback
 export const autoscaleTgwHandler = (
