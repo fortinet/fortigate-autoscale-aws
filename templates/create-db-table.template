@@ -103,18 +103,18 @@
         }
     },
     "Resources": {
-        "FortiGateAutoscale": {
+        "Autoscale": {
             "Type": "AWS::DynamoDB::Table",
             "Properties": {
                 "AttributeDefinitions": [
                     {
-                        "AttributeName": "instanceId",
+                        "AttributeName": "vmId",
                         "AttributeType": "S"
                     }
                 ],
                 "KeySchema": [
                     {
-                        "AttributeName": "instanceId",
+                        "AttributeName": "vmId",
                         "KeyType": "HASH"
                     }
                 ],
@@ -129,7 +129,7 @@
                             {
                                 "Ref": "ResourceTagPrefix"
                             },
-                            "FortiGateAutoscale"
+                            "Autoscale"
                         ]
                     ]
                 },
@@ -143,12 +143,16 @@
                 ]
             }
         },
-        "FortiGateMasterElection": {
+        "MasterElection": {
             "Type": "AWS::DynamoDB::Table",
             "Properties": {
                 "AttributeDefinitions": [
                     {
                         "AttributeName": "scalingGroupName",
+                        "AttributeType": "S"
+                    },
+                    {
+                        "AttributeName": "vmId",
                         "AttributeType": "S"
                     }
                 ],
@@ -156,6 +160,10 @@
                     {
                         "AttributeName": "scalingGroupName",
                         "KeyType": "HASH"
+                    },
+                    {
+                        "AttributeName": "vmId",
+                        "KeyType": "RANGE"
                     }
                 ],
                 "ProvisionedThroughput": {
@@ -169,7 +177,7 @@
                             {
                                 "Ref": "ResourceTagPrefix"
                             },
-                            "FortiGateMasterElection"
+                            "MasterElection"
                         ]
                     ]
                 },
@@ -188,22 +196,14 @@
             "Properties": {
                 "AttributeDefinitions": [
                     {
-                        "AttributeName": "instanceId",
-                        "AttributeType": "S"
-                    },
-                    {
-                        "AttributeName": "actionName",
+                        "AttributeName": "vmId",
                         "AttributeType": "S"
                     }
                 ],
                 "KeySchema": [
                     {
-                        "AttributeName": "instanceId",
+                        "AttributeName": "vmId",
                         "KeyType": "HASH"
-                    },
-                    {
-                        "AttributeName": "actionName",
-                        "KeyType": "RANGE"
                     }
                 ],
                 "ProvisionedThroughput": {
@@ -217,7 +217,7 @@
                             {
                                 "Ref": "ResourceTagPrefix"
                             },
-                            "FortiGateLifecycleItem"
+                            "LifecycleItem"
                         ]
                     ]
                 },
@@ -367,13 +367,13 @@
             "Properties": {
                 "AttributeDefinitions": [
                     {
-                        "AttributeName": "instanceId",
+                        "AttributeName": "vmId",
                         "AttributeType": "S"
                     }
                 ],
                 "KeySchema": [
                     {
-                        "AttributeName": "instanceId",
+                        "AttributeName": "vmId",
                         "KeyType": "HASH"
                     }
                 ],
@@ -449,13 +449,13 @@
             "Properties": {
                 "AttributeDefinitions": [
                     {
-                        "AttributeName": "id",
+                        "AttributeName": "checksum",
                         "AttributeType": "S"
                     }
                 ],
                 "KeySchema": [
                     {
-                        "AttributeName": "id",
+                        "AttributeName": "checksum",
                         "KeyType": "HASH"
                     }
                 ],
@@ -490,21 +490,21 @@
             "Properties": {
                 "AttributeDefinitions": [
                     {
-                        "AttributeName": "instanceId",
+                        "AttributeName": "vmId",
                         "AttributeType": "S"
                     },
                     {
-                        "AttributeName": "publicIp",
+                        "AttributeName": "ip",
                         "AttributeType": "S"
                     }
                 ],
                 "KeySchema": [
                     {
-                        "AttributeName": "instanceId",
+                        "AttributeName": "vmId",
                         "KeyType": "HASH"
                     },
                     {
-                        "AttributeName": "publicIp",
+                        "AttributeName": "ip",
                         "KeyType": "RANGE"
                     }
                 ],
@@ -539,13 +539,13 @@
             "Properties": {
                 "AttributeDefinitions": [
                     {
-                        "AttributeName": "instanceId",
+                        "AttributeName": "vmId",
                         "AttributeType": "S"
                     }
                 ],
                 "KeySchema": [
                     {
-                        "AttributeName": "instanceId",
+                        "AttributeName": "vmId",
                         "KeyType": "HASH"
                     }
                 ],
@@ -576,14 +576,14 @@
         }
     },
     "Outputs": {
-        "FortiGateAutoscaleTableArn": {
+        "AutoscaleTableArn": {
             "Value": {
-                "Fn::GetAtt": ["FortiGateAutoscale", "Arn"]
+                "Fn::GetAtt": ["Autoscale", "Arn"]
             }
         },
-        "FortiGateMasterElectionTableArn": {
+        "MasterElectionTableArn": {
             "Value": {
-                "Fn::GetAtt": ["FortiGateMasterElection", "Arn"]
+                "Fn::GetAtt": ["MasterElection", "Arn"]
             }
         },
         "LifecycleItemTableArn": {
@@ -642,13 +642,13 @@
             "Description": "The comma-delimited list of arn of DynamoDB tables created in this stack.",
             "Value": {
                 "Fn::Sub": [
-                    "${FortiGateAutoscale},${FortiGateMasterElection}${LifecycleItem},${Settings}${CustomLog}${VmInfoCache}${NicAttachment}${LicenseStock}${LicenseUsage}${VpnAttachment}${FortiAnalyzer}",
+                    "${Autoscale},${MasterElection}${LifecycleItem},${Settings}${CustomLog}${VmInfoCache}${NicAttachment}${LicenseStock}${LicenseUsage}${VpnAttachment}${FortiAnalyzer}",
                     {
-                        "FortiGateAutoscale": {
-                            "Fn::GetAtt": ["FortiGateAutoscale", "Arn"]
+                        "Autoscale": {
+                            "Fn::GetAtt": ["Autoscale", "Arn"]
                         },
-                        "FortiGateMasterElection": {
-                            "Fn::GetAtt": ["FortiGateMasterElection", "Arn"]
+                        "MasterElection": {
+                            "Fn::GetAtt": ["MasterElection", "Arn"]
                         },
                         "LifecycleItem": {
                             "Fn::GetAtt": ["LifecycleItem", "Arn"]
@@ -776,13 +776,13 @@
             "Description": "The comma-delimited list of name of created tables in this stack.",
             "Value": {
                 "Fn::Sub": [
-                    "${FortiGateAutoscale},${FortiGateMasterElection},${LifecycleItem},${Settings},${CustomLog},${VmInfoCache},${NicAttachment},${LicenseStock},${LicenseUsage},${VpnAttachment},${FortiAnalyzer}",
+                    "${Autoscale},${MasterElection},${LifecycleItem},${Settings},${CustomLog},${VmInfoCache},${NicAttachment},${LicenseStock},${LicenseUsage},${VpnAttachment},${FortiAnalyzer}",
                     {
-                        "FortiGateAutoscale": {
-                            "Ref": "FortiGateAutoscale"
+                        "Autoscale": {
+                            "Ref": "Autoscale"
                         },
-                        "FortiGateMasterElection": {
-                            "Ref": "FortiGateMasterElection"
+                        "MasterElection": {
+                            "Ref": "MasterElection"
                         },
                         "LifecycleItem": {
                             "Ref": "LifecycleItem"

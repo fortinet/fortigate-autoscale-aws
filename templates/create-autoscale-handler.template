@@ -624,6 +624,80 @@
             },
             "DependsOn": ["StackCopyLambdaSource"]
         },
+        "FgtAsgLambdaFunctionAutoScalingEventHandler": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Description": "FortiGate Autoscale Auto Scaling event handler.",
+                "FunctionName": {
+                    "Fn::Join": [
+                        "-",
+                        [
+                            {
+                                "Ref": "CustomIdentifier"
+                            },
+                            {
+                                "Ref": "UniqueId"
+                            },
+                            "fortigate-autoscale-auto-scaling-event"
+                        ]
+                    ]
+                },
+                "Runtime": "nodejs12.x",
+                "Role": {
+                    "Fn::GetAtt": ["FgtAsgHandlerIamRole", "Arn"]
+                },
+                "Handler": {
+                    "Fn::Sub": [
+                        "index.${HandlerEntry}",
+                        {
+                            "HandlerEntry": {
+                                "Fn::If": [
+                                    "IfRequireTransitGatewayIntegration",
+                                    "scheduledEventTgwHandler",
+                                    "scheduledEventHandler"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "Timeout": {
+                    "Ref": "HandlerScriptTimeout"
+                },
+                "Code": {
+                    "S3Bucket": {
+                        "Fn::GetAtt": ["StackCopyLambdaSource", "Outputs.DestinationBucket"]
+                    },
+                    "S3Key": {
+                        "Fn::Sub": [
+                            "${KeyPrefix}functions/packages/fgt-as-handler.zip",
+                            {
+                                "KeyPrefix": {
+                                    "Fn::GetAtt": ["StackCopyLambdaSource", "Outputs.KeyPrefix"]
+                                }
+                            }
+                        ]
+                    }
+                },
+                "Environment": {
+                    "Variables": {
+                        "RESOURCE_TAG_PREFIX": {
+                            "Ref": "ResourceTagPrefix"
+                        },
+                        "CUSTOM_ID": "",
+                        "UNIQUE_ID": ""
+                    }
+                },
+                "Tags": [
+                    {
+                        "Key": "ResourceGroup",
+                        "Value": {
+                            "Ref": "ResourceTagPrefix"
+                        }
+                    }
+                ]
+            },
+            "DependsOn": ["StackCopyLambdaSource"]
+        },
         "FgtAsgLambdaFunctionCfnService": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
@@ -833,6 +907,18 @@
             "Description": "FortiGate Autoscale handler function ARN",
             "Value": {
                 "Fn::GetAtt": ["FgtAsgLambdaFunctionAsgHandler", "Arn"]
+            }
+        },
+        "FgtAsgAutoscalingEventHandlerName": {
+            "Description": "FortiGate Autoscale handler service function Name",
+            "Value": {
+                "Ref": "FgtAsgLambdaFunctionAutoScalingEventHandler"
+            }
+        },
+        "FgtAsgAutoscalingEventHandlerArn": {
+            "Description": "FortiGate Autoscale handler service function ARN",
+            "Value": {
+                "Fn::GetAtt": ["FgtAsgLambdaFunctionAutoScalingEventHandler", "Arn"]
             }
         },
         "FgtAsgHandlerServicName": {
