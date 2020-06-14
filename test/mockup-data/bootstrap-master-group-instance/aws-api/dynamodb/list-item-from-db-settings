@@ -159,7 +159,7 @@
                 "S": "60ackIt060-69e58ed0-service-elb-a9001ad667854e20.elb.no-where-1.amazonaws.com"
             },
             "settingKey": {
-                "S": "fortigate-protected-internal-elb-dns"
+                "S": "fortigate-internal-elb-dns"
             },
             "editable": {
                 "S": "true"
@@ -550,7 +550,7 @@
                 "S": "60ackIt060-69e58ed0-frontend-elb-07e7cc19a3e11ff5.elb.no-where-1.amazonaws.com"
             },
             "settingKey": {
-                "S": "fortigate-autoscale-elb-dns"
+                "S": "fortigate-external-elb-dns"
             },
             "editable": {
                 "S": "false"
