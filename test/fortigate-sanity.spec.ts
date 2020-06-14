@@ -5,6 +5,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import {
     AwsFortiGateAutoscaleSetting,
+    AwsFortiGateAutoscaleSettingItemDictionary,
     AwsTestMan,
     createAwsApiGatewayEventHandler,
     MockAutoScaling,
@@ -74,12 +75,14 @@ describe('FortiGate sanity test.', () => {
 
         const settingsToSave: { [key: string]: string } = {};
         Object.values({ ...AwsFortiGateAutoscaleSetting }).forEach(value => {
-            const settingKey = value.toLowerCase().replace(new RegExp('-', 'g'), '');
-            settingsToSave[settingKey] = value;
+            settingsToSave[value] = value;
             return settingsToSave;
         });
 
-        const result = await autoscale.saveSettings(settingsToSave);
+        const result = await autoscale.saveSettings(
+            settingsToSave,
+            AwsFortiGateAutoscaleSettingItemDictionary
+        );
         // ASSERT: saveSettings() completes sucessfully without any error.
         Sinon.assert.match(result, true);
         // ASSERT: saveSettings() completes sucessfully without any error.
