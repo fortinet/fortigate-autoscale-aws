@@ -113,7 +113,7 @@
         }
     ],
     "output": {
-        "outDir": "build/bundle",
-        "packageDir": "build/package"
+        "outDir": "build/bundled",
+        "packageDir": "dist/artifacts"
     }
 }
