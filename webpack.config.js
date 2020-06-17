@@ -26,7 +26,7 @@ module.exports = {
     output: {
         filename: `${config.bundle.filenamePrefix}[name]${config.bundle.filenameSuffix}.js`,
         path: path.resolve(__dirname, config.output.outDir),
-        libraryTarget: 'umd'
+        libraryTarget: 'commonjs'
     },
     target: 'node'
 };

@@ -18,10 +18,10 @@ import {
 } from 'aws-lambda';
 
 // API Gateway event handler for http requests coming from FortiGate callback
-export const AutoscaleHandler = async (
+export async function autoscaleHandler(
     event: APIGatewayProxyEvent,
     context: Context
-): Promise<APIGatewayProxyResult> => {
+): Promise<APIGatewayProxyResult> {
     console.log(event);
     const env = {} as AutoscaleEnvironment;
     const proxy = new AwsApiGatewayEventProxy(event, context);
@@ -32,13 +32,13 @@ export const AutoscaleHandler = async (
         APIGatewayProxyResult
     >(platform, env, proxy);
     return await autoscale.handleAutoscaleRequest(proxy, platform, env);
-};
+}
 
 // to handle cloudwatch scheduled event
-export const ScheduledEventHandler = async (
+export async function scheduledEventHandler(
     event: ScheduledEvent,
     context: Context
-): Promise<void> => {
+): Promise<void> {
     console.log(event);
     const env = {} as AutoscaleEnvironment;
     const proxy = new AwsScheduledEventProxy(event, context);
@@ -50,14 +50,14 @@ export const ScheduledEventHandler = async (
     );
     await autoscale.handleAutoscaleRequest(proxy, platform, env);
     return Promise.resolve();
-};
+}
 
 // Transit Gateway Integration
 // API Gateway event handler for http requests coming from FortiGate callback
-export const AutoscaleTgwHandler = async (
+export async function autoscaleTgwHandler(
     event: APIGatewayProxyEvent,
     context: Context
-): Promise<APIGatewayProxyResult> => {
+): Promise<APIGatewayProxyResult> {
     console.log(event);
     const env = {} as AutoscaleEnvironment;
     const proxy = new AwsApiGatewayEventProxy(event, context);
@@ -68,12 +68,12 @@ export const AutoscaleTgwHandler = async (
         APIGatewayProxyResult
     >(platform, env, proxy);
     return await autoscale.handleAutoscaleRequest(proxy, platform, env);
-};
+}
 
-export const ScheduledEventTgwHandler = async (
+export async function scheduledEventTgwHandler(
     event: ScheduledEvent,
     context: Context
-): Promise<void> => {
+): Promise<void> {
     console.log(event);
     const env = {} as AutoscaleEnvironment;
     const proxy = new AwsScheduledEventProxy(event, context);
@@ -85,15 +85,15 @@ export const ScheduledEventTgwHandler = async (
     );
     await autoscale.handleAutoscaleRequest(proxy, platform, env);
     return Promise.resolve();
-};
+}
 
 // to handle license assignment event
 // NOTE: both TGW integrated class and non-TGW integrated class share the same license assignment
 // logics. It's okay to use the non-TGW class for both.
-export const LicenseHandler = async (
+export async function licenseHandler(
     event: APIGatewayProxyEvent,
     context: Context
-): Promise<APIGatewayProxyResult> => {
+): Promise<APIGatewayProxyResult> {
     console.log(event);
     const env = {} as AutoscaleEnvironment;
     const proxy = new AwsApiGatewayEventProxy(event, context);
@@ -104,15 +104,15 @@ export const LicenseHandler = async (
         APIGatewayProxyResult
     >(platform, env, proxy);
     return await autoscale.handleLicenseRequest(proxy, platform, env);
-};
+}
 
 // CloudFormation Custom Resource service provider
 // NOTE: both TGW integrated class and non-TGW integrated class share the same license assignment
 // logics. It's okay to use the non-TGW class for both.
-export const CfnServiceEventHandler = async (
+export async function cfnServiceEventHandler(
     event: CloudFormationCustomResourceEvent,
     context: Context
-): Promise<void> => {
+): Promise<void> {
     console.log(event);
     const env = {} as AutoscaleEnvironment;
     const proxy = new AwsCloudFormationCustomResourceEventProxy(event, context);
@@ -126,4 +126,4 @@ export const CfnServiceEventHandler = async (
         autoscale
     );
     return await serviceProvider.handleServiceRequest();
-};
+}

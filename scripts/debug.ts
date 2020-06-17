@@ -4,7 +4,7 @@
 import path from 'path';
 import { Command } from 'commander';
 import { AwsTestMan } from 'autoscale-core';
-import { AutoscaleHandler, ScheduledEventHandler } from '../functions/fgt-as-handler/func';
+import { autoscaleHandler, scheduledEventHandler } from '../functions/fgt-as-handler/func';
 
 const REAL_PROJECT_ROOT = path.resolve(__dirname, '../../');
 const atm = new AwsTestMan(REAL_PROJECT_ROOT);
@@ -19,9 +19,9 @@ const start = async (args: any): Promise<void> => {
     const context = await atm.fakeLambdaContext();
 
     if (args.type === 'api') {
-        await AutoscaleHandler(await atm.fakeApiGatewayRequest(args.event), context);
+        await autoscaleHandler(await atm.fakeApiGatewayRequest(args.event), context);
     } else if (args.type === 'event') {
-        await ScheduledEventHandler(await atm.fakeScheduledEventRequest(args.event), context);
+        await scheduledEventHandler(await atm.fakeScheduledEventRequest(args.event), context);
     }
 };
 
