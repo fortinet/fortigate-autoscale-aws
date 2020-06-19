@@ -1,6 +1,6 @@
 {
     "name": "fortigate-autoscale-aws",
-    "version": "3.1.0-alpha.7",
+    "version": "3.1.0-alpha.8",
     "description": "Fortinet FortiGate Autoscale for AWS.",
     "main": "dist/transpiled/index.js",
     "types": "dist/types/index.d.ts",
@@ -27,7 +27,7 @@
     "dependencies": {
         "@types/aws-lambda": "^8.10.46",
         "@types/node": "^13.9.2",
-        "autoscale-core": "git+ssh://gerrit.fortinet.com:29418/devops/multi-cloud/autoscale/core#dev_testing_dependency_rev_8",
+        "autoscale-core": "git+ssh://gerrit.fortinet.com:29418/devops/multi-cloud/autoscale/core#dev_testing_dependency_rev_9",
         "aws-sdk": "^2.657.0",
         "http-status-codes": "^1.4.0",
         "rimraf": "^3.0.2"
