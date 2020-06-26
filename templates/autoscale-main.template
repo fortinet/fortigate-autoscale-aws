@@ -1300,6 +1300,9 @@
                 },
                 "custom-asset-container": "n/a",
                 "custom-asset-directory": "n/a",
+                "enable-external-elb": {
+                    "Fn::If": ["IfRequireNetworkLoadBalancerIntegration", "true", "false"]
+                },
                 "egress-traffic-route-table": {
                     "Fn::Join": [
                         ",",
@@ -1435,6 +1438,15 @@
                         "IfRequireNetworkLoadBalancerIntegration",
                         {
                             "Ref": "LoadBalancingTrafficPort"
+                        },
+                        "n/a"
+                    ]
+                },
+                "fortigate-traffic-protocol": {
+                    "Fn::If": [
+                        "IfRequireNetworkLoadBalancerIntegration",
+                        {
+                            "Ref": "LoadBalancingTrafficProtocol"
                         },
                         "n/a"
                     ]

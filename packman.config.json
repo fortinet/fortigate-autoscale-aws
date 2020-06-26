@@ -82,9 +82,16 @@
             "name": "aws-cloudformation",
             "staticFile": [
                 {
-                    "name": "assets",
-                    "copyFrom": "assets",
-                    "saveTo": "./"
+                    "name": "core-configset",
+                    "copyFrom": "node_modules/autoscale-core/fortigate-autoscale/assets/configset",
+                    "saveTo": "./assets/configset",
+                    "includeSubDir": false
+                },
+                {
+                    "name": "aws-configset",
+                    "copyFrom": "node_modules/autoscale-core/fortigate-autoscale/assets/configset/aws",
+                    "saveTo": "./assets/configset",
+                    "includeSubDir": false
                 },
                 {
                     "name": "templates",

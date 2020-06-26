@@ -57,7 +57,7 @@
                     "S3KeyPrefix": {
                         "Ref": "S3KeyPrefix"
                     },
-                    "ObjectPaths": "functions/packages/tgw-vpn-handler.zip"
+                    "ObjectPaths": "functions/packages/fgt-as-handler.zip"
                 },
                 "TemplateURL": {
                     "Fn::Sub": [
@@ -100,7 +100,7 @@
                 "Role": {
                     "Fn::GetAtt": ["IamRoleTransitGatewayVpnHandler", "Arn"]
                 },
-                "Handler": "index.tgwVpnHandler",
+                "Handler": "index.lambdaPeerInvocationHandler",
                 "Timeout": 600,
                 "Code": {
                     "S3Bucket": {
@@ -108,7 +108,7 @@
                     },
                     "S3Key": {
                         "Fn::Sub": [
-                            "${KeyPrefix}functions/packages/tgw-vpn-handler.zip",
+                            "${KeyPrefix}functions/packages/fgt-as-handler.zip",
                             {
                                 "KeyPrefix": {
                                     "Fn::GetAtt": ["StackCopyLambdaSource", "Outputs.KeyPrefix"]
