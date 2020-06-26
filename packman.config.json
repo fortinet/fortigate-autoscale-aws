@@ -23,54 +23,6 @@
                 }
             ],
             "syncVersion": true
-        },
-        {
-            "name": "tgw-vpn-handler",
-            "source": {
-                "filename": "index.ts",
-                "location": "functions/tgw-vpn-handler"
-            },
-            "output": {
-                "filename": "tgw-vpn-handler",
-                "location": "functions"
-            },
-            "copyList": [
-                {
-                    "name": "license",
-                    "location": "./LICENSE",
-                    "fromSourceDir": true
-                },
-                {
-                    "name": "package.json",
-                    "location": "./package.json",
-                    "fromSourceDir": true
-                }
-            ],
-            "syncVersion": true
-        },
-        {
-            "name": "simple-handler",
-            "source": {
-                "filename": "index.ts",
-                "location": "functions/simple-handler"
-            },
-            "output": {
-                "filename": "simple-handler",
-                "location": "functions"
-            },
-            "copyList": [
-                {
-                    "name": "license",
-                    "location": "./LICENSE",
-                    "fromSourceDir": true
-                },
-                {
-                    "name": "package.json",
-                    "location": "./package.json",
-                    "fromSourceDir": true
-                }
-            ],
-            "syncVersion": true
         }
     ],
     "bundle": {
