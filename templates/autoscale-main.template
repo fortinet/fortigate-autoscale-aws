@@ -1575,7 +1575,7 @@
                 },
                 "ServiceType": "stopAutoscale"
             },
-            "DependsOn": ["SaveSettings"]
+            "DependsOn": ["SaveSettings", "StackCreateDynamoDBTable"]
         }
     },
     "Metadata": {
