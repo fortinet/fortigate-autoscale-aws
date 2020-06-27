@@ -277,6 +277,23 @@
             "Type": "String",
             "Default": "",
             "Description": "Optional. Specify the DNS Name of an existing internal load balancer used to route traffic from a FortiGate to targets in a specified target group. Leave it blank if you don't use an existing load balancer."
+        },
+        "UseCustomAssetLocation": {
+            "Type": "String",
+            "Default": "no",
+            "AllowedValues": ["yes", "no"],
+            "ConstraintDescription": "must choose from the provided options.",
+            "Description": "Will use a custom S3 location for custom assets."
+        },
+        "CustomAssetContainer": {
+            "Type": "String",
+            "Default": "",
+            "Description": "The name of the S3 bucket which contains your custom assets. Required if 'use custom asset location' is set to 'yes'."
+        },
+        "CustomAssetDirectory": {
+            "Type": "String",
+            "Default": "",
+            "Description": "The sub path within the 'custom asset container' which serves as the top level directory of all your custom assets. If 'use custom asset location' is set to 'yes', and this value is left empty, the 'custom asset container' will serve as the top level directory."
         }
     },
     "Conditions": {
@@ -644,6 +661,15 @@
                     },
                     "InternalLoadBalancerDnsName": {
                         "Ref": "InternalLoadBalancerDnsName"
+                    },
+                    "UseCustomAssetLocation": {
+                        "Ref": "UseCustomAssetLocation"
+                    },
+                    "CustomAssetContainer": {
+                        "Ref": "CustomAssetContainer"
+                    },
+                    "CustomAssetDirectory": {
+                        "Ref": "CustomAssetDirectory"
                     }
                 },
                 "TemplateURL": {
@@ -736,6 +762,16 @@
                         "InternalLoadBalancingOptions",
                         "InternalTargetGroupHealthCheckPath",
                         "InternalLoadBalancerDnsName"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Custom asset location configuration"
+                    },
+                    "Parameters": [
+                        "UseCustomAssetLocation",
+                        "CustomAssetContainer",
+                        "CustomAssetDirectory"
                     ]
                 },
                 {
@@ -859,6 +895,15 @@
                 },
                 "InternalLoadBalancerDnsName": {
                     "default": "Internal ELB DNS name"
+                },
+                "UseCustomAssetLocation": {
+                    "default": "Use custom asset location"
+                },
+                "CustomAssetContainer": {
+                    "default": "Custom asset S3 bucket"
+                },
+                "CustomAssetDirectory": {
+                    "default": "Custom asset folder"
                 }
             }
         }

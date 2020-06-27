@@ -236,6 +236,23 @@
             "Default": 65000,
             "MaxValue": 65534,
             "Description": "The Border Gateway Protocol (BGP) Autonomous System Number of the Customer Gateway of each FortiGate instance in the Auto Scaling Group. This value ranges from 64512 to 65534."
+        },
+        "UseCustomAssetLocation": {
+            "Type": "String",
+            "Default": "no",
+            "AllowedValues": ["yes", "no"],
+            "ConstraintDescription": "must choose from the provided options.",
+            "Description": "Will use a custom S3 location for custom assets."
+        },
+        "CustomAssetContainer": {
+            "Type": "String",
+            "Default": "",
+            "Description": "The name of the S3 bucket which contains your custom assets. Required if 'use custom asset location' is set to 'yes'."
+        },
+        "CustomAssetDirectory": {
+            "Type": "String",
+            "Default": "",
+            "Description": "The sub path within the 'custom asset container' which serves as the top level directory of all your custom assets. If 'use custom asset location' is set to 'yes', and this value is left empty, the 'custom asset container' will serve as the top level directory."
         }
     },
     "Conditions": {
@@ -607,6 +624,15 @@
                     },
                     "InternalLoadBalancerDnsName": {
                         "Ref": "AWS::NoValue"
+                    },
+                    "UseCustomAssetLocation": {
+                        "Ref": "UseCustomAssetLocation"
+                    },
+                    "CustomAssetContainer": {
+                        "Ref": "CustomAssetContainer"
+                    },
+                    "CustomAssetDirectory": {
+                        "Ref": "CustomAssetDirectory"
                     }
                 },
                 "TemplateURL": {
@@ -692,6 +718,16 @@
                         "default": "Transit Gateway configuration"
                     },
                     "Parameters": ["TransitGatewaySupportOptions", "TransitGatewayId"]
+                },
+                {
+                    "Label": {
+                        "default": "Custom asset location configuration"
+                    },
+                    "Parameters": [
+                        "UseCustomAssetLocation",
+                        "CustomAssetContainer",
+                        "CustomAssetDirectory"
+                    ]
                 },
                 {
                     "Label": {
@@ -799,6 +835,15 @@
                 },
                 "BgpAsn": {
                     "default": "BGP ASN"
+                },
+                "UseCustomAssetLocation": {
+                    "default": "Use custom asset location"
+                },
+                "CustomAssetContainer": {
+                    "default": "Custom asset S3 bucket"
+                },
+                "CustomAssetDirectory": {
+                    "default": "Custom asset folder"
                 }
             }
         }

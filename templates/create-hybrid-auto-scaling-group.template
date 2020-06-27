@@ -211,14 +211,6 @@
                 }
             ]
         },
-        "InstanceProfileIsNotDefined": {
-            "Fn::Equals": [
-                {
-                    "Ref": "InstanceProfileArn"
-                },
-                ""
-            ]
-        },
         "IfBYOLOnly": {
             "Fn::Equals": [
                 {
@@ -261,67 +253,6 @@
         }
     },
     "Resources": {
-        "FgtInstanceIamRole": {
-            "Type": "AWS::IAM::Role",
-            "Condition": "InstanceProfileIsNotDefined",
-            "Properties": {
-                "ManagedPolicyArns": [
-                    "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess",
-                    "arn:aws:iam::aws:policy/AWSLambdaExecute"
-                ],
-                "AssumeRolePolicyDocument": {
-                    "Version": "2012-10-17",
-                    "Statement": [
-                        {
-                            "Effect": "Allow",
-                            "Principal": {
-                                "Service": "ec2.amazonaws.com"
-                            },
-                            "Action": "sts:AssumeRole"
-                        }
-                    ]
-                },
-                "Path": "/",
-                "Policies": [
-                    {
-                        "PolicyDocument": {
-                            "Version": "2012-10-17",
-                            "Statement": [
-                                {
-                                    "Action": ["s3:GetObject"],
-                                    "Resource": {
-                                        "Fn::Sub": [
-                                            "arn:aws:s3:::${S3BucketName}/${S3KeyPrefix}*",
-                                            {
-                                                "S3BucketName": {
-                                                    "Ref": "S3BucketName"
-                                                },
-                                                "S3KeyPrefix": {
-                                                    "Ref": "S3KeyPrefix"
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    "Effect": "Allow"
-                                }
-                            ]
-                        },
-                        "PolicyName": "fortigate-autoscale-instance-policy"
-                    }
-                ]
-            }
-        },
-        "FgtInstanceProfile": {
-            "Type": "AWS::IAM::InstanceProfile",
-            "Condition": "InstanceProfileIsNotDefined",
-            "Properties": {
-                "Roles": [
-                    {
-                        "Ref": "FgtInstanceIamRole"
-                    }
-                ]
-            }
-        },
         "AsgLaunchTemplatePayg": {
             "Type": "AWS::EC2::LaunchTemplate",
             "Properties": {
@@ -359,15 +290,7 @@
                     "BlockDeviceMappings": [],
                     "IamInstanceProfile": {
                         "Arn": {
-                            "Fn::If": [
-                                "InstanceProfileIsNotDefined",
-                                {
-                                    "Fn::GetAtt": ["FgtInstanceProfile", "Arn"]
-                                },
-                                {
-                                    "Ref": "InstanceProfileArn"
-                                }
-                            ]
+                            "Ref": "InstanceProfileArn"
                         }
                     },
                     "InstanceType": {
@@ -827,15 +750,7 @@
                     "BlockDeviceMappings": [],
                     "IamInstanceProfile": {
                         "Arn": {
-                            "Fn::If": [
-                                "InstanceProfileIsNotDefined",
-                                {
-                                    "Fn::GetAtt": ["FgtInstanceProfile", "Arn"]
-                                },
-                                {
-                                    "Ref": "InstanceProfileArn"
-                                }
-                            ]
+                            "Ref": "InstanceProfileArn"
                         }
                     },
                     "InstanceType": {
