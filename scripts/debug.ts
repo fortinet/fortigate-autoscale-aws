@@ -9,7 +9,8 @@ import {
     autoscaleTgwHandler,
     scheduledEventHandler,
     scheduledEventTgwHandler,
-    lambdaPeerInvocationHandler
+    lambdaPeerInvocationHandler,
+    licenseHandler
 } from '../functions/fgt-as-handler/func';
 
 const REAL_PROJECT_ROOT = path.resolve(__dirname, '../../');
@@ -41,6 +42,8 @@ const start = async (args: any): Promise<void> => {
         }
     } else if (args.type === 'peerinvocation') {
         await lambdaPeerInvocationHandler(await atm.fakeCustomRequest(args.event), context);
+    } else if (args.type === 'license') {
+        await licenseHandler(await atm.fakeApiGatewayRequest(args.event), context);
     }
 };
 
