@@ -1,26 +1,26 @@
 import {
-    AutoscaleHandler,
-    ScheduledEventHandler,
-    AutoscaleTgwHandler,
-    ScheduledEventTgwHandler,
-    LicenseHandler,
-    CfnServiceEventHandler
+    autoscaleHandler,
+    scheduledEventHandler,
+    autoscaleTgwHandler,
+    scheduledEventTgwHandler,
+    licenseHandler,
+    cfnServiceEventHandler
 } from './func';
 
 // NOTE: this exports style is for AWS Lambda compatibility
-exports.autoscaleHandler = AutoscaleHandler;
+exports.autoscaleHandler = autoscaleHandler;
 
 // NOTE: this exports style is for AWS Lambda compatibility
-exports.scheduledEventHandler = ScheduledEventHandler;
+exports.scheduledEventHandler = scheduledEventHandler;
 
 // NOTE: this exports style is for AWS Lambda compatibility
-exports.autoscaleTgwHandler = AutoscaleTgwHandler;
+exports.autoscaleTgwHandler = autoscaleTgwHandler;
 
 // NOTE: this exports style is for AWS Lambda compatibility
-exports.scheduledEventTgwHandler = ScheduledEventTgwHandler;
+exports.scheduledEventTgwHandler = scheduledEventTgwHandler;
 
 // NOTE: this exports style is for AWS Lambda compatibility
-exports.licenseHandler = LicenseHandler;
+exports.licenseHandler = licenseHandler;
 
 // NOTE: this exports style is for AWS Lambda compatibility
-exports.cfnServiceEventHandler = CfnServiceEventHandler;
+exports.cfnServiceEventHandler = cfnServiceEventHandler;
