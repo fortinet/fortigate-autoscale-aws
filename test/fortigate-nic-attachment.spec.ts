@@ -62,6 +62,7 @@ describe('FortiGate secondary ENI attachment.', () => {
     let awsPlatformAdapter: AwsPlatformAdapter;
     let proxy: TestAwsScheduledEventProxy;
     before(function() {
+        process.env.RESOURCE_TAG_PREFIX = '';
         mockDataRootDir = path.resolve(__dirname, './mockup-data');
         awsTestMan = new AwsTestMan(mockDataRootDir);
         awsPlatformAdaptee = new TestAwsPlatformAdaptee();
@@ -108,7 +109,7 @@ describe('FortiGate secondary ENI attachment.', () => {
             mockEC2.callSubOnNthFake('describeNetworkInterfaces', callCount + 4, 'attached', true);
         });
 
-        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+        await autoscale.handleAutoscaleRequest(proxy, awsPlatformAdapter, env);
 
         // ASSERT: proxy responds with http code 200 and empty body
         Sinon.assert.match(spyProxyFormatResponse.calledWith(HttpStatusCode.OK, ''), true);
@@ -155,7 +156,7 @@ describe('FortiGate secondary ENI attachment.', () => {
             );
         });
 
-        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+        await autoscale.handleAutoscaleRequest(proxy, awsPlatformAdapter, env);
 
         // ASSERT: the launching lifecycle is abandonned.
         Sinon.assert.match(

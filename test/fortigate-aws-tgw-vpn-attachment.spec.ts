@@ -61,6 +61,7 @@ describe('FortiGate Transit Gateway VPN attachment.', () => {
     let context: Context;
     let event: ScheduledEvent;
     before(function() {
+        process.env.RESOURCE_TAG_PREFIX = '';
         mockDataRootDir = path.resolve(__dirname, './mockup-data');
         awsTestMan = new AwsTestMan(mockDataRootDir);
     });
@@ -102,7 +103,7 @@ describe('FortiGate Transit Gateway VPN attachment.', () => {
         // enable it to use a sequential mockup data for each call fake
         mockEC2.enableSequentialFakeCall('describeTransitGatewayAttachments');
 
-        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+        await autoscale.handleAutoscaleRequest(proxy, awsPlatformAdapter, env);
 
         // ASSERT: proxy responds with http code 200 and empty body
         Sinon.assert.match(spyProxyFormatResponse.calledWith(HttpStatusCode.OK, ''), true);
@@ -148,7 +149,7 @@ describe('FortiGate Transit Gateway VPN attachment.', () => {
                 false // make this redirecting to the sub call a permanent change
             );
 
-            await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+            await autoscale.handleAutoscaleRequest(proxy, awsPlatformAdapter, env);
 
             // ASSERT: the launching lifecycle is abandonned.
             Sinon.assert.match(
@@ -206,7 +207,7 @@ describe('FortiGate Transit Gateway VPN attachment.', () => {
         const vpnAttachmentRecordReturn = Sinon.spy(awsPlatformAdapter, 'getTgwVpnAttachmentRecord')
             .returnValues;
 
-        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+        await autoscale.handleAutoscaleRequest(proxy, awsPlatformAdapter, env);
 
         const vpnAttachmentRecord = await vpnAttachmentRecordReturn[0];
         const handleVpnDetachmentResult = await spyAutoscaleHandleVpnDetachmentReturn[0];

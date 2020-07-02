@@ -95,6 +95,7 @@ describe('FortiGate get bootstrap configuration.', () => {
     let event: APIGatewayProxyEvent;
 
     before(function() {
+        process.env.RESOURCE_TAG_PREFIX = '';
         mockDataRootDir = path.resolve(__dirname, './mockup-data');
         awsTestMan = new AwsTestMan(mockDataRootDir);
     });
@@ -130,7 +131,7 @@ describe('FortiGate get bootstrap configuration.', () => {
             docClient: mocDocClient
         } = awsPlatformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
-        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+        await autoscale.handleAutoscaleRequest(proxy, awsPlatformAdapter, env);
     });
     it('Bootstrap from an instance in non-master group.', async () => {
         mockDataDir = path.resolve(mockDataRootDir, 'bootstrap-non-master-group-instance');
@@ -156,7 +157,7 @@ describe('FortiGate get bootstrap configuration.', () => {
             docClient: mocDocClient
         } = awsPlatformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
-        await autoscale.handleCloudFunctionRequest(proxy, awsPlatformAdapter, env);
+        await autoscale.handleAutoscaleRequest(proxy, awsPlatformAdapter, env);
     });
     it(
         'When FortiGate vm request the bootstrap config, it should include the port2config portion ' +
@@ -206,7 +207,7 @@ describe('FortiGate get bootstrap configuration.', () => {
             const spyLoadConfig = Sinon.spy(bootstrapConfigStrategy, <any>'loadConfig');
             const spyLoadPort2Config = Sinon.spy(bootstrapConfigStrategy, <any>'loadPort2');
 
-            await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
+            await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
             const promisedConfig = await spyLoadConfig.returnValues[0];
 
@@ -276,7 +277,7 @@ describe('FortiGate get bootstrap configuration.', () => {
             const spyLoadConfig = Sinon.spy(bootstrapConfigStrategy, <any>'loadConfig');
             const spyLoadPort2Config = Sinon.spy(bootstrapConfigStrategy, <any>'loadPort2');
 
-            await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
+            await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
             const promisedConfig = await spyLoadConfig.returnValues[0];
 
@@ -346,7 +347,7 @@ describe('FortiGate get bootstrap configuration.', () => {
             const spyLoadConfig = Sinon.spy(bootstrapConfigStrategy, <any>'loadConfig');
             const spyLoadVpnConfig = Sinon.spy(bootstrapConfigStrategy, <any>'loadVpn');
 
-            await autoscale.handleCloudFunctionRequest(proxy, platformAdapter, env);
+            await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
             const promisedConfig = await spyLoadConfig.returnValues[0];
 
