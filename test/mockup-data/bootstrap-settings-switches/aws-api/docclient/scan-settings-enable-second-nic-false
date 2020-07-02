@@ -66,7 +66,7 @@
         },
         {
             "settingValue": "60ackIt060-69e58ed0-service-elb-a9001ad667854e20.elb.no-where-1.amazonaws.com",
-            "settingKey": "fortigate-protected-internal-elb-dns",
+            "settingKey": "fortigate-internal-elb-dns",
             "editable": true,
             "description": "The DNS name of the elastic load balancer for the scaling groups of services protected by FortiGate",
             "jsonEncoded": false
@@ -231,7 +231,7 @@
         },
         {
             "settingValue": "60ackIt060-69e58ed0-frontend-elb-07e7cc19a3e11ff5.elb.no-where-1.amazonaws.com",
-            "settingKey": "fortigate-autoscale-elb-dns",
+            "settingKey": "fortigate-external-elb-dns",
             "editable": false,
             "description": "The DNS name of the elastic load balancer for the FortiGate scaling groups.",
             "jsonEncoded": false

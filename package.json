@@ -1,6 +1,6 @@
 {
     "name": "fortigate-autoscale-aws",
-    "version": "3.1.0-alpha.5",
+    "version": "3.1.0-alpha.6",
     "description": "Fortinet FortiGate Autoscale for AWS.",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -14,8 +14,12 @@
         "make-dist": "npm run build && npm run bundle && node dist/scripts/make-dist-v2.js build-all",
         "build-artifacts": "npm-run-all build make-dist",
         "test": "mocha --timeout 3600000 -r ts-node/register test/*.spec.ts",
-        "lint-check": "node node_modules/ftnt-devops-ci/bin/ftnt-devops-ci.js c -fl  -F .eslintignore -L .eslintignore \"{*,**/*}{.js,.json,.ts}\"",
-        "lint-fix": "node node_modules/ftnt-devops-ci/bin/ftnt-devops-ci.js f -fl  -F .eslintignore -L .eslintignore \"**/*{.js,.json,.ts}\""
+        "lint-check-code": "node node_modules/ftnt-devops-ci/bin/ftnt-devops-ci.js c -fl  -F .eslintignore -L .eslintignore \"{*,**/*}{.js,.json,.ts}\"",
+        "lint-check-template": "node node_modules/ftnt-devops-ci/bin/ftnt-devops-ci.js c -f -F .eslintignore -L .eslintignore \"**/*.template\" --parser \"json\"",
+        "lint-check": "npm run lint-check-code && npm run lint-check-template",
+        "lint-fix-code": "node node_modules/ftnt-devops-ci/bin/ftnt-devops-ci.js f -fl  -F .eslintignore -L .eslintignore \"**/*{.js,.json,.ts}\"",
+        "lint-fix-template": "node node_modules/ftnt-devops-ci/bin/ftnt-devops-ci.js f -f -F .eslintignore -L .eslintignore \"**/*.template\" --parser \"json\"",
+        "lint-fix": "npm run lint-fix-code && npm run lint-fix-template"
     },
     "keywords": [],
     "author": "Fortinet <github@fortinet.com>",
