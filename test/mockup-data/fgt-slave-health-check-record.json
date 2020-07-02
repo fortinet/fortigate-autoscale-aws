@@ -1,7 +1,7 @@
 {
     "instanceId": "i-000000000000slave",
     "ip": "10.0.0.2",
-    "masterIp": "10.0.0.1",
+    "masterIp": "10.100.0.1",
     "heartbeatInterval": 30,
     "heartbeatLossCount": 0,
     "nextHeartbeatCheckTime": 999999999999999,

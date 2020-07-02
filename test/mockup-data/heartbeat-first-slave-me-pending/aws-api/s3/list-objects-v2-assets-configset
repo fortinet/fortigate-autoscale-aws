@@ -1,0 +1,53 @@
+{
+    "Contents": [
+        {
+            "LastModified": "2019-10-16T21:50:42.000Z",
+            "ETag": "\"f8c513a9aa732141b4a96a36ee71e662\"",
+            "StorageClass": "STANDARD",
+            "Key": "hybrid-licensing/assets/configset/baseconfig",
+            "Size": 340
+        },
+        {
+            "LastModified": "2019-10-16T21:50:42.000Z",
+            "ETag": "\"aa693c34b27833d2318a00918a776d81\"",
+            "StorageClass": "STANDARD",
+            "Key": "hybrid-licensing/assets/configset/httproutingpolicy",
+            "Size": 627
+        },
+        {
+            "LastModified": "2019-10-16T21:50:42.000Z",
+            "ETag": "\"268ccd0599f5078d880cbd5848a8acc4\"",
+            "StorageClass": "STANDARD",
+            "Key": "hybrid-licensing/assets/configset/httpsroutingpolicy",
+            "Size": 629
+        },
+        {
+            "LastModified": "2019-10-16T21:50:42.000Z",
+            "ETag": "\"8e4e75927071b8769c8a1afe64a7b901\"",
+            "StorageClass": "STANDARD",
+            "Key": "hybrid-licensing/assets/configset/internalelbweb",
+            "Size": 180
+        },
+        {
+            "LastModified": "2019-10-16T21:50:42.000Z",
+            "ETag": "\"23a8631d747912e1709cd7cbbf017f1c\"",
+            "StorageClass": "STANDARD",
+            "Key": "hybrid-licensing/assets/configset/port2config",
+            "Size": 302
+        },
+        {
+            "LastModified": "2019-10-16T21:50:42.000Z",
+            "ETag": "\"ca943041dc694edb6388a79f06947172\"",
+            "StorageClass": "STANDARD",
+            "Key": "hybrid-licensing/assets/configset/setuptgwvpn",
+            "Size": 6429
+        },
+        {
+            "LastModified": "2019-10-16T21:50:42.000Z",
+            "ETag": "\"649666466e6d132955bf61e660a91cf8\"",
+            "StorageClass": "STANDARD",
+            "Key": "hybrid-licensing/assets/configset/storelogtofaz",
+            "Size": 169
+        }
+    ]
+}

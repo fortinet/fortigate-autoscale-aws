@@ -1,0 +1,19 @@
+{
+    "version": "0",
+    "id": "c6482283-d755-626f-fd7f-1aec8b9a76fb",
+    "detail-type": "EC2 Instance-terminate Lifecycle Action",
+    "source": "aws.autoscaling",
+    "account": "123456789012",
+    "time": "2019-06-15T03:26:04Z",
+    "region": "no-where-1",
+    "resources": [
+        "arn:aws:autoscaling:no-where-1:123456789012:autoScalingGroup:f9993f43-22ae-4f7f-947a-68664b0662a9:autoScalingGroupName/fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-byol-auto-scaling-group"
+    ],
+    "detail": {
+        "LifecycleActionToken": "d06e8b8d-2fdd-49c8-9929-f710bf6f17c2",
+        "AutoScalingGroupName": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-byol-auto-scaling-group",
+        "LifecycleHookName": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-lifecyle-hook-instance-launching",
+        "EC2InstanceId": "i-0000000000byol001",
+        "LifecycleTransition": "autoscaling:EC2_INSTANCE_TERMINATING"
+    }
+}

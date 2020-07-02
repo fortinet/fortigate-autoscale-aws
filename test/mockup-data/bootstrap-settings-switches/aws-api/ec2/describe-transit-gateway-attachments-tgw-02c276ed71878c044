@@ -1,0 +1,155 @@
+{
+    "TransitGatewayAttachments": [
+        {
+            "ResourceOwnerId": "123456789012",
+            "TransitGatewayAttachmentId": "tgw-attach-0f34dcdb03fd8b1ed",
+            "ResourceType": "vpc",
+            "ResourceId": "vpc-00000000000000001",
+            "Tags": [
+                {
+                    "Value": "transitgatewayattachmentfgt-6m2r6gmiv91m",
+                    "Key": "logical-id"
+                },
+                {
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0",
+                    "Key": "ResourceGroup"
+                },
+                {
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-transit-gateway-attachment-fortigate-vpc",
+                    "Key": "Name"
+                }
+            ],
+            "CreationTime": "2020-04-01T00:27:39.000Z",
+            "State": "available",
+            "TransitGatewayId": "tgw-00000000000tgw001",
+            "TransitGatewayOwnerId": "123456789012",
+            "Association": {
+                "State": "associated",
+                "TransitGatewayRouteTableId": "tgw-rtb-0e382f2f6740ac313"
+            }
+        },
+        {
+            "ResourceOwnerId": "123456789012",
+            "TransitGatewayAttachmentId": "tgw-attach-05162c6fae172289b",
+            "ResourceType": "vpn",
+            "ResourceId": "vpn-0c991602c5073204c",
+            "Tags": [
+                {
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0",
+                    "Key": "FortiGateAutoscaleTgwVpnAttachment"
+                },
+                {
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0",
+                    "Key": "ResourceGroup"
+                },
+                {
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-autoscale-tgw-attachment-vpn-13.233.106.18",
+                    "Key": "Name"
+                }
+            ],
+            "CreationTime": "2020-04-01T00:35:11.000Z",
+            "State": "available",
+            "TransitGatewayId": "tgw-00000000000tgw001",
+            "TransitGatewayOwnerId": "123456789012",
+            "Association": {
+                "State": "associated",
+                "TransitGatewayRouteTableId": "tgw-rtb-00000tgw001rtb001"
+            }
+        },
+        {
+            "ResourceOwnerId": "123456789012",
+            "TransitGatewayAttachmentId": "tgw-attach-08543bdd8322b68cb",
+            "ResourceType": "vpn",
+            "ResourceId": "vpn-00000tgw001vpn001",
+            "Tags": [],
+            "CreationTime": "2020-04-08T00:07:41.000Z",
+            "State": "available",
+            "TransitGatewayId": "tgw-00000000000tgw001",
+            "TransitGatewayOwnerId": "123456789012"
+        },
+        {
+            "ResourceOwnerId": "123456789012",
+            "TransitGatewayAttachmentId": "tgw-attach-09e83532124c9202b",
+            "ResourceType": "vpn",
+            "ResourceId": "vpn-07ed6af031949dc72",
+            "Tags": [
+                {
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0",
+                    "Key": "FortiGateAutoscaleTgwVpnAttachment"
+                },
+                {
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0",
+                    "Key": "ResourceGroup"
+                },
+                {
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-autoscale-tgw-attachment-vpn-13.233.147.56",
+                    "Key": "Name"
+                }
+            ],
+            "CreationTime": "2020-04-01T00:35:11.000Z",
+            "State": "available",
+            "TransitGatewayId": "tgw-00000000000tgw001",
+            "TransitGatewayOwnerId": "123456789012",
+            "Association": {
+                "State": "associated",
+                "TransitGatewayRouteTableId": "tgw-rtb-00000tgw001rtb001"
+            }
+        },
+        {
+            "ResourceOwnerId": "123456789012",
+            "TransitGatewayAttachmentId": "tgw-attach-0dcdcb6b606c2ea33",
+            "ResourceType": "vpn",
+            "ResourceId": "vpn-09b9c94654418be0e",
+            "Tags": [
+                {
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0",
+                    "Key": "FortiGateAutoscaleTgwVpnAttachment"
+                },
+                {
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0",
+                    "Key": "ResourceGroup"
+                },
+                {
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-autoscale-tgw-attachment-vpn-13.232.125.26",
+                    "Key": "Name"
+                }
+            ],
+            "CreationTime": "2020-04-01T00:35:11.000Z",
+            "State": "available",
+            "TransitGatewayId": "tgw-00000000000tgw001",
+            "TransitGatewayOwnerId": "123456789012",
+            "Association": {
+                "State": "associated",
+                "TransitGatewayRouteTableId": "tgw-rtb-00000tgw001rtb001"
+            }
+        },
+        {
+            "ResourceOwnerId": "123456789012",
+            "TransitGatewayAttachmentId": "tgw-attach-00000tgw001vpn001",
+            "ResourceType": "vpn",
+            "ResourceId": "vpn-00000tgw001vpn001",
+            "Tags": [
+                {
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0",
+                    "Key": "FortiGateAutoscaleTgwVpnAttachment"
+                },
+                {
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0",
+                    "Key": "ResourceGroup"
+                },
+                {
+                    "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-autoscale-tgw-attachment-vpn-10.100.0.1",
+                    "Key": "Name"
+                }
+            ],
+            "CreationTime": "2020-04-01T00:35:11.000Z",
+            "State": "available",
+            "TransitGatewayId": "tgw-00000000000tgw001",
+            "TransitGatewayOwnerId": "123456789012",
+            "Association": {
+                "State": "associated",
+                "TransitGatewayRouteTableId": "tgw-rtb-00000tgw001rtb001"
+            }
+        }
+    ]
+}

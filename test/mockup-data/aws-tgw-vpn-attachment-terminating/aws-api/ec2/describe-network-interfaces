@@ -1,0 +1,429 @@
+{
+    "NetworkInterfaces": [
+        {
+            "Status": "in-use",
+            "MacAddress": "0a:78:0b:66:ab:aa",
+            "SourceDestCheck": false,
+            "AvailabilityZone": "no-where-1a",
+            "Description": "",
+            "NetworkInterfaceId": "eni-0000byol001nic001",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-0-1.no-where-1.compute.internal",
+                    "PrivateIpAddress": "192.168.0.1",
+                    "Primary": true,
+                    "Association": {
+                        "PublicIp": "10.100.0.1",
+                        "PublicDnsName": "ec2-10-100-0-1.no-where-1.compute.amazonaws.com",
+                        "IpOwnerId": "amazon"
+                    }
+                }
+            ],
+            "RequesterManaged": false,
+            "PrivateDnsName": "ip-192-168-0-1.no-where-1.compute.internal",
+            "VpcId": "vpc-00000000000000001",
+            "InterfaceType": "interface",
+            "Attachment": {
+                "Status": "attached",
+                "DeviceIndex": 0,
+                "AttachTime": "2020-04-01T00:34:29.000Z",
+                "InstanceId": "i-0000000000byol001",
+                "DeleteOnTermination": true,
+                "AttachmentId": "eni-attach-0000byol001nic001",
+                "InstanceOwnerId": "123456789012"
+            },
+            "Groups": [
+                {
+                    "GroupName": "mockup-security-group-name-001",
+                    "GroupId": "sg-00000000000000001"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "PrivateIpAddress": "192.168.0.1",
+            "SubnetId": "subnet-00vpc001subnet001",
+            "TagSet": [],
+            "Association": {
+                "PublicIp": "10.100.0.1",
+                "PublicDnsName": "ec2-10-100-0-1.no-where-1.compute.amazonaws.com",
+                "IpOwnerId": "amazon"
+            }
+        },
+        {
+            "Status": "available",
+            "MacAddress": "0a:9a:60:47:e6:8c",
+            "SourceDestCheck": true,
+            "AvailabilityZone": "no-where-1a",
+            "Description": "mockup network interface",
+            "NetworkInterfaceId": "eni-0000byol001nic002",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-2-1.no-where-1.compute.internal",
+                    "PrivateIpAddress": "192.168.2.1",
+                    "Primary": true,
+                    "Association": {
+                        "PublicIp": "10.100.2.1",
+                        "PublicDnsName": "ec2-10-100-2-1.no-where-1.compute.amazonaws.com",
+                        "IpOwnerId": "amazon"
+                    }
+                }
+            ],
+            "RequesterManaged": false,
+            "PrivateDnsName": "ip-192-168-2-1.no-where-1.compute.internal",
+            "VpcId": "vpc-00000000000000001",
+            "InterfaceType": "interface",
+            "RequesterId": "AIDAJLY3B3XPNJQYWZSKC",
+            "Groups": [
+                {
+                    "GroupName": "mockup-security-group-name-001",
+                    "GroupId": "sg-00000000000000001"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "SubnetId": "subnet-00vpc001subnet003",
+            "TagSet": [],
+            "PrivateIpAddress": "192.168.2.1"
+        },
+        {
+            "Status": "in-use",
+            "MacAddress": "0a:78:0b:66:ab:aa",
+            "SourceDestCheck": false,
+            "AvailabilityZone": "no-where-1b",
+            "Description": "",
+            "NetworkInterfaceId": "eni-0000byol002nic001",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-1-2.no-where-1.compute.internal",
+                    "PrivateIpAddress": "192.168.1.2",
+                    "Primary": true,
+                    "Association": {
+                        "PublicIp": "10.100.1.2",
+                        "PublicDnsName": "ec2-10-100-1-2.no-where-1.compute.amazonaws.com",
+                        "IpOwnerId": "amazon"
+                    }
+                }
+            ],
+            "RequesterManaged": false,
+            "PrivateDnsName": "ip-192-168-1-2.no-where-1.compute.internal",
+            "VpcId": "vpc-00000000000000001",
+            "InterfaceType": "interface",
+            "Attachment": {
+                "Status": "attached",
+                "DeviceIndex": 0,
+                "AttachTime": "2020-04-01T00:34:29.000Z",
+                "InstanceId": "i-0000000000byol002",
+                "DeleteOnTermination": true,
+                "AttachmentId": "eni-attach-0000byol002nic001",
+                "InstanceOwnerId": "123456789012"
+            },
+            "Groups": [
+                {
+                    "GroupName": "mockup-security-group-name-001",
+                    "GroupId": "sg-00000000000000001"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "PrivateIpAddress": "192.168.1.2",
+            "SubnetId": "subnet-00vpc001subnet002",
+            "TagSet": [],
+            "Association": {
+                "PublicIp": "10.100.1.2",
+                "PublicDnsName": "ec2-10-100-1-2.no-where-1.compute.amazonaws.com",
+                "IpOwnerId": "amazon"
+            }
+        },
+        {
+            "Status": "available",
+            "MacAddress": "0a:9a:60:47:e6:8c",
+            "SourceDestCheck": true,
+            "AvailabilityZone": "no-where-1b",
+            "Description": "mockup network interface",
+            "NetworkInterfaceId": "eni-0000byol002nic002",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-4-2.no-where-1.compute.internal",
+                    "PrivateIpAddress": "192.168.4.2",
+                    "Primary": true,
+                    "Association": {
+                        "PublicIp": "10.100.4.2",
+                        "PublicDnsName": "ec2-10-100-4-2.no-where-1.compute.amazonaws.com",
+                        "IpOwnerId": "amazon"
+                    }
+                }
+            ],
+            "RequesterManaged": false,
+            "PrivateDnsName": "ip-192-168-4-2.no-where-1.compute.internal",
+            "VpcId": "vpc-00000000000000001",
+            "InterfaceType": "interface",
+            "RequesterId": "AIDAJLY3B3XPNJQYWZSKC",
+            "Groups": [
+                {
+                    "GroupName": "mockup-security-group-name-001",
+                    "GroupId": "sg-00000000000000001"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "SubnetId": "subnet-00vpc001subnet004",
+            "TagSet": [],
+            "PrivateIpAddress": "192.168.4.2"
+        },
+        {
+            "Status": "in-use",
+            "MacAddress": "0a:78:0b:66:ab:aa",
+            "SourceDestCheck": false,
+            "AvailabilityZone": "no-where-1a",
+            "Description": "",
+            "NetworkInterfaceId": "eni-0000byol003nic001",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-0-3.no-where-1.compute.internal",
+                    "PrivateIpAddress": "192.168.0.3",
+                    "Primary": true,
+                    "Association": {
+                        "PublicIp": "10.100.0.3",
+                        "PublicDnsName": "ec2-10-100-0-3.no-where-1.compute.amazonaws.com",
+                        "IpOwnerId": "amazon"
+                    }
+                }
+            ],
+            "RequesterManaged": false,
+            "PrivateDnsName": "ip-192-168-0-3.no-where-1.compute.internal",
+            "VpcId": "vpc-00000000000000001",
+            "InterfaceType": "interface",
+            "Attachment": {
+                "Status": "attached",
+                "DeviceIndex": 0,
+                "AttachTime": "2020-04-01T00:34:29.000Z",
+                "InstanceId": "i-0000000000byol003",
+                "DeleteOnTermination": true,
+                "AttachmentId": "eni-attach-0000byol003nic001",
+                "InstanceOwnerId": "123456789012"
+            },
+            "Groups": [
+                {
+                    "GroupName": "mockup-security-group-name-001",
+                    "GroupId": "sg-00000000000000001"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "PrivateIpAddress": "192.168.0.3",
+            "SubnetId": "subnet-00vpc001subnet001",
+            "TagSet": [],
+            "Association": {
+                "PublicIp": "10.100.0.3",
+                "PublicDnsName": "ec2-10-100-0-3.no-where-1.compute.amazonaws.com",
+                "IpOwnerId": "amazon"
+            }
+        },
+        {
+            "Status": "available",
+            "MacAddress": "0a:9a:60:47:e6:8c",
+            "SourceDestCheck": true,
+            "AvailabilityZone": "no-where-1a",
+            "Description": "mockup network interface",
+            "NetworkInterfaceId": "eni-0000byol003nic002",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-2-3.no-where-1.compute.internal",
+                    "PrivateIpAddress": "192.168.2.3",
+                    "Primary": true,
+                    "Association": {
+                        "PublicIp": "10.100.2.3",
+                        "PublicDnsName": "ec2-10-100-2-3.no-where-1.compute.amazonaws.com",
+                        "IpOwnerId": "amazon"
+                    }
+                }
+            ],
+            "RequesterManaged": false,
+            "PrivateDnsName": "ip-192-168-2-3.no-where-1.compute.internal",
+            "VpcId": "vpc-00000000000000001",
+            "InterfaceType": "interface",
+            "RequesterId": "AIDAJLY3B3XPNJQYWZSKC",
+            "Groups": [
+                {
+                    "GroupName": "mockup-security-group-name-001",
+                    "GroupId": "sg-00000000000000001"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "SubnetId": "subnet-00vpc001subnet003",
+            "TagSet": [],
+            "PrivateIpAddress": "192.168.2.3"
+        },
+        {
+            "Status": "in-use",
+            "MacAddress": "0a:78:0b:66:ab:aa",
+            "SourceDestCheck": false,
+            "AvailabilityZone": "no-where-1a",
+            "Description": "",
+            "NetworkInterfaceId": "eni-0000payg001nic001",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-0-101.no-where-1.compute.internal",
+                    "PrivateIpAddress": "192.168.0.101",
+                    "Primary": true,
+                    "Association": {
+                        "PublicIp": "10.100.0.101",
+                        "PublicDnsName": "ec2-10-100-0-101.no-where-1.compute.amazonaws.com",
+                        "IpOwnerId": "amazon"
+                    }
+                }
+            ],
+            "RequesterManaged": false,
+            "PrivateDnsName": "ip-192-168-0-101.no-where-1.compute.internal",
+            "VpcId": "vpc-00000000000000001",
+            "InterfaceType": "interface",
+            "Attachment": {
+                "Status": "attached",
+                "DeviceIndex": 0,
+                "AttachTime": "2020-04-01T00:34:29.000Z",
+                "InstanceId": "i-0000000000payg001",
+                "DeleteOnTermination": true,
+                "AttachmentId": "eni-attach-0000payg001nic001",
+                "InstanceOwnerId": "123456789012"
+            },
+            "Groups": [
+                {
+                    "GroupName": "mockup-security-group-name-001",
+                    "GroupId": "sg-00000000000000001"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "PrivateIpAddress": "192.168.0.101",
+            "SubnetId": "subnet-00vpc001subnet001",
+            "TagSet": [],
+            "Association": {
+                "PublicIp": "10.100.0.101",
+                "PublicDnsName": "ec2-10-100-0-101.no-where-1.compute.amazonaws.com",
+                "IpOwnerId": "amazon"
+            }
+        },
+        {
+            "Status": "available",
+            "MacAddress": "0a:9a:60:47:e6:8c",
+            "SourceDestCheck": true,
+            "AvailabilityZone": "no-where-1a",
+            "Description": "mockup network interface",
+            "NetworkInterfaceId": "eni-0000payg001nic002",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-2-101.no-where-1.compute.internal",
+                    "PrivateIpAddress": "192.168.2.101",
+                    "Primary": true,
+                    "Association": {
+                        "PublicIp": "10.100.2.101",
+                        "PublicDnsName": "ec2-10-100-2-101.no-where-1.compute.amazonaws.com",
+                        "IpOwnerId": "amazon"
+                    }
+                }
+            ],
+            "RequesterManaged": false,
+            "PrivateDnsName": "ip-192-168-2-101.no-where-1.compute.internal",
+            "VpcId": "vpc-00000000000000001",
+            "InterfaceType": "interface",
+            "RequesterId": "AIDAJLY3B3XPNJQYWZSKC",
+            "Groups": [
+                {
+                    "GroupName": "mockup-security-group-name-001",
+                    "GroupId": "sg-00000000000000001"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "SubnetId": "subnet-00vpc001subnet003",
+            "TagSet": [],
+            "PrivateIpAddress": "192.168.2.101"
+        },
+        {
+            "Status": "in-use",
+            "MacAddress": "0a:78:0b:66:ab:aa",
+            "SourceDestCheck": false,
+            "AvailabilityZone": "no-where-1b",
+            "Description": "",
+            "NetworkInterfaceId": "eni-0000payg002nic001",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-1-102.no-where-1.compute.internal",
+                    "PrivateIpAddress": "192.168.1.102",
+                    "Primary": true,
+                    "Association": {
+                        "PublicIp": "10.100.1.102",
+                        "PublicDnsName": "ec2-10-100-1-102.no-where-1.compute.amazonaws.com",
+                        "IpOwnerId": "amazon"
+                    }
+                }
+            ],
+            "RequesterManaged": false,
+            "PrivateDnsName": "ip-192-168-1-102.no-where-1.compute.internal",
+            "VpcId": "vpc-00000000000000001",
+            "InterfaceType": "interface",
+            "Attachment": {
+                "Status": "attached",
+                "DeviceIndex": 0,
+                "AttachTime": "2020-04-01T00:34:29.000Z",
+                "InstanceId": "i-0000000000payg002",
+                "DeleteOnTermination": true,
+                "AttachmentId": "eni-attach-0000payg002nic001",
+                "InstanceOwnerId": "123456789012"
+            },
+            "Groups": [
+                {
+                    "GroupName": "mockup-security-group-name-001",
+                    "GroupId": "sg-00000000000000001"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "PrivateIpAddress": "192.168.1.102",
+            "SubnetId": "subnet-00vpc001subnet002",
+            "TagSet": [],
+            "Association": {
+                "PublicIp": "10.100.1.102",
+                "PublicDnsName": "ec2-10-100-1-102.no-where-1.compute.amazonaws.com",
+                "IpOwnerId": "amazon"
+            }
+        },
+        {
+            "Status": "available",
+            "MacAddress": "0a:9a:60:47:e6:8c",
+            "SourceDestCheck": true,
+            "AvailabilityZone": "no-where-1b",
+            "Description": "mockup network interface",
+            "NetworkInterfaceId": "eni-0000payg002nic002",
+            "PrivateIpAddresses": [
+                {
+                    "PrivateDnsName": "ip-192-168-3-102.no-where-1.compute.internal",
+                    "PrivateIpAddress": "192.168.3.102",
+                    "Primary": true,
+                    "Association": {
+                        "PublicIp": "10.100.3.102",
+                        "PublicDnsName": "ec2-10-100-3-102.no-where-1.compute.amazonaws.com",
+                        "IpOwnerId": "amazon"
+                    }
+                }
+            ],
+            "RequesterManaged": false,
+            "PrivateDnsName": "ip-192-168-3-102.no-where-1.compute.internal",
+            "VpcId": "vpc-00000000000000001",
+            "InterfaceType": "interface",
+            "RequesterId": "AIDAJLY3B3XPNJQYWZSKC",
+            "Groups": [
+                {
+                    "GroupName": "mockup-security-group-name-001",
+                    "GroupId": "sg-00000000000000001"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "OwnerId": "123456789012",
+            "SubnetId": "subnet-00vpc001subnet004",
+            "TagSet": [],
+            "PrivateIpAddress": "192.168.3.102"
+        }
+    ]
+}
