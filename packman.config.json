@@ -1,0 +1,91 @@
+{
+    "function": [
+        {
+            "name": "fgt-as-handler",
+            "source": {
+                "filename": "index.ts",
+                "location": "functions/fgt-as-handler"
+            },
+            "output": {
+                "filename": "fgt-as-handler",
+                "location": "functions"
+            },
+            "copyList": [
+                {
+                    "name": "license",
+                    "location": "./LICENSE",
+                    "fromSourceDir": true
+                },
+                {
+                    "name": "package.json",
+                    "location": "./package.json",
+                    "fromSourceDir": true
+                }
+            ],
+            "syncVersion": true
+        },
+        {
+            "name": "vpn-attachment",
+            "source": {
+                "filename": "index.ts",
+                "location": "functions/vpn-attachment"
+            },
+            "output": {
+                "filename": "vpn-attachment",
+                "location": "functions"
+            },
+            "copyList": [
+                {
+                    "name": "license",
+                    "location": "./LICENSE",
+                    "fromSourceDir": true
+                },
+                {
+                    "name": "package.json",
+                    "location": "./package.json.template",
+                    "fromSourceDir": true
+                }
+            ],
+            "syncVersion": true
+        }
+    ],
+    "bundle": {
+        "filenamePrefix": "",
+        "filenameSuffix": "-bundle"
+    },
+    "package": [
+        {
+            "name": "aws-cloudformation",
+            "staticFile": [
+                {
+                    "name": "assets",
+                    "copyFrom": "assets",
+                    "saveTo": "./"
+                },
+                {
+                    "name": "templates",
+                    "copyFrom": "tempates",
+                    "saveTo": "./"
+                },
+                {
+                    "name": "readme",
+                    "copyFrom": "README.md",
+                    "saveTo": "./README.md"
+                }
+            ],
+            "function": [
+                {
+                    "name": "fgt-as-handler",
+                    "ref": "fgt-as-handler"
+                }
+            ],
+            "saveFunctionSource": false,
+            "functionPackageDir": "./functions/package",
+            "functionSourceDir": "./functions/source"
+        }
+    ],
+    "output": {
+        "outDir": "out",
+        "packageDir": "build-artifacts"
+    }
+}
