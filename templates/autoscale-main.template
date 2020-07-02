@@ -298,6 +298,23 @@
             "AllowedValues": ["yes", "no"],
             "ConstraintDescription": "must choose from the provided options.",
             "Description": "Will deploy with Transit Gateway Integration."
+        },
+        "UseCustomAssetLocation": {
+            "Type": "String",
+            "Default": "no",
+            "AllowedValues": ["yes", "no"],
+            "ConstraintDescription": "must choose from the provided options.",
+            "Description": "Will use a custom S3 location for custom assets."
+        },
+        "CustomAssetContainer": {
+            "Type": "String",
+            "Default": "",
+            "Description": "The name of the S3 bucket which contains your custom assets. Required if 'use custom asset location' is set to 'yes'."
+        },
+        "CustomAssetDirectory": {
+            "Type": "String",
+            "Default": "",
+            "Description": "The sub path within the 'custom asset container' which serves as the top level directory of all your custom assets. If 'use custom asset location' is set to 'yes', and this value is left empty, the 'custom asset container' will serve as the top level directory."
         }
     },
     "Conditions": {
@@ -471,6 +488,14 @@
         },
         "IfRequireFortiAnalyzerIntegration": {
             "Fn::Equals": ["this condition", "is always false"]
+        },
+        "IfUseCustomAssetContainer": {
+            "Fn::Equals": [
+                {
+                    "Ref": "UseCustomAssetLocation"
+                },
+                "yes"
+            ]
         }
     },
     "Mappings": {
@@ -646,18 +671,53 @@
                             "Version": "2012-10-17",
                             "Statement": [
                                 {
-                                    "Action": ["s3:GetObject"],
+                                    "Action": ["s3:GetObject", "s3:ListBucket"],
                                     "Resource": {
-                                        "Fn::Sub": [
-                                            "arn:aws:s3:::${S3BucketName}/${S3KeyPrefix}*",
-                                            {
-                                                "S3BucketName": {
-                                                    "Ref": "S3BucketName"
+                                        "Fn::If": [
+                                            "IfUseCustomAssetContainer",
+                                            [
+                                                {
+                                                    "Fn::Sub": [
+                                                        "arn:aws:s3:::${bucketname}/${keyprefix}assets/*",
+                                                        {
+                                                            "bucketname": {
+                                                                "Ref": "S3BucketName"
+                                                            },
+                                                            "keyprefix": {
+                                                                "Ref": "S3KeyPrefix"
+                                                            }
+                                                        }
+                                                    ]
                                                 },
-                                                "S3KeyPrefix": {
-                                                    "Ref": "S3KeyPrefix"
+                                                {
+                                                    "Fn::Sub": [
+                                                        "arn:aws:s3:::${customContainer}/${customDirectory}/*",
+                                                        {
+                                                            "customContainer": {
+                                                                "Ref": "CustomAssetContainer"
+                                                            },
+                                                            "customDirectory": {
+                                                                "Ref": "CustomAssetDirectory"
+                                                            }
+                                                        }
+                                                    ]
                                                 }
-                                            }
+                                            ],
+                                            [
+                                                {
+                                                    "Fn::Sub": [
+                                                        "arn:aws:s3:::${bucketname}/${keyprefix}assets/*",
+                                                        {
+                                                            "bucketname": {
+                                                                "Ref": "S3BucketName"
+                                                            },
+                                                            "keyprefix": {
+                                                                "Ref": "S3KeyPrefix"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
                                         ]
                                     },
                                     "Effect": "Allow"
@@ -882,6 +942,28 @@
                     "CreateByolLicenseHandler": "yes",
                     "TransitGatewayIntegration": {
                         "Fn::If": ["IfRequireTransitGatewayIntegration", "yes", "no"]
+                    },
+                    "CustomAssetContainer": {
+                        "Fn::If": [
+                            "IfUseCustomAssetContainer",
+                            {
+                                "Ref": "CustomAssetContainer"
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    "CustomAssetDirectory": {
+                        "Fn::If": [
+                            "IfUseCustomAssetContainer",
+                            {
+                                "Ref": "CustomAssetDirectory"
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
                     }
                 },
                 "TemplateURL": {
@@ -922,6 +1004,28 @@
                     },
                     "UniqueId": {
                         "Ref": "UniqueId"
+                    },
+                    "CustomAssetContainer": {
+                        "Fn::If": [
+                            "IfUseCustomAssetContainer",
+                            {
+                                "Ref": "CustomAssetContainer"
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    "CustomAssetDirectory": {
+                        "Fn::If": [
+                            "IfUseCustomAssetContainer",
+                            {
+                                "Ref": "CustomAssetDirectory"
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
                     }
                 },
                 "TemplateURL": {
@@ -1298,8 +1402,27 @@
                 "byol-scaling-group-max-size": {
                     "Ref": "FgtAsgMaxSizeByol"
                 },
-                "custom-asset-container": "n/a",
-                "custom-asset-directory": "n/a",
+                "custom-asset-container": {
+                    "Fn::If": [
+                        "IfUseCustomAssetContainer",
+                        {
+                            "Ref": "CustomAssetContainer"
+                        },
+                        "n/a"
+                    ]
+                },
+                "custom-asset-directory": {
+                    "Fn::If": [
+                        "IfUseCustomAssetContainer",
+                        {
+                            "Ref": "CustomAssetDirectory"
+                        },
+                        "n/a"
+                    ]
+                },
+                "enable-external-elb": {
+                    "Fn::If": ["IfRequireNetworkLoadBalancerIntegration", "true", "false"]
+                },
                 "egress-traffic-route-table": {
                     "Fn::Join": [
                         ",",
@@ -1439,6 +1562,15 @@
                         "n/a"
                     ]
                 },
+                "fortigate-traffic-protocol": {
+                    "Fn::If": [
+                        "IfRequireNetworkLoadBalancerIntegration",
+                        {
+                            "Ref": "LoadBalancingTrafficProtocol"
+                        },
+                        "n/a"
+                    ]
+                },
                 "heartbeat-delay-allowance": {
                     "Ref": "HeartBeatDelayAllowance"
                 },
@@ -1563,7 +1695,7 @@
                 },
                 "ServiceType": "stopAutoscale"
             },
-            "DependsOn": ["SaveSettings"]
+            "DependsOn": ["SaveSettings", "StackCreateDynamoDBTable"]
         }
     },
     "Metadata": {

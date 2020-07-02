@@ -34,6 +34,16 @@
             "AllowedPattern": "[A-Za-z0-9]+",
             "ConstraintDescription": "must only contain uppercase and lowercase letters and digits",
             "Description": "A random text suffix for the DynamoDB table name which can help ensure the DB table name is unique per region. Can only contain uppercase, lowercase letters, and digits. Max length is 8."
+        },
+        "CustomAssetContainer": {
+            "Type": "String",
+            "Default": "",
+            "Description": "The name of the S3 bucket which contains your custom assets. Required if 'use custom asset location' is set to 'yes'."
+        },
+        "CustomAssetDirectory": {
+            "Type": "String",
+            "Default": "",
+            "Description": "The sub path within the 'custom asset container' which serves as the top level directory of all your custom assets. If 'use custom asset location' is set to 'yes', and this value is left empty, the 'custom asset container' will serve as the top level directory."
         }
     },
     "Conditions": {
@@ -43,6 +53,18 @@
                     "Ref": "AWS::Region"
                 },
                 "us-gov-west-1"
+            ]
+        },
+        "IfUseCustomAssetContainer": {
+            "Fn::Not": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "CustomAssetContainer"
+                        },
+                        ""
+                    ]
+                }
             ]
         }
     },
@@ -57,7 +79,7 @@
                     "S3KeyPrefix": {
                         "Ref": "S3KeyPrefix"
                     },
-                    "ObjectPaths": "functions/packages/tgw-vpn-handler.zip"
+                    "ObjectPaths": "functions/packages/fgt-as-handler.zip"
                 },
                 "TemplateURL": {
                     "Fn::Sub": [
@@ -100,7 +122,7 @@
                 "Role": {
                     "Fn::GetAtt": ["IamRoleTransitGatewayVpnHandler", "Arn"]
                 },
-                "Handler": "index.tgwVpnHandler",
+                "Handler": "index.lambdaPeerInvocationHandler",
                 "Timeout": 600,
                 "Code": {
                     "S3Bucket": {
@@ -108,7 +130,7 @@
                     },
                     "S3Key": {
                         "Fn::Sub": [
-                            "${KeyPrefix}functions/packages/tgw-vpn-handler.zip",
+                            "${KeyPrefix}functions/packages/fgt-as-handler.zip",
                             {
                                 "KeyPrefix": {
                                     "Fn::GetAtt": ["StackCopyLambdaSource", "Outputs.KeyPrefix"]
@@ -297,18 +319,53 @@
                                 },
                                 {
                                     "Effect": "Allow",
-                                    "Action": "s3:GetObject",
+                                    "Action": ["s3:GetObject", "s3:ListBucket"],
                                     "Resource": {
-                                        "Fn::Sub": [
-                                            "arn:aws:s3:::${bucketname}/${keyprefix}assets/configset/*",
-                                            {
-                                                "bucketname": {
-                                                    "Ref": "S3BucketName"
+                                        "Fn::If": [
+                                            "IfUseCustomAssetContainer",
+                                            [
+                                                {
+                                                    "Fn::Sub": [
+                                                        "arn:aws:s3:::${bucketname}/${keyprefix}assets/configset/*",
+                                                        {
+                                                            "bucketname": {
+                                                                "Ref": "S3BucketName"
+                                                            },
+                                                            "keyprefix": {
+                                                                "Ref": "S3KeyPrefix"
+                                                            }
+                                                        }
+                                                    ]
                                                 },
-                                                "keyprefix": {
-                                                    "Ref": "S3KeyPrefix"
+                                                {
+                                                    "Fn::Sub": [
+                                                        "arn:aws:s3:::${customContainer}/${customDirectory}/*",
+                                                        {
+                                                            "customContainer": {
+                                                                "Ref": "CustomAssetContainer"
+                                                            },
+                                                            "customDirectory": {
+                                                                "Ref": "CustomAssetDirectory"
+                                                            }
+                                                        }
+                                                    ]
                                                 }
-                                            }
+                                            ],
+                                            [
+                                                {
+                                                    "Fn::Sub": [
+                                                        "arn:aws:s3:::${bucketname}/${keyprefix}assets/configset/*",
+                                                        {
+                                                            "bucketname": {
+                                                                "Ref": "S3BucketName"
+                                                            },
+                                                            "keyprefix": {
+                                                                "Ref": "S3KeyPrefix"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
                                         ]
                                     }
                                 },

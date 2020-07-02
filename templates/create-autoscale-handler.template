@@ -66,6 +66,16 @@
             "AllowedValues": ["yes", "no"],
             "ConstraintDescription": "must choose from the provided options.",
             "Description": "Will deploy with Transit Gateway Integration."
+        },
+        "CustomAssetContainer": {
+            "Type": "String",
+            "Default": "",
+            "Description": "The name of the S3 bucket which contains your custom assets. Required if 'use custom asset location' is set to 'yes'."
+        },
+        "CustomAssetDirectory": {
+            "Type": "String",
+            "Default": "",
+            "Description": "The sub path within the 'custom asset container' which serves as the top level directory of all your custom assets. If 'use custom asset location' is set to 'yes', and this value is left empty, the 'custom asset container' will serve as the top level directory."
         }
     },
     "Conditions": {
@@ -103,6 +113,18 @@
                     "Ref": "TransitGatewayIntegration"
                 },
                 "yes"
+            ]
+        },
+        "IfUseCustomAssetContainer": {
+            "Fn::Not": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "CustomAssetContainer"
+                        },
+                        ""
+                    ]
+                }
             ]
         }
     },
@@ -475,18 +497,53 @@
                                 },
                                 {
                                     "Effect": "Allow",
-                                    "Action": "s3:GetObject",
+                                    "Action": ["s3:GetObject", "s3:ListBucket"],
                                     "Resource": {
-                                        "Fn::Sub": [
-                                            "arn:aws:s3:::${bucketname}/${keyprefix}assets/configset/*",
-                                            {
-                                                "bucketname": {
-                                                    "Ref": "S3BucketName"
+                                        "Fn::If": [
+                                            "IfUseCustomAssetContainer",
+                                            [
+                                                {
+                                                    "Fn::Sub": [
+                                                        "arn:aws:s3:::${bucketname}/${keyprefix}assets/*",
+                                                        {
+                                                            "bucketname": {
+                                                                "Ref": "S3BucketName"
+                                                            },
+                                                            "keyprefix": {
+                                                                "Ref": "S3KeyPrefix"
+                                                            }
+                                                        }
+                                                    ]
                                                 },
-                                                "keyprefix": {
-                                                    "Ref": "S3KeyPrefix"
+                                                {
+                                                    "Fn::Sub": [
+                                                        "arn:aws:s3:::${customContainer}/${customDirectory}/*",
+                                                        {
+                                                            "customContainer": {
+                                                                "Ref": "CustomAssetContainer"
+                                                            },
+                                                            "customDirectory": {
+                                                                "Ref": "CustomAssetDirectory"
+                                                            }
+                                                        }
+                                                    ]
                                                 }
-                                            }
+                                            ],
+                                            [
+                                                {
+                                                    "Fn::Sub": [
+                                                        "arn:aws:s3:::${bucketname}/${keyprefix}assets/*",
+                                                        {
+                                                            "bucketname": {
+                                                                "Ref": "S3BucketName"
+                                                            },
+                                                            "keyprefix": {
+                                                                "Ref": "S3KeyPrefix"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
                                         ]
                                     }
                                 },

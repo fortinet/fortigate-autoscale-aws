@@ -4,7 +4,14 @@
 import path from 'path';
 import { Command } from 'commander';
 import { AwsTestMan } from 'autoscale-core';
-import { autoscaleHandler, scheduledEventHandler } from '../functions/fgt-as-handler/func';
+import {
+    autoscaleHandler,
+    autoscaleTgwHandler,
+    scheduledEventHandler,
+    scheduledEventTgwHandler,
+    lambdaPeerInvocationHandler,
+    licenseHandler
+} from '../functions/fgt-as-handler/func';
 
 const REAL_PROJECT_ROOT = path.resolve(__dirname, '../../');
 const atm = new AwsTestMan(REAL_PROJECT_ROOT);
@@ -19,9 +26,24 @@ const start = async (args: any): Promise<void> => {
     const context = await atm.fakeLambdaContext();
 
     if (args.type === 'api') {
-        await autoscaleHandler(await atm.fakeApiGatewayRequest(args.event), context);
+        if (args.tgw) {
+            await autoscaleTgwHandler(await atm.fakeApiGatewayRequest(args.event), context);
+        } else {
+            await autoscaleHandler(await atm.fakeApiGatewayRequest(args.event), context);
+        }
     } else if (args.type === 'event') {
-        await scheduledEventHandler(await atm.fakeScheduledEventRequest(args.event), context);
+        if (args.tgw) {
+            await scheduledEventTgwHandler(
+                await atm.fakeScheduledEventRequest(args.event),
+                context
+            );
+        } else {
+            await scheduledEventHandler(await atm.fakeScheduledEventRequest(args.event), context);
+        }
+    } else if (args.type === 'peerinvocation') {
+        await lambdaPeerInvocationHandler(await atm.fakeCustomRequest(args.event), context);
+    } else if (args.type === 'license') {
+        await licenseHandler(await atm.fakeApiGatewayRequest(args.event), context);
     }
 };
 
@@ -33,6 +55,7 @@ program
     .requiredOption('--event <filepath>', 'The event json file to be loaded.')
     .requiredOption('--type <value>', "The event type: 'api', 'event', 'service'.")
     .option('--env <filepath>', 'The environment variables json file to be loaded.')
+    .option('--tgw', 'with Transit Gateway Integration?')
     .action(start);
 
 const main = async (): Promise<void> => {

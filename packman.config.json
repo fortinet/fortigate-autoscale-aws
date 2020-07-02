@@ -23,54 +23,6 @@
                 }
             ],
             "syncVersion": true
-        },
-        {
-            "name": "tgw-vpn-handler",
-            "source": {
-                "filename": "index.ts",
-                "location": "functions/tgw-vpn-handler"
-            },
-            "output": {
-                "filename": "tgw-vpn-handler",
-                "location": "functions"
-            },
-            "copyList": [
-                {
-                    "name": "license",
-                    "location": "./LICENSE",
-                    "fromSourceDir": true
-                },
-                {
-                    "name": "package.json",
-                    "location": "./package.json",
-                    "fromSourceDir": true
-                }
-            ],
-            "syncVersion": true
-        },
-        {
-            "name": "simple-handler",
-            "source": {
-                "filename": "index.ts",
-                "location": "functions/simple-handler"
-            },
-            "output": {
-                "filename": "simple-handler",
-                "location": "functions"
-            },
-            "copyList": [
-                {
-                    "name": "license",
-                    "location": "./LICENSE",
-                    "fromSourceDir": true
-                },
-                {
-                    "name": "package.json",
-                    "location": "./package.json",
-                    "fromSourceDir": true
-                }
-            ],
-            "syncVersion": true
         }
     ],
     "bundle": {
@@ -82,9 +34,16 @@
             "name": "aws-cloudformation",
             "staticFile": [
                 {
-                    "name": "assets",
-                    "copyFrom": "assets",
-                    "saveTo": "./"
+                    "name": "core-configset",
+                    "copyFrom": "node_modules/autoscale-core/fortigate-autoscale/assets/configset",
+                    "saveTo": "./assets/configset",
+                    "includeSubDir": false
+                },
+                {
+                    "name": "aws-configset",
+                    "copyFrom": "node_modules/autoscale-core/fortigate-autoscale/assets/configset/aws",
+                    "saveTo": "./assets/configset",
+                    "includeSubDir": false
                 },
                 {
                     "name": "templates",
@@ -101,10 +60,6 @@
                 {
                     "name": "fgt-as-handler",
                     "ref": "fgt-as-handler"
-                },
-                {
-                    "name": "tgw-vpn-handler",
-                    "ref": "tgw-vpn-handler"
                 }
             ],
             "saveFunctionSource": false,

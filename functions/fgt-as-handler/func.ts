@@ -1,14 +1,16 @@
 import {
+    AutoscaleEnvironment,
     AwsApiGatewayEventProxy,
     AwsCloudFormationCustomResourceEventProxy,
     AwsFortiGateAutoscale,
+    AwsFortiGateAutoscaleLambdaInvocationHandler,
     AwsFortiGateAutoscaleServiceProvider,
     AwsFortiGateAutoscaleTgw,
     AwsPlatformAdaptee,
     AwsPlatformAdapter,
-    AwsScheduledEventProxy
+    AwsScheduledEventProxy,
+    AwsLambdaInvocationProxy
 } from 'autoscale-core';
-import { AutoscaleEnvironment } from 'autoscale-core/dist/autoscale-environment';
 import {
     APIGatewayProxyEvent,
     APIGatewayProxyResult,
@@ -16,6 +18,7 @@ import {
     Context,
     ScheduledEvent
 } from 'aws-lambda';
+import { JSONable } from 'autoscale-core/jsonable';
 
 // API Gateway event handler for http requests coming from FortiGate callback
 export async function autoscaleHandler(
@@ -126,4 +129,22 @@ export async function cfnServiceEventHandler(
         autoscale
     );
     return await serviceProvider.handleServiceRequest();
+}
+
+/**
+ * handle peer invocation between lamba functions
+ * @param {JSONable} event incoming payload
+ * @param {Context} context Lambda context
+ */
+export async function lambdaPeerInvocationHandler(
+    event: JSONable,
+    context: Context
+): Promise<void> {
+    console.log(event);
+    const env = {} as AutoscaleEnvironment;
+    const proxy = new AwsLambdaInvocationProxy(event, context);
+    const platform = new AwsPlatformAdapter(new AwsPlatformAdaptee(), proxy);
+    const autoscale = new AwsFortiGateAutoscaleTgw<JSONable, Context, void>(platform, env, proxy);
+    const handler = new AwsFortiGateAutoscaleLambdaInvocationHandler(autoscale);
+    return await handler.handleLambdaPeerInvocation();
 }

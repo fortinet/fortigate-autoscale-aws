@@ -268,6 +268,23 @@
             "MinValue": 300,
             "ConstraintDescription": "must be a valid number not less than 300.",
             "Description": "The minimum time (in seconds) permitted before a distributed license can be revoked from a non-responsive FortiGate and re-distributed. Minimum is 300."
+        },
+        "UseCustomAssetLocation": {
+            "Type": "String",
+            "Default": "no",
+            "AllowedValues": ["yes", "no"],
+            "ConstraintDescription": "must choose from the provided options.",
+            "Description": "Will use a custom S3 location for custom assets."
+        },
+        "CustomAssetContainer": {
+            "Type": "String",
+            "Default": "",
+            "Description": "The name of the S3 bucket which contains your custom assets. Required if 'use custom asset location' is set to 'yes'."
+        },
+        "CustomAssetDirectory": {
+            "Type": "String",
+            "Default": "",
+            "Description": "The sub path within the 'custom asset container' which serves as the top level directory of all your custom assets. If 'use custom asset location' is set to 'yes', and this value is left empty, the 'custom asset container' will serve as the top level directory."
         }
     },
     "Conditions": {
@@ -525,6 +542,15 @@
                     },
                     "InternalLoadBalancerDnsName": {
                         "Ref": "InternalLoadBalancerDnsName"
+                    },
+                    "UseCustomAssetLocation": {
+                        "Ref": "UseCustomAssetLocation"
+                    },
+                    "CustomAssetContainer": {
+                        "Ref": "CustomAssetContainer"
+                    },
+                    "CustomAssetDirectory": {
+                        "Ref": "CustomAssetDirectory"
                     }
                 },
                 "TemplateURL": {
@@ -618,6 +644,16 @@
                         "HeartBeatInterval",
                         "HeartBeatLossCount",
                         "HeartBeatDelayAllowance"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Custom asset location configuration"
+                    },
+                    "Parameters": [
+                        "UseCustomAssetLocation",
+                        "CustomAssetContainer",
+                        "CustomAssetDirectory"
                     ]
                 },
                 {
@@ -744,6 +780,15 @@
                 },
                 "MasterElectionTimeout": {
                     "default": "Master election timeout"
+                },
+                "UseCustomAssetLocation": {
+                    "default": "Use custom asset location"
+                },
+                "CustomAssetContainer": {
+                    "default": "Custom asset S3 bucket"
+                },
+                "CustomAssetDirectory": {
+                    "default": "Custom asset folder"
                 }
             }
         }

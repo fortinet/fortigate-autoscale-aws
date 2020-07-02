@@ -163,9 +163,9 @@ describe('FortiGate Transit Gateway VPN attachment.', () => {
         });
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
-        const spyDeleteAwsTgwVpnAttachmentRecord = Sinon.spy(
+        const spyDeleteTgwVpnAttachmentRecord = Sinon.spy(
             awsPlatformAdapter,
-            'deleteAwsTgwVpnAttachmentRecord'
+            'deleteTgwVpnAttachmentRecord'
         );
         const spyAutoscaleHandleVpnDetachmentReturn = await Sinon.spy(
             autoscale,
@@ -186,7 +186,7 @@ describe('FortiGate Transit Gateway VPN attachment.', () => {
         Sinon.assert.match(mockEC2.getStub('deleteCustomerGateway').callCount, 1);
         // ASSERT: delete tgw vpn attachment record.
         Sinon.assert.match(
-            spyDeleteAwsTgwVpnAttachmentRecord.calledWith(
+            spyDeleteTgwVpnAttachmentRecord.calledWith(
                 vpnAttachmentRecord.vmId,
                 vpnAttachmentRecord.ip
             ),
