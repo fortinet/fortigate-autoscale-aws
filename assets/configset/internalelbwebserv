@@ -21,14 +21,14 @@ end
 
 config firewall policy
     edit 2
-        set name "internal-web-{HTTP_OR_HTTPS}"
+        set name "internal-web-{TRAFFIC_PROTOCOL}"
         set srcintf "{EXTERNAL_INTERFACE}"
         set dstintf "{INTERNAL_INTERFACE}"
         set srcaddr "all"
         set dstaddr "internal-web"
         set action accept
         set schedule "always"
-        set service "{HTTP_OR_HTTPS}"
+        set service "{TRAFFIC_PROTOCOL}"
         set fsso disable
         set nat enable
     next

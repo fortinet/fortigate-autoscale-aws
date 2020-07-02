@@ -11,7 +11,7 @@
         "compile": "tsc",
         "clear-dist": "rimraf dist",
         "build": "npm run clear-dist && npm run compile",
-        "make-dist": "npm run build && npm run bundle && node dist/scripts/make-dist-v2.js build-all",
+        "make-dist": "npm run build && npm run bundle && node dist/transpiled/scripts/make-dist-v2.js build-all --project-root './'",
         "build-artifacts": "npm-run-all build make-dist",
         "test": "mocha --timeout 3600000 -r ts-node/register test/*.spec.ts",
         "lint-check-code": "node node_modules/ftnt-devops-ci/bin/ftnt-devops-ci.js c -fl  -F .eslintignore -L .eslintignore \"{*,**/*}{.js,.json,.ts}\"",
@@ -27,7 +27,7 @@
     "dependencies": {
         "@types/aws-lambda": "^8.10.46",
         "@types/node": "^13.9.2",
-        "autoscale-core": "git+ssh://gerrit.fortinet.com:29418/devops/multi-cloud/autoscale/core#dev_testing_dependency_rev_7",
+        "autoscale-core": "git+ssh://gerrit.fortinet.com:29418/devops/multi-cloud/autoscale/core#dev_testing_dependency_rev_8",
         "aws-sdk": "^2.657.0",
         "http-status-codes": "^1.4.0",
         "rimraf": "^3.0.2"

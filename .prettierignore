@@ -119,7 +119,7 @@ dist
 local
 dist
 out
-build-artifacts
+build
 
 # npm package.json and package-lock.json
 package.json
