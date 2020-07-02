@@ -380,7 +380,7 @@
                 "S": "N/A"
             },
             "settingKey": {
-                "S": "required-configset"
+                "S": "additional-configset-name-list"
             },
             "editable": {
                 "S": "false"
@@ -873,7 +873,7 @@
                 "S": "65432"
             },
             "settingKey": {
-                "S": "aws-vpn-bgp-asn"
+                "S": "vpn-bgp-asn"
             },
             "editable": {
                 "S": "true"

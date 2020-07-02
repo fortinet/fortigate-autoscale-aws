@@ -159,7 +159,7 @@
         },
         {
             "settingValue": "N/A",
-            "settingKey": "required-configset",
+            "settingKey": "additional-configset-name-list",
             "editable": false,
             "description": "A comma-delimited list of required configsets.",
             "jsonEncoded": {
@@ -364,7 +364,7 @@
         },
         {
             "settingValue": "65432",
-            "settingKey": "aws-vpn-bgp-asn",
+            "settingKey": "vpn-bgp-asn",
             "editable": true,
             "description": "The BGP Autonomous System Number of the Customer Gateway of each FortiGate instance in the Auto Scaling Group.",
             "jsonEncoded": false

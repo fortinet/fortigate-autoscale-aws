@@ -1,5 +1,5 @@
 {
-    "Count": 51,
+    "Count": 61,
     "Items": [
         {
             "settingValue": "300",
@@ -159,7 +159,7 @@
         },
         {
             "settingValue": "N/A",
-            "settingKey": "required-configset",
+            "settingKey": "additional-configset-name-list",
             "editable": false,
             "description": "A comma-delimited list of required configsets.",
             "jsonEncoded": {
@@ -364,7 +364,7 @@
         },
         {
             "settingValue": "65432",
-            "settingKey": "aws-vpn-bgp-asn",
+            "settingKey": "vpn-bgp-asn",
             "editable": true,
             "description": "The BGP Autonomous System Number of the Customer Gateway of each FortiGate instance in the Auto Scaling Group.",
             "jsonEncoded": false
@@ -398,7 +398,7 @@
             "jsonEncoded": false
         },
         {
-            "settingValue": "custom-assets",
+            "settingValue": "",
             "settingKey": "custom-asset-directory",
             "editable": false,
             "description": "Custom assets directory.",
@@ -412,20 +412,20 @@
             "jsonEncoded": false
         },
         {
-            "settingValue": "",
-            "settingKey": "custom-configset-name",
-            "editable": false,
-            "description": "Custom configset names. Format: name1-yes[,name2-yes[,...]]",
-            "jsonEncoded": false
-        },
-        {
             "settingValue": "fgt-license",
             "settingKey": "license-file-directory",
             "editable": false,
             "description": "Custom assets directory.",
             "jsonEncoded": false
+        },
+        {
+            "settingValue": ",testconfigset1,testconfigset2,,testconfigset3,123,seq#1,",
+            "settingKey": "additional-configset-name-list",
+            "editable": false,
+            "description": "Additional configset name list. Comma separated.File name contains lowercase letters and digit only. Format: name1[,name2[,...]]",
+            "jsonEncoded": false
         }
     ],
-    "ScannedCount": 60,
+    "ScannedCount": 61,
     "ConsumedCapacity": null
 }
