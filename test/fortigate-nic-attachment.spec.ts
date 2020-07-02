@@ -1,48 +1,25 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import * as path from 'path';
-import { describe, it } from 'mocha';
-import Sinon from 'sinon';
-import * as HttpStatusCode from 'http-status-codes';
-import { ScheduledEvent, Context } from 'aws-lambda';
-import { AwsPlatformAdapter, AutoscaleEnvironment } from 'autoscale-core';
 import {
+    AutoscaleEnvironment,
+    AwsPlatformAdapter,
     AwsTestMan,
-    MockEC2,
-    MockS3,
+    createTestAwsScheduledEventHandler,
     MockAutoScaling,
+    MockDocClient,
+    MockEC2,
     MockElbv2,
     MockLambda,
-    MockDocClient
-} from 'autoscale-core/dist/scripts/aws-testman';
-
-import { TestAwsPlatformAdaptee } from './test-helper-class/test-aws-platform-adaptee';
-import { TestAwsFortiGateAutoscale } from './test-helper-class/test-aws-fortigate-autoscale';
-import { TestAwsScheduledEventProxy } from './test-helper-class/test-aws-scheduled-event-proxy';
-
-export const createTestAwsScheduledEventHandler = (
-    event: ScheduledEvent,
-    context: Context
-): {
-    autoscale: TestAwsFortiGateAutoscale<ScheduledEvent, Context, void>;
-    env: AutoscaleEnvironment;
-    platformAdaptee: TestAwsPlatformAdaptee;
-    platformAdapter: AwsPlatformAdapter;
-    proxy: TestAwsScheduledEventProxy;
-} => {
-    const env = {} as AutoscaleEnvironment;
-    const proxy = new TestAwsScheduledEventProxy(event, context);
-    const p = new TestAwsPlatformAdaptee();
-    const pa = new AwsPlatformAdapter(p, proxy);
-    const autoscale = new TestAwsFortiGateAutoscale<ScheduledEvent, Context, void>(pa, env, proxy);
-    return {
-        autoscale: autoscale,
-        env: env,
-        platformAdaptee: p,
-        platformAdapter: pa,
-        proxy: proxy
-    };
-};
+    MockS3,
+    TestAwsFortiGateAutoscale,
+    TestAwsPlatformAdaptee,
+    TestAwsScheduledEventProxy
+} from 'autoscale-core';
+import { Context, ScheduledEvent } from 'aws-lambda';
+import * as HttpStatusCode from 'http-status-codes';
+import { describe, it } from 'mocha';
+import * as path from 'path';
+import Sinon from 'sinon';
 
 describe('FortiGate secondary ENI attachment.', () => {
     let mockDataRootDir: string;
@@ -81,7 +58,7 @@ describe('FortiGate secondary ENI attachment.', () => {
         event = await awsTestMan.fakeLaunchingVmRequest(
             path.resolve(mockDataDir, 'request/event-launching-vm.json')
         );
-        context = await awsTestMan.fakeApiGatewayContext();
+        context = await awsTestMan.fakeLambdaContext();
 
         ({
             autoscale,
@@ -120,7 +97,7 @@ describe('FortiGate secondary ENI attachment.', () => {
         event = await awsTestMan.fakeLaunchingVmRequest(
             path.resolve(mockDataDir, 'request/event-launching-vm.json')
         );
-        context = await awsTestMan.fakeApiGatewayContext();
+        context = await awsTestMan.fakeLambdaContext();
 
         ({
             autoscale,

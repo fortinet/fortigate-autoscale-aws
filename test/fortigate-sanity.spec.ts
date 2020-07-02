@@ -1,88 +1,23 @@
+/* eslint-disable mocha/no-hooks-for-single-case */
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import * as path from 'path';
-import { describe, it } from 'mocha';
-import { APIGatewayProxyEvent, Context, APIGatewayProxyResult } from 'aws-lambda';
 import {
-    AwsPlatformAdapter,
-    AutoscaleEnvironment,
-    AwsFortiGateAutoscaleSetting
-} from 'autoscale-core';
-import {
+    AwsFortiGateAutoscaleSetting,
     AwsTestMan,
-    MockEC2,
-    MockS3,
+    createAwsApiGatewayEventHandler,
     MockAutoScaling,
+    MockDocClient,
+    MockEC2,
     MockElbv2,
     MockLambda,
-    MockDocClient
-} from 'autoscale-core/dist/scripts/aws-testman';
-
-import { TestAwsPlatformAdaptee } from './test-helper-class/test-aws-platform-adaptee';
-import { TestAwsApiGatewayEventProxy } from './test-helper-class/test-aws-api-gateway-event-proxy';
+    MockS3
+} from 'autoscale-core';
+import { APIGatewayProxyEvent, Context } from 'aws-lambda';
+import { describe, it } from 'mocha';
+import * as path from 'path';
 import Sinon from 'sinon';
-import {
-    TestAwsFortiGateAutoscale,
-    TestAwsTgwFortiGateAutoscale
-} from './test-helper-class/test-aws-fortigate-autoscale';
-
-export const createAwsApiGatewayEventHandler = (
-    event: APIGatewayProxyEvent,
-    context: Context
-): {
-    autoscale: TestAwsFortiGateAutoscale<APIGatewayProxyEvent, Context, APIGatewayProxyResult>;
-    env: AutoscaleEnvironment;
-    platformAdaptee: TestAwsPlatformAdaptee;
-    platformAdapter: AwsPlatformAdapter;
-    proxy: TestAwsApiGatewayEventProxy;
-} => {
-    const env = {} as AutoscaleEnvironment;
-    const proxy = new TestAwsApiGatewayEventProxy(event, context);
-    const p = new TestAwsPlatformAdaptee();
-    const pa = new AwsPlatformAdapter(p, proxy);
-    const autoscale = new TestAwsFortiGateAutoscale<
-        APIGatewayProxyEvent,
-        Context,
-        APIGatewayProxyResult
-    >(pa, env, proxy);
-    return {
-        autoscale: autoscale,
-        env: env,
-        platformAdaptee: p,
-        platformAdapter: pa,
-        proxy: proxy
-    };
-};
-
-export const createAwsTgwApiGatewayEventHandler = (
-    event: APIGatewayProxyEvent,
-    context: Context
-): {
-    autoscale: TestAwsTgwFortiGateAutoscale<APIGatewayProxyEvent, Context, APIGatewayProxyResult>;
-    env: AutoscaleEnvironment;
-    platformAdaptee: TestAwsPlatformAdaptee;
-    platformAdapter: AwsPlatformAdapter;
-    proxy: TestAwsApiGatewayEventProxy;
-} => {
-    const env = {} as AutoscaleEnvironment;
-    const proxy = new TestAwsApiGatewayEventProxy(event, context);
-    const p = new TestAwsPlatformAdaptee();
-    const pa = new AwsPlatformAdapter(p, proxy);
-    const autoscale = new TestAwsTgwFortiGateAutoscale<
-        APIGatewayProxyEvent,
-        Context,
-        APIGatewayProxyResult
-    >(pa, env, proxy);
-    return {
-        autoscale: autoscale,
-        env: env,
-        platformAdaptee: p,
-        platformAdapter: pa,
-        proxy: proxy
-    };
-};
 
 describe('FortiGate sanity test.', () => {
     let mockDataRootDir: string;
@@ -115,7 +50,7 @@ describe('FortiGate sanity test.', () => {
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-get-config.json')
         );
-        context = await awsTestMan.fakeApiGatewayContext();
+        context = await awsTestMan.fakeLambdaContext();
 
         const {
             autoscale,
