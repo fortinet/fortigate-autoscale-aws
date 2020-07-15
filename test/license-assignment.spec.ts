@@ -10,7 +10,8 @@ import {
     MockEC2,
     MockElbv2,
     MockLambda,
-    MockS3
+    MockS3,
+    LicenseUsageRecord
 } from 'autoscale-core';
 import { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import * as HttpStatusCode from 'http-status-codes';
@@ -228,7 +229,17 @@ describe('FortiGate BYOL license assignment.', () => {
             vmInSync: true
         };
 
-        Sinon.assert.match(spySaveItemToDb.calledWith(Sinon.match.any, item), true);
+        // the saved item contains the expected property values.
+        const licenseItem: LicenseUsageRecord = spySaveItemToDb.args[
+            spySaveItemToDb.args.length - 1
+        ][1] as LicenseUsageRecord;
+        Sinon.assert.match(item.algorithm === licenseItem.algorithm, true);
+        Sinon.assert.match(item.checksum === licenseItem.checksum, true);
+        Sinon.assert.match(item.fileName === licenseItem.fileName, true);
+        Sinon.assert.match(item.productName === licenseItem.productName, true);
+        Sinon.assert.match(item.vmId === licenseItem.vmId, true);
+        Sinon.assert.match(item.scalingGroupName === licenseItem.scalingGroupName, true);
+
         // ASSERT: proxy responds with http code 200 and expected license content
         Sinon.assert.match(
             spyProxyFormatResponse.calledWith(HttpStatusCode.OK, 'mockup-license2\n'),
