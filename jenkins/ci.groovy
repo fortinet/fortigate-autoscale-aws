@@ -2,7 +2,7 @@ node('devops-aws') {
     stage('Checkout Changes') {
         def changeBranch = "change-${GERRIT_CHANGE_NUMBER}-${GERRIT_PATCHSET_NUMBER}"
         def scmVars = checkout scm
-        git url: scmVars.GIT_URL
+        git url: scmVars.GIT_URL, branch: 'main'
         sh "git fetch origin ${GERRIT_REFSPEC}:${changeBranch}"
         sh "git checkout ${changeBranch}"
     }

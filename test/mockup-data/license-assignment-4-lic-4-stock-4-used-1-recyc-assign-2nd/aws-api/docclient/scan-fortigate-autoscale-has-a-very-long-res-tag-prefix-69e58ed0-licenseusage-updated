@@ -1,0 +1,47 @@
+{
+    "Count": 1,
+    "Items": [
+        {
+            "algorithm":"sha256",
+            "checksum":"0b8730303b3c0d2477ac8c78f50c4cf8068b8bfb1cb48090a0e0d10f520d2b09",
+            "fileName":"mockup-license1",
+            "productName":"fortigate",
+            "vmId": "i-0000000000byol002",
+            "scalingGroupName": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-byol-auto-scaling-group",
+            "assignedTime": 1588209959339,
+            "vmInSync": true
+        },
+        {
+            "algorithm":"sha256",
+            "checksum":"b118a0be644a301f4f62f99dc0f3ec7c43d641587340b09ef829594cd518753e",
+            "fileName":"mockup-license2",
+            "productName":"fortigate",
+            "vmId": "i-0000000000byol003",
+            "scalingGroupName": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-byol-auto-scaling-group",
+            "assignedTime": 1588209959339,
+            "vmInSync": false
+        },
+        {
+            "algorithm":"sha256",
+            "checksum":"f80604c4767664f340eade34f67bdd4827c7d3749c88bc1d8f4e0aa19f0b0c69",
+            "fileName":"mockup-license3",
+            "productName":"fortigate",
+            "vmId": "i-0000000000byol004",
+            "scalingGroupName": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-byol-auto-scaling-group",
+            "assignedTime": 1588209959339,
+            "vmInSync": true
+        },
+        {
+            "algorithm":"sha256",
+            "checksum":"059534f4c25da5b7e05bdebcb8d62f07dbf869fbca1487169a89cd26845febdc",
+            "fileName":"mockup-license4",
+            "productName":"fortigate",
+            "vmId": "i-0000000000byol005",
+            "scalingGroupName": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-byol-auto-scaling-group",
+            "assignedTime": 1588209959339,
+            "vmInSync": true
+        }
+    ],
+    "ScannedCount": 1,
+    "ConsumedCapacity": null
+}
