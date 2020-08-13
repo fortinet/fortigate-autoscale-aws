@@ -27,7 +27,7 @@
     "dependencies": {
         "@types/aws-lambda": "^8.10.46",
         "@types/node": "^13.9.2",
-        "autoscale-core": "git+ssh://gerrit.fortinet.com:29418/devops/multi-cloud/autoscale/core#b47f6387d15af9c59d1c7152556c15515402a3f8",
+        "autoscale-core": "git+ssh://gerrit.fortinet.com:29418/devops/multi-cloud/autoscale/core#a8a602927554318604c8a80e09965623c59b65ab",
         "aws-sdk": "^2.657.0",
         "http-status-codes": "^1.4.0",
         "rimraf": "^3.0.2"

@@ -5,7 +5,7 @@ import {
     scheduledEventTgwHandler,
     licenseHandler,
     cfnServiceEventHandler,
-    lambdaPeerInvocationHandler
+    tgwLambdaPeerInvocationHandler
 } from './func';
 
 // NOTE: this exports style is for AWS Lambda compatibility
@@ -27,4 +27,4 @@ exports.licenseHandler = licenseHandler;
 exports.cfnServiceEventHandler = cfnServiceEventHandler;
 
 // NOTE: this exports style is for AWS Lambda compatibility
-exports.lambdaPeerInvocationHandler = lambdaPeerInvocationHandler;
+exports.tgwLambdaPeerInvocationHandler = tgwLambdaPeerInvocationHandler;
