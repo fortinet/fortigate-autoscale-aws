@@ -122,7 +122,7 @@
                 "Role": {
                     "Fn::GetAtt": ["IamRoleTransitGatewayVpnHandler", "Arn"]
                 },
-                "Handler": "index.lambdaPeerInvocationHandler",
+                "Handler": "index.tgwLambdaPeerInvocationHandler",
                 "Timeout": 600,
                 "Code": {
                     "S3Bucket": {

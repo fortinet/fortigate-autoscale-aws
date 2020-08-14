@@ -71,6 +71,20 @@ describe('FortiGate first heartbeat sync.', () => {
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
+        const stubAdapterListMasterRoleVmId = Sinon.stub(platformAdapter, 'listMasterRoleVmId');
+
+        stubAdapterListMasterRoleVmId.callsFake(async () => {
+            const callCount = mockEC2.getStub('describeInstances').callCount;
+            mockEC2.callSubOnNthFake(
+                'describeInstances',
+                callCount + 1,
+                'i-0000000000byol001',
+                true
+            );
+            stubAdapterListMasterRoleVmId.restore();
+            return await platformAdapter.listMasterRoleVmId();
+        });
+
         await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
@@ -93,6 +107,9 @@ describe('FortiGate first heartbeat sync.', () => {
             ),
             true
         );
+
+        stubAdapterListMasterRoleVmId.restore();
+        spyProxyFormatResponse.restore();
     });
     it('First heartbeat from slave (BYOL). Master election is pending.', async () => {
         mockDataDir = path.resolve(mockDataRootDir, 'heartbeat-first-slave-me-pending');
@@ -167,6 +184,20 @@ describe('FortiGate first heartbeat sync.', () => {
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
+        const stubAdapterListMasterRoleVmId = Sinon.stub(platformAdapter, 'listMasterRoleVmId');
+
+        stubAdapterListMasterRoleVmId.callsFake(async () => {
+            const callCount = mockEC2.getStub('describeInstances').callCount;
+            mockEC2.callSubOnNthFake(
+                'describeInstances',
+                callCount + 1,
+                'i-0000000000byol001',
+                true
+            );
+            stubAdapterListMasterRoleVmId.restore();
+            return await platformAdapter.listMasterRoleVmId();
+        });
+
         await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
@@ -189,6 +220,7 @@ describe('FortiGate first heartbeat sync.', () => {
             ),
             true
         );
+        spyProxyFormatResponse.restore();
     });
     it('First heartbeat from slave (BYOL). Master election is done. Master is healthy.', async () => {
         mockDataDir = path.resolve(mockDataRootDir, 'heartbeat-first-slave-me-done-healthy');
@@ -271,6 +303,20 @@ describe('FortiGate first heartbeat sync.', () => {
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
+
+        const stubAdapterListMasterRoleVmId = Sinon.stub(platformAdapter, 'listMasterRoleVmId');
+
+        stubAdapterListMasterRoleVmId.callsFake(async () => {
+            const callCount = mockEC2.getStub('describeInstances').callCount;
+            mockEC2.callSubOnNthFake(
+                'describeInstances',
+                callCount + 1,
+                'i-0000000000byol001',
+                true
+            );
+            stubAdapterListMasterRoleVmId.restore();
+            return await platformAdapter.listMasterRoleVmId();
+        });
 
         await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 

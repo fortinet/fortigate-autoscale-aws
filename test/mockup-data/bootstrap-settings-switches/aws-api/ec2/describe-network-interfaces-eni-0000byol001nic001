@@ -6,16 +6,16 @@
             "SourceDestCheck": true,
             "AvailabilityZone": "no-where-1b",
             "Description": "mockup network interface",
-            "NetworkInterfaceId": "eni-0fd3e92c4188f7243",
+            "NetworkInterfaceId": "eni-0000byol001nic002",
             "PrivateIpAddresses": [
                 {
-                    "PrivateDnsName": "ip-192-168-1-55.no-where-1.compute.internal",
+                    "PrivateDnsName": "ip-192-168-2-1.no-where-1.compute.internal",
                     "Primary": true,
-                    "PrivateIpAddress": "192.168.1.55"
+                    "PrivateIpAddress": "192.168.2.1"
                 }
             ],
             "RequesterManaged": false,
-            "PrivateDnsName": "ip-192-168-1-55.no-where-1.compute.internal",
+            "PrivateDnsName": "ip-192-168-2-1.no-where-1.compute.internal",
             "VpcId": "vpc-00000000000000001",
             "InterfaceType": "interface",
             "RequesterId": "AIDAJLY3B3XPNJQYWZSKC",
@@ -29,7 +29,7 @@
             "OwnerId": "123456789012",
             "SubnetId": "subnet-00vpc001subnet001",
             "TagSet": [],
-            "PrivateIpAddress": "192.168.1.55"
+            "PrivateIpAddress": "192.168.2.1"
         }
     ]
 }
