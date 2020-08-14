@@ -3,7 +3,7 @@ import {
     AwsApiGatewayEventProxy,
     AwsCloudFormationCustomResourceEventProxy,
     AwsFortiGateAutoscale,
-    AwsFortiGateAutoscaleLambdaInvocationHandler,
+    AwsFortiGateAutoscaleTgwLambdaInvocationHandler,
     AwsFortiGateAutoscaleServiceProvider,
     AwsFortiGateAutoscaleTgw,
     AwsPlatformAdaptee,
@@ -136,7 +136,7 @@ export async function cfnServiceEventHandler(
  * @param {JSONable} event incoming payload
  * @param {Context} context Lambda context
  */
-export async function lambdaPeerInvocationHandler(
+export async function tgwLambdaPeerInvocationHandler(
     event: JSONable,
     context: Context
 ): Promise<void> {
@@ -145,6 +145,6 @@ export async function lambdaPeerInvocationHandler(
     const proxy = new AwsLambdaInvocationProxy(event, context);
     const platform = new AwsPlatformAdapter(new AwsPlatformAdaptee(), proxy);
     const autoscale = new AwsFortiGateAutoscaleTgw<JSONable, Context, void>(platform, env, proxy);
-    const handler = new AwsFortiGateAutoscaleLambdaInvocationHandler(autoscale);
+    const handler = new AwsFortiGateAutoscaleTgwLambdaInvocationHandler(autoscale);
     return await handler.handleLambdaPeerInvocation();
 }

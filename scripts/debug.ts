@@ -9,7 +9,7 @@ import {
     autoscaleTgwHandler,
     scheduledEventHandler,
     scheduledEventTgwHandler,
-    lambdaPeerInvocationHandler,
+    tgwLambdaPeerInvocationHandler,
     licenseHandler
 } from '../functions/fgt-as-handler/func';
 
@@ -41,7 +41,7 @@ const start = async (args: any): Promise<void> => {
             await scheduledEventHandler(await atm.fakeScheduledEventRequest(args.event), context);
         }
     } else if (args.type === 'peerinvocation') {
-        await lambdaPeerInvocationHandler(await atm.fakeCustomRequest(args.event), context);
+        await tgwLambdaPeerInvocationHandler(await atm.fakeCustomRequest(args.event), context);
     } else if (args.type === 'license') {
         await licenseHandler(await atm.fakeApiGatewayRequest(args.event), context);
     }

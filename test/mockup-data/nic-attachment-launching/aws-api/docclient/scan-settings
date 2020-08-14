@@ -137,6 +137,13 @@
             "jsonEncoded": false
         },
         {
+            "settingValue": "https",
+            "settingKey": "fortigate-traffic-protocol",
+            "editable": false,
+            "description": "The port number for load balancer to route traffic through FortiGate to the protected services behind the load balancer.",
+            "jsonEncoded": false
+        },
+        {
             "settingValue": "1234567890",
             "settingKey": "fortigate-psk-secret",
             "editable": false,

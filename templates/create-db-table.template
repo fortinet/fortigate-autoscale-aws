@@ -150,20 +150,12 @@
                     {
                         "AttributeName": "scalingGroupName",
                         "AttributeType": "S"
-                    },
-                    {
-                        "AttributeName": "vmId",
-                        "AttributeType": "S"
                     }
                 ],
                 "KeySchema": [
                     {
                         "AttributeName": "scalingGroupName",
                         "KeyType": "HASH"
-                    },
-                    {
-                        "AttributeName": "vmId",
-                        "KeyType": "RANGE"
                     }
                 ],
                 "ProvisionedThroughput": {
