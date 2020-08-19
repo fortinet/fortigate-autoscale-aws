@@ -1499,6 +1499,9 @@
                         }
                     ]
                 },
+                "fortigate-autoscale-virtual-network-cidr": {
+                    "Ref": "VpcCidr"
+                },
                 "fortigate-admin-port": {
                     "Ref": "FortiGateAdminPort"
                 },

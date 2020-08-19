@@ -652,7 +652,7 @@
                 "S": "vpc-066ec3dc1f4a32167"
             },
             "settingKey": {
-                "S": "fortigate-autoscale-vpc-id"
+                "S": "fortigate-autoscale-virtual-network-id"
             },
             "editable": {
                 "S": "false"

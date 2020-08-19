@@ -8,3 +8,11 @@ config sys interface
         set mtu 9001
     next
 end
+
+config router static
+    edit 1
+        set dst {VIRTUAL_NETWORK_CIDR}
+        set device "port2"
+        set dynamic-gateway enable
+    next
+end

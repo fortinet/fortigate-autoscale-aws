@@ -280,9 +280,23 @@
         },
         {
             "settingValue": "vpc-066ec3dc1f4a32167",
-            "settingKey": "fortigate-autoscale-vpc-id",
+            "settingKey": "fortigate-autoscale-virtual-network-id",
             "editable": false,
             "description": "VPC ID of the FortiGate Autoscale.",
+            "jsonEncoded": false
+        },
+        {
+            "settingValue": "192.168.0.0/16",
+            "settingKey": "fortigate-autoscale-virtual-network-cidr",
+            "editable": false,
+            "description": "Virtual network Cidr of the FortiGate Autoscale.",
+            "jsonEncoded": false
+        },
+        {
+            "settingValue": "192.168.0.0/16",
+            "settingKey": "fortigate-autoscale-virtual-network-cidr",
+            "editable": false,
+            "description": "Virtual network Cidr of the FortiGate Autoscale.",
             "jsonEncoded": false
         },
         {

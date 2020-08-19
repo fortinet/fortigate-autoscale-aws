@@ -1,10 +1,12 @@
 
-
 config firewall address
     edit internal-elb-web
         set type fqdn
         set fqdn "{INTERNAL_ELB_DNS}"
         set associated-interface "{EXTERNAL_INTERFACE}"
+    next
+    edit "private-subnet-egress"
+        set associated-interface "{INTERNAL_INTERFACE}"
     next
 end
 
@@ -33,10 +35,10 @@ config firewall policy
         set nat enable
     next
     edit 0
-        set name "internal-web-egress"
+        set name "allow-private-subnet-egress"
         set srcintf "{INTERNAL_INTERFACE}"
         set dstintf "{EXTERNAL_INTERFACE}"
-        set srcaddr "egress"
+        set srcaddr "private-subnet-egress"
         set dstaddr "all"
         set action accept
         set schedule "always"
