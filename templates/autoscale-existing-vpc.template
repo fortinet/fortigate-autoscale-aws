@@ -25,8 +25,8 @@
         },
         "S3KeyPrefix": {
             "Type": "String",
-            "AllowedPattern": "^[0-9a-zA-Z-/]*$",
-            "ConstraintDescription": "Deployment package S3 key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).",
+            "AllowedPattern": "^$|^[0-9a-zA-Z-/]*/$",
+            "ConstraintDescription": "Deployment package S3 key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). If provided, it must end with a forward slash (/).",
             "Description": "Name of the S3 folder that stores the FortiGate Autoscale deployment resources. Can only contain numbers, lowercase letters, uppercase letters, hyphens (-), and forward slashes (/). If provided, it must end with a forward slash (/)."
         },
         "VpcId": {
@@ -283,6 +283,8 @@
         },
         "CustomAssetDirectory": {
             "Type": "String",
+            "AllowedPattern": "^$|^[0-9a-zA-Z-/]*/$",
+            "ConstraintDescription": "Deployment package S3 key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). If provided, it must end with a forward slash (/).",
             "Default": "",
             "Description": "The sub path within the 'custom asset container' which serves as the top level directory of all your custom assets. If 'use custom asset location' is set to 'yes', and this value is left empty, the 'custom asset container' will serve as the top level directory."
         }

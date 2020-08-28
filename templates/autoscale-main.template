@@ -691,7 +691,7 @@
                                                 },
                                                 {
                                                     "Fn::Sub": [
-                                                        "arn:aws:s3:::${customContainer}/${customDirectory}/*",
+                                                        "arn:aws:s3:::${customContainer}/${customDirectory}*",
                                                         {
                                                             "customContainer": {
                                                                 "Ref": "CustomAssetContainer"
@@ -1380,7 +1380,7 @@
                             {
                                 "Ref": "S3KeyPrefix"
                             },
-                            "assets"
+                            "assets/"
                         ]
                     ]
                 },
