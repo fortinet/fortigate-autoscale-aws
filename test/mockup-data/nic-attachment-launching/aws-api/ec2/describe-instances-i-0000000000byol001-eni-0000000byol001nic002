@@ -185,7 +185,7 @@
                             "Key": "aws:cloudformation:stack-id"
                         },
                         {
-                            "Value": "master",
+                            "Value": "primary",
                             "Key": "AutoscaleRole"
                         },
                         {

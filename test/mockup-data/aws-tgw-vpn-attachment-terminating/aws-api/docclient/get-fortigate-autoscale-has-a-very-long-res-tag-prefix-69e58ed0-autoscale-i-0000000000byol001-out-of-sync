@@ -5,7 +5,7 @@
         "heartBeatInterval":"30",
         "heartBeatLossCount":"1000",
         "ip":"192.168.0.1",
-        "masterIp":"192.168.0.1",
+        "primaryIp":"192.168.0.1",
         "nextHeartBeatTime":"1599224351096",
         "syncState":"out-of-sync",
         "seq": "1"

@@ -1,0 +1,152 @@
+{
+    "AmiLaunchIndex": 0,
+    "ImageId": "ami-0b32d672dfa76305f",
+    "InstanceId": "i-000000000000secondary",
+    "InstanceType": "c5.large",
+    "KeyName": "cmock-2018",
+    "LaunchTime": "2018-11-22T05:24:55.000Z",
+    "Monitoring": {
+        "State": "disabled"
+    },
+    "Placement": {
+        "AvailabilityZone": "us-west-2b",
+        "GroupName": "",
+        "Tenancy": "default"
+    },
+    "PrivateDnsName": "ip-10-253-0-173.us-west-2.compute.internal",
+    "PrivateIpAddress": "10.0.0.2",
+    "ProductCodes": [
+        {
+            "ProductCodeId": "dlaioq277sglm5mw1y1dmeuqa",
+            "ProductCodeType": "marketplace"
+        }
+    ],
+    "PublicDnsName": "",
+    "PublicIpAddress": "8.8.4.4",
+    "State": {
+        "Code": 16,
+        "Name": "running"
+    },
+    "StateTransitionReason": "",
+    "SubnetId": "subnet-00000000000000001",
+    "VpcId": "vpc-00000000000000001",
+    "Architecture": "x86_64",
+    "BlockDeviceMappings": [
+        {
+            "DeviceName": "/dev/sda1",
+            "Ebs": {
+                "AttachTime": "2018-11-22T05:24:56.000Z",
+                "DeleteOnTermination": true,
+                "Status": "attached",
+                "VolumeId": "vol-0edbcfa15b3a91159"
+            }
+        },
+        {
+            "DeviceName": "/dev/sdb",
+            "Ebs": {
+                "AttachTime": "2018-11-22T05:24:56.000Z",
+                "DeleteOnTermination": true,
+                "Status": "attached",
+                "VolumeId": "vol-0e80229fdd5e79c67"
+            }
+        }
+    ],
+    "ClientToken": "154286429239828622",
+    "EbsOptimized": true,
+    "EnaSupport": true,
+    "Hypervisor": "xen",
+    "NetworkInterfaces": [
+        {
+            "Association": {
+                "IpOwnerId": "123456789012",
+                "PublicDnsName": "",
+                "PublicIp": "34.213.98.131"
+            },
+            "Attachment": {
+                "AttachTime": "2018-11-22T05:24:55.000Z",
+                "AttachmentId": "eni-attach-0242bb3f2fb633f1b",
+                "DeleteOnTermination": true,
+                "DeviceIndex": 0,
+                "Status": "attached"
+            },
+            "Description": "Primary network interface",
+            "Groups": [
+                {
+                    "GroupName": "Fortinet FortiGate -BYOL- Next-Generation Firewall-6-0-3-AutogenByAWSMP-",
+                    "GroupId": "sg-070bc1d5b064df97e"
+                }
+            ],
+            "Ipv6Addresses": [
+                {
+                    "Ipv6Address": "2600:1f14:12d:da11:4423:17d0:823f:84ab"
+                }
+            ],
+            "MacAddress": "02:c1:29:62:7d:06",
+            "NetworkInterfaceId": "eni-013225e2e3c9f534e",
+            "OwnerId": "123456789012",
+            "PrivateIpAddress": "10.253.0.173",
+            "PrivateIpAddresses": [
+                {
+                    "Association": {
+                        "IpOwnerId": "123456789012",
+                        "PublicDnsName": "",
+                        "PublicIp": "34.213.98.131"
+                    },
+                    "Primary": true,
+                    "PrivateIpAddress": "10.253.0.173"
+                }
+            ],
+            "SourceDestCheck": false,
+            "Status": "in-use",
+            "SubnetId": "subnet-0296b76e035ffb49a",
+            "VpcId": "vpc-0ff929fa6f2174347"
+        },
+        {
+            "Attachment": {
+                "AttachTime": "2018-11-22T05:24:55.000Z",
+                "AttachmentId": "eni-attach-0964a641b156527e2",
+                "DeleteOnTermination": true,
+                "DeviceIndex": 1,
+                "Status": "attached"
+            },
+            "Description": "",
+            "Groups": [
+                {
+                    "GroupName": "Fortinet FortiGate -BYOL- Next-Generation Firewall-6-0-3-AutogenByAWSMP-",
+                    "GroupId": "sg-070bc1d5b064df97e"
+                }
+            ],
+            "Ipv6Addresses": [],
+            "MacAddress": "02:46:4e:1a:e1:0e",
+            "NetworkInterfaceId": "eni-0d851ecf54668d86e",
+            "OwnerId": "123456789012",
+            "PrivateIpAddress": "10.253.1.10",
+            "PrivateIpAddresses": [
+                {
+                    "Primary": true,
+                    "PrivateIpAddress": "10.253.1.10"
+                }
+            ],
+            "SourceDestCheck": false,
+            "Status": "in-use",
+            "SubnetId": "subnet-01d8ab82020389cfe",
+            "VpcId": "vpc-0ff929fa6f2174347"
+        }
+    ],
+    "RootDeviceName": "/dev/sda1",
+    "RootDeviceType": "ebs",
+    "SecurityGroups": [
+        {
+            "GroupName": "Fortinet FortiGate -BYOL- Next-Generation Firewall-6-0-3-AutogenByAWSMP-",
+            "GroupId": "sg-070bc1d5b064df97e"
+        }
+    ],
+    "SourceDestCheck": false,
+    "Tags": [
+        {
+            "Key": "Name",
+            "Value": "tmeFGT-demolab"
+        }
+    ],
+    "VirtualizationType": "hvm"
+}

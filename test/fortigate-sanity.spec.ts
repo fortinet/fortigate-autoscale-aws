@@ -47,7 +47,7 @@ describe('FortiGate sanity test.', () => {
         mocDocClient.restoreAll();
     });
     it('Setting key match the keys in saveSettings.', async () => {
-        mockDataDir = path.resolve(mockDataRootDir, 'bootstrap-master-group-instance');
+        mockDataDir = path.resolve(mockDataRootDir, 'bootstrap-primary-group-instance');
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-get-config.json')
         );

@@ -43,8 +43,8 @@ describe('FortiGate first heartbeat sync.', () => {
         mocDocClient.restoreAll();
         Sinon.restore();
     });
-    it('First heartbeat from the pending master.', async () => {
-        mockDataDir = path.resolve(mockDataRootDir, 'heartbeat-first-master-me-pending');
+    it('First heartbeat from the pending primary.', async () => {
+        mockDataDir = path.resolve(mockDataRootDir, 'heartbeat-first-primary-me-pending');
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
         );
@@ -68,12 +68,12 @@ describe('FortiGate first heartbeat sync.', () => {
         } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
-        const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
+        const spyPromisesPrimaryElectionResult = Sinon.spy(autoscale, 'handlePrimaryElection')
             .returnValues;
 
-        const stubAdapterListMasterRoleVmId = Sinon.stub(platformAdapter, 'listMasterRoleVmId');
+        const stubAdapterListPrimaryRoleVmId = Sinon.stub(platformAdapter, 'listPrimaryRoleVmId');
 
-        stubAdapterListMasterRoleVmId.callsFake(async () => {
+        stubAdapterListPrimaryRoleVmId.callsFake(async () => {
             const callCount = mockEC2.getStub('describeInstances').callCount;
             mockEC2.callSubOnNthFake(
                 'describeInstances',
@@ -81,25 +81,25 @@ describe('FortiGate first heartbeat sync.', () => {
                 'i-0000000000byol001',
                 true
             );
-            stubAdapterListMasterRoleVmId.restore();
-            return await platformAdapter.listMasterRoleVmId();
+            stubAdapterListPrimaryRoleVmId.restore();
+            return await platformAdapter.listPrimaryRoleVmId();
         });
 
         await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
-        const masterElectionResult = await spyPromisesMasterElectionResult[0];
-        const candidate = masterElectionResult.candidate;
-        const newMaster = masterElectionResult.newMaster;
-        const newMasterRecord = masterElectionResult.newMasterRecord;
+        const primaryElectionResult = await spyPromisesPrimaryElectionResult[0];
+        const candidate = primaryElectionResult.candidate;
+        const newPrimary = primaryElectionResult.newPrimary;
+        const newPrimaryRecord = primaryElectionResult.newPrimaryRecord;
 
-        // ASSERT: new master elected
-        Sinon.assert.match(newMaster !== null, true);
-        // ASSERT: new master should be done
-        Sinon.assert.match(newMasterRecord.voteState, 'done');
-        // ASSERT: candidate is the new master
-        Sinon.assert.match(compare(candidate).isEqualTo(newMaster), true);
+        // ASSERT: new primary elected
+        Sinon.assert.match(newPrimary !== null, true);
+        // ASSERT: new primary should be done
+        Sinon.assert.match(newPrimaryRecord.voteState, 'done');
+        // ASSERT: candidate is the new primary
+        Sinon.assert.match(compare(candidate).isEqualTo(newPrimary), true);
 
-        // ASSERT: proxy responds with http code 200 and candidate's private ip as master ip
+        // ASSERT: proxy responds with http code 200 and candidate's private ip as primary ip
         Sinon.assert.match(
             spyProxyFormatResponse.calledWith(
                 HttpStatusCode.OK,
@@ -108,11 +108,11 @@ describe('FortiGate first heartbeat sync.', () => {
             true
         );
 
-        stubAdapterListMasterRoleVmId.restore();
+        stubAdapterListPrimaryRoleVmId.restore();
         spyProxyFormatResponse.restore();
     });
-    it('First heartbeat from slave (BYOL). Master election is pending.', async () => {
-        mockDataDir = path.resolve(mockDataRootDir, 'heartbeat-first-slave-me-pending');
+    it('First heartbeat from secondary (BYOL). Primary election is pending.', async () => {
+        mockDataDir = path.resolve(mockDataRootDir, 'heartbeat-first-secondary-me-pending');
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
         );
@@ -136,28 +136,28 @@ describe('FortiGate first heartbeat sync.', () => {
         } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
-        const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
+        const spyPromisesPrimaryElectionResult = Sinon.spy(autoscale, 'handlePrimaryElection')
             .returnValues;
 
         await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
-        const masterElectionResult = await spyPromisesMasterElectionResult[0];
-        const newMaster = masterElectionResult.newMaster;
-        const oldMaster = masterElectionResult.oldMaster;
-        const oldMasterRecord = masterElectionResult.oldMasterRecord;
+        const primaryElectionResult = await spyPromisesPrimaryElectionResult[0];
+        const newPrimary = primaryElectionResult.newPrimary;
+        const oldPrimary = primaryElectionResult.oldPrimary;
+        const oldPrimaryRecord = primaryElectionResult.oldPrimaryRecord;
 
-        // ASSERT: no new master elected
-        Sinon.assert.match(newMaster, null);
-        // ASSERT: old master is available
-        Sinon.assert.match(oldMaster !== null, true);
-        // ASSERT: old master is still pending
-        Sinon.assert.match(oldMasterRecord.voteState, 'pending');
+        // ASSERT: no new primary elected
+        Sinon.assert.match(newPrimary, null);
+        // ASSERT: old primary is available
+        Sinon.assert.match(oldPrimary !== null, true);
+        // ASSERT: old primary is still pending
+        Sinon.assert.match(oldPrimaryRecord.voteState, 'pending');
 
         // ASSERT: proxy responds with http code 200 and empty body
         Sinon.assert.match(spyProxyFormatResponse.calledWith(HttpStatusCode.OK, ''), true);
     });
-    it('First heartbeat from slave (BYOL). Master election timed out.', async () => {
-        mockDataDir = path.resolve(mockDataRootDir, 'heartbeat-first-slave-me-timed-out');
+    it('First heartbeat from secondary (BYOL). Primary election timed out.', async () => {
+        mockDataDir = path.resolve(mockDataRootDir, 'heartbeat-first-secondary-me-timed-out');
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
         );
@@ -181,12 +181,12 @@ describe('FortiGate first heartbeat sync.', () => {
         } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
-        const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
+        const spyPromisesPrimaryElectionResult = Sinon.spy(autoscale, 'handlePrimaryElection')
             .returnValues;
 
-        const stubAdapterListMasterRoleVmId = Sinon.stub(platformAdapter, 'listMasterRoleVmId');
+        const stubAdapterListPrimaryRoleVmId = Sinon.stub(platformAdapter, 'listPrimaryRoleVmId');
 
-        stubAdapterListMasterRoleVmId.callsFake(async () => {
+        stubAdapterListPrimaryRoleVmId.callsFake(async () => {
             const callCount = mockEC2.getStub('describeInstances').callCount;
             mockEC2.callSubOnNthFake(
                 'describeInstances',
@@ -194,25 +194,25 @@ describe('FortiGate first heartbeat sync.', () => {
                 'i-0000000000byol001',
                 true
             );
-            stubAdapterListMasterRoleVmId.restore();
-            return await platformAdapter.listMasterRoleVmId();
+            stubAdapterListPrimaryRoleVmId.restore();
+            return await platformAdapter.listPrimaryRoleVmId();
         });
 
         await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
-        const masterElectionResult = await spyPromisesMasterElectionResult[0];
-        const candidate = masterElectionResult.candidate;
-        const newMaster = masterElectionResult.newMaster;
-        const oldMaster = masterElectionResult.oldMaster;
+        const primaryElectionResult = await spyPromisesPrimaryElectionResult[0];
+        const candidate = primaryElectionResult.candidate;
+        const newPrimary = primaryElectionResult.newPrimary;
+        const oldPrimary = primaryElectionResult.oldPrimary;
 
-        // ASSERT: new master elected
-        Sinon.assert.match(newMaster !== null, true);
-        // ASSERT: old master is available
-        Sinon.assert.match(oldMaster !== null, true);
-        // ASSERT: candidate is the new master
-        Sinon.assert.match(compare(candidate).isEqualTo(newMaster), true);
+        // ASSERT: new primary elected
+        Sinon.assert.match(newPrimary !== null, true);
+        // ASSERT: old primary is available
+        Sinon.assert.match(oldPrimary !== null, true);
+        // ASSERT: candidate is the new primary
+        Sinon.assert.match(compare(candidate).isEqualTo(newPrimary), true);
 
-        // ASSERT: proxy responds with http code 200 and candidate's private ip as master ip
+        // ASSERT: proxy responds with http code 200 and candidate's private ip as primary ip
         Sinon.assert.match(
             spyProxyFormatResponse.calledWith(
                 HttpStatusCode.OK,
@@ -222,8 +222,8 @@ describe('FortiGate first heartbeat sync.', () => {
         );
         spyProxyFormatResponse.restore();
     });
-    it('First heartbeat from slave (BYOL). Master election is done. Master is healthy.', async () => {
-        mockDataDir = path.resolve(mockDataRootDir, 'heartbeat-first-slave-me-done-healthy');
+    it('First heartbeat from secondary (BYOL). Primary election is done. Primary is healthy.', async () => {
+        mockDataDir = path.resolve(mockDataRootDir, 'heartbeat-first-secondary-me-done-healthy');
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
         );
@@ -247,36 +247,36 @@ describe('FortiGate first heartbeat sync.', () => {
         } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
-        const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
+        const spyPromisesPrimaryElectionResult = Sinon.spy(autoscale, 'handlePrimaryElection')
             .returnValues;
 
         await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
-        const masterElectionResult = await spyPromisesMasterElectionResult[0];
-        const newMaster = masterElectionResult.newMaster;
-        const oldMaster = masterElectionResult.oldMaster;
-        const oldMasterRecord = masterElectionResult.oldMasterRecord;
+        const primaryElectionResult = await spyPromisesPrimaryElectionResult[0];
+        const newPrimary = primaryElectionResult.newPrimary;
+        const oldPrimary = primaryElectionResult.oldPrimary;
+        const oldPrimaryRecord = primaryElectionResult.oldPrimaryRecord;
 
-        // ASSERT: no new master elected
-        Sinon.assert.match(newMaster, null);
-        // ASSERT: old master is available
-        Sinon.assert.match(oldMaster !== null, true);
-        // ASSERT: old master is done
-        Sinon.assert.match(oldMasterRecord.voteState, 'done');
+        // ASSERT: no new primary elected
+        Sinon.assert.match(newPrimary, null);
+        // ASSERT: old primary is available
+        Sinon.assert.match(oldPrimary !== null, true);
+        // ASSERT: old primary is done
+        Sinon.assert.match(oldPrimaryRecord.voteState, 'done');
 
-        // ASSERT: proxy responds with http code 200 and oldMaster's private ip as master ip
+        // ASSERT: proxy responds with http code 200 and oldPrimary's private ip as primary ip
         Sinon.assert.match(
             spyProxyFormatResponse.calledWith(
                 HttpStatusCode.OK,
-                JSON.stringify({ 'master-ip': oldMaster.primaryPrivateIpAddress })
+                JSON.stringify({ 'master-ip': oldPrimary.primaryPrivateIpAddress })
             ),
             true
         );
     });
-    it('First heartbeat from slave (BYOL). Master election is done. Master is unhealthy. Replace master role.', async () => {
+    it('First heartbeat from secondary (BYOL). Primary election is done. Primary is unhealthy. Replace primary role.', async () => {
         mockDataDir = path.resolve(
             mockDataRootDir,
-            'heartbeat-first-slave-me-done-unhealthy-replaced'
+            'heartbeat-first-secondary-me-done-unhealthy-replaced'
         );
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
@@ -301,12 +301,12 @@ describe('FortiGate first heartbeat sync.', () => {
         } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
-        const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
+        const spyPromisesPrimaryElectionResult = Sinon.spy(autoscale, 'handlePrimaryElection')
             .returnValues;
 
-        const stubAdapterListMasterRoleVmId = Sinon.stub(platformAdapter, 'listMasterRoleVmId');
+        const stubAdapterListPrimaryRoleVmId = Sinon.stub(platformAdapter, 'listPrimaryRoleVmId');
 
-        stubAdapterListMasterRoleVmId.callsFake(async () => {
+        stubAdapterListPrimaryRoleVmId.callsFake(async () => {
             const callCount = mockEC2.getStub('describeInstances').callCount;
             mockEC2.callSubOnNthFake(
                 'describeInstances',
@@ -314,22 +314,22 @@ describe('FortiGate first heartbeat sync.', () => {
                 'i-0000000000byol001',
                 true
             );
-            stubAdapterListMasterRoleVmId.restore();
-            return await platformAdapter.listMasterRoleVmId();
+            stubAdapterListPrimaryRoleVmId.restore();
+            return await platformAdapter.listPrimaryRoleVmId();
         });
 
         await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
-        const masterElectionResult = await spyPromisesMasterElectionResult[0];
-        const candidate = masterElectionResult.candidate;
-        const newMaster = masterElectionResult.newMaster;
+        const primaryElectionResult = await spyPromisesPrimaryElectionResult[0];
+        const candidate = primaryElectionResult.candidate;
+        const newPrimary = primaryElectionResult.newPrimary;
 
-        // ASSERT: new master elected
-        Sinon.assert.match(newMaster !== null, true);
-        // ASSERT: candidate is the new master
-        Sinon.assert.match(compare(candidate).isEqualTo(newMaster), true);
+        // ASSERT: new primary elected
+        Sinon.assert.match(newPrimary !== null, true);
+        // ASSERT: candidate is the new primary
+        Sinon.assert.match(compare(candidate).isEqualTo(newPrimary), true);
 
-        // ASSERT: proxy responds with http code 200 and candidate's private ip as master ip
+        // ASSERT: proxy responds with http code 200 and candidate's private ip as primary ip
         Sinon.assert.match(
             spyProxyFormatResponse.calledWith(
                 HttpStatusCode.OK,
@@ -338,10 +338,10 @@ describe('FortiGate first heartbeat sync.', () => {
             true
         );
     });
-    it('First heartbeat from slave (PAYG). Master election is done. Master is unhealthy. stay masterless role.', async () => {
+    it('First heartbeat from secondary (PAYG). Primary election is done. Primary is unhealthy. stay primaryless role.', async () => {
         mockDataDir = path.resolve(
             mockDataRootDir,
-            'heartbeat-first-slave-me-done-unhealthy-unchanged'
+            'heartbeat-first-secondary-me-done-unhealthy-unchanged'
         );
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
@@ -366,15 +366,15 @@ describe('FortiGate first heartbeat sync.', () => {
         } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
-        const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
+        const spyPromisesPrimaryElectionResult = Sinon.spy(autoscale, 'handlePrimaryElection')
             .returnValues;
 
         await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
-        const masterElectionResult = await spyPromisesMasterElectionResult[0];
-        const newMaster = masterElectionResult.newMaster;
+        const primaryElectionResult = await spyPromisesPrimaryElectionResult[0];
+        const newPrimary = primaryElectionResult.newPrimary;
 
-        // ASSERT: no new master elected
-        Sinon.assert.match(newMaster, null);
+        // ASSERT: no new primary elected
+        Sinon.assert.match(newPrimary, null);
 
         // ASSERT: proxy responds with http code 200 and empty body
         Sinon.assert.match(spyProxyFormatResponse.calledWith(HttpStatusCode.OK, ''), true);
@@ -406,10 +406,10 @@ describe('FortiGate regular heartbeat sync.', () => {
         mocDocClient.restoreAll();
         Sinon.restore();
     });
-    it('Regular heartbeat from the master. Arrives on-time.', async () => {
+    it('Regular heartbeat from the primary. Arrives on-time.', async () => {
         mockDataDir = path.resolve(
             mockDataRootDir,
-            'heartbeat-regular-master-me-done-healthy-on-time'
+            'heartbeat-regular-primary-me-done-healthy-on-time'
         );
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
@@ -434,7 +434,7 @@ describe('FortiGate regular heartbeat sync.', () => {
         } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
-        const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
+        const spyPromisesPrimaryElectionResult = Sinon.spy(autoscale, 'handlePrimaryElection')
             .returnValues;
 
         const stubAdapterGetHealthCheckRecord = Sinon.stub(platformAdapter, 'getHealthCheckRecord');
@@ -448,14 +448,14 @@ describe('FortiGate regular heartbeat sync.', () => {
 
         await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
-        const masterElectionResult = await spyPromisesMasterElectionResult[0];
-        const newMaster = masterElectionResult.newMaster;
-        const oldMasterRecord = masterElectionResult.oldMasterRecord;
+        const primaryElectionResult = await spyPromisesPrimaryElectionResult[0];
+        const newPrimary = primaryElectionResult.newPrimary;
+        const oldPrimaryRecord = primaryElectionResult.oldPrimaryRecord;
 
-        // ASSERT: no new master elected
-        Sinon.assert.match(newMaster !== null, false);
-        // ASSERT: old master should be done
-        Sinon.assert.match(oldMasterRecord.voteState, 'done');
+        // ASSERT: no new primary elected
+        Sinon.assert.match(newPrimary !== null, false);
+        // ASSERT: old primary should be done
+        Sinon.assert.match(oldPrimaryRecord.voteState, 'done');
         // ASSERT: target health check is healthy.
         Sinon.assert.match(env.targetHealthCheckRecord.healthy, true);
         // ASSERT: target health check no loss count
@@ -464,10 +464,10 @@ describe('FortiGate regular heartbeat sync.', () => {
         // ASSERT: proxy responds with http code 200 and empty body
         Sinon.assert.match(spyProxyFormatResponse.calledWith(HttpStatusCode.OK, ''), true);
     });
-    it('Regular heartbeat from the slave. Arrives on-time.', async () => {
+    it('Regular heartbeat from the secondary. Arrives on-time.', async () => {
         mockDataDir = path.resolve(
             mockDataRootDir,
-            'heartbeat-regular-slave-me-done-healthy-on-time'
+            'heartbeat-regular-secondary-me-done-healthy-on-time'
         );
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
@@ -492,7 +492,7 @@ describe('FortiGate regular heartbeat sync.', () => {
         } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
-        const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
+        const spyPromisesPrimaryElectionResult = Sinon.spy(autoscale, 'handlePrimaryElection')
             .returnValues;
 
         const stubAdapterGetHealthCheckRecord = Sinon.stub(platformAdapter, 'getHealthCheckRecord');
@@ -506,14 +506,14 @@ describe('FortiGate regular heartbeat sync.', () => {
 
         await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
-        const masterElectionResult = await spyPromisesMasterElectionResult[0];
-        const newMaster = masterElectionResult.newMaster;
-        const oldMasterRecord = masterElectionResult.oldMasterRecord;
+        const primaryElectionResult = await spyPromisesPrimaryElectionResult[0];
+        const newPrimary = primaryElectionResult.newPrimary;
+        const oldPrimaryRecord = primaryElectionResult.oldPrimaryRecord;
 
-        // ASSERT: no new master elected
-        Sinon.assert.match(newMaster !== null, false);
-        // ASSERT: old master should be done
-        Sinon.assert.match(oldMasterRecord.voteState, 'done');
+        // ASSERT: no new primary elected
+        Sinon.assert.match(newPrimary !== null, false);
+        // ASSERT: old primary should be done
+        Sinon.assert.match(oldPrimaryRecord.voteState, 'done');
         // ASSERT: target health check is healthy.
         Sinon.assert.match(env.targetHealthCheckRecord.healthy, true);
         // ASSERT: target health check no loss count
@@ -549,8 +549,8 @@ describe('FortiGate irregular heartbeat sync.', () => {
         mocDocClient.restoreAll();
         Sinon.restore();
     });
-    it('Master heartbeat is late for the first time.', async () => {
-        mockDataDir = path.resolve(mockDataRootDir, 'heartbeat-master-me-done-healthy-late-1');
+    it('Primary heartbeat is late for the first time.', async () => {
+        mockDataDir = path.resolve(mockDataRootDir, 'heartbeat-primary-me-done-healthy-late-1');
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
         );
@@ -574,19 +574,19 @@ describe('FortiGate irregular heartbeat sync.', () => {
         } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
-        const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
+        const spyPromisesPrimaryElectionResult = Sinon.spy(autoscale, 'handlePrimaryElection')
             .returnValues;
 
         await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
-        const masterElectionResult = await spyPromisesMasterElectionResult[0];
-        const newMaster = masterElectionResult.newMaster;
-        const oldMasterRecord = masterElectionResult.oldMasterRecord;
+        const primaryElectionResult = await spyPromisesPrimaryElectionResult[0];
+        const newPrimary = primaryElectionResult.newPrimary;
+        const oldPrimaryRecord = primaryElectionResult.oldPrimaryRecord;
 
-        // ASSERT: no new master elected
-        Sinon.assert.match(newMaster, null);
-        // ASSERT: old master should be done
-        Sinon.assert.match(oldMasterRecord.voteState, 'done');
+        // ASSERT: no new primary elected
+        Sinon.assert.match(newPrimary, null);
+        // ASSERT: old primary should be done
+        Sinon.assert.match(oldPrimaryRecord.voteState, 'done');
         // ASSERT: target health check is healthy.
         Sinon.assert.match(env.targetHealthCheckRecord.healthy, true);
         // ASSERT: target health check: heartbeat loss count increased to 1
@@ -595,8 +595,8 @@ describe('FortiGate irregular heartbeat sync.', () => {
         // ASSERT: proxy responds with http code 200 and empty body
         Sinon.assert.match(spyProxyFormatResponse.calledWith(HttpStatusCode.OK, ''), true);
     });
-    it('Master heartbeat loss count reached the max allowed value (999). Should delete it.', async () => {
-        mockDataDir = path.resolve(mockDataRootDir, 'heartbeat-master-me-done-healthy-late-999');
+    it('Primary heartbeat loss count reached the max allowed value (999). Should delete it.', async () => {
+        mockDataDir = path.resolve(mockDataRootDir, 'heartbeat-primary-me-done-healthy-late-999');
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
         );
@@ -620,7 +620,7 @@ describe('FortiGate irregular heartbeat sync.', () => {
         } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
-        const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
+        const spyPromisesPrimaryElectionResult = Sinon.spy(autoscale, 'handlePrimaryElection')
             .returnValues;
 
         const spyPADeleteVmFromScalingGroup = Sinon.spy(
@@ -630,14 +630,14 @@ describe('FortiGate irregular heartbeat sync.', () => {
 
         await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
-        const masterElectionResult = await spyPromisesMasterElectionResult[0];
-        const newMaster = masterElectionResult.newMaster;
-        const oldMasterRecord = masterElectionResult.oldMasterRecord;
+        const primaryElectionResult = await spyPromisesPrimaryElectionResult[0];
+        const newPrimary = primaryElectionResult.newPrimary;
+        const oldPrimaryRecord = primaryElectionResult.oldPrimaryRecord;
 
-        // ASSERT: no new master elected
-        Sinon.assert.match(newMaster, null);
-        // ASSERT: old master should be done
-        Sinon.assert.match(oldMasterRecord.voteState, 'done');
+        // ASSERT: no new primary elected
+        Sinon.assert.match(newPrimary, null);
+        // ASSERT: old primary should be done
+        Sinon.assert.match(oldPrimaryRecord.voteState, 'done');
         // ASSERT: target health check is healthy.
         Sinon.assert.match(env.targetHealthCheckRecord.healthy, false);
         // ASSERT: target health check: heartbeat loss count increased to 999
@@ -651,8 +651,8 @@ describe('FortiGate irregular heartbeat sync.', () => {
         // ASSERT: proxy responds with http code 200 and empty body
         Sinon.assert.match(spyProxyFormatResponse.calledWith(HttpStatusCode.OK, ''), true);
     });
-    it('Slave heartbeat is late for the first time.', async () => {
-        mockDataDir = path.resolve(mockDataRootDir, 'heartbeat-slave-me-done-healthy-late-1');
+    it('Secondary heartbeat is late for the first time.', async () => {
+        mockDataDir = path.resolve(mockDataRootDir, 'heartbeat-secondary-me-done-healthy-late-1');
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
         );
@@ -676,19 +676,19 @@ describe('FortiGate irregular heartbeat sync.', () => {
         } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
-        const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
+        const spyPromisesPrimaryElectionResult = Sinon.spy(autoscale, 'handlePrimaryElection')
             .returnValues;
 
         await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
-        const masterElectionResult = await spyPromisesMasterElectionResult[0];
-        const newMaster = masterElectionResult.newMaster;
-        const oldMasterRecord = masterElectionResult.oldMasterRecord;
+        const primaryElectionResult = await spyPromisesPrimaryElectionResult[0];
+        const newPrimary = primaryElectionResult.newPrimary;
+        const oldPrimaryRecord = primaryElectionResult.oldPrimaryRecord;
 
-        // ASSERT: no new master elected
-        Sinon.assert.match(newMaster, null);
-        // ASSERT: old master should be done
-        Sinon.assert.match(oldMasterRecord.voteState, 'done');
+        // ASSERT: no new primary elected
+        Sinon.assert.match(newPrimary, null);
+        // ASSERT: old primary should be done
+        Sinon.assert.match(oldPrimaryRecord.voteState, 'done');
         // ASSERT: target health check is healthy.
         Sinon.assert.match(env.targetHealthCheckRecord.healthy, true);
         // ASSERT: target health check: heartbeat loss count increased to 1
@@ -697,8 +697,8 @@ describe('FortiGate irregular heartbeat sync.', () => {
         // ASSERT: proxy responds with http code 200 and empty body
         Sinon.assert.match(spyProxyFormatResponse.calledWith(HttpStatusCode.OK, ''), true);
     });
-    it('Slave heartbeat loss count reached the max allowed value (999). Should delete it.', async () => {
-        mockDataDir = path.resolve(mockDataRootDir, 'heartbeat-slave-me-done-healthy-late-999');
+    it('Secondary heartbeat loss count reached the max allowed value (999). Should delete it.', async () => {
+        mockDataDir = path.resolve(mockDataRootDir, 'heartbeat-secondary-me-done-healthy-late-999');
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
         );
@@ -722,7 +722,7 @@ describe('FortiGate irregular heartbeat sync.', () => {
         } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
 
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
-        const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
+        const spyPromisesPrimaryElectionResult = Sinon.spy(autoscale, 'handlePrimaryElection')
             .returnValues;
 
         const spyPADeleteVmFromScalingGroup = Sinon.spy(
@@ -732,14 +732,14 @@ describe('FortiGate irregular heartbeat sync.', () => {
 
         await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
-        const masterElectionResult = await spyPromisesMasterElectionResult[0];
-        const newMaster = masterElectionResult.newMaster;
-        const oldMasterRecord = masterElectionResult.oldMasterRecord;
+        const primaryElectionResult = await spyPromisesPrimaryElectionResult[0];
+        const newPrimary = primaryElectionResult.newPrimary;
+        const oldPrimaryRecord = primaryElectionResult.oldPrimaryRecord;
 
-        // ASSERT: no new master elected
-        Sinon.assert.match(newMaster, null);
-        // ASSERT: old master should be done
-        Sinon.assert.match(oldMasterRecord.voteState, 'done');
+        // ASSERT: no new primary elected
+        Sinon.assert.match(newPrimary, null);
+        // ASSERT: old primary should be done
+        Sinon.assert.match(oldPrimaryRecord.voteState, 'done');
         // ASSERT: target health check is healthy.
         Sinon.assert.match(env.targetHealthCheckRecord.healthy, false);
         // ASSERT: target health check: heartbeat loss count increased to 999

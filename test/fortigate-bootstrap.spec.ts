@@ -51,8 +51,8 @@ describe('FortiGate get bootstrap configuration.', () => {
         mockAutoscaling.restoreAll();
         mocDocClient.restoreAll();
     });
-    it('Bootstrap from an instance in master group.', async () => {
-        mockDataDir = path.resolve(mockDataRootDir, 'bootstrap-master-group-instance');
+    it('Bootstrap from an instance in primary group.', async () => {
+        mockDataDir = path.resolve(mockDataRootDir, 'bootstrap-primary-group-instance');
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-get-config.json')
         );
@@ -80,8 +80,8 @@ describe('FortiGate get bootstrap configuration.', () => {
 
         await autoscale.handleAutoscaleRequest(proxy, awsPlatformAdapter, env);
     });
-    it('Bootstrap from an instance in non-master group.', async () => {
-        mockDataDir = path.resolve(mockDataRootDir, 'bootstrap-non-master-group-instance');
+    it('Bootstrap from an instance in non-primary group.', async () => {
+        mockDataDir = path.resolve(mockDataRootDir, 'bootstrap-non-primary-group-instance');
         event = await awsTestMan.fakeApiGatewayRequest(
             path.resolve(mockDataDir, 'request/event-fgt-get-config.json')
         );
