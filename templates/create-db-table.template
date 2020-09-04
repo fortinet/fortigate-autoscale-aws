@@ -143,7 +143,7 @@
                 ]
             }
         },
-        "MasterElection": {
+        "PrimaryElection": {
             "Type": "AWS::DynamoDB::Table",
             "Properties": {
                 "AttributeDefinitions": [
@@ -169,7 +169,7 @@
                             {
                                 "Ref": "ResourceTagPrefix"
                             },
-                            "MasterElection"
+                            "PrimaryElection"
                         ]
                     ]
                 },
@@ -573,9 +573,9 @@
                 "Fn::GetAtt": ["Autoscale", "Arn"]
             }
         },
-        "MasterElectionTableArn": {
+        "PrimaryElectionTableArn": {
             "Value": {
-                "Fn::GetAtt": ["MasterElection", "Arn"]
+                "Fn::GetAtt": ["PrimaryElection", "Arn"]
             }
         },
         "LifecycleItemTableArn": {
@@ -634,13 +634,13 @@
             "Description": "The comma-delimited list of arn of DynamoDB tables created in this stack.",
             "Value": {
                 "Fn::Sub": [
-                    "${Autoscale},${MasterElection}${LifecycleItem},${Settings}${CustomLog}${VmInfoCache}${NicAttachment}${LicenseStock}${LicenseUsage}${VpnAttachment}${FortiAnalyzer}",
+                    "${Autoscale},${PrimaryElection}${LifecycleItem},${Settings}${CustomLog}${VmInfoCache}${NicAttachment}${LicenseStock}${LicenseUsage}${VpnAttachment}${FortiAnalyzer}",
                     {
                         "Autoscale": {
                             "Fn::GetAtt": ["Autoscale", "Arn"]
                         },
-                        "MasterElection": {
-                            "Fn::GetAtt": ["MasterElection", "Arn"]
+                        "PrimaryElection": {
+                            "Fn::GetAtt": ["PrimaryElection", "Arn"]
                         },
                         "LifecycleItem": {
                             "Fn::GetAtt": ["LifecycleItem", "Arn"]
@@ -768,13 +768,13 @@
             "Description": "The comma-delimited list of name of created tables in this stack.",
             "Value": {
                 "Fn::Sub": [
-                    "${Autoscale},${MasterElection},${LifecycleItem},${Settings},${CustomLog},${VmInfoCache},${NicAttachment},${LicenseStock},${LicenseUsage},${VpnAttachment},${FortiAnalyzer}",
+                    "${Autoscale},${PrimaryElection},${LifecycleItem},${Settings},${CustomLog},${VmInfoCache},${NicAttachment},${LicenseStock},${LicenseUsage},${VpnAttachment},${FortiAnalyzer}",
                     {
                         "Autoscale": {
                             "Ref": "Autoscale"
                         },
-                        "MasterElection": {
-                            "Ref": "MasterElection"
+                        "PrimaryElection": {
+                            "Ref": "PrimaryElection"
                         },
                         "LifecycleItem": {
                             "Ref": "LifecycleItem"
