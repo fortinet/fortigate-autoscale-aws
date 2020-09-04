@@ -3,9 +3,9 @@
     "Items": [
         {
             "settingValue": "300",
-            "settingKey": "master-election-timeout",
+            "settingKey": "primary-election-timeout",
             "editable": true,
-            "description": "The FortiGate master election timtout time in second.",
+            "description": "The FortiGate primary election timtout time in second.",
             "jsonEncoded": false
         },
         {
@@ -16,7 +16,7 @@
             "jsonEncoded": false
         },
         {
-            "settingValue": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-FortiGateAutoscale,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-FortiGateMasterElection,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-FortiGateLifecycleItem,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-Settings,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-CustomLog,,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-NicAttachment,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-LicenseStock,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-LicenseUsage,,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-FortiAnalyzer",
+            "settingValue": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-FortiGateAutoscale,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-FortiGatePrimaryElection,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-FortiGateLifecycleItem,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-Settings,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-CustomLog,,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-NicAttachment,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-LicenseStock,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-LicenseUsage,,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-FortiAnalyzer",
             "settingKey": "required-db-table",
             "editable": false,
             "description": "A comma-delimited list of required DB table names.",
@@ -33,7 +33,7 @@
             "settingValue": "rtb-0b756d332e3c7d6ce",
             "settingKey": "egress-traffic-route-table",
             "editable": true,
-            "description": "The route table associated with the protected private subnets, which should bet configured to contain a route 0.0.0.0/0 to the master fortigate to handle egress traffic.",
+            "description": "The route table associated with the protected private subnets, which should bet configured to contain a route 0.0.0.0/0 to the primary fortigate to handle egress traffic.",
             "jsonEncoded": false
         },
         {
@@ -59,9 +59,9 @@
         },
         {
             "settingValue": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-byol-auto-scaling-group",
-            "settingKey": "master-scaling-group-name",
+            "settingKey": "primary-scaling-group-name",
             "editable": false,
-            "description": "The name of the master auto scaling group.",
+            "description": "The name of the primary auto scaling group.",
             "jsonEncoded": false
         },
         {
@@ -110,7 +110,7 @@
             "settingValue": "i-098716d5c0ac0c24d",
             "settingKey": "fortigate-default-password",
             "editable": false,
-            "description": "default password comes from the new elected master.",
+            "description": "default password comes from the new elected primary.",
             "jsonEncoded": false
         },
         {
@@ -226,7 +226,7 @@
             "settingValue": "true",
             "settingKey": "enable-integrated-egress-nat-gateway",
             "editable": true,
-            "description": "Toggle ON / OFF the feature for using master FortiGate in the scaling group as the NAT gateway for egress traffic from protected private subnets.",
+            "description": "Toggle ON / OFF the feature for using primary FortiGate in the scaling group as the NAT gateway for egress traffic from protected private subnets.",
             "jsonEncoded": false
         },
         {
@@ -371,9 +371,9 @@
         },
         {
             "settingValue": "true",
-            "settingKey": "master-election-no-wait",
+            "settingKey": "primary-election-no-wait",
             "editable": true,
-            "description": "Do not wait for the new master to come up. This FortiGate can receive the new master ip in one of its following heartbeat sync.",
+            "description": "Do not wait for the new primary to come up. This FortiGate can receive the new primary ip in one of its following heartbeat sync.",
             "jsonEncoded": false
         },
         {

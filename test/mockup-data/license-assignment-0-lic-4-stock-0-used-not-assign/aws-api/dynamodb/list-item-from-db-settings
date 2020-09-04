@@ -6,13 +6,13 @@
                 "S": "300"
             },
             "settingKey": {
-                "S": "master-election-timeout"
+                "S": "primary-election-timeout"
             },
             "editable": {
                 "S": "true"
             },
             "description": {
-                "S": "The FortiGate master election timtout time in second."
+                "S": "The FortiGate primary election timtout time in second."
             },
             "jsonEncoded": {
                 "S": "false"
@@ -37,7 +37,7 @@
         },
         {
             "settingValue": {
-                "S": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-FortiGateAutoscale,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-FortiGateMasterElection,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-FortiGateLifecycleItem,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-Settings,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-CustomLog,,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-NicAttachment,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-LicenseStock,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-LicenseUsage,,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-FortiAnalyzer"
+                "S": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-FortiGateAutoscale,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-FortiGatePrimaryElection,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-FortiGateLifecycleItem,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-Settings,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-CustomLog,,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-NicAttachment,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-LicenseStock,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-LicenseUsage,,fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-FortiAnalyzer"
             },
             "settingKey": {
                 "S": "required-db-table"
@@ -80,7 +80,7 @@
                 "S": "true"
             },
             "description": {
-                "S": "The route table associated with the protected private subnets, which should bet configured to contain a route 0.0.0.0/0 to the master fortigate to handle egress traffic."
+                "S": "The route table associated with the protected private subnets, which should bet configured to contain a route 0.0.0.0/0 to the primary fortigate to handle egress traffic."
             },
             "jsonEncoded": {
                 "S": "false"
@@ -142,13 +142,13 @@
                 "S": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-byol-auto-scaling-group"
             },
             "settingKey": {
-                "S": "master-scaling-group-name"
+                "S": "primary-scaling-group-name"
             },
             "editable": {
                 "S": "false"
             },
             "description": {
-                "S": "The name of the master auto scaling group."
+                "S": "The name of the primary auto scaling group."
             },
             "jsonEncoded": {
                 "S": "false"
@@ -267,7 +267,7 @@
                 "S": "false"
             },
             "description": {
-                "S": "default password comes from the new elected master."
+                "S": "default password comes from the new elected primary."
             },
             "jsonEncoded": {
                 "S": "false"
@@ -522,7 +522,7 @@
                 "S": "true"
             },
             "description": {
-                "S": "Toggle ON / OFF the feature for using master FortiGate in the scaling group as the NAT gateway for egress traffic from protected private subnets."
+                "S": "Toggle ON / OFF the feature for using primary FortiGate in the scaling group as the NAT gateway for egress traffic from protected private subnets."
             },
             "jsonEncoded": {
                 "S": "false"
@@ -839,13 +839,13 @@
                 "S": "true"
             },
             "settingKey": {
-                "S": "master-election-no-wait"
+                "S": "primary-election-no-wait"
             },
             "editable": {
                 "S": "true"
             },
             "description": {
-                "S": "Do not wait for the new master to come up. This FortiGate can receive the new master ip in one of its following heartbeat sync."
+                "S": "Do not wait for the new primary to come up. This FortiGate can receive the new primary ip in one of its following heartbeat sync."
             },
             "jsonEncoded": {
                 "S": "false"
