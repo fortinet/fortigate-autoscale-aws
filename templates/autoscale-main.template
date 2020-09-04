@@ -1384,6 +1384,8 @@
                         ]
                     ]
                 },
+                "autoscale-function-max-execution-time": 1800,
+                "autoscale-function-extend-execution": true,
                 "autoscale-handler-url": {
                     "Fn::GetAtt": ["StackCreateAutoScaleHandler", "Outputs.AutoscaleHandlerUrl"]
                 },

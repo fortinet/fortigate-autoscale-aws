@@ -314,6 +314,13 @@
             "jsonEncoded": false
         },
         {
+            "settingValue": "true",
+            "settingKey": "enable-external-elb",
+            "editable": false,
+            "description": "Toggle ON / OFF the internal elastic load balancing for the protected services by FortiGate.",
+            "jsonEncoded": false
+        },
+        {
             "settingValue": "3600",
             "settingKey": "vm-info-cache-time",
             "editable": true,

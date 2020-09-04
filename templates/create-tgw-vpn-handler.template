@@ -478,6 +478,29 @@
                                             }
                                         ]
                                     }
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": ["lambda:InvokeFunction", "lambda:InvokeAsync"],
+                                    "Resource": {
+                                        "Fn::Sub": [
+                                            "arn:aws:lambda:${AWS_REGION}:${AWS_ACCOUNT_ID}:function:${CUSTOM_ID}-${UNIQUE_ID}*",
+                                            {
+                                                "AWS_REGION": {
+                                                    "Ref": "AWS::Region"
+                                                },
+                                                "AWS_ACCOUNT_ID": {
+                                                    "Ref": "AWS::AccountId"
+                                                },
+                                                "CUSTOM_ID": {
+                                                    "Ref": "CustomIdentifier"
+                                                },
+                                                "UNIQUE_ID": {
+                                                    "Ref": "UniqueId"
+                                                }
+                                            }
+                                        ]
+                                    }
                                 }
                             ]
                         }

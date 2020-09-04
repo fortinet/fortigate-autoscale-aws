@@ -437,6 +437,15 @@ describe('FortiGate regular heartbeat sync.', () => {
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
 
+        const stubAdapterGetHealthCheckRecord = Sinon.stub(platformAdapter, 'getHealthCheckRecord');
+        stubAdapterGetHealthCheckRecord.callsFake(async (vmId: string) => {
+            stubAdapterGetHealthCheckRecord.restore();
+            const record = await platformAdapter.getHealthCheckRecord(vmId);
+            // overwrite the next heartbeat time to ensure no delay
+            record.nextHeartbeatTime = platformAdapter.createTime;
+            return record;
+        });
+
         await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
         const masterElectionResult = await spyPromisesMasterElectionResult[0];
@@ -485,6 +494,15 @@ describe('FortiGate regular heartbeat sync.', () => {
         const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
         const spyPromisesMasterElectionResult = Sinon.spy(autoscale, 'handleMasterElection')
             .returnValues;
+
+        const stubAdapterGetHealthCheckRecord = Sinon.stub(platformAdapter, 'getHealthCheckRecord');
+        stubAdapterGetHealthCheckRecord.callsFake(async (vmId: string) => {
+            stubAdapterGetHealthCheckRecord.restore();
+            const record = await platformAdapter.getHealthCheckRecord(vmId);
+            // overwrite the next heartbeat time to ensure no delay
+            record.nextHeartbeatTime = platformAdapter.createTime;
+            return record;
+        });
 
         await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
