@@ -1,13 +1,13 @@
 language: node_js
 node_js:
-- node
-- 10
 - 12
-script:
+install:
 - npm install
-- npm run pre-commit
-before_deploy:
-- npm run make-dist
+script:
+- npm run lint-check
+- npm run audit-production
+- npm test
+- npm run build-artifacts
 deploy:
   provider: releases
   api_key:
