@@ -64,10 +64,10 @@
     "peerDependencies": {},
     "repository": {
         "type": "git",
-        "url": "git+ssh://git@github.com/fortinet/autoscale-aws.git"
+        "url": "git+ssh://git@github.com/fortinet/fortigate-autoscale-aws.git"
     },
     "bugs": {
-        "url": "https://github.com/fortinet/autoscale-aws/issues"
+        "url": "https://github.com/fortinet/fortigate-autoscale-aws/issues"
     },
-    "homepage": "https://github.com/fortinet/autoscale-aws#readme"
+    "homepage": "https://github.com/fortinet/fortigate-autoscale-aws#readme"
 }
