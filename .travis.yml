@@ -3,8 +3,9 @@ node_js:
 - node
 - 10
 - 12
-script:
+install:
 - npm install
+script:
 - npm run pre-commit
 before_deploy:
 - npm run make-dist
