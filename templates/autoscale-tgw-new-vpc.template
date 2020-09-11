@@ -96,42 +96,42 @@
             "Default": 2,
             "MinValue": 0,
             "ConstraintDescription": "must be a valid number not less than 0.",
-            "Description": "The number of FortiGate instances the BYOL Auto Scaling group should have at any time. For High Availability in BYOL-only and Hybrid use cases, ensure at least 2 FortiGates are in the group. For specific use cases, set to 0 for PAYG-only, and >= 2 for BYOL-only or hybrid licensing."
+            "Description": "The number of FortiGate instances the BYOL Auto Scaling group should have at any time. For High Availability in BYOL-only and Hybrid use cases, ensure at least 2 FortiGates are in the group. For specific use cases, set to 0 for On-Demand-only, and >= 2 for BYOL-only or hybrid licensing."
         },
         "FgtAsgMinSizeByol": {
             "Type": "Number",
             "Default": 2,
             "MinValue": 0,
             "ConstraintDescription": "must be a valid number not less than 0.",
-            "Description": "Minimum number of FortiGate instances in the BYOL Auto Scaling group. For specific use cases, set to 0 for PAYG-only, and >= 2 for BYOL-only or hybrid licensing."
+            "Description": "Minimum number of FortiGate instances in the BYOL Auto Scaling group. For specific use cases, set to 0 for On-Demand-only, and >= 2 for BYOL-only or hybrid licensing."
         },
         "FgtAsgMaxSizeByol": {
             "Type": "Number",
             "Default": 2,
             "MinValue": 0,
             "ConstraintDescription": "must be a valid number not less than 0.",
-            "Description": "Maximum number of FortiGate instances in the BYOL Auto Scaling group. For specific use cases, set to 0 for PAYG-only, and >= 2 for BYOL-only or hybrid licensing. This number must be greater than or equal to the Minimum group size (BYOL)."
+            "Description": "Maximum number of FortiGate instances in the BYOL Auto Scaling group. For specific use cases, set to 0 for On-Demand-only, and >= 2 for BYOL-only or hybrid licensing. This number must be greater than or equal to the Minimum group size (BYOL)."
         },
         "FgtAsgDesiredCapacityPayg": {
             "Type": "Number",
             "Default": 0,
             "MinValue": 0,
             "ConstraintDescription": "must be a valid number not less than 0.",
-            "Description": "The number of FortiGate instances the PAYG Auto Scaling group should have at any time. For High Availability in a PAYG-only use case, ensure at least 2 FortiGates are in the group. For specific use cases, set to 0 for BYOL-only, >= 2 for PAYG-only, and >= 0 for hybrid licensing."
+            "Description": "The number of FortiGate instances the On-Demand Auto Scaling group should have at any time. For High Availability in a On-Demand-only use case, ensure at least 2 FortiGates are in the group. For specific use cases, set to 0 for BYOL-only, >= 2 for On-Demand-only, and >= 0 for hybrid licensing."
         },
         "FgtAsgMinSizePayg": {
             "Type": "Number",
             "Default": 0,
             "MinValue": 0,
             "ConstraintDescription": "must be a valid number not less than 0.",
-            "Description": "Minimum number of FortiGate instances in the PAYG Auto Scaling group. For specific use cases, set to 0 for BYOL-only, >= 2 for PAYG-only, and >= 0 for hybrid licensing."
+            "Description": "Minimum number of FortiGate instances in the On-Demand Auto Scaling group. For specific use cases, set to 0 for BYOL-only, >= 2 for On-Demand-only, and >= 0 for hybrid licensing."
         },
         "FgtAsgMaxSizePayg": {
             "Type": "Number",
             "Default": 6,
             "MinValue": 0,
             "ConstraintDescription": "must be a valid number not less than 0.",
-            "Description": "Maximum number of FortiGate instances in the PAYG Auto Scaling group. For specific use cases, set to 0 for BYOL-only, >= 2 for PAYG-only, and >= 0 for hybrid licensing. This number must be greater than or equal to the Minimum group size (PAYG)."
+            "Description": "Maximum number of FortiGate instances in the On-Demand Auto Scaling group. For specific use cases, set to 0 for BYOL-only, >= 2 for On-Demand-only, and >= 0 for hybrid licensing. This number must be greater than or equal to the Minimum group size (On-Demand)."
         },
         "FgtAsgHealthCheckGracePeriod": {
             "Type": "Number",
@@ -785,13 +785,13 @@
                     "default": "Maximum group size (BYOL)"
                 },
                 "FgtAsgDesiredCapacityPayg": {
-                    "default": "Desired capacity (PAYG)"
+                    "default": "Desired capacity (On-Demand)"
                 },
                 "FgtAsgMinSizePayg": {
-                    "default": "Minimum group size (PAYG)"
+                    "default": "Minimum group size (On-Demand)"
                 },
                 "FgtAsgMaxSizePayg": {
-                    "default": "Maximum group size (PAYG)"
+                    "default": "Maximum group size (On-Demand)"
                 },
                 "FgtAsgHealthCheckGracePeriod": {
                     "default": "Health check grace period"

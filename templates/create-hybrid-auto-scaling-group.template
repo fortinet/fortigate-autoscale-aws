@@ -123,21 +123,21 @@
             "Default": 0,
             "MinValue": 0,
             "ConstraintDescription": "must be a valid number not less than 0.",
-            "Description": "The number of FortiGate instances the PAYG auto-scaling group should have at any time, also called desired capacity. Must keep at least 2 FortiGates in the group for High Availability. Minimum is 2."
+            "Description": "The number of FortiGate instances the On-Demand auto-scaling group should have at any time, also called desired capacity. Must keep at least 2 FortiGates in the group for High Availability. Minimum is 2."
         },
         "AsgMinSizePayg": {
             "Type": "Number",
             "Default": 0,
             "MinValue": 0,
             "ConstraintDescription": "must be a valid number not less than 0.",
-            "Description": "Minimum number of FortiGate instances in the PAYG auto-scaling group. Minimum is 0."
+            "Description": "Minimum number of FortiGate instances in the On-Demand auto-scaling group. Minimum is 0."
         },
         "AsgMaxSizePayg": {
             "Type": "Number",
             "Default": 0,
             "MinValue": 0,
             "ConstraintDescription": "must be a valid number not less than 1.",
-            "Description": "Maximum number of FortiGate instances in the PAYG auto-scaling group. Minimum is 0."
+            "Description": "Maximum number of FortiGate instances in the On-Demand auto-scaling group. Minimum is 0."
         },
         "AsgCooldown": {
             "Type": "Number",
@@ -168,12 +168,12 @@
         "ProductAMIPayg": {
             "Type": "String",
             "Default": "",
-            "Description": "The AMI for launch template for the PAYG auto scaling group."
+            "Description": "The AMI for launch template for the On-Demand auto scaling group."
         },
         "ProductCodePayg": {
             "Type": "String",
             "Default": "",
-            "Description": "An optional product code provided for the AMI(PAYG) if using a custom AMI."
+            "Description": "An optional product code provided for the AMI(On-Demand) if using a custom AMI."
         },
         "LicensingModel": {
             "Type": "String",
@@ -553,7 +553,7 @@
                 "Threshold": {
                     "Ref": "AsgScaleInThreshold"
                 },
-                "AlarmDescription": "Alarm if CPU utilization in (PAYG) Auto Scaling Group goes below the lower-bound threshold over 1 period.",
+                "AlarmDescription": "Alarm if CPU utilization in (On-Demand) Auto Scaling Group goes below the lower-bound threshold over 1 period.",
                 "Period": {
                     "Ref": "AsgCooldown"
                 },
@@ -584,7 +584,7 @@
                 "Threshold": {
                     "Ref": "AsgScaleOutThreshold"
                 },
-                "AlarmDescription": "Alarm if CPU utilization in (PAYG) Auto Scaling Group goes above the upper-bound threshold over 1 period.",
+                "AlarmDescription": "Alarm if CPU utilization in (On-Demand) Auto Scaling Group goes above the upper-bound threshold over 1 period.",
                 "Period": {
                     "Ref": "AsgCooldown"
                 },
@@ -676,7 +676,7 @@
                     ]
                 },
                 "State": "ENABLED",
-                "Description": "Trigger when FortiGate PAYG auto-scaling group is launching / terminating instances or taking lifecycle actions.",
+                "Description": "Trigger when FortiGate On-Demand auto-scaling group is launching / terminating instances or taking lifecycle actions.",
                 "Targets": [
                     {
                         "Id": {
@@ -1020,7 +1020,7 @@
     },
     "Outputs": {
         "AutoScalingGroupNamePayg": {
-            "Description": "FortiGate Autoscale Auto Scaling Group (PAYG) Name",
+            "Description": "FortiGate Autoscale Auto Scaling Group (On-Demand) Name",
             "Value": {
                 "Ref": "FgtAutoScalingGroupPayg"
             }
