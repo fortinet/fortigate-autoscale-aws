@@ -1,22 +1,33 @@
 language: node_js
 node_js:
 - node
-- 10
 - 12
-install:
-- npm install
-script:
-- npm run lint-check
-- npm run audit-production
-- npm test
-- npm run build-artifacts
-deploy:
-  provider: releases
-  api_key:
-    secure: OC6GQ0Axqc4YdEsdSSch884f1BaUO22cg5wvlMaTwJPZX7Ok+RbRUbS97ncGlXAAXOd7Wf5pio3enC9+RhxOQx5IMpq+HDmT/u1QQBRE41uNhOyviGKdHWPG+GvH/Yj+4bLtMIVmnfp+YhWfBLBqPDdyf0hqafCJddoib1lrLgrzzxwhGMTePlwIV0dKOJnoh1P9L1tJBMvXkr6DNEIDm0ncRK2Ne5Di4rYuFvR/6tCeoh1Iril/ROM2XqhbEFDDoc0+DLiBngGPuT3+sTh+2NhWBQXTXsM+PsEZL9F4fBGchZHu7qEntzq//uR+cVRWblDIYXXcpeQN4caD8/tKvE2Z17dkYaRM9tP2wt3avnsoQg+FVkEjeMwEXWbU4Y7NT7rjwkv49u34ugSz/EIWzihyG6o4nl2Diply81xlhbRsuDU/JKhcrJbhyjdoG8eqvmbe2U/Dz4xLxiUsoVUWkBnfArdYbLfxvTHAbFrcdpqfP9XWDvHP35ef5uiJHXHj6JwCsgIvxKnOVm9RBNig3nKHAU0fhuPVGT78u9r60BxmhkAe+Kcaxu7Lxbhgr3b2BG+Q3SW9g0fyVAlsNNTHkSJHS1BZGvE8pGPrtrdp2r9QJWKGHdBYBr7oF+a1CFmIOd9hWnKPTCIMTfETFMU1w1ZVHn6jFEkHaj3yvZDymek=
-  file: dist/artifacts/*
-  on:
-    repo: fortinet/fortigate-autoscale-aws
-    branch: main
-    tags: true
-  skip_cleanup: true
+stages:
+  - install
+  - validation
+  - test
+  - build
+  - deploy-github
+jobs:
+  include:
+    - stage: install
+      script: npm install
+    - stage: validation
+      node_js: 12
+      script:
+      - npm run lint-check
+      - npm run audit-production
+    - stage: build
+      script: npm run build-artifacts
+    - stage: deploy-github
+      node_js: 12
+      deploy:
+        provider: releases
+        api_key:
+          secure: OC6GQ0Axqc4YdEsdSSch884f1BaUO22cg5wvlMaTwJPZX7Ok+RbRUbS97ncGlXAAXOd7Wf5pio3enC9+RhxOQx5IMpq+HDmT/u1QQBRE41uNhOyviGKdHWPG+GvH/Yj+4bLtMIVmnfp+YhWfBLBqPDdyf0hqafCJddoib1lrLgrzzxwhGMTePlwIV0dKOJnoh1P9L1tJBMvXkr6DNEIDm0ncRK2Ne5Di4rYuFvR/6tCeoh1Iril/ROM2XqhbEFDDoc0+DLiBngGPuT3+sTh+2NhWBQXTXsM+PsEZL9F4fBGchZHu7qEntzq//uR+cVRWblDIYXXcpeQN4caD8/tKvE2Z17dkYaRM9tP2wt3avnsoQg+FVkEjeMwEXWbU4Y7NT7rjwkv49u34ugSz/EIWzihyG6o4nl2Diply81xlhbRsuDU/JKhcrJbhyjdoG8eqvmbe2U/Dz4xLxiUsoVUWkBnfArdYbLfxvTHAbFrcdpqfP9XWDvHP35ef5uiJHXHj6JwCsgIvxKnOVm9RBNig3nKHAU0fhuPVGT78u9r60BxmhkAe+Kcaxu7Lxbhgr3b2BG+Q3SW9g0fyVAlsNNTHkSJHS1BZGvE8pGPrtrdp2r9QJWKGHdBYBr7oF+a1CFmIOd9hWnKPTCIMTfETFMU1w1ZVHn6jFEkHaj3yvZDymek=
+        file: dist/artifacts/*
+        on:
+          repo: fortinet/fortigate-autoscale-aws
+          branch: main
+          tags: true
+        skip_cleanup: true
