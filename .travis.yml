@@ -11,7 +11,10 @@ stages:
 jobs:
   include:
     - stage: install
-      script: npm install
+      node_js:
+        - node
+        - 12
+      install: npm install
     - stage: validation
       node_js: 12
       script:
