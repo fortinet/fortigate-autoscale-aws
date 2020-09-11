@@ -78,7 +78,7 @@
             "Default": "6.2.3",
             "AllowedValues": ["6.2.3"],
             "ConstraintDescription": "must be a valid FortiOS version from the selection.",
-            "Description": "FortiOS version."
+            "Description": "FortiOS version supported by FortiGate Autoscale for AWS."
         },
         "LifecycleHookTimeout": {
             "Type": "Number",
@@ -101,7 +101,7 @@
             "Default": 2,
             "MinValue": 0,
             "ConstraintDescription": "must be a valid number not less than 0.",
-            "Description": "The number of FortiGate instances the BYOL Auto Scaling group should have at any time. For High Availability in BYOL-only and Hybrid use cases, ensure at least 2 FortiGates are in the group. For specific use cases, set to 0 for PAYG-only, and >= 2 for BYOL-only or hybrid licensing."
+            "Description": "The number of FortiGate instances the BYOL Auto Scaling group should have at any time. For High Availability in BYOL-only and Hybrid use cases, ensure at least 2 FortiGates are in the group. For specific use cases, set to 0 for On-Demand-only, and >= 2 for BYOL-only or hybrid licensing."
         },
         "FgtAsgMinSizeByol": {
             "Type": "Number",
