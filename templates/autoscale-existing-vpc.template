@@ -221,7 +221,7 @@
             "Default": "HTTPS",
             "AllowedValues": ["HTTP", "HTTPS", "TCP"],
             "ConstraintDescription": "value must be chosen from the provided options.",
-            "Description": Balance web service traffic using this protocol."
+            "Description": "Balance web service traffic using this protocol."
         },
         "LoadBalancingTrafficPort": {
             "Type": "Number",
