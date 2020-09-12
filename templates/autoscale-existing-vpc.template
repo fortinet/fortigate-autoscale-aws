@@ -192,7 +192,7 @@
             "MinValue": 90,
             "MaxValue": 3600,
             "ConstraintDescription": "must be a valid number between 90 and 3600.",
-            "Description": "The maximum time (in seconds) to wait for a primary election to complete. Minimum is 30. Maximum is 3600."
+            "Description": "The maximum time (in seconds) to wait for the election of the primary instance to complete. Minimum is 30. Maximum is 3600."
         },
         "HeartBeatInterval": {
             "Type": "Number",

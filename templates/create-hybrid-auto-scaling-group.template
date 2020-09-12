@@ -173,7 +173,7 @@
         "ProductCodePayg": {
             "Type": "String",
             "Default": "",
-            "Description": "An optional product code provided for the AMI(On-Demand) if using a custom AMI."
+            "Description": "An optional product code provided for the AMI (On-Demand) if using a custom AMI."
         },
         "LicensingModel": {
             "Type": "String",

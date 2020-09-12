@@ -244,7 +244,7 @@
                 "do not need one"
             ],
             "ConstraintDescription": "must choose from the provided options.",
-            "Description": "Add an optional pre-defined load balancer to route traffic to web service in the private subnets. You can optionally use your own one or decide to not need one."
+            "Description": "(Optional) Add a predefined Elastic Load Balancer (ELB) to route traffic to web service in the private subnets. You can optionally use your own one or decide to not need one."
         },
         "InternalTargetGroupHealthCheckPath": {
             "Type": "String",

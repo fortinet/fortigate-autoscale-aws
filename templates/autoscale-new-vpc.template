@@ -237,7 +237,7 @@
             "Default": "HTTPS",
             "AllowedValues": ["HTTP", "HTTPS", "TCP"],
             "ConstraintDescription": "value must be chosen from the provided options.",
-            "Description": "Use this protocol to load balance traffic."
+            "Description": "Balance web service traffic using this protocol."
         },
         "LoadBalancingTrafficPort": {
             "Type": "Number",
@@ -263,7 +263,7 @@
                 "do not need one"
             ],
             "ConstraintDescription": "must choose from the provided options.",
-            "Description": "Add an optional pre-defined load balancer to route traffic to web service in the private subnets. You can optionally use your own one or decide to not need one."
+            "Description": "(Optional) Add a predefined Elastic Load Balancer (ELB) to route traffic to web service in the private subnets. You can optionally use your own one or decide to not need one."
         },
         "InternalTargetGroupHealthCheckPath": {
             "Type": "String",
