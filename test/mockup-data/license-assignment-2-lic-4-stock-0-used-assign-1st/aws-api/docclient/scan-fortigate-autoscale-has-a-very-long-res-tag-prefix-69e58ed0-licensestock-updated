@@ -1,0 +1,19 @@
+{
+    "Count": 2,
+    "Items": [
+        {
+            "algorithm":"sha256",
+            "checksum":"b118a0be644a301f4f62f99dc0f3ec7c43d641587340b09ef829594cd518753e",
+            "fileName":"mockup-license2",
+            "productName":"fortigate"
+        },
+        {
+            "algorithm":"sha256",
+            "checksum":"f80604c4767664f340eade34f67bdd4827c7d3749c88bc1d8f4e0aa19f0b0c69",
+            "fileName":"mockup-license3",
+            "productName":"fortigate"
+        }
+    ],
+    "ScannedCount": 2,
+    "ConsumedCapacity": null
+}

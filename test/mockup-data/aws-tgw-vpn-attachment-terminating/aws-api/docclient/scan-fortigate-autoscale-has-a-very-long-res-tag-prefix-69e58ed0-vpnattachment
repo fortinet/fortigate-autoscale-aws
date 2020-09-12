@@ -1,0 +1,12 @@
+{
+    "Count": 1,
+    "Items": [
+        {
+            "vmId":"i-0000000000byol001",
+            "ip":"10.100.0.1",
+            "vpnConnectionId":"vpn-00000tgw001vpn001"
+        }
+    ],
+    "ScannedCount": 1,
+    "ConsumedCapacity": null
+}

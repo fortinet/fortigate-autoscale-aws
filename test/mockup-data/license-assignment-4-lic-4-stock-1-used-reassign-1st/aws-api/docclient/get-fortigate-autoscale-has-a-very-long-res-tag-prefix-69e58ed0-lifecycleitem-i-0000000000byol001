@@ -1,0 +1,15 @@
+{
+    "Item": {
+        "actionName": "getconfig",
+        "detail": {
+            "AutoScalingGroupName": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-byol-auto-scaling-group",
+            "EC2InstanceId":"i-0000000000byol001",
+            "LifecycleActionToken":"922b3292-7ab5-4682-a769-e1e075f7896b",
+            "LifecycleHookName":"fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-lifecyle-hook-instance-launching",
+            "LifecycleTransition":"autoscaling:EC2_INSTANCE_LAUNCHING"
+        },
+        "done": "false",
+        "instanceid": "",
+        "timestamp": "1588223232007"
+    }
+}

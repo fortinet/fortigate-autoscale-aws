@@ -1,0 +1,17 @@
+{
+    "Count": 1,
+    "Items": [
+        {
+            "algorithm":"sha256",
+            "checksum":"0b8730303b3c0d2477ac8c78f50c4cf8068b8bfb1cb48090a0e0d10f520d2b09",
+            "fileName":"mockup-license1",
+            "productName":"fortigate",
+            "vmId": "i-0000000000byol002",
+            "scalingGroupName": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-byol-auto-scaling-group",
+            "assignedTime": 1588209959339,
+            "vmInSync": true
+        }
+    ],
+    "ScannedCount": 1,
+    "ConsumedCapacity": null
+}

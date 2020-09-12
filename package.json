@@ -1,26 +1,73 @@
 {
-  "name": "autoscale-aws",
-  "version": "3.1.0-alpha.0",
-  "description": "Fortinet Autoscale Project AWS module.",
-  "main": "index.js",
-  "scripts": {
-    "test": "nyc mocha './{,!(node_modules|dist|scripts)/**/}test/mocha*/*.js'",
-    "check": "node node_modules/ftnt-devops-ci/bin/ftnt-devops-ci.js c  -F .prettierignore -L .eslintignore \"{*,**/*}{.js,.json,.ts}\"",
-    "pre-commit": "npm run check && npm audit && npm test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/fortinet/autoscale-aws.git"
-  },
-  "author": "Fortinet <github@fortinet.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/fortinet/autoscale-aws/issues"
-  },
-  "homepage": "https://github.com/fortinet/autoscale-aws#readme",
-  "devDependencies": {
-    "ftnt-devops-ci": "github:fortinet/ftnt-devops-ci",
-    "mocha": "^7.0.1",
-    "nyc": "^15.0.0"
-  }
+    "name": "fortigate-autoscale-aws",
+    "version": "3.1.0-alpha.14",
+    "description": "Fortinet FortiGate Autoscale for AWS.",
+    "main": "dist/transpiled/index.js",
+    "types": "dist/types/index.d.ts",
+    "scripts": {
+        "pre-commit": "npm-run-all lint-check audit-production test build",
+        "audit-production": "npm audit --production",
+        "bundle": "webpack",
+        "compile": "tsc",
+        "clear-dist": "rimraf dist",
+        "build": "npm run clear-dist && npm run compile",
+        "make-dist": "npm run build && npm run bundle && node dist/transpiled/scripts/make-dist-v2.js build-all --project-root './'",
+        "build-artifacts": "npm-run-all build make-dist",
+        "test": "mocha --timeout 3600000 -r ts-node/register test/*.spec.ts",
+        "lint-check-code": "node node_modules/ftnt-devops-ci/bin/ftnt-devops-ci.js c -fl  -F .eslintignore -L .eslintignore \"{*,**/*}{.js,.json,.ts}\"",
+        "lint-check-template": "node node_modules/ftnt-devops-ci/bin/ftnt-devops-ci.js c -f -F .eslintignore -L .eslintignore \"**/*.template\" --parser \"json\"",
+        "lint-check": "npm run lint-check-code && npm run lint-check-template",
+        "lint-fix-code": "node node_modules/ftnt-devops-ci/bin/ftnt-devops-ci.js f -fl  -F .eslintignore -L .eslintignore \"**/*{.js,.json,.ts}\"",
+        "lint-fix-template": "node node_modules/ftnt-devops-ci/bin/ftnt-devops-ci.js f -f -F .eslintignore -L .eslintignore \"**/*.template\" --parser \"json\"",
+        "lint-fix": "npm run lint-fix-code && npm run lint-fix-template"
+    },
+    "keywords": [],
+    "author": "Fortinet <github@fortinet.com>",
+    "license": "MIT",
+    "dependencies": {
+        "@types/aws-lambda": "^8.10.46",
+        "@types/node": "^13.9.2",
+        "autoscale-core": "git+https://github.com/fortinet/autoscale-core.git#3.1.0-alpha.14",
+        "aws-sdk": "^2.657.0",
+        "http-status-codes": "^1.4.0",
+        "rimraf": "^3.0.2"
+    },
+    "devDependencies": {
+        "@types/comment-json": "^1.1.1",
+        "@types/mocha": "^7.0.2",
+        "@types/shelljs": "^0.8.7",
+        "@types/sinon": "^7.5.2",
+        "@typescript-eslint/eslint-plugin": "^2.28.0",
+        "@typescript-eslint/parser": "^2.28.0",
+        "archiver": "^4.0.1",
+        "chalk": "^4.0.0",
+        "commander": "^5.1.0",
+        "comment-json": "^3.0.2",
+        "decompress": "^4.2.1",
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.10.1",
+        "eslint-plugin-mocha": "^6.3.0",
+        "eslint-plugin-prettier": "^3.1.3",
+        "ftnt-devops-ci": "github:fortinet/ftnt-devops-ci",
+        "json-loader": "^0.5.7",
+        "mocha": "^7.1.1",
+        "npm-run-all": "^4.1.5",
+        "prettier": "^1.19.1",
+        "shelljs": "^0.8.3",
+        "sinon": "^9.0.2",
+        "ts-loader": "^7.0.5",
+        "ts-node": "^8.8.2",
+        "typescript": "^3.9.2",
+        "webpack": "^4.43.0",
+        "webpack-cli": "^3.3.11"
+    },
+    "peerDependencies": {},
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/fortinet/fortigate-autoscale-aws.git"
+    },
+    "bugs": {
+        "url": "https://github.com/fortinet/fortigate-autoscale-aws/issues"
+    },
+    "homepage": "https://github.com/fortinet/fortigate-autoscale-aws#readme"
 }

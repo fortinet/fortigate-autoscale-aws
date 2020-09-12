@@ -1,0 +1,680 @@
+{
+    "Reservations": [
+        {
+            "Instances": [
+                {
+                    "Monitoring": {
+                        "State": "disabled"
+                    },
+                    "PublicDnsName": "ec2-10-100-0-1.no-where-1.compute.amazonaws.com",
+                    "State": {
+                        "Code": 16,
+                        "Name": "running"
+                    },
+                    "EbsOptimized": false,
+                    "LaunchTime": "2020-04-01T00:34:29.000Z",
+                    "PublicIpAddress": "10.100.0.1",
+                    "PrivateIpAddress": "192.168.0.1",
+                    "ProductCodes": [
+                        {
+                            "ProductCodeId": "",
+                            "ProductCodeType": "marketplace"
+                        }
+                    ],
+                    "VpcId": "vpc-00000000000000001",
+                    "CpuOptions": {
+                        "CoreCount": 1,
+                        "ThreadsPerCore": 2
+                    },
+                    "StateTransitionReason": "",
+                    "InstanceId": "i-0000000000byol001",
+                    "EnaSupport": true,
+                    "ImageId": "ami-00000000000000001",
+                    "PrivateDnsName": "ip-192-168-0-1.no-where-1.compute.internal",
+                    "KeyName": "mockup-all-purposes-no-where-1",
+                    "SecurityGroups": [
+                        {
+                            "GroupName": "mockup-security-group-name-001",
+                            "GroupId": "sg-00000000000000001"
+                        }
+                    ],
+                    "ClientToken": "b545c4cc-a4ac-e2ec-e0d5-2a54146148f8",
+                    "SubnetId": "subnet-00vpc001subnet001",
+                    "InstanceType": "c5.large",
+                    "CapacityReservationSpecification": {
+                        "CapacityReservationPreference": "open"
+                    },
+                    "NetworkInterfaces": [
+                        {
+                            "Status": "in-use",
+                            "MacAddress": "0a:78:0b:66:ab:aa",
+                            "SourceDestCheck": false,
+                            "VpcId": "vpc-00000000000000001",
+                            "Description": "",
+                            "NetworkInterfaceId": "eni-0000byol001nic001",
+                            "PrivateIpAddresses": [
+                                {
+                                    "PrivateDnsName": "ip-192-168-0-1.no-where-1.compute.internal",
+                                    "PrivateIpAddress": "192.168.0.1",
+                                    "Primary": true,
+                                    "Association": {
+                                        "PublicIp": "10.100.0.1",
+                                        "PublicDnsName": "ec2-10-100-0-1.no-where-1.compute.amazonaws.com",
+                                        "IpOwnerId": "amazon"
+                                    }
+                                }
+                            ],
+                            "PrivateDnsName": "ip-192-168-0-1.no-where-1.compute.internal",
+                            "InterfaceType": "interface",
+                            "Attachment": {
+                                "Status": "attached",
+                                "DeviceIndex": 0,
+                                "DeleteOnTermination": true,
+                                "AttachmentId": "eni-attach-0000byol001nic001",
+                                "AttachTime": "2020-04-01T00:34:29.000Z"
+                            },
+                            "Groups": [
+                                {
+                                    "GroupName": "mockup-security-group-name-001",
+                                    "GroupId": "sg-00000000000000001"
+                                }
+                            ],
+                            "Ipv6Addresses": [],
+                            "OwnerId": "123456789012",
+                            "PrivateIpAddress": "192.168.0.1",
+                            "SubnetId": "subnet-00vpc001subnet001",
+                            "Association": {
+                                "PublicIp": "10.100.0.1",
+                                "PublicDnsName": "ec2-10-100-0-1.no-where-1.compute.amazonaws.com",
+                                "IpOwnerId": "amazon"
+                            }
+                        }
+                    ],
+                    "SourceDestCheck": false,
+                    "Placement": {
+                        "Tenancy": "default",
+                        "GroupName": "",
+                        "AvailabilityZone": "no-where-1b"
+                    },
+                    "Hypervisor": "xen",
+                    "BlockDeviceMappings": [
+                        {
+                            "DeviceName": "/dev/sda1",
+                            "Ebs": {
+                                "Status": "attached",
+                                "DeleteOnTermination": true,
+                                "VolumeId": "vol-04cb7e83458a2b749",
+                                "AttachTime": "2020-04-01T00:34:30.000Z"
+                            }
+                        },
+                        {
+                            "DeviceName": "/dev/sdb",
+                            "Ebs": {
+                                "Status": "attached",
+                                "DeleteOnTermination": true,
+                                "VolumeId": "vol-0e5bd4c8c3e8aa346",
+                                "AttachTime": "2020-04-01T00:34:30.000Z"
+                            }
+                        }
+                    ],
+                    "Architecture": "x86_64",
+                    "RootDeviceType": "ebs",
+                    "IamInstanceProfile": {
+                        "Id": "AIPARZJ546U4LDVPXJEZC",
+                        "Arn": "arn:aws:iam::123456789012:instance-profile/fortigate-autoscale-tgw-dev-ab-StackMainWorkload-1OQ7VYI0B3HVA-FgtInstanceProfile-US41LV9ZN1OV"
+                    },
+                    "RootDeviceName": "/dev/sda1",
+                    "VirtualizationType": "hvm",
+                    "Tags": [
+                        {
+                            "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-auto-scaling-group",
+                            "Key": "aws:autoscaling:groupName"
+                        },
+                        {
+                            "Value": "1",
+                            "Key": "aws:ec2launchtemplate:version"
+                        },
+                        {
+                            "Value": "fortigate-autoscale-tgw-dev-ab-StackMainWorkload-StackCreateFortiGateAutoScalingGroup-R1KKJ5VW1LJ",
+                            "Key": "aws:cloudformation:stack-name"
+                        },
+                        {
+                            "Value": "lt-0adaf04a471e525d8",
+                            "Key": "aws:ec2launchtemplate:id"
+                        },
+                        {
+                            "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0",
+                            "Key": "ResourceGroup"
+                        },
+                        {
+                            "Value": "arn:aws:cloudformation:no-where-1:123456789012:stack/fortigate-autoscale-tgw-dev-ab-StackMainWorkload-StackCreateFortiGateAutoScalingGroup-R1KKJ5VW1LJ/3abf37f0-73b0-11ea-bf93-027feff0383e",
+                            "Key": "aws:cloudformation:stack-id"
+                        },
+                        {
+                            "Value": "primary",
+                            "Key": "AutoscaleRole"
+                        },
+                        {
+                            "Value": "FgtAutoScalingGroup",
+                            "Key": "aws:cloudformation:logical-id"
+                        }
+                    ],
+                    "HibernationOptions": {
+                        "Configured": false
+                    },
+                    "MetadataOptions": {
+                        "State": "applied",
+                        "HttpEndpoint": "enabled",
+                        "HttpTokens": "optional",
+                        "HttpPutResponseHopLimit": 1
+                    },
+                    "AmiLaunchIndex": 1
+                },
+                {
+                    "Monitoring": {
+                        "State": "disabled"
+                    },
+                    "PublicDnsName": "ec2-13-232-125-26.no-where-1.compute.amazonaws.com",
+                    "State": {
+                        "Code": 16,
+                        "Name": "running"
+                    },
+                    "EbsOptimized": false,
+                    "LaunchTime": "2020-04-01T00:34:29.000Z",
+                    "PublicIpAddress": "13.232.125.26",
+                    "PrivateIpAddress": "192.168.0.133",
+                    "ProductCodes": [
+                        {
+                            "ProductCodeId": "",
+                            "ProductCodeType": "marketplace"
+                        }
+                    ],
+                    "VpcId": "vpc-00000000000000001",
+                    "CpuOptions": {
+                        "CoreCount": 1,
+                        "ThreadsPerCore": 2
+                    },
+                    "StateTransitionReason": "",
+                    "InstanceId": "i-0b99d2275c9bed168",
+                    "EnaSupport": true,
+                    "ImageId": "ami-00000000000000001",
+                    "PrivateDnsName": "ip-192-168-0-133.no-where-1.compute.internal",
+                    "KeyName": "mockup-all-purposes-no-where-1",
+                    "SecurityGroups": [
+                        {
+                            "GroupName": "mockup-security-group-name-001",
+                            "GroupId": "sg-00000000000000001"
+                        }
+                    ],
+                    "ClientToken": "cd85c4cc-a4ab-e4d9-022e-0cf3f641180e",
+                    "SubnetId": "subnet-092c194fe49c08ffb",
+                    "InstanceType": "c5.large",
+                    "CapacityReservationSpecification": {
+                        "CapacityReservationPreference": "open"
+                    },
+                    "NetworkInterfaces": [
+                        {
+                            "Status": "in-use",
+                            "MacAddress": "02:be:45:81:c6:68",
+                            "SourceDestCheck": false,
+                            "VpcId": "vpc-00000000000000001",
+                            "Description": "",
+                            "NetworkInterfaceId": "eni-0826500960c4104c1",
+                            "PrivateIpAddresses": [
+                                {
+                                    "PrivateDnsName": "ip-192-168-0-133.no-where-1.compute.internal",
+                                    "PrivateIpAddress": "192.168.0.133",
+                                    "Primary": true,
+                                    "Association": {
+                                        "PublicIp": "13.232.125.26",
+                                        "PublicDnsName": "ec2-13-232-125-26.no-where-1.compute.amazonaws.com",
+                                        "IpOwnerId": "amazon"
+                                    }
+                                }
+                            ],
+                            "PrivateDnsName": "ip-192-168-0-133.no-where-1.compute.internal",
+                            "InterfaceType": "interface",
+                            "Attachment": {
+                                "Status": "attached",
+                                "DeviceIndex": 0,
+                                "DeleteOnTermination": true,
+                                "AttachmentId": "eni-attach-0e0516486be853a0f",
+                                "AttachTime": "2020-04-01T00:34:29.000Z"
+                            },
+                            "Groups": [
+                                {
+                                    "GroupName": "mockup-security-group-name-001",
+                                    "GroupId": "sg-00000000000000001"
+                                }
+                            ],
+                            "Ipv6Addresses": [],
+                            "OwnerId": "123456789012",
+                            "PrivateIpAddress": "192.168.0.133",
+                            "SubnetId": "subnet-092c194fe49c08ffb",
+                            "Association": {
+                                "PublicIp": "13.232.125.26",
+                                "PublicDnsName": "ec2-13-232-125-26.no-where-1.compute.amazonaws.com",
+                                "IpOwnerId": "amazon"
+                            }
+                        }
+                    ],
+                    "SourceDestCheck": false,
+                    "Placement": {
+                        "Tenancy": "default",
+                        "GroupName": "",
+                        "AvailabilityZone": "no-where-1a"
+                    },
+                    "Hypervisor": "xen",
+                    "BlockDeviceMappings": [
+                        {
+                            "DeviceName": "/dev/sda1",
+                            "Ebs": {
+                                "Status": "attached",
+                                "DeleteOnTermination": true,
+                                "VolumeId": "vol-0c45d0bd9d5d007ea",
+                                "AttachTime": "2020-04-01T00:34:30.000Z"
+                            }
+                        },
+                        {
+                            "DeviceName": "/dev/sdb",
+                            "Ebs": {
+                                "Status": "attached",
+                                "DeleteOnTermination": true,
+                                "VolumeId": "vol-08ecd5c9fc6db3977",
+                                "AttachTime": "2020-04-01T00:34:30.000Z"
+                            }
+                        }
+                    ],
+                    "Architecture": "x86_64",
+                    "RootDeviceType": "ebs",
+                    "IamInstanceProfile": {
+                        "Id": "AIPARZJ546U4LDVPXJEZC",
+                        "Arn": "arn:aws:iam::123456789012:instance-profile/fortigate-autoscale-tgw-dev-ab-StackMainWorkload-1OQ7VYI0B3HVA-FgtInstanceProfile-US41LV9ZN1OV"
+                    },
+                    "RootDeviceName": "/dev/sda1",
+                    "VirtualizationType": "hvm",
+                    "Tags": [
+                        {
+                            "Value": "fortigate-autoscale-tgw-dev-ab-StackMainWorkload-StackCreateFortiGateAutoScalingGroup-R1KKJ5VW1LJ",
+                            "Key": "aws:cloudformation:stack-name"
+                        },
+                        {
+                            "Value": "lt-0adaf04a471e525d8",
+                            "Key": "aws:ec2launchtemplate:id"
+                        },
+                        {
+                            "Value": "1",
+                            "Key": "aws:ec2launchtemplate:version"
+                        },
+                        {
+                            "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0",
+                            "Key": "ResourceGroup"
+                        },
+                        {
+                            "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-auto-scaling-group",
+                            "Key": "aws:autoscaling:groupName"
+                        },
+                        {
+                            "Value": "FgtAutoScalingGroup",
+                            "Key": "aws:cloudformation:logical-id"
+                        },
+                        {
+                            "Value": "arn:aws:cloudformation:no-where-1:123456789012:stack/fortigate-autoscale-tgw-dev-ab-StackMainWorkload-StackCreateFortiGateAutoScalingGroup-R1KKJ5VW1LJ/3abf37f0-73b0-11ea-bf93-027feff0383e",
+                            "Key": "aws:cloudformation:stack-id"
+                        }
+                    ],
+                    "HibernationOptions": {
+                        "Configured": false
+                    },
+                    "MetadataOptions": {
+                        "State": "applied",
+                        "HttpEndpoint": "enabled",
+                        "HttpTokens": "optional",
+                        "HttpPutResponseHopLimit": 1
+                    },
+                    "AmiLaunchIndex": 0
+                },
+                {
+                    "Monitoring": {
+                        "State": "disabled"
+                    },
+                    "PublicDnsName": "ec2-13-233-106-18.no-where-1.compute.amazonaws.com",
+                    "State": {
+                        "Code": 16,
+                        "Name": "running"
+                    },
+                    "EbsOptimized": false,
+                    "LaunchTime": "2020-04-01T00:34:29.000Z",
+                    "PublicIpAddress": "13.233.106.18",
+                    "PrivateIpAddress": "192.168.0.20",
+                    "ProductCodes": [
+                        {
+                            "ProductCodeId": "",
+                            "ProductCodeType": "marketplace"
+                        }
+                    ],
+                    "VpcId": "vpc-00000000000000001",
+                    "CpuOptions": {
+                        "CoreCount": 1,
+                        "ThreadsPerCore": 2
+                    },
+                    "StateTransitionReason": "",
+                    "InstanceId": "i-0e9899505e4092dda",
+                    "EnaSupport": true,
+                    "ImageId": "ami-00000000000000001",
+                    "PrivateDnsName": "ip-192-168-0-20.no-where-1.compute.internal",
+                    "KeyName": "mockup-all-purposes-no-where-1",
+                    "SecurityGroups": [
+                        {
+                            "GroupName": "mockup-security-group-name-001",
+                            "GroupId": "sg-00000000000000001"
+                        }
+                    ],
+                    "ClientToken": "cd85c4cc-a4ab-e4d9-022e-0cf3f641180e",
+                    "SubnetId": "subnet-092c194fe49c08ffb",
+                    "InstanceType": "c5.large",
+                    "CapacityReservationSpecification": {
+                        "CapacityReservationPreference": "open"
+                    },
+                    "NetworkInterfaces": [
+                        {
+                            "Status": "in-use",
+                            "MacAddress": "02:98:e9:7b:b4:74",
+                            "SourceDestCheck": false,
+                            "VpcId": "vpc-00000000000000001",
+                            "Description": "",
+                            "NetworkInterfaceId": "eni-09d9f2b3e63acade9",
+                            "PrivateIpAddresses": [
+                                {
+                                    "PrivateDnsName": "ip-192-168-0-20.no-where-1.compute.internal",
+                                    "PrivateIpAddress": "192.168.0.20",
+                                    "Primary": true,
+                                    "Association": {
+                                        "PublicIp": "13.233.106.18",
+                                        "PublicDnsName": "ec2-13-233-106-18.no-where-1.compute.amazonaws.com",
+                                        "IpOwnerId": "amazon"
+                                    }
+                                }
+                            ],
+                            "PrivateDnsName": "ip-192-168-0-20.no-where-1.compute.internal",
+                            "InterfaceType": "interface",
+                            "Attachment": {
+                                "Status": "attached",
+                                "DeviceIndex": 0,
+                                "DeleteOnTermination": true,
+                                "AttachmentId": "eni-attach-0659987fbbb8e7b70",
+                                "AttachTime": "2020-04-01T00:34:29.000Z"
+                            },
+                            "Groups": [
+                                {
+                                    "GroupName": "mockup-security-group-name-001",
+                                    "GroupId": "sg-00000000000000001"
+                                }
+                            ],
+                            "Ipv6Addresses": [],
+                            "OwnerId": "123456789012",
+                            "PrivateIpAddress": "192.168.0.20",
+                            "SubnetId": "subnet-092c194fe49c08ffb",
+                            "Association": {
+                                "PublicIp": "13.233.106.18",
+                                "PublicDnsName": "ec2-13-233-106-18.no-where-1.compute.amazonaws.com",
+                                "IpOwnerId": "amazon"
+                            }
+                        }
+                    ],
+                    "SourceDestCheck": false,
+                    "Placement": {
+                        "Tenancy": "default",
+                        "GroupName": "",
+                        "AvailabilityZone": "no-where-1a"
+                    },
+                    "Hypervisor": "xen",
+                    "BlockDeviceMappings": [
+                        {
+                            "DeviceName": "/dev/sda1",
+                            "Ebs": {
+                                "Status": "attached",
+                                "DeleteOnTermination": true,
+                                "VolumeId": "vol-040a99d6ec113b886",
+                                "AttachTime": "2020-04-01T00:34:30.000Z"
+                            }
+                        },
+                        {
+                            "DeviceName": "/dev/sdb",
+                            "Ebs": {
+                                "Status": "attached",
+                                "DeleteOnTermination": true,
+                                "VolumeId": "vol-00828ba5ccbfdbfb3",
+                                "AttachTime": "2020-04-01T00:34:30.000Z"
+                            }
+                        }
+                    ],
+                    "Architecture": "x86_64",
+                    "RootDeviceType": "ebs",
+                    "IamInstanceProfile": {
+                        "Id": "AIPARZJ546U4LDVPXJEZC",
+                        "Arn": "arn:aws:iam::123456789012:instance-profile/fortigate-autoscale-tgw-dev-ab-StackMainWorkload-1OQ7VYI0B3HVA-FgtInstanceProfile-US41LV9ZN1OV"
+                    },
+                    "RootDeviceName": "/dev/sda1",
+                    "VirtualizationType": "hvm",
+                    "Tags": [
+                        {
+                            "Value": "arn:aws:cloudformation:no-where-1:123456789012:stack/fortigate-autoscale-tgw-dev-ab-StackMainWorkload-StackCreateFortiGateAutoScalingGroup-R1KKJ5VW1LJ/3abf37f0-73b0-11ea-bf93-027feff0383e",
+                            "Key": "aws:cloudformation:stack-id"
+                        },
+                        {
+                            "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0",
+                            "Key": "ResourceGroup"
+                        },
+                        {
+                            "Value": "FgtAutoScalingGroup",
+                            "Key": "aws:cloudformation:logical-id"
+                        },
+                        {
+                            "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-auto-scaling-group",
+                            "Key": "aws:autoscaling:groupName"
+                        },
+                        {
+                            "Value": "1",
+                            "Key": "aws:ec2launchtemplate:version"
+                        },
+                        {
+                            "Value": "fortigate-autoscale-tgw-dev-ab-StackMainWorkload-StackCreateFortiGateAutoScalingGroup-R1KKJ5VW1LJ",
+                            "Key": "aws:cloudformation:stack-name"
+                        },
+                        {
+                            "Value": "lt-0adaf04a471e525d8",
+                            "Key": "aws:ec2launchtemplate:id"
+                        }
+                    ],
+                    "HibernationOptions": {
+                        "Configured": false
+                    },
+                    "MetadataOptions": {
+                        "State": "applied",
+                        "HttpEndpoint": "enabled",
+                        "HttpTokens": "optional",
+                        "HttpPutResponseHopLimit": 1
+                    },
+                    "AmiLaunchIndex": 1
+                }
+            ],
+            "ReservationId": "r-0df370645f0d86d52",
+            "RequesterId": "968245739290",
+            "Groups": [],
+            "OwnerId": "123456789012"
+        },
+        {
+            "Instances": [
+                {
+                    "Monitoring": {
+                        "State": "disabled"
+                    },
+                    "PublicDnsName": "ec2-13-233-147-56.no-where-1.compute.amazonaws.com",
+                    "State": {
+                        "Code": 16,
+                        "Name": "running"
+                    },
+                    "EbsOptimized": false,
+                    "LaunchTime": "2020-04-01T00:34:29.000Z",
+                    "PublicIpAddress": "13.233.147.56",
+                    "PrivateIpAddress": "192.168.1.215",
+                    "ProductCodes": [
+                        {
+                            "ProductCodeId": "",
+                            "ProductCodeType": "marketplace"
+                        }
+                    ],
+                    "VpcId": "vpc-00000000000000001",
+                    "CpuOptions": {
+                        "CoreCount": 1,
+                        "ThreadsPerCore": 2
+                    },
+                    "StateTransitionReason": "",
+                    "InstanceId": "i-027fc98e702ed3878",
+                    "EnaSupport": true,
+                    "ImageId": "ami-00000000000000001",
+                    "PrivateDnsName": "ip-192-168-1-215.no-where-1.compute.internal",
+                    "KeyName": "mockup-all-purposes-no-where-1",
+                    "SecurityGroups": [
+                        {
+                            "GroupName": "mockup-security-group-name-001",
+                            "GroupId": "sg-00000000000000001"
+                        }
+                    ],
+                    "ClientToken": "b545c4cc-a4ac-e2ec-e0d5-2a54146148f8",
+                    "SubnetId": "subnet-00vpc001subnet001",
+                    "InstanceType": "c5.large",
+                    "CapacityReservationSpecification": {
+                        "CapacityReservationPreference": "open"
+                    },
+                    "NetworkInterfaces": [
+                        {
+                            "Status": "in-use",
+                            "MacAddress": "0a:e3:93:c6:f7:82",
+                            "SourceDestCheck": false,
+                            "VpcId": "vpc-00000000000000001",
+                            "Description": "",
+                            "NetworkInterfaceId": "eni-0cb6a7d07041f9922",
+                            "PrivateIpAddresses": [
+                                {
+                                    "PrivateDnsName": "ip-192-168-1-215.no-where-1.compute.internal",
+                                    "PrivateIpAddress": "192.168.1.215",
+                                    "Primary": true,
+                                    "Association": {
+                                        "PublicIp": "13.233.147.56",
+                                        "PublicDnsName": "ec2-13-233-147-56.no-where-1.compute.amazonaws.com",
+                                        "IpOwnerId": "amazon"
+                                    }
+                                }
+                            ],
+                            "PrivateDnsName": "ip-192-168-1-215.no-where-1.compute.internal",
+                            "InterfaceType": "interface",
+                            "Attachment": {
+                                "Status": "attached",
+                                "DeviceIndex": 0,
+                                "DeleteOnTermination": true,
+                                "AttachmentId": "eni-attach-06847a59c6ea64406",
+                                "AttachTime": "2020-04-01T00:34:29.000Z"
+                            },
+                            "Groups": [
+                                {
+                                    "GroupName": "mockup-security-group-name-001",
+                                    "GroupId": "sg-00000000000000001"
+                                }
+                            ],
+                            "Ipv6Addresses": [],
+                            "OwnerId": "123456789012",
+                            "PrivateIpAddress": "192.168.1.215",
+                            "SubnetId": "subnet-00vpc001subnet001",
+                            "Association": {
+                                "PublicIp": "13.233.147.56",
+                                "PublicDnsName": "ec2-13-233-147-56.no-where-1.compute.amazonaws.com",
+                                "IpOwnerId": "amazon"
+                            }
+                        }
+                    ],
+                    "SourceDestCheck": false,
+                    "Placement": {
+                        "Tenancy": "default",
+                        "GroupName": "",
+                        "AvailabilityZone": "no-where-1b"
+                    },
+                    "Hypervisor": "xen",
+                    "BlockDeviceMappings": [
+                        {
+                            "DeviceName": "/dev/sda1",
+                            "Ebs": {
+                                "Status": "attached",
+                                "DeleteOnTermination": true,
+                                "VolumeId": "vol-00a76874598fdf385",
+                                "AttachTime": "2020-04-01T00:34:30.000Z"
+                            }
+                        },
+                        {
+                            "DeviceName": "/dev/sdb",
+                            "Ebs": {
+                                "Status": "attached",
+                                "DeleteOnTermination": true,
+                                "VolumeId": "vol-0f84a08c0b1d65969",
+                                "AttachTime": "2020-04-01T00:34:30.000Z"
+                            }
+                        }
+                    ],
+                    "Architecture": "x86_64",
+                    "RootDeviceType": "ebs",
+                    "IamInstanceProfile": {
+                        "Id": "AIPARZJ546U4LDVPXJEZC",
+                        "Arn": "arn:aws:iam::123456789012:instance-profile/fortigate-autoscale-tgw-dev-ab-StackMainWorkload-1OQ7VYI0B3HVA-FgtInstanceProfile-US41LV9ZN1OV"
+                    },
+                    "RootDeviceName": "/dev/sda1",
+                    "VirtualizationType": "hvm",
+                    "Tags": [
+                        {
+                            "Value": "1",
+                            "Key": "aws:ec2launchtemplate:version"
+                        },
+                        {
+                            "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-auto-scaling-group",
+                            "Key": "aws:autoscaling:groupName"
+                        },
+                        {
+                            "Value": "lt-0adaf04a471e525d8",
+                            "Key": "aws:ec2launchtemplate:id"
+                        },
+                        {
+                            "Value": "arn:aws:cloudformation:no-where-1:123456789012:stack/fortigate-autoscale-tgw-dev-ab-StackMainWorkload-StackCreateFortiGateAutoScalingGroup-R1KKJ5VW1LJ/3abf37f0-73b0-11ea-bf93-027feff0383e",
+                            "Key": "aws:cloudformation:stack-id"
+                        },
+                        {
+                            "Value": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0",
+                            "Key": "ResourceGroup"
+                        },
+                        {
+                            "Value": "FgtAutoScalingGroup",
+                            "Key": "aws:cloudformation:logical-id"
+                        },
+                        {
+                            "Value": "fortigate-autoscale-tgw-dev-ab-StackMainWorkload-StackCreateFortiGateAutoScalingGroup-R1KKJ5VW1LJ",
+                            "Key": "aws:cloudformation:stack-name"
+                        }
+                    ],
+                    "HibernationOptions": {
+                        "Configured": false
+                    },
+                    "MetadataOptions": {
+                        "State": "applied",
+                        "HttpEndpoint": "enabled",
+                        "HttpTokens": "optional",
+                        "HttpPutResponseHopLimit": 1
+                    },
+                    "AmiLaunchIndex": 0
+                }
+            ],
+            "ReservationId": "r-0ef558279bef9db69",
+            "RequesterId": "968245739290",
+            "Groups": [],
+            "OwnerId": "123456789012"
+        }
+    ]
+}

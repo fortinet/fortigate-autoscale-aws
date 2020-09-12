@@ -1,0 +1,15 @@
+{
+    "Count": 1,
+    "Items": [
+        {
+            "instanceId":"i-084d2681eb1587d93",
+            "ip":"192.168.0.1",
+            "scalingGroupName":"fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-byol-auto-scaling-group",
+            "voteEndTime":"1588209959339",
+            "voteState":"done",
+            "vpcId":"vpc-00000000000000001"
+        }
+    ],
+    "ScannedCount": 1,
+    "ConsumedCapacity": null
+}

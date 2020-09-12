@@ -1,0 +1,23 @@
+{
+    "name": "fgt-as-handler",
+    "version": "3.1.0-alpha.0",
+    "description": "FortiGate Autoscale Handler function for AWS.",
+    "main": "index.js",
+    "scripts": {
+    },
+    "keywords": [],
+    "author": "Fortinet <github@fortinet.com>",
+    "license": "MIT",
+    "dependencies": {
+    },
+    "devDependencies": {
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/fortinet/fortigate-autoscale-aws.git"
+    },
+    "bugs": {
+        "url": "https://github.com/fortinet/fortigate-autoscale-aws/issues"
+    },
+    "homepage": "https://github.com/fortinet/fortigate-autoscale-aws#readme"
+}

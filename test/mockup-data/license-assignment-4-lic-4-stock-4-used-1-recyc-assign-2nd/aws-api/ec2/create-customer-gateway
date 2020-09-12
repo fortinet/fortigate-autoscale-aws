@@ -1,0 +1,10 @@
+{
+    "CustomerGateway": {
+        "DeviceName": "mockup-mock-device",
+        "IpAddress": "10.100.0.1",
+        "State": "available",
+        "CustomerGatewayId": "cgw-00000000000cgw001",
+        "BgpAsn": "65432",
+        "Type": "ipsec.1"
+    }
+}

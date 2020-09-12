@@ -1,39 +1,28 @@
 node('devops-aws') {
-    stage('Clean up') {
-        sh 'rm -rf *'
-    }
-
-    stage('Checkout') {
+    stage('Checkout Changes') {
         def changeBranch = "change-${GERRIT_CHANGE_NUMBER}-${GERRIT_PATCHSET_NUMBER}"
         def scmVars = checkout scm
-        git url: scmVars.GIT_URL
+        git url: scmVars.GIT_URL, branch: 'main'
         sh "git fetch origin ${GERRIT_REFSPEC}:${changeBranch}"
         sh "git checkout ${changeBranch}"
     }
-
-    stage('NPM Install') {
-        echo 'NPM Install..'
+    stage('Install Dependencies') {
+        echo 'running npm install...'
         sh 'npm install'
-        sh 'npm install fortinet/ftnt-devops-ci'
     }
-
-    stage('Format check:: .js & .json') {
-        echo 'Format checking..'
-        sh './node_modules/.bin/ftnt-devops-ci check -f "**/*.{js,json}"'
+    stage('Audit Dependencies') {
+        echo 'running npm audit...'
+        sh 'npm audit --production'
     }
-
-    stage('Eslint') {
-        echo 'Eslinting..'
-        sh './node_modules/.bin/ftnt-devops-ci check -l "**/*.js"'
+    stage('Lint Source Code') {
+        echo 'running linter...'
+        sh 'npm run lint-check'
     }
-
-    stage('NPM Audit') {
-        echo 'running npm audit..'
-        sh 'npm audit'
-    }
-
-    stage('Test') {
-        echo 'Testing..'
+    stage('Run Tests') {
+        echo 'running test...'
         sh 'npm test'
+    }
+    stage('Verify Build Process') {
+        sh 'npm run build'
     }
 }
