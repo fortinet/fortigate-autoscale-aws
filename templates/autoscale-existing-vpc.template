@@ -71,7 +71,7 @@
                 "c5.9xlarge"
             ],
             "ConstraintDescription": "must be a valid EC2 instance type.",
-            "Description": "Instance type for the FortiGates in the Auto Scaling group. There are t2.small and compute-optimized instances such as c4 and c5 available with different vCPU sizes and bandwidths. For more information about instance types, see https://aws.amazon.com/ec2/instance-types/."
+            "Description": "Instance type for the FortiGates in the Auto Scaling group. Instance types are available with different vCPU sizes and bandwidths. For more information, see https://aws.amazon.com/ec2/instance-types/."
         },
         "FortiOSVersion": {
             "Type": "String",
@@ -899,7 +899,7 @@
             }
         },
         "FgtLicensingModel": {
-            "Description": "The FortiGate licensing model in the Auto Scaling group(s) for the initial deployment of this stack. (Options: PAYG-Only, BYOL-Only, Hybrid)",
+            "Description": "The FortiGate licensing model in the Auto Scaling group(s) for the initial deployment of this stack. (Options: On-Demand-Only, BYOL-Only, Hybrid)",
             "Value": {
                 "Fn::GetAtt": ["StackMainWorkload", "Outputs.FgtLicensingModel"]
             }

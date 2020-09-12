@@ -52,7 +52,7 @@
                 "c5.9xlarge"
             ],
             "ConstraintDescription": "must be a valid EC2 instance type.",
-            "Description": "Instance type to launch as FortiGate On-Demand instances. There are t2.small and compute-optimized instances such as c4 and c5 available with different vCPU sizes and bandwidths. For more information about instance types, see https://aws.amazon.com/ec2/instance-types/"
+            "Description": "Instance type for the FortiGates in the Auto Scaling group. Instance types are available with different vCPU sizes and bandwidths. For more information, see https://aws.amazon.com/ec2/instance-types/."
         },
         "InstanceProfileArn": {
             "Type": "String",

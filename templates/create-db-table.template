@@ -631,7 +631,7 @@
             }
         },
         "TableArnList": {
-            "Description": "The comma-delimited list of arn of DynamoDB tables created in this stack.",
+            "Description": "The comma-delimited list of ARNs for DynamoDB tables created in this stack.",
             "Value": {
                 "Fn::Sub": [
                     "${Autoscale},${PrimaryElection}${LifecycleItem},${Settings}${CustomLog}${VmInfoCache}${NicAttachment}${LicenseStock}${LicenseUsage}${VpnAttachment}${FortiAnalyzer}",
