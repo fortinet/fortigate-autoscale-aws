@@ -13,6 +13,7 @@
         "build": "npm run clear-dist && npm run compile",
         "make-dist": "npm run build && npm run bundle && node dist/transpiled/scripts/make-dist-v2.js build-all --project-root './'",
         "build-artifacts": "npm-run-all build make-dist",
+        "unzip-artifacts": "unzip dist/artifacts/aws-cloudformation.zip -d dist/aws-cloudformation",
         "test": "mocha --timeout 3600000 -r ts-node/register test/*.spec.ts",
         "lint-check-code": "node node_modules/ftnt-devops-ci/bin/ftnt-devops-ci.js c -fl  -F .eslintignore -L .eslintignore \"{*,**/*}{.js,.json,.ts}\"",
         "lint-check-template": "node node_modules/ftnt-devops-ci/bin/ftnt-devops-ci.js c -f -F .eslintignore -L .eslintignore \"**/*.template\" --parser \"json\"",
