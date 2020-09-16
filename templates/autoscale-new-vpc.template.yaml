@@ -1,3 +1,4 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
   FortiGate Autoscale Solution [in a new VPC]. This template creates a new VPC

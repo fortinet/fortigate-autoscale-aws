@@ -1,3 +1,4 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
   This template creates an S3 bucket in the same region where the stack is

@@ -1,3 +1,4 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
   Deploys a FortiAnalyzer to a selected subnet and configures all FortiGates to

@@ -1,3 +1,4 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
   This template configure the FortiGate Autoscale For Transit Gateway

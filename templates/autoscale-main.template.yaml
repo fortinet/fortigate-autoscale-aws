@@ -1,3 +1,4 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
   This template does the majority of the work for deploying FortiGate Autoscale.

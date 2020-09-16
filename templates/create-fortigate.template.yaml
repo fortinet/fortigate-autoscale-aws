@@ -1,3 +1,4 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
   Deploys a FortiGate EC2 instance to a subnet using a given FortiGate AMI,

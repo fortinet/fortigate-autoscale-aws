@@ -1,3 +1,4 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Deploy Network traffic Load Balancers and components for FortiGate Autoscale.
 Parameters:
