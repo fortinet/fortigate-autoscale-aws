@@ -2,472 +2,472 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create all necessary DynamoDB tables for FortiGate Autoscale Solution.
 Parameters:
-  ResourceTagPrefix:
-    Type: String
-    AllowedPattern: '[0-9a-zA-Z@.#-]+'
-    MaxLength: 64
-    ConstraintDescription: >-
-      Resource tag prefix can include numbers, lowercase letters, uppercase
-      letters, ampersat(@) , hyphens (-), period (.), and hash (#). Max length
-      is 64.
-    Description: >-
-      A prefix for tag key ResourceGroup on all resources. It's also used as the
-      name prefix of all applicable resources. Can only contain numbers,
-      lowercase letters, uppercase letters, ampersat(@) , hyphens (-), period
-      (.), and hash (#). Max length is 64.
-  EnableSecondNic:
-    Type: String
-    Default: 'no'
-    AllowedValues:
-      - 'yes'
-      - 'no'
-    ConstraintDescription: must choose from the provided options.
-    Description: Enable the Secondary Elastic Network Interface controllers.
-  EnableVmInfoCache:
-    Type: String
-    Default: 'no'
-    AllowedValues:
-      - 'yes'
-      - 'no'
-    ConstraintDescription: must choose from the provided options.
-    Description: Enable VM Info Cache in DB.
-  EnableCustomLog:
-    Type: String
-    Default: 'no'
-    AllowedValues:
-      - 'yes'
-      - 'no'
-    ConstraintDescription: must choose from the provided options.
-    Description: Enable Custom Log in DB.
-  EnableTransitGatewayVpn:
-    Type: String
-    Default: 'no'
-    AllowedValues:
-      - 'yes'
-      - 'no'
-    ConstraintDescription: must choose from the provided options.
-    Description: Enable Transit Gateway VPN support.
-  EnableHybridLicensing:
-    Type: String
-    Default: 'no'
-    AllowedValues:
-      - 'yes'
-      - 'no'
-    ConstraintDescription: must choose from the provided options.
-    Description: Enable Hybrid Licensing support.
-  EnableFortiAnalyzer:
-    Type: String
-    Default: 'no'
-    AllowedValues:
-      - 'yes'
-      - 'no'
-    ConstraintDescription: must choose from the provided options.
-    Description: Enable FortiAnalyzer support.
+    ResourceTagPrefix:
+        Type: String
+        AllowedPattern: '[0-9a-zA-Z@.#-]+'
+        MaxLength: 64
+        ConstraintDescription: >-
+            Resource tag prefix can include numbers, lowercase letters, uppercase
+            letters, ampersat(@) , hyphens (-), period (.), and hash (#). Max length
+            is 64.
+        Description: >-
+            A prefix for tag key ResourceGroup on all resources. It's also used as the
+            name prefix of all applicable resources. Can only contain numbers,
+            lowercase letters, uppercase letters, ampersat(@) , hyphens (-), period
+            (.), and hash (#). Max length is 64.
+    EnableSecondNic:
+        Type: String
+        Default: 'no'
+        AllowedValues:
+            - 'yes'
+            - 'no'
+        ConstraintDescription: must choose from the provided options.
+        Description: Enable the Secondary Elastic Network Interface controllers.
+    EnableVmInfoCache:
+        Type: String
+        Default: 'no'
+        AllowedValues:
+            - 'yes'
+            - 'no'
+        ConstraintDescription: must choose from the provided options.
+        Description: Enable VM Info Cache in DB.
+    EnableCustomLog:
+        Type: String
+        Default: 'no'
+        AllowedValues:
+            - 'yes'
+            - 'no'
+        ConstraintDescription: must choose from the provided options.
+        Description: Enable Custom Log in DB.
+    EnableTransitGatewayVpn:
+        Type: String
+        Default: 'no'
+        AllowedValues:
+            - 'yes'
+            - 'no'
+        ConstraintDescription: must choose from the provided options.
+        Description: Enable Transit Gateway VPN support.
+    EnableHybridLicensing:
+        Type: String
+        Default: 'no'
+        AllowedValues:
+            - 'yes'
+            - 'no'
+        ConstraintDescription: must choose from the provided options.
+        Description: Enable Hybrid Licensing support.
+    EnableFortiAnalyzer:
+        Type: String
+        Default: 'no'
+        AllowedValues:
+            - 'yes'
+            - 'no'
+        ConstraintDescription: must choose from the provided options.
+        Description: Enable FortiAnalyzer support.
 Conditions:
-  EnableSecondNic: !Equals
-    - !Ref EnableSecondNic
-    - 'yes'
-  EnableVmInfoCache: !Equals
-    - !Ref EnableVmInfoCache
-    - 'yes'
-  EnableCustomLog: !Equals
-    - !Ref EnableCustomLog
-    - 'yes'
-  EnableFortiAnalyzer: !Equals
-    - !Ref EnableFortiAnalyzer
-    - 'yes'
-  EnableTransitGatewayVpn: !Equals
-    - !Ref EnableTransitGatewayVpn
-    - 'yes'
-  EnableHybridLicensing: !Equals
-    - !Ref EnableHybridLicensing
-    - 'yes'
+    EnableSecondNic: !Equals
+        - !Ref EnableSecondNic
+        - 'yes'
+    EnableVmInfoCache: !Equals
+        - !Ref EnableVmInfoCache
+        - 'yes'
+    EnableCustomLog: !Equals
+        - !Ref EnableCustomLog
+        - 'yes'
+    EnableFortiAnalyzer: !Equals
+        - !Ref EnableFortiAnalyzer
+        - 'yes'
+    EnableTransitGatewayVpn: !Equals
+        - !Ref EnableTransitGatewayVpn
+        - 'yes'
+    EnableHybridLicensing: !Equals
+        - !Ref EnableHybridLicensing
+        - 'yes'
 Resources:
-  Autoscale:
-    Type: 'AWS::DynamoDB::Table'
-    Properties:
-      AttributeDefinitions:
-        - AttributeName: vmId
-          AttributeType: S
-      KeySchema:
-        - AttributeName: vmId
-          KeyType: HASH
-      ProvisionedThroughput:
-        ReadCapacityUnits: '1'
-        WriteCapacityUnits: '1'
-      TableName: !Join
-        - '-'
-        - - !Ref ResourceTagPrefix
-          - Autoscale
-      Tags:
-        - Key: ResourceGroup
-          Value: !Ref ResourceTagPrefix
-  PrimaryElection:
-    Type: 'AWS::DynamoDB::Table'
-    Properties:
-      AttributeDefinitions:
-        - AttributeName: scalingGroupName
-          AttributeType: S
-      KeySchema:
-        - AttributeName: scalingGroupName
-          KeyType: HASH
-      ProvisionedThroughput:
-        ReadCapacityUnits: '1'
-        WriteCapacityUnits: '1'
-      TableName: !Join
-        - '-'
-        - - !Ref ResourceTagPrefix
-          - PrimaryElection
-      Tags:
-        - Key: ResourceGroup
-          Value: !Ref ResourceTagPrefix
-  LifecycleItem:
-    Type: 'AWS::DynamoDB::Table'
-    Properties:
-      AttributeDefinitions:
-        - AttributeName: vmId
-          AttributeType: S
-      KeySchema:
-        - AttributeName: vmId
-          KeyType: HASH
-      ProvisionedThroughput:
-        ReadCapacityUnits: '1'
-        WriteCapacityUnits: '1'
-      TableName: !Join
-        - '-'
-        - - !Ref ResourceTagPrefix
-          - LifecycleItem
-      Tags:
-        - Key: ResourceGroup
-          Value: !Ref ResourceTagPrefix
-  Settings:
-    Type: 'AWS::DynamoDB::Table'
-    Properties:
-      AttributeDefinitions:
-        - AttributeName: settingKey
-          AttributeType: S
-      KeySchema:
-        - AttributeName: settingKey
-          KeyType: HASH
-      ProvisionedThroughput:
-        ReadCapacityUnits: '1'
-        WriteCapacityUnits: '1'
-      TableName: !Join
-        - '-'
-        - - !Ref ResourceTagPrefix
-          - Settings
-      Tags:
-        - Key: ResourceGroup
-          Value: !Ref ResourceTagPrefix
-  CustomLog:
-    Condition: EnableCustomLog
-    Type: 'AWS::DynamoDB::Table'
-    Properties:
-      AttributeDefinitions:
-        - AttributeName: id
-          AttributeType: S
-        - AttributeName: timestamp
-          AttributeType: 'N'
-      KeySchema:
-        - AttributeName: id
-          KeyType: HASH
-        - AttributeName: timestamp
-          KeyType: RANGE
-      ProvisionedThroughput:
-        ReadCapacityUnits: '1'
-        WriteCapacityUnits: '1'
-      TableName: !Join
-        - '-'
-        - - !Ref ResourceTagPrefix
-          - CustomLog
-      Tags:
-        - Key: ResourceGroup
-          Value: !Ref ResourceTagPrefix
-  VmInfoCache:
-    Condition: EnableVmInfoCache
-    Type: 'AWS::DynamoDB::Table'
-    Properties:
-      AttributeDefinitions:
-        - AttributeName: id
-          AttributeType: S
-      KeySchema:
-        - AttributeName: id
-          KeyType: HASH
-      ProvisionedThroughput:
-        ReadCapacityUnits: '1'
-        WriteCapacityUnits: '1'
-      TableName: !Join
-        - '-'
-        - - !Ref ResourceTagPrefix
-          - VmInfoCache
-      Tags:
-        - Key: ResourceGroup
-          Value: !Ref ResourceTagPrefix
-  NicAttachment:
-    Condition: EnableSecondNic
-    Type: 'AWS::DynamoDB::Table'
-    Properties:
-      AttributeDefinitions:
-        - AttributeName: vmId
-          AttributeType: S
-      KeySchema:
-        - AttributeName: vmId
-          KeyType: HASH
-      ProvisionedThroughput:
-        ReadCapacityUnits: '1'
-        WriteCapacityUnits: '1'
-      TableName: !Join
-        - '-'
-        - - !Ref ResourceTagPrefix
-          - NicAttachment
-      Tags:
-        - Key: ResourceGroup
-          Value: !Ref ResourceTagPrefix
-  LicenseStock:
-    Condition: EnableHybridLicensing
-    Type: 'AWS::DynamoDB::Table'
-    Properties:
-      AttributeDefinitions:
-        - AttributeName: checksum
-          AttributeType: S
-      KeySchema:
-        - AttributeName: checksum
-          KeyType: HASH
-      ProvisionedThroughput:
-        ReadCapacityUnits: '1'
-        WriteCapacityUnits: '1'
-      TableName: !Join
-        - '-'
-        - - !Ref ResourceTagPrefix
-          - LicenseStock
-      Tags:
-        - Key: ResourceGroup
-          Value: !Ref ResourceTagPrefix
-  LicenseUsage:
-    Condition: EnableHybridLicensing
-    Type: 'AWS::DynamoDB::Table'
-    Properties:
-      AttributeDefinitions:
-        - AttributeName: checksum
-          AttributeType: S
-      KeySchema:
-        - AttributeName: checksum
-          KeyType: HASH
-      ProvisionedThroughput:
-        ReadCapacityUnits: '1'
-        WriteCapacityUnits: '1'
-      TableName: !Join
-        - '-'
-        - - !Ref ResourceTagPrefix
-          - LicenseUsage
-      Tags:
-        - Key: ResourceGroup
-          Value: !Ref ResourceTagPrefix
-  VpnAttachment:
-    Condition: EnableTransitGatewayVpn
-    Type: 'AWS::DynamoDB::Table'
-    Properties:
-      AttributeDefinitions:
-        - AttributeName: vmId
-          AttributeType: S
-        - AttributeName: ip
-          AttributeType: S
-      KeySchema:
-        - AttributeName: vmId
-          KeyType: HASH
-        - AttributeName: ip
-          KeyType: RANGE
-      ProvisionedThroughput:
-        ReadCapacityUnits: '1'
-        WriteCapacityUnits: '1'
-      TableName: !Join
-        - '-'
-        - - !Ref ResourceTagPrefix
-          - VpnAttachment
-      Tags:
-        - Key: ResourceGroup
-          Value: !Ref ResourceTagPrefix
-  FortiAnalyzer:
-    Condition: EnableFortiAnalyzer
-    Type: 'AWS::DynamoDB::Table'
-    Properties:
-      AttributeDefinitions:
-        - AttributeName: vmId
-          AttributeType: S
-      KeySchema:
-        - AttributeName: vmId
-          KeyType: HASH
-      ProvisionedThroughput:
-        ReadCapacityUnits: '1'
-        WriteCapacityUnits: '1'
-      TableName: !Join
-        - '-'
-        - - !Ref ResourceTagPrefix
-          - FortiAnalyzer
-      Tags:
-        - Key: ResourceGroup
-          Value: !Ref ResourceTagPrefix
+    Autoscale:
+        Type: 'AWS::DynamoDB::Table'
+        Properties:
+            AttributeDefinitions:
+                - AttributeName: vmId
+                  AttributeType: S
+            KeySchema:
+                - AttributeName: vmId
+                  KeyType: HASH
+            ProvisionedThroughput:
+                ReadCapacityUnits: '1'
+                WriteCapacityUnits: '1'
+            TableName: !Join
+                - '-'
+                - - !Ref ResourceTagPrefix
+                  - Autoscale
+            Tags:
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
+    PrimaryElection:
+        Type: 'AWS::DynamoDB::Table'
+        Properties:
+            AttributeDefinitions:
+                - AttributeName: scalingGroupName
+                  AttributeType: S
+            KeySchema:
+                - AttributeName: scalingGroupName
+                  KeyType: HASH
+            ProvisionedThroughput:
+                ReadCapacityUnits: '1'
+                WriteCapacityUnits: '1'
+            TableName: !Join
+                - '-'
+                - - !Ref ResourceTagPrefix
+                  - PrimaryElection
+            Tags:
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
+    LifecycleItem:
+        Type: 'AWS::DynamoDB::Table'
+        Properties:
+            AttributeDefinitions:
+                - AttributeName: vmId
+                  AttributeType: S
+            KeySchema:
+                - AttributeName: vmId
+                  KeyType: HASH
+            ProvisionedThroughput:
+                ReadCapacityUnits: '1'
+                WriteCapacityUnits: '1'
+            TableName: !Join
+                - '-'
+                - - !Ref ResourceTagPrefix
+                  - LifecycleItem
+            Tags:
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
+    Settings:
+        Type: 'AWS::DynamoDB::Table'
+        Properties:
+            AttributeDefinitions:
+                - AttributeName: settingKey
+                  AttributeType: S
+            KeySchema:
+                - AttributeName: settingKey
+                  KeyType: HASH
+            ProvisionedThroughput:
+                ReadCapacityUnits: '1'
+                WriteCapacityUnits: '1'
+            TableName: !Join
+                - '-'
+                - - !Ref ResourceTagPrefix
+                  - Settings
+            Tags:
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
+    CustomLog:
+        Condition: EnableCustomLog
+        Type: 'AWS::DynamoDB::Table'
+        Properties:
+            AttributeDefinitions:
+                - AttributeName: id
+                  AttributeType: S
+                - AttributeName: timestamp
+                  AttributeType: 'N'
+            KeySchema:
+                - AttributeName: id
+                  KeyType: HASH
+                - AttributeName: timestamp
+                  KeyType: RANGE
+            ProvisionedThroughput:
+                ReadCapacityUnits: '1'
+                WriteCapacityUnits: '1'
+            TableName: !Join
+                - '-'
+                - - !Ref ResourceTagPrefix
+                  - CustomLog
+            Tags:
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
+    VmInfoCache:
+        Condition: EnableVmInfoCache
+        Type: 'AWS::DynamoDB::Table'
+        Properties:
+            AttributeDefinitions:
+                - AttributeName: id
+                  AttributeType: S
+            KeySchema:
+                - AttributeName: id
+                  KeyType: HASH
+            ProvisionedThroughput:
+                ReadCapacityUnits: '1'
+                WriteCapacityUnits: '1'
+            TableName: !Join
+                - '-'
+                - - !Ref ResourceTagPrefix
+                  - VmInfoCache
+            Tags:
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
+    NicAttachment:
+        Condition: EnableSecondNic
+        Type: 'AWS::DynamoDB::Table'
+        Properties:
+            AttributeDefinitions:
+                - AttributeName: vmId
+                  AttributeType: S
+            KeySchema:
+                - AttributeName: vmId
+                  KeyType: HASH
+            ProvisionedThroughput:
+                ReadCapacityUnits: '1'
+                WriteCapacityUnits: '1'
+            TableName: !Join
+                - '-'
+                - - !Ref ResourceTagPrefix
+                  - NicAttachment
+            Tags:
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
+    LicenseStock:
+        Condition: EnableHybridLicensing
+        Type: 'AWS::DynamoDB::Table'
+        Properties:
+            AttributeDefinitions:
+                - AttributeName: checksum
+                  AttributeType: S
+            KeySchema:
+                - AttributeName: checksum
+                  KeyType: HASH
+            ProvisionedThroughput:
+                ReadCapacityUnits: '1'
+                WriteCapacityUnits: '1'
+            TableName: !Join
+                - '-'
+                - - !Ref ResourceTagPrefix
+                  - LicenseStock
+            Tags:
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
+    LicenseUsage:
+        Condition: EnableHybridLicensing
+        Type: 'AWS::DynamoDB::Table'
+        Properties:
+            AttributeDefinitions:
+                - AttributeName: checksum
+                  AttributeType: S
+            KeySchema:
+                - AttributeName: checksum
+                  KeyType: HASH
+            ProvisionedThroughput:
+                ReadCapacityUnits: '1'
+                WriteCapacityUnits: '1'
+            TableName: !Join
+                - '-'
+                - - !Ref ResourceTagPrefix
+                  - LicenseUsage
+            Tags:
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
+    VpnAttachment:
+        Condition: EnableTransitGatewayVpn
+        Type: 'AWS::DynamoDB::Table'
+        Properties:
+            AttributeDefinitions:
+                - AttributeName: vmId
+                  AttributeType: S
+                - AttributeName: ip
+                  AttributeType: S
+            KeySchema:
+                - AttributeName: vmId
+                  KeyType: HASH
+                - AttributeName: ip
+                  KeyType: RANGE
+            ProvisionedThroughput:
+                ReadCapacityUnits: '1'
+                WriteCapacityUnits: '1'
+            TableName: !Join
+                - '-'
+                - - !Ref ResourceTagPrefix
+                  - VpnAttachment
+            Tags:
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
+    FortiAnalyzer:
+        Condition: EnableFortiAnalyzer
+        Type: 'AWS::DynamoDB::Table'
+        Properties:
+            AttributeDefinitions:
+                - AttributeName: vmId
+                  AttributeType: S
+            KeySchema:
+                - AttributeName: vmId
+                  KeyType: HASH
+            ProvisionedThroughput:
+                ReadCapacityUnits: '1'
+                WriteCapacityUnits: '1'
+            TableName: !Join
+                - '-'
+                - - !Ref ResourceTagPrefix
+                  - FortiAnalyzer
+            Tags:
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
 Outputs:
-  AutoscaleTableArn:
-    Value: !GetAtt
-      - Autoscale
-      - Arn
-  PrimaryElectionTableArn:
-    Value: !GetAtt
-      - PrimaryElection
-      - Arn
-  LifecycleItemTableArn:
-    Value: !GetAtt
-      - LifecycleItem
-      - Arn
-  SettingsTableArn:
-    Value: !GetAtt
-      - Settings
-      - Arn
-  CustomLogTableArn:
-    Condition: EnableCustomLog
-    Value: !GetAtt
-      - CustomLog
-      - Arn
-  VmInfoCacheTableArn:
-    Condition: EnableVmInfoCache
-    Value: !GetAtt
-      - VmInfoCache
-      - Arn
-  NicAttachmentTableArn:
-    Condition: EnableSecondNic
-    Value: !GetAtt
-      - NicAttachment
-      - Arn
-  LicenseStockTableArn:
-    Condition: EnableHybridLicensing
-    Value: !GetAtt
-      - LicenseStock
-      - Arn
-  LicenseUsageTableArn:
-    Condition: EnableHybridLicensing
-    Value: !GetAtt
-      - LicenseUsage
-      - Arn
-  VpnAttachmentTableArn:
-    Condition: EnableTransitGatewayVpn
-    Value: !GetAtt
-      - VpnAttachment
-      - Arn
-  FortiAnalyzerTableArn:
-    Condition: EnableFortiAnalyzer
-    Value: !GetAtt
-      - FortiAnalyzer
-      - Arn
-  TableArnList:
-    Description: >-
-      The comma-delimited list of ARNs for DynamoDB tables created in this
-      stack.
-    Value: !Sub
-      - >-
-        ${Autoscale},${PrimaryElection}${LifecycleItem},${Settings}${CustomLog}${VmInfoCache}${NicAttachment}${LicenseStock}${LicenseUsage}${VpnAttachment}${FortiAnalyzer}
-      - Autoscale: !GetAtt
-          - Autoscale
-          - Arn
-        PrimaryElection: !GetAtt
-          - PrimaryElection
-          - Arn
-        LifecycleItem: !GetAtt
-          - LifecycleItem
-          - Arn
-        Settings: !GetAtt
-          - Settings
-          - Arn
-        CustomLog: !If
-          - EnableCustomLog
-          - !Sub
-            - ',${arn}'
-            - arn: !GetAtt
-                - CustomLog
-                - Arn
-          - ''
-        VmInfoCache: !If
-          - EnableVmInfoCache
-          - !Sub
-            - ',${arn}'
-            - arn: !GetAtt
-                - VmInfoCache
-                - Arn
-          - ''
-        NicAttachment: !If
-          - EnableSecondNic
-          - !Sub
-            - ',${arn}'
-            - arn: !GetAtt
-                - NicAttachment
-                - Arn
-          - ''
-        LicenseStock: !If
-          - EnableHybridLicensing
-          - !Sub
-            - ',${arn}'
-            - arn: !GetAtt
-                - LicenseStock
-                - Arn
-          - ''
-        LicenseUsage: !If
-          - EnableHybridLicensing
-          - !Sub
-            - ',${arn}'
-            - arn: !GetAtt
-                - LicenseUsage
-                - Arn
-          - ''
-        VpnAttachment: !If
-          - EnableTransitGatewayVpn
-          - !Sub
-            - ',${arn}'
-            - arn: !GetAtt
-                - VpnAttachment
-                - Arn
-          - ''
-        FortiAnalyzer: !If
-          - EnableFortiAnalyzer
-          - !Sub
-            - ',${arn}'
-            - arn: !GetAtt
-                - FortiAnalyzer
-                - Arn
-          - ''
-  TableNameList:
-    Description: The comma-delimited list of name of created tables in this stack.
-    Value: !Sub
-      - >-
-        ${Autoscale},${PrimaryElection},${LifecycleItem},${Settings},${CustomLog},${VmInfoCache},${NicAttachment},${LicenseStock},${LicenseUsage},${VpnAttachment},${FortiAnalyzer}
-      - Autoscale: !Ref Autoscale
-        PrimaryElection: !Ref PrimaryElection
-        LifecycleItem: !Ref LifecycleItem
-        Settings: !Ref Settings
-        CustomLog: !If
-          - EnableCustomLog
-          - !Ref CustomLog
-          - ''
-        VmInfoCache: !If
-          - EnableVmInfoCache
-          - !Ref VmInfoCache
-          - ''
-        NicAttachment: !If
-          - EnableSecondNic
-          - !Ref NicAttachment
-          - ''
-        LicenseStock: !If
-          - EnableHybridLicensing
-          - !Ref LicenseStock
-          - ''
-        LicenseUsage: !If
-          - EnableHybridLicensing
-          - !Ref LicenseUsage
-          - ''
-        VpnAttachment: !If
-          - EnableTransitGatewayVpn
-          - !Ref VpnAttachment
-          - ''
-        FortiAnalyzer: !If
-          - EnableFortiAnalyzer
-          - !Ref FortiAnalyzer
-          - ''
+    AutoscaleTableArn:
+        Value: !GetAtt
+            - Autoscale
+            - Arn
+    PrimaryElectionTableArn:
+        Value: !GetAtt
+            - PrimaryElection
+            - Arn
+    LifecycleItemTableArn:
+        Value: !GetAtt
+            - LifecycleItem
+            - Arn
+    SettingsTableArn:
+        Value: !GetAtt
+            - Settings
+            - Arn
+    CustomLogTableArn:
+        Condition: EnableCustomLog
+        Value: !GetAtt
+            - CustomLog
+            - Arn
+    VmInfoCacheTableArn:
+        Condition: EnableVmInfoCache
+        Value: !GetAtt
+            - VmInfoCache
+            - Arn
+    NicAttachmentTableArn:
+        Condition: EnableSecondNic
+        Value: !GetAtt
+            - NicAttachment
+            - Arn
+    LicenseStockTableArn:
+        Condition: EnableHybridLicensing
+        Value: !GetAtt
+            - LicenseStock
+            - Arn
+    LicenseUsageTableArn:
+        Condition: EnableHybridLicensing
+        Value: !GetAtt
+            - LicenseUsage
+            - Arn
+    VpnAttachmentTableArn:
+        Condition: EnableTransitGatewayVpn
+        Value: !GetAtt
+            - VpnAttachment
+            - Arn
+    FortiAnalyzerTableArn:
+        Condition: EnableFortiAnalyzer
+        Value: !GetAtt
+            - FortiAnalyzer
+            - Arn
+    TableArnList:
+        Description: >-
+            The comma-delimited list of ARNs for DynamoDB tables created in this
+            stack.
+        Value: !Sub
+            - >-
+                ${Autoscale},${PrimaryElection}${LifecycleItem},${Settings}${CustomLog}${VmInfoCache}${NicAttachment}${LicenseStock}${LicenseUsage}${VpnAttachment}${FortiAnalyzer}
+            - Autoscale: !GetAtt
+                  - Autoscale
+                  - Arn
+              PrimaryElection: !GetAtt
+                  - PrimaryElection
+                  - Arn
+              LifecycleItem: !GetAtt
+                  - LifecycleItem
+                  - Arn
+              Settings: !GetAtt
+                  - Settings
+                  - Arn
+              CustomLog: !If
+                  - EnableCustomLog
+                  - !Sub
+                    - ',${arn}'
+                    - arn: !GetAtt
+                          - CustomLog
+                          - Arn
+                  - ''
+              VmInfoCache: !If
+                  - EnableVmInfoCache
+                  - !Sub
+                    - ',${arn}'
+                    - arn: !GetAtt
+                          - VmInfoCache
+                          - Arn
+                  - ''
+              NicAttachment: !If
+                  - EnableSecondNic
+                  - !Sub
+                    - ',${arn}'
+                    - arn: !GetAtt
+                          - NicAttachment
+                          - Arn
+                  - ''
+              LicenseStock: !If
+                  - EnableHybridLicensing
+                  - !Sub
+                    - ',${arn}'
+                    - arn: !GetAtt
+                          - LicenseStock
+                          - Arn
+                  - ''
+              LicenseUsage: !If
+                  - EnableHybridLicensing
+                  - !Sub
+                    - ',${arn}'
+                    - arn: !GetAtt
+                          - LicenseUsage
+                          - Arn
+                  - ''
+              VpnAttachment: !If
+                  - EnableTransitGatewayVpn
+                  - !Sub
+                    - ',${arn}'
+                    - arn: !GetAtt
+                          - VpnAttachment
+                          - Arn
+                  - ''
+              FortiAnalyzer: !If
+                  - EnableFortiAnalyzer
+                  - !Sub
+                    - ',${arn}'
+                    - arn: !GetAtt
+                          - FortiAnalyzer
+                          - Arn
+                  - ''
+    TableNameList:
+        Description: The comma-delimited list of name of created tables in this stack.
+        Value: !Sub
+            - >-
+                ${Autoscale},${PrimaryElection},${LifecycleItem},${Settings},${CustomLog},${VmInfoCache},${NicAttachment},${LicenseStock},${LicenseUsage},${VpnAttachment},${FortiAnalyzer}
+            - Autoscale: !Ref Autoscale
+              PrimaryElection: !Ref PrimaryElection
+              LifecycleItem: !Ref LifecycleItem
+              Settings: !Ref Settings
+              CustomLog: !If
+                  - EnableCustomLog
+                  - !Ref CustomLog
+                  - ''
+              VmInfoCache: !If
+                  - EnableVmInfoCache
+                  - !Ref VmInfoCache
+                  - ''
+              NicAttachment: !If
+                  - EnableSecondNic
+                  - !Ref NicAttachment
+                  - ''
+              LicenseStock: !If
+                  - EnableHybridLicensing
+                  - !Ref LicenseStock
+                  - ''
+              LicenseUsage: !If
+                  - EnableHybridLicensing
+                  - !Ref LicenseUsage
+                  - ''
+              VpnAttachment: !If
+                  - EnableTransitGatewayVpn
+                  - !Ref VpnAttachment
+                  - ''
+              FortiAnalyzer: !If
+                  - EnableFortiAnalyzer
+                  - !Ref FortiAnalyzer
+                  - ''

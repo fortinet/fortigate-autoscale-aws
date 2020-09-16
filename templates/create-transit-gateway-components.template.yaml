@@ -1,234 +1,234 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-  This template configure the FortiGate Autoscale For Transit Gateway
-  Integration.
+    This template configure the FortiGate Autoscale For Transit Gateway
+    Integration.
 Parameters:
-  ResourceTagPrefix:
-    Type: String
-    AllowedPattern: '[0-9a-zA-Z@.#-]+'
-    MaxLength: 64
-    ConstraintDescription: >-
-      Resource tag prefix can include numbers, lowercase letters, uppercase
-      letters, ampersat(@) , hyphens (-), period (.), and hash (#). Max length
-      is 64.
-    Description: >-
-      A prefix for tag key ResourceGroup on all resources. It's also used as the
-      name prefix of all applicable resources. Can only contain numbers,
-      lowercase letters, uppercase letters, ampersat(@) , hyphens (-), period
-      (.), and hash (#). Max length is 64.
-  CustomIdentifier:
-    Type: String
-    Default: fgtASG
-    MaxLength: '10'
-    AllowedPattern: '[A-Za-z0-9]+'
-    ConstraintDescription: must only contain uppercase and lowercase letters and numbers
-    Description: >-
-      An alternative name prefix to be used on a resource that the 'Resource tag
-      prefix' cannot apply to. Can only contain numbers, lowercase letters, and
-      uppercase letters. Max length is 10.
-  UniqueId:
-    Type: String
-    MaxLength: '8'
-    AllowedPattern: '[A-Za-z0-9]+'
-    ConstraintDescription: must only contain uppercase and lowercase letters and digits
-    Description: >-
-      An automatically generated random string as a unique ID for all resources
-      in the deployment stack and nested stacks.
-  CreateNewTransitGateway:
-    Type: String
-    AllowedValues:
-      - 'yes'
-      - 'no'
-    Description: >-
-      Whether create a new Transit Gateway or use an existing one as provided to
-      deploy the related components.
-  TransitGatewayId:
-    Type: String
-    Default: ''
-    Description: >-
-      The ID of an existing Transit Gateway where the related components will be
-      deployed to.
-  VpcId:
-    Type: 'AWS::EC2::VPC::Id'
-    Description: The ID of the FortiGate VPC where FortiGate Autoscale is deployed.
-  PublicSubnet1:
-    Type: 'AWS::EC2::Subnet::Id'
-    Description: >-
-      The ID of the public subnet 1 located in Availability Zone 1 of the
-      provided VPC.
-  PublicSubnet2:
-    Type: 'AWS::EC2::Subnet::Id'
-    Description: >-
-      The ID of the public subnet 2 located in Availability Zone 2 of the
-      provided VPC.
-  AutoscaleHandlerIamRoleName:
-    Type: String
-    Description: The IAM role name of the FortiGate Autoscale handler Lambda.
+    ResourceTagPrefix:
+        Type: String
+        AllowedPattern: '[0-9a-zA-Z@.#-]+'
+        MaxLength: 64
+        ConstraintDescription: >-
+            Resource tag prefix can include numbers, lowercase letters, uppercase
+            letters, ampersat(@) , hyphens (-), period (.), and hash (#). Max length
+            is 64.
+        Description: >-
+            A prefix for tag key ResourceGroup on all resources. It's also used as the
+            name prefix of all applicable resources. Can only contain numbers,
+            lowercase letters, uppercase letters, ampersat(@) , hyphens (-), period
+            (.), and hash (#). Max length is 64.
+    CustomIdentifier:
+        Type: String
+        Default: fgtASG
+        MaxLength: '10'
+        AllowedPattern: '[A-Za-z0-9]+'
+        ConstraintDescription: must only contain uppercase and lowercase letters and numbers
+        Description: >-
+            An alternative name prefix to be used on a resource that the 'Resource tag
+            prefix' cannot apply to. Can only contain numbers, lowercase letters, and
+            uppercase letters. Max length is 10.
+    UniqueId:
+        Type: String
+        MaxLength: '8'
+        AllowedPattern: '[A-Za-z0-9]+'
+        ConstraintDescription: must only contain uppercase and lowercase letters and digits
+        Description: >-
+            An automatically generated random string as a unique ID for all resources
+            in the deployment stack and nested stacks.
+    CreateNewTransitGateway:
+        Type: String
+        AllowedValues:
+            - 'yes'
+            - 'no'
+        Description: >-
+            Whether create a new Transit Gateway or use an existing one as provided to
+            deploy the related components.
+    TransitGatewayId:
+        Type: String
+        Default: ''
+        Description: >-
+            The ID of an existing Transit Gateway where the related components will be
+            deployed to.
+    VpcId:
+        Type: 'AWS::EC2::VPC::Id'
+        Description: The ID of the FortiGate VPC where FortiGate Autoscale is deployed.
+    PublicSubnet1:
+        Type: 'AWS::EC2::Subnet::Id'
+        Description: >-
+            The ID of the public subnet 1 located in Availability Zone 1 of the
+            provided VPC.
+    PublicSubnet2:
+        Type: 'AWS::EC2::Subnet::Id'
+        Description: >-
+            The ID of the public subnet 2 located in Availability Zone 2 of the
+            provided VPC.
+    AutoscaleHandlerIamRoleName:
+        Type: String
+        Description: The IAM role name of the FortiGate Autoscale handler Lambda.
 Conditions:
-  IfCreateTransitGateway: !Equals
-    - !Ref CreateNewTransitGateway
-    - 'yes'
+    IfCreateTransitGateway: !Equals
+        - !Ref CreateNewTransitGateway
+        - 'yes'
 Resources:
-  TransitGateway:
-    Type: 'AWS::EC2::TransitGateway'
-    Properties:
-      VpnEcmpSupport: enable
-      DefaultRouteTablePropagation: disable
-      DefaultRouteTableAssociation: disable
-      Tags:
-        - Key: Name
-          Value: !Join
-            - '-'
-            - - !Ref ResourceTagPrefix
-              - transit-gateway
-        - Key: ResourceGroup
-          Value: !Ref ResourceTagPrefix
-  TransitGatewayRouteTableInbound:
-    Type: 'AWS::EC2::TransitGatewayRouteTable'
-    Properties:
-      TransitGatewayId: !If
-        - IfCreateTransitGateway
-        - !Ref TransitGateway
-        - !Ref TransitGatewayId
-      Tags:
-        - Key: Name
-          Value: !Join
-            - '-'
-            - - !Ref ResourceTagPrefix
-              - transit-gateway-route-table-inbound
-        - Key: ResourceGroup
-          Value: !Ref ResourceTagPrefix
-  TransitGatewayRouteTableOutbound:
-    Type: 'AWS::EC2::TransitGatewayRouteTable'
-    Properties:
-      TransitGatewayId: !If
-        - IfCreateTransitGateway
-        - !Ref TransitGateway
-        - !Ref TransitGatewayId
-      Tags:
-        - Key: Name
-          Value: !Join
-            - '-'
-            - - !Ref ResourceTagPrefix
-              - transit-gateway-route-table-outbound
-        - Key: ResourceGroup
-          Value: !Ref ResourceTagPrefix
-  TransitGatewayAttachmentFgtVPC:
-    Type: 'AWS::EC2::TransitGatewayAttachment'
-    Properties:
-      TransitGatewayId: !If
-        - IfCreateTransitGateway
-        - !Ref TransitGateway
-        - !Ref TransitGatewayId
-      VpcId: !Ref VpcId
-      SubnetIds:
-        - !Ref PublicSubnet1
-        - !Ref PublicSubnet2
-      Tags:
-        - Key: Name
-          Value: !Join
-            - '-'
-            - - !Ref ResourceTagPrefix
-              - transit-gateway-attachment-fortigate-vpc
-        - Key: ResourceGroup
-          Value: !Ref ResourceTagPrefix
-  TransitGatewayAssociationFgtAsgVPC:
-    Type: 'AWS::EC2::TransitGatewayRouteTableAssociation'
-    Properties:
-      TransitGatewayAttachmentId: !Ref TransitGatewayAttachmentFgtVPC
-      TransitGatewayRouteTableId: !Ref TransitGatewayRouteTableOutbound
-  AutoscaleHandlerPolicy:
-    Type: 'AWS::IAM::Policy'
-    Properties:
-      PolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Effect: Allow
-            Action:
-              - 'ec2:DisassociateTransitGatewayRouteTable'
-              - 'ec2:ModifyTransitGatewayVpcAttachment'
-              - 'ec2:DisableTransitGatewayRouteTablePropagation'
-              - 'ec2:CreateTransitGatewayRouteTable'
-              - 'ec2:AcceptTransitGatewayVpcAttachment'
-              - 'ec2:ReplaceTransitGatewayRoute'
-              - 'ec2:DeleteTransitGatewayRouteTable'
-              - 'ec2:CreateTransitGatewayRoute'
-              - 'ec2:DeleteTransitGatewayRoute'
-              - 'ec2:CreateTransitGatewayVpcAttachment'
-              - 'ec2:DeleteTransitGatewayVpcAttachment'
-              - 'ec2:AssociateTransitGatewayRouteTable'
-              - 'ec2:RejectTransitGatewayVpcAttachment'
-              - 'ec2:EnableTransitGatewayRouteTablePropagation'
-            Resource:
-              - !Sub
-                - >-
-                  arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:transit-gateway-route-table/*
-                - AWS_REGION: !Ref 'AWS::Region'
-                  AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
-              - !Sub
-                - 'arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:vpc/*'
-                - AWS_REGION: !Ref 'AWS::Region'
-                  AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
-              - !Sub
-                - 'arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:transit-gateway/*'
-                - AWS_REGION: !Ref 'AWS::Region'
-                  AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
-              - !Sub
-                - >-
-                  arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:transit-gateway-attachment/*
-                - AWS_REGION: !Ref 'AWS::Region'
-                  AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
-          - Effect: Allow
-            Action:
-              - 'ec2:ExportTransitGatewayRoutes'
-              - 'ec2:DescribeVpnConnections'
-              - 'ec2:GetTransitGatewayAttachmentPropagations'
-              - 'ec2:DescribeTransitGateways'
-              - 'ec2:CreateCustomerGateway'
-              - 'ec2:DescribeCustomerGateways'
-              - 'ec2:SearchTransitGatewayRoutes'
-              - 'ec2:DescribeTransitGatewayAttachments'
-              - 'ec2:DescribeTransitGatewayRouteTables'
-              - 'ec2:GetTransitGatewayRouteTablePropagations'
-              - 'ec2:DescribeTransitGatewayVpcAttachments'
-              - 'ec2:DeleteVpnConnection'
-              - 'ec2:GetTransitGatewayRouteTableAssociations'
-              - 'ec2:CreateVpnConnection'
-            Resource: '*'
-          - Effect: Allow
-            Action: 'ec2:DeleteCustomerGateway'
-            Resource: !Sub
-              - 'arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:customer-gateway/*'
-              - AWS_REGION: !Ref 'AWS::Region'
-                AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
-          - Effect: Allow
-            Action:
-              - 'lambda:InvokeFunction'
-              - 'lambda:InvokeAsync'
-            Resource: !Sub
-              - >-
-                arn:aws:lambda:${AWS_REGION}:${AWS_ACCOUNT_ID}:function:${CUSTOM_ID}-${UNIQUE_ID}*
-              - AWS_REGION: !Ref 'AWS::Region'
-                AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
-                CUSTOM_ID: !Ref CustomIdentifier
-                UNIQUE_ID: !Ref UniqueId
-      PolicyName: fortigate-autoscale-transit-gateway-management-policy
-      Roles:
-        - !Ref AutoscaleHandlerIamRoleName
+    TransitGateway:
+        Type: 'AWS::EC2::TransitGateway'
+        Properties:
+            VpnEcmpSupport: enable
+            DefaultRouteTablePropagation: disable
+            DefaultRouteTableAssociation: disable
+            Tags:
+                - Key: Name
+                  Value: !Join
+                      - '-'
+                      - - !Ref ResourceTagPrefix
+                        - transit-gateway
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
+    TransitGatewayRouteTableInbound:
+        Type: 'AWS::EC2::TransitGatewayRouteTable'
+        Properties:
+            TransitGatewayId: !If
+                - IfCreateTransitGateway
+                - !Ref TransitGateway
+                - !Ref TransitGatewayId
+            Tags:
+                - Key: Name
+                  Value: !Join
+                      - '-'
+                      - - !Ref ResourceTagPrefix
+                        - transit-gateway-route-table-inbound
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
+    TransitGatewayRouteTableOutbound:
+        Type: 'AWS::EC2::TransitGatewayRouteTable'
+        Properties:
+            TransitGatewayId: !If
+                - IfCreateTransitGateway
+                - !Ref TransitGateway
+                - !Ref TransitGatewayId
+            Tags:
+                - Key: Name
+                  Value: !Join
+                      - '-'
+                      - - !Ref ResourceTagPrefix
+                        - transit-gateway-route-table-outbound
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
+    TransitGatewayAttachmentFgtVPC:
+        Type: 'AWS::EC2::TransitGatewayAttachment'
+        Properties:
+            TransitGatewayId: !If
+                - IfCreateTransitGateway
+                - !Ref TransitGateway
+                - !Ref TransitGatewayId
+            VpcId: !Ref VpcId
+            SubnetIds:
+                - !Ref PublicSubnet1
+                - !Ref PublicSubnet2
+            Tags:
+                - Key: Name
+                  Value: !Join
+                      - '-'
+                      - - !Ref ResourceTagPrefix
+                        - transit-gateway-attachment-fortigate-vpc
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
+    TransitGatewayAssociationFgtAsgVPC:
+        Type: 'AWS::EC2::TransitGatewayRouteTableAssociation'
+        Properties:
+            TransitGatewayAttachmentId: !Ref TransitGatewayAttachmentFgtVPC
+            TransitGatewayRouteTableId: !Ref TransitGatewayRouteTableOutbound
+    AutoscaleHandlerPolicy:
+        Type: 'AWS::IAM::Policy'
+        Properties:
+            PolicyDocument:
+                Version: 2012-10-17
+                Statement:
+                    - Effect: Allow
+                      Action:
+                          - 'ec2:DisassociateTransitGatewayRouteTable'
+                          - 'ec2:ModifyTransitGatewayVpcAttachment'
+                          - 'ec2:DisableTransitGatewayRouteTablePropagation'
+                          - 'ec2:CreateTransitGatewayRouteTable'
+                          - 'ec2:AcceptTransitGatewayVpcAttachment'
+                          - 'ec2:ReplaceTransitGatewayRoute'
+                          - 'ec2:DeleteTransitGatewayRouteTable'
+                          - 'ec2:CreateTransitGatewayRoute'
+                          - 'ec2:DeleteTransitGatewayRoute'
+                          - 'ec2:CreateTransitGatewayVpcAttachment'
+                          - 'ec2:DeleteTransitGatewayVpcAttachment'
+                          - 'ec2:AssociateTransitGatewayRouteTable'
+                          - 'ec2:RejectTransitGatewayVpcAttachment'
+                          - 'ec2:EnableTransitGatewayRouteTablePropagation'
+                      Resource:
+                          - !Sub
+                            - >-
+                                arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:transit-gateway-route-table/*
+                            - AWS_REGION: !Ref 'AWS::Region'
+                              AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
+                          - !Sub
+                            - 'arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:vpc/*'
+                            - AWS_REGION: !Ref 'AWS::Region'
+                              AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
+                          - !Sub
+                            - 'arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:transit-gateway/*'
+                            - AWS_REGION: !Ref 'AWS::Region'
+                              AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
+                          - !Sub
+                            - >-
+                                arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:transit-gateway-attachment/*
+                            - AWS_REGION: !Ref 'AWS::Region'
+                              AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
+                    - Effect: Allow
+                      Action:
+                          - 'ec2:ExportTransitGatewayRoutes'
+                          - 'ec2:DescribeVpnConnections'
+                          - 'ec2:GetTransitGatewayAttachmentPropagations'
+                          - 'ec2:DescribeTransitGateways'
+                          - 'ec2:CreateCustomerGateway'
+                          - 'ec2:DescribeCustomerGateways'
+                          - 'ec2:SearchTransitGatewayRoutes'
+                          - 'ec2:DescribeTransitGatewayAttachments'
+                          - 'ec2:DescribeTransitGatewayRouteTables'
+                          - 'ec2:GetTransitGatewayRouteTablePropagations'
+                          - 'ec2:DescribeTransitGatewayVpcAttachments'
+                          - 'ec2:DeleteVpnConnection'
+                          - 'ec2:GetTransitGatewayRouteTableAssociations'
+                          - 'ec2:CreateVpnConnection'
+                      Resource: '*'
+                    - Effect: Allow
+                      Action: 'ec2:DeleteCustomerGateway'
+                      Resource: !Sub
+                          - 'arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:customer-gateway/*'
+                          - AWS_REGION: !Ref 'AWS::Region'
+                            AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
+                    - Effect: Allow
+                      Action:
+                          - 'lambda:InvokeFunction'
+                          - 'lambda:InvokeAsync'
+                      Resource: !Sub
+                          - >-
+                              arn:aws:lambda:${AWS_REGION}:${AWS_ACCOUNT_ID}:function:${CUSTOM_ID}-${UNIQUE_ID}*
+                          - AWS_REGION: !Ref 'AWS::Region'
+                            AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
+                            CUSTOM_ID: !Ref CustomIdentifier
+                            UNIQUE_ID: !Ref UniqueId
+            PolicyName: fortigate-autoscale-transit-gateway-management-policy
+            Roles:
+                - !Ref AutoscaleHandlerIamRoleName
 Outputs:
-  TransitGatewayId:
-    Description: Transit Gateway ID
-    Value: !If
-      - IfCreateTransitGateway
-      - !Ref TransitGateway
-      - !Ref TransitGatewayId
-  TransitGatewayRouteTableInbound:
-    Description: Transit Gateway Route Table for the inbound traffic.
-    Value: !Ref TransitGatewayRouteTableInbound
-  TransitGatewayRouteTableOutbound:
-    Description: Transit Gateway Route Table for the outbound traffic.
-    Value: !Ref TransitGatewayRouteTableOutbound
-  AutoscaleHandlerPolicy:
-    Description: Autoscale handler IAM policy to use Transit Gateway.
-    Value: !Ref AutoscaleHandlerPolicy
+    TransitGatewayId:
+        Description: Transit Gateway ID
+        Value: !If
+            - IfCreateTransitGateway
+            - !Ref TransitGateway
+            - !Ref TransitGatewayId
+    TransitGatewayRouteTableInbound:
+        Description: Transit Gateway Route Table for the inbound traffic.
+        Value: !Ref TransitGatewayRouteTableInbound
+    TransitGatewayRouteTableOutbound:
+        Description: Transit Gateway Route Table for the outbound traffic.
+        Value: !Ref TransitGatewayRouteTableOutbound
+    AutoscaleHandlerPolicy:
+        Description: Autoscale handler IAM policy to use Transit Gateway.
+        Value: !Ref AutoscaleHandlerPolicy
