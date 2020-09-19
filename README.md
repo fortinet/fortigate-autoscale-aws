@@ -7,9 +7,9 @@ This project provides multi-group Auto Scaling functionality for Fortinet FortiG
 This project has the following features:
 
 1. Multi-group Hybrid Licensing models:
-   1. **Hybrid**: 1 fix-sized Auto Scaling group of 2 (and more) BYOL FortiGate Instances, and 1 dynamically scalable Auto Scaling group of (0 or more) On-Demand FortiGate Instances.
-   2. **BYOL-Only**: 1 dynamically scalable Auto Scaling group of (0 or more) BYOL FortiGate Instances.
-   3. **PAYG-Only**: 1 dynamically scalable Auto Scaling group of (0 or more) On-Demand FortiGate Instances.
+   1. **BYOL-Only**: 1 dynamically scalable Auto Scaling group of (0 or more) Bring Your Own Licence (BYOL) FortiGate instances.
+   2. **PAYG-Only**: 1 dynamically scalable Auto Scaling group of (0 or more) On-Demand FortiGate instances.
+   3. **Hybrid**: 1 fix-sized Auto Scaling group of 2 (and more) BYOL FortiGate instances, and 1 dynamically scalable Auto Scaling group of (0 or more) On-Demand FortiGate instances.
 2. AWS Transit Gateway Integration.
 
 ## Deployment packages
