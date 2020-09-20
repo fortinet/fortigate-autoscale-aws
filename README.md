@@ -13,16 +13,18 @@ This project has the following features:
 2. AWS Transit Gateway Integration.
 
 ## Deployment packages
+To obtain the deployment package, use one of the following:
+  * Download the package **aws-cloudformation.zip** directly from the [project release page](https://github.com/fortinet/fortigate-autoscale-aws/releases).
+  * Manually generate the deployment package in your local workspace:
+    1. From the [project release page](https://github.com/fortinet/fortigate-autoscale-aws/releases), download the source code (.zip or .tar.gz) for the latest version.
+    2. Extract the source code into the project directory in your local workspace.
+    3. Run `npm install` to initialize the project at the project root directory.
+    4. Run `npm run build-artifacts` to generate the local deployment package.
+    5. The deployment package **aws-cloudformation.zip** will be available in the **dist/artifacts** directory.
 
-  * Download the **aws-cloudformation.zip** for the latest production version from [project release page](https://github.com/fortinet/fortigate-autoscale-aws/releases).
-  * or, manually generate the deployment package:
-    1. Chechkout the **main** branch of the project.
-    2. Run `npm run build-artifacts` at the project root directory.
-    3. Deployment packages **aws-cloudformation.zip** will be available in the **dist/artifacts** directory.
+## Deployment guide
 
-## Deployment guides
-
-Deployment guides are available from the Fortinet Document Library:
+A deployment guide is available from the Fortinet Document Library:
 
   + [ FortiGate / FortiOS 6.2 Deploying auto scaling on AWS](https://docs.fortinet.com/vm/aws/fortigate/6.2/aws-cookbook/6.2.0/397979/deploying-auto-scaling-on-aws)
 
