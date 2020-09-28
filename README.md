@@ -1,6 +1,6 @@
 # FortiGate Autoscale on AWS
 
-An implementation for FortiGate Autoscale for the Amazon AWS platform API with a Dynamo DB storage backend. This implementation requires Fortinet [Autoscale Core](https://github.com/fortinet/autoscale-core).
+An implementation for FortiGate Autoscale for the Amazon AWS platform API with a Dynamo DB storage backend.
 
 This project provides multi-group Auto Scaling functionality for Fortinet FortiGate EC2 instances to form an HA cluster with failover protection.
 
@@ -31,7 +31,7 @@ A deployment guide is available from the Fortinet Document Library:
 ## Launch a demo
 
 | New VPC, no-TGW | Existing VPC, no-TGW | TGW Integration (new VPC) |
-| ------ | ------ | ------|
+| --- | --- | --- |
 | <a href="https://console.aws.amazon.com/cloudformation/home?#/stacks/quickcreate?templateUrl=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Ffortinet-github-aws-release-artifacts%2Ffortigate-autoscale-aws%2Fmain%2Faws-cloudformation%2Ftemplates%2Fautoscale-new-vpc.template&param_S3BucketName=fortinet-github-aws-release-artifacts&param_S3KeyPrefix=fortigate-autoscale-aws%2Fmain%2Faws-cloudformation%2F&stackName=fortigate-autoscale-aws-new-vpc-demo&param_ResourceTagPrefix=fortigate-autoscale-aws-new-vpc-demo" target="_blank"> <img alt="Launch Stack" src="https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png"></a> | <a href="https://console.aws.amazon.com/cloudformation/home?#/stacks/quickcreate?templateUrl=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Ffortinet-github-aws-release-artifacts%2Ffortigate-autoscale-aws%2Fmain%2Faws-cloudformation%2Ftemplates%2Fautoscale-existing-vpc.template&param_S3BucketName=fortinet-github-aws-release-artifacts&param_S3KeyPrefix=fortigate-autoscale-aws%2Fmain%2Faws-cloudformation%2F&stackName=fortigate-autoscale-aws-existing-vpc-demo&param_ResourceTagPrefix=fortigate-autoscale-aws-existing-vpc-demo" target="_blank"> <img alt="Launch Stack" src="https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png"></a> | <a href="https://console.aws.amazon.com/cloudformation/home?#/stacks/quickcreate?templateUrl=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Ffortinet-github-aws-release-artifacts%2Ffortigate-autoscale-aws%2Fmain%2Faws-cloudformation%2Ftemplates%2Fautoscale-tgw-new-vpc.template&param_S3BucketName=fortinet-github-aws-release-artifacts&param_S3KeyPrefix=fortigate-autoscale-aws%2Fmain%2Faws-cloudformation%2F&stackName=fortigate-autoscale-aws-tgw-new-vpc-demo&param_ResourceTagPrefix=fortigate-autoscale-aws-tgw-new-vpc-demo" target="_blank"> <img alt="Launch Stack" src="https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png"></a> |
 
 # Support
