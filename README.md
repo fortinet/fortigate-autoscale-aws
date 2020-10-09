@@ -1,8 +1,11 @@
-# FortiGate Autoscale on AWS
+# FortiGate Autoscale for AWS
 
-An implementation for FortiGate Autoscale for the Amazon AWS platform API with a Dynamo DB storage backend.
+An implementation of FortiGate Autoscale for the Amazon AWS platform API with a Dynamo DB storage backend.
 
-This project provides multi-group Auto Scaling functionality for Fortinet FortiGate EC2 instances to form an HA cluster with failover protection.
+This project provides multi-group Auto Scaling functionality for Fortinet FortiGate EC2 instances to form an HA cluster with failover protection. For deployment on other cloud platforms, visit the relevant repository:
+* The **AliCloud** deployment is in the  [alicloud-autoscale](https://github.com/fortinet/alicloud-autoscale/) repository.
+* The **Azure** deployment is in the [fortigate-autoscale](https://github.com/fortinet/fortigate-autoscale) repository.
+* The **GCP** deployment is in the [fortigate-autoscale-gcp](https://github.com/fortinet/fortigate-autoscale-gcp) repository.
 
 This project has the following features:
 
@@ -40,4 +43,4 @@ For direct issues, please refer to the [Issues](https://github.com/fortinet/fort
 For other questions related to this project, contact [github@fortinet.com](mailto:github@fortinet.com).
 
 ## License
-[License](https://github.com/fortinet/fortigate-autoscale-aws/blob/master/LICENSE) © Fortinet Technologies. All rights reserved.
+[License](./LICENSE) © Fortinet Technologies. All rights reserved.
