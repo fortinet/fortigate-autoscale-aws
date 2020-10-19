@@ -479,10 +479,8 @@ Conditions:
 Mappings:
     ProductVersionMap:
         FortiGateByol:
-            '609': FGTVM64BYOL609
             '623': FGTVM64BYOL623
         FortiGatePayg:
-            '609': FGTVM64PAYG609
             '623': FGTVM64PAYG623
     AWSAMIRegionMap:
         AMI:
@@ -534,6 +532,9 @@ Mappings:
         us-east-2:
             FGTVM64BYOL623: ami-02dfca9796bfaff10
             FGTVM64PAYG623: ami-05a4ac8312f7911b9
+        us-gov-east-1:
+            FGTVM64BYOL623: ami-9aef03eb
+            FGTVM64PAYG623: ami-9bef03ea
         us-gov-west-1:
             FGTVM64BYOL623: ami-23b28442
             FGTVM64PAYG623: ami-c4d9efa5
