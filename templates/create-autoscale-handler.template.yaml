@@ -107,6 +107,10 @@ Parameters:
             level directory of all your custom assets. If 'use custom asset location'
             is set to 'yes', and this value is left empty, the 'custom asset
             container' will serve as the top level directory.
+    RoutePermissionRouteTableId:
+        Type: String
+        Default: ''
+        Description: Route table ID that requires IAM permission to replace route in.
 Conditions:
     GovCloudCondition: !Equals
         - !Ref 'AWS::Region'
@@ -124,6 +128,10 @@ Conditions:
     IfUseCustomAssetContainer: !Not
         - !Equals
           - !Ref CustomAssetContainer
+          - ''
+    IfSpecifyRoutePermissionRouteTableId: !Not
+        - !Equals
+          - !Ref RoutePermissionRouteTableId
           - ''
 Resources:
     StackCopyLambdaSource:
@@ -282,6 +290,8 @@ Resources:
                                 - AWS_REGION: !Ref 'AWS::Region'
                                   AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
                                   TABLE_NAME_PREFIX: !Ref ResourceTagPrefix
+                                    - 'arn:aws${GovCloudSuffix}:s3:::${S3BucketName}'
+                                    - 'arn:aws${GovCloudSuffix}:s3:::${CustomContainer}'
                           - Effect: Allow
                             Action:
                                 - 'autoscaling:CompleteLifecycleAction'
@@ -357,7 +367,6 @@ Resources:
                                 - 'ec2:DescribeVpcs'
                                 - 'ec2:DescribeSubnets'
                                 - 'ec2:CreateRoute'
-                                - 'ec2:ReplaceRoute'
                             Resource: '*'
                           - Effect: Allow
                             Action:
@@ -365,24 +374,6 @@ Resources:
                             Resource: !Sub
                                 - 'arn:aws:apigateway:${AWS_REGION}::*'
                                 - AWS_REGION: !Ref 'AWS::Region'
-                          - Effect: Allow
-                            Action:
-                                - 's3:GetObject'
-                                - 's3:ListBucket'
-                            Resource: !If
-                                - IfUseCustomAssetContainer
-                                - - !Sub
-                                    - 'arn:aws:s3:::${bucketname}/${keyprefix}assets/*'
-                                    - bucketname: !Ref S3BucketName
-                                      keyprefix: !Ref S3KeyPrefix
-                                  - !Sub
-                                    - 'arn:aws:s3:::${customContainer}/${customDirectory}/*'
-                                    - customContainer: !Ref CustomAssetContainer
-                                      customDirectory: !Ref CustomAssetDirectory
-                                - - !Sub
-                                    - 'arn:aws:s3:::${bucketname}/${keyprefix}assets/*'
-                                    - bucketname: !Ref S3BucketName
-                                      keyprefix: !Ref S3KeyPrefix
                           - Effect: Allow
                             Action:
                                 - 'elasticloadbalancing:DescribeLoadBalancers'
@@ -410,6 +401,29 @@ Resources:
                                   - AWS_REGION: !Ref 'AWS::Region'
                                     AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
                                     CUSTOM_ID: !Ref CustomIdentifier
+    FgtAsgHandlerIamRoleReplaceRoutePolicy:
+        Type: 'AWS::IAM::Policy'
+        Condition: IfSpecifyRoutePermissionRouteTableId
+        Properties:
+            PolicyDocument:
+                Version: 2012-10-17
+                Statement:
+                    - Effect: Allow
+                      Action:
+                          - 'ec2:ReplaceRoute'
+                      Resource: !Sub
+                          - >-
+                              arn:aws${GovCloudSuffix}:ec2:${Region}:${AccountId}:route-table/${RouteTable}
+                          - GovCloudSuffix: !If
+                                - IfInUSGovCloud
+                                - '-us-gov'
+                                - ''
+                            Region: !Ref 'AWS::Region'
+                            AccountId: !Ref 'AWS::AccountId'
+                            RouteTable: !Ref RoutePermissionRouteTableId
+            PolicyName: fortigate-autoscale-handler-policy-route-table
+            Roles:
+                - !Ref FgtAsgHandlerIamRole
     FgtAsgLambdaFunctionAsgHandler:
         Type: 'AWS::Lambda::Function'
         Properties:

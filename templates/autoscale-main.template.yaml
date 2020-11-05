@@ -609,22 +609,52 @@ Resources:
                       Version: 2012-10-17
                       Statement:
                           - Action:
-                                - 's3:GetObject'
                                 - 's3:ListBucket'
-                            Resource: !If
-                                - IfUseCustomAssetContainer
+                            Resource:
+                                - !If
+                                  - IfUseCustomAssetContainer
+                                  - !Sub
+                                    - 'arn:aws${GovCloudSuffix}:s3:::${CustomContainer}'
+                                    - GovCloudSuffix: !If
+                                          - IfInUSGovCloud
+                                          - '-us-gov'
+                                          - ''
+                                      CustomContainer: !Ref CustomAssetContainer
+                                  - !Sub
+                                    - 'arn:aws${GovCloudSuffix}:s3:::${S3BucketName}'
+                                    - GovCloudSuffix: !If
+                                          - IfInUSGovCloud
+                                          - '-us-gov'
+                                          - ''
+                                      S3BucketName: !Ref S3BucketName
+                            Effect: Allow
+                          - Action:
+                                - 's3:GetObject'
+                            Resource:
+                                - !If
+                                  - IfUseCustomAssetContainer
                                 - - !Sub
                                     - 'arn:aws:s3:::${bucketname}/${keyprefix}assets/*'
                                     - bucketname: !Ref S3BucketName
                                       keyprefix: !Ref S3KeyPrefix
                                   - !Sub
-                                    - 'arn:aws:s3:::${customContainer}/${customDirectory}*'
-                                    - customContainer: !Ref CustomAssetContainer
-                                      customDirectory: !Ref CustomAssetDirectory
-                                - - !Sub
-                                    - 'arn:aws:s3:::${bucketname}/${keyprefix}assets/*'
-                                    - bucketname: !Ref S3BucketName
-                                      keyprefix: !Ref S3KeyPrefix
+                                    - >-
+                                        arn:aws${GovCloudSuffix}:s3:::${CustomContainer}/${CustomDirectory}*
+                                    - GovCloudSuffix: !If
+                                          - IfInUSGovCloud
+                                          - '-us-gov'
+                                          - ''
+                                      CustomContainer: !Ref CustomAssetContainer
+                                      CustomDirectory: !Ref CustomAssetDirectory
+                                  - !Sub
+                                    - >-
+                                        arn:aws${GovCloudSuffix}:s3:::${S3BucketName}/${S3KeyPrefix}assets/*
+                                    - GovCloudSuffix: !If
+                                          - IfInUSGovCloud
+                                          - '-us-gov'
+                                          - ''
+                                      S3BucketName: !Ref S3BucketName
+                                      S3KeyPrefix: !Ref S3KeyPrefix
                             Effect: Allow
                   PolicyName: fortigate-autoscale-instance-policy
     FgtInstanceProfile:
@@ -744,6 +774,7 @@ Resources:
                     - IfUseCustomAssetContainer
                     - !Ref CustomAssetDirectory
                     - !Ref 'AWS::NoValue'
+                RoutePermissionRouteTableId: !Ref PrivateSubnetRouteTable
             TemplateURL: !Sub
                 - >-
                     https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-autoscale-handler.template.yaml
