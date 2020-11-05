@@ -250,7 +250,9 @@ Resources:
                 - S3Region: !If
                       - GovCloudCondition
                       - s3-us-gov-west-1
-                      - s3
+                      - !Sub
+                        - 's3.${Region}'
+                        - Region: !Ref 'AWS::Region'
             TimeoutInMinutes: '10'
     LambdaFunctionFazHandler:
         Properties:
