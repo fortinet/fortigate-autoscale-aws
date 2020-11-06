@@ -290,8 +290,8 @@ Resources:
                                 - AWS_REGION: !Ref 'AWS::Region'
                                   AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
                                   TABLE_NAME_PREFIX: !Ref ResourceTagPrefix
-                                    - 'arn:aws${GovCloudSuffix}:s3:::${S3BucketName}'
-                                    - 'arn:aws${GovCloudSuffix}:s3:::${CustomContainer}'
+                                      - 'arn:aws${GovCloudSuffix}:s3:::${S3BucketName}'
+                                      - 'arn:aws${GovCloudSuffix}:s3:::${CustomContainer}'
                           - Effect: Allow
                             Action:
                                 - 'autoscaling:CompleteLifecycleAction'
