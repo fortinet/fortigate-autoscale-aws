@@ -579,7 +579,7 @@ Resources:
                     - 'no'
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.s3.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-db-table.template.yaml
+                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-db-table.template.yaml
                 - S3Region: !If
                       - GovCloudCondition
                       - s3-us-gov-west-1
@@ -743,7 +743,7 @@ Resources:
                     - !Ref 'AWS::NoValue'
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.s3.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-autoscale-handler.template.yaml
+                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-autoscale-handler.template.yaml
                 - S3Region: !If
                       - GovCloudCondition
                       - s3-us-gov-west-1
@@ -771,7 +771,7 @@ Resources:
                     - !Ref 'AWS::NoValue'
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.s3.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-tgw-vpn-handler.template.yaml
+                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-tgw-vpn-handler.template.yaml
                 - S3Region: !If
                       - GovCloudCondition
                       - s3-us-gov-west-1
@@ -807,7 +807,7 @@ Resources:
                       - !Ref PrivateSubnet2
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.s3.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-load-balancer.template.yaml
+                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-load-balancer.template.yaml
                 - S3Region: !If
                       - GovCloudCondition
                       - s3-us-gov-west-1
@@ -836,7 +836,7 @@ Resources:
                     - Outputs.FgtAsgHandlerIamRoleName
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.s3.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-transit-gateway-components.template.yaml
+                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-transit-gateway-components.template.yaml
                 - S3Region: !If
                       - GovCloudCondition
                       - s3-us-gov-west-1
@@ -921,7 +921,7 @@ Resources:
                       resource: byol-license
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.s3.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-hybrid-auto-scaling-group.template.yaml
+                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-hybrid-auto-scaling-group.template.yaml
                 - S3Region: !If
                       - GovCloudCondition
                       - s3-us-gov-west-1
