@@ -588,8 +588,11 @@ Mappings:
             FGTVM64PAYG643: ami-0fa6c260237788eb1
             FGTVM64PAYG623: ami-05a4ac8312f7911b9
         us-gov-east-1:
-            FGTVM64BYOL623: ami-9aef03eb
-            FGTVM64PAYG623: ami-9bef03ea
+            FGTVM64BYOL623: ami-098e9e192874d72ef
+            FGTVM64PAYG623: ami-0853720f0c23a9aa5
+        us-gov-west-1:
+            FGTVM64BYOL623: ami-0322d6594b0ed4e2a
+            FGTVM64PAYG623: ami-09c92a5b0035c8558
         us-west-1:
             FGTVM64BYOL643: ami-0717fc4ad21d83d92
             FGTVM64BYOL623: ami-012fa84a251f3e63f
@@ -663,7 +666,7 @@ Resources:
                             Resource:
                                 - !If
                                   - IfUseCustomAssetContainer
-                                        arn:aws:s3:::${bucketname}/${keyprefix}assets/*
+                                    arn:aws:s3:::${bucketname}/${keyprefix}assets/*
                                   - !Sub
                                     - 'arn:aws${GovCloudSuffix}:s3:::${CustomContainer}'
                                     - GovCloudSuffix: !If
