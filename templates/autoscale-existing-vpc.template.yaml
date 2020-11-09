@@ -1,25 +1,24 @@
----
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
     FortiGate Autoscale Solution [in an existing VPC]. This template deploys
     FortiGate Autoscale into an existing VPC. For more details, please see the
     FortiGate Autoscale documentation. **WARNING** You will be billed for the
-    FortiGate On-Demand instances and related AWS resources if you create a stack
-    from this template.
+    FortiGate On-Demand instances and related AWS resources if you create a
+    stack from this template.
 Parameters:
     ResourceTagPrefix:
         Type: String
         AllowedPattern: '[0-9a-zA-Z@.#-]+'
         MaxLength: 50
         ConstraintDescription: >-
-            Resource tag prefix can include numbers, lowercase letters, uppercase
-            letters, ampersat(@) , hyphens (-), period (.), and hash (#). Max length
-            is 50.
+            Resource tag prefix can include numbers, lowercase letters,
+            uppercase letters, ampersat(@) , hyphens (-), period (.), and hash
+            (#). Max length is 50.
         Description: >-
-            The ResourceGroup Tag Key used on all resources and as the name prefix of
-            all applicable resources. Can only contain numbers, lowercase letters,
-            uppercase letters, ampersat(@), hyphens (-), period (.), and hash (#). Max
-            length is 50.
+            The ResourceGroup Tag Key used on all resources and as the name
+            prefix of all applicable resources. Can only contain numbers,
+            lowercase letters, uppercase letters, ampersat(@), hyphens (-),
+            period (.), and hash (#). Max length is 50.
     CustomIdentifier:
         Type: String
         Default: fgtASG
@@ -27,39 +26,40 @@ Parameters:
         AllowedPattern: '[A-Za-z0-9]+'
         ConstraintDescription: must only contain uppercase and lowercase letters and numbers
         Description: >-
-            An alternative name prefix to be used on a resource that the 'Resource tag
-            prefix' cannot apply to. Can only contain numbers, lowercase letters, and
-            uppercase letters. Max length is 10.
+            An alternative name prefix to be used on a resource that the
+            'Resource tag prefix' cannot apply to. Can only contain numbers,
+            lowercase letters, and uppercase letters. Max length is 10.
     S3BucketName:
         Type: String
         AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
         ConstraintDescription: >-
-            Deployment resource S3 bucket name can include numbers, lowercase letters,
-            uppercase letters, and hyphens (-). It cannot start or end with a hyphen
-            (-).
+            Deployment resource S3 bucket name can include numbers, lowercase
+            letters, uppercase letters, and hyphens (-). It cannot start or end
+            with a hyphen (-).
         Description: >-
-            Name of the S3 bucket that contains the FortiGate Autoscale deployment
-            package. Can only contain numbers, lowercase letters, uppercase letters,
-            and hyphens (-). It cannot start or end with a hyphen (-).
+            Name of the S3 bucket that contains the FortiGate Autoscale
+            deployment package. Can only contain numbers, lowercase letters,
+            uppercase letters, and hyphens (-). It cannot start or end with a
+            hyphen (-).
     S3KeyPrefix:
         Type: String
         AllowedPattern: '^$|^[0-9a-zA-Z-/]*/$'
         ConstraintDescription: >-
-            Deployment package S3 key prefix can include numbers, lowercase letters,
-            uppercase letters, hyphens (-), and forward slash (/). If provided, it
-            must end with a forward slash (/).
+            Deployment package S3 key prefix can include numbers, lowercase
+            letters, uppercase letters, hyphens (-), and forward slash (/). If
+            provided, it must end with a forward slash (/).
         Description: >-
             Name of the S3 folder that stores the FortiGate Autoscale deployment
-            resources. Can only contain numbers, lowercase letters, uppercase letters,
-            hyphens (-), and forward slashes (/). If provided, it must end with a
-            forward slash (/).
+            resources. Can only contain numbers, lowercase letters, uppercase
+            letters, hyphens (-), and forward slashes (/). If provided, it must
+            end with a forward slash (/).
     VpcId:
         Type: 'AWS::EC2::VPC::Id'
         Description: >-
-            The ID of the existing VPC where FortiGate Autoscale will be deployed. The
-            VPC must have the option 'DNS hostnames' enabled and each of the two AZs
-            in the VPC must have at least 1 public subnet and at least 1 private
-            subnet.
+            The ID of the existing VPC where FortiGate Autoscale will be
+            deployed. The VPC must have the option 'DNS hostnames' enabled and
+            each of the two AZs in the VPC must have at least 1 public subnet
+            and at least 1 private subnet.
     VpcCidr:
         Type: String
         AllowedPattern: >-
@@ -82,14 +82,14 @@ Parameters:
         Type: 'AWS::EC2::Subnet::Id'
         Description: >-
             The ID of the private subnet 1 located in Availability Zone 1 of the
-            selected existing VPC. This subnet will be protected by the FortiGates in
-            the public subnet of the same AZ.
+            selected existing VPC. This subnet will be protected by the
+            FortiGates in the public subnet of the same AZ.
     PrivateSubnet2:
         Type: 'AWS::EC2::Subnet::Id'
         Description: >-
             The ID of the private subnet 2 located in Availability Zone 2 of the
-            selected existing VPC. This subnet will be protected by the FortiGates in
-            the public subnet of the same AZ.
+            selected existing VPC. This subnet will be protected by the
+            FortiGates in the public subnet of the same AZ.
     PrivateSubnetRouteTable:
         Type: String
         Description: Route table ID associated with the two private subnets.
@@ -105,13 +105,14 @@ Parameters:
             - c5.9xlarge
         ConstraintDescription: must be a valid EC2 instance type.
         Description: >-
-            Instance type for the FortiGates in the Auto Scaling group. Instance types
-            are available with different vCPU sizes and bandwidths. For more
-            information, see https://aws.amazon.com/ec2/instance-types/.
+            Instance type for the FortiGates in the Auto Scaling group. Instance
+            types are available with different vCPU sizes and bandwidths. For
+            more information, see https://aws.amazon.com/ec2/instance-types/.
     FortiOSVersion:
         Type: String
-        Default: 6.2.3
+        Default: 6.4.3
         AllowedValues:
+            - 6.4.3
             - 6.2.3
         ConstraintDescription: must be a valid FortiOS version from the selection.
         Description: FortiOS version supported by FortiGate Autoscale for AWS.
@@ -132,75 +133,76 @@ Parameters:
         ConstraintDescription: must be a valid number between 60 and 3600.
         Description: >-
             The Auto Scaling group waits for the cooldown period (in seconds) to
-            complete before resuming scaling activities. Minimum is 60. Maximum is
-            3600.
+            complete before resuming scaling activities. Minimum is 60. Maximum
+            is 3600.
     FgtAsgDesiredCapacityByol:
         Type: Number
         Default: 2
         MinValue: 0
         ConstraintDescription: must be a valid number not less than 0.
         Description: >-
-            The number of FortiGate instances the BYOL Auto Scaling group should have
-            at any time. For High Availability in BYOL-only and Hybrid use cases,
-            ensure at least 2 FortiGates are in the group. For specific use cases, set
-            to 0 for On-Demand-only, and >= 2 for BYOL-only or hybrid licensing.
+            The number of FortiGate instances the BYOL Auto Scaling group should
+            have at any time. For High Availability in BYOL-only and Hybrid use
+            cases, ensure at least 2 FortiGates are in the group. For specific
+            use cases, set to 0 for On-Demand-only, and >= 2 for BYOL-only or
+            hybrid licensing.
     FgtAsgMinSizeByol:
         Type: Number
         Default: 2
         MinValue: 0
         ConstraintDescription: must be a valid number not less than 0.
         Description: >-
-            Minimum number of FortiGate instances in the BYOL Auto Scaling group. For
-            specific use cases, set to 0 for On-Demand-only, and >= 2 for BYOL-only or
-            hybrid licensing.
+            Minimum number of FortiGate instances in the BYOL Auto Scaling
+            group. For specific use cases, set to 0 for On-Demand-only, and >= 2
+            for BYOL-only or hybrid licensing.
     FgtAsgMaxSizeByol:
         Type: Number
         Default: 2
         MinValue: 0
         ConstraintDescription: must be a valid number not less than 0.
         Description: >-
-            Maximum number of FortiGate instances in the BYOL Auto Scaling group. For
-            specific use cases, set to 0 for On-Demand-only, and >= 2 for BYOL-only or
-            hybrid licensing. This number must be greater than or equal to the Minimum
-            group size (BYOL).
+            Maximum number of FortiGate instances in the BYOL Auto Scaling
+            group. For specific use cases, set to 0 for On-Demand-only, and >= 2
+            for BYOL-only or hybrid licensing. This number must be greater than
+            or equal to the Minimum group size (BYOL).
     FgtAsgDesiredCapacityPayg:
         Type: Number
         Default: 0
         MinValue: 0
         ConstraintDescription: must be a valid number not less than 0.
         Description: >-
-            The number of FortiGate instances the On-Demand Auto Scaling group should
-            have at any time. For High Availability in a On-Demand-only use case,
-            ensure at least 2 FortiGates are in the group. For specific use cases, set
-            to 0 for BYOL-only, >= 2 for On-Demand-only, and >= 0 for hybrid
-            licensing.
+            The number of FortiGate instances the On-Demand Auto Scaling group
+            should have at any time. For High Availability in a On-Demand-only
+            use case, ensure at least 2 FortiGates are in the group. For
+            specific use cases, set to 0 for BYOL-only, >= 2 for On-Demand-only,
+            and >= 0 for hybrid licensing.
     FgtAsgMinSizePayg:
         Type: Number
         Default: 0
         MinValue: 0
         ConstraintDescription: must be a valid number not less than 0.
         Description: >-
-            Minimum number of FortiGate instances in the On-Demand Auto Scaling group.
-            For specific use cases, set to 0 for BYOL-only, >= 2 for On-Demand-only,
-            and >= 0 for hybrid licensing.
+            Minimum number of FortiGate instances in the On-Demand Auto Scaling
+            group. For specific use cases, set to 0 for BYOL-only, >= 2 for
+            On-Demand-only, and >= 0 for hybrid licensing.
     FgtAsgMaxSizePayg:
         Type: Number
         Default: 6
         MinValue: 0
         ConstraintDescription: must be a valid number not less than 0.
         Description: >-
-            Maximum number of FortiGate instances in the On-Demand Auto Scaling group.
-            For specific use cases, set to 0 for BYOL-only, >= 2 for On-Demand-only,
-            and >= 0 for hybrid licensing. This number must be greater than or equal
-            to the Minimum group size (On-Demand).
+            Maximum number of FortiGate instances in the On-Demand Auto Scaling
+            group. For specific use cases, set to 0 for BYOL-only, >= 2 for
+            On-Demand-only, and >= 0 for hybrid licensing. This number must be
+            greater than or equal to the Minimum group size (On-Demand).
     FgtAsgHealthCheckGracePeriod:
         Type: Number
         Default: 300
         MinValue: 60
         ConstraintDescription: must be a valid number not less than 60.
         Description: >-
-            The length of time (in seconds) that Auto Scaling waits before checking an
-            instance's health status. Minimum is 60.
+            The length of time (in seconds) that Auto Scaling waits before
+            checking an instance's health status. Minimum is 60.
     FgtAsgScaleInThreshold:
         Type: Number
         Default: 25
@@ -208,8 +210,8 @@ Parameters:
         MaxValue: 100
         ConstraintDescription: must be a valid number between 1 and 100.
         Description: >-
-            The threshold (in percentage) for the FortiGate Auto Scaling group to
-            scale-in (remove) 1 instance. Minimum is 1. Maximum is 100.
+            The threshold (in percentage) for the FortiGate Auto Scaling group
+            to scale-in (remove) 1 instance. Minimum is 1. Maximum is 100.
     FgtAsgScaleOutThreshold:
         Type: Number
         Default: 80
@@ -217,16 +219,16 @@ Parameters:
         MaxValue: 100
         ConstraintDescription: must be a valid number between 1 and 100.
         Description: >-
-            The threshold (in percentage) for the FortiGate Auto Scaling group to
-            scale-out (add) 1 instance. Minimum is 1. Maximum is 100.
+            The threshold (in percentage) for the FortiGate Auto Scaling group
+            to scale-out (add) 1 instance. Minimum is 1. Maximum is 100.
     FortiGatePskSecret:
         Type: String
         NoEcho: true
         MaxLength: '128'
         Description: >-
-            A secret key for the FortiGate instances to securely communicate with each
-            other. Must contain numbers and letters and may contain special
-            characters. Max length is 128.
+            A secret key for the FortiGate instances to securely communicate
+            with each other. Must contain numbers and letters and may contain
+            special characters. Max length is 128.
     FortiGateAdminPort:
         Type: Number
         Default: 8443
@@ -235,17 +237,20 @@ Parameters:
         ConstraintDescription: must be a valid port number between 1 and 65535.
         Description: >-
             A port number for FortiGate administration. Minimum is 1. Maximum is
-            65535. Do not use the FortiGate reserved ports 443, 541, 514, or 703.
+            65535. Do not use the FortiGate reserved ports 443, 541, 514, or
+            703.
     FortiGateAdminCidr:
         Type: String
         AllowedPattern: >-
             ^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]){1}(\/([0-9]|[1-2][0-9]|3[0-2]))?$
-        ConstraintDescription: must be a valid CIDR block format and 0.0.0.0/0 is highly not recommended.
+        ConstraintDescription: >-
+            must be a valid CIDR block format and 0.0.0.0/0 is highly not
+            recommended.
         Description: >-
-            CIDR block for external admin management access. **WARNING!** 0.0.0.0/0
-            accepts connections from any IP address. We recommend that you use a
-            constrained CIDR range to reduce the potential of inbound attacks from
-            unknown IP addresses.
+            CIDR block for external admin management access. **WARNING!**
+            0.0.0.0/0 accepts connections from any IP address. We recommend that
+            you use a constrained CIDR range to reduce the potential of inbound
+            attacks from unknown IP addresses.
     KeyPairName:
         Type: 'AWS::EC2::KeyPair::KeyName'
         ConstraintDescription: must specify an admin access key pair for FortiGate instances.
@@ -257,8 +262,8 @@ Parameters:
         MaxValue: 3600
         ConstraintDescription: must be a valid number between 90 and 3600.
         Description: >-
-            The maximum time (in seconds) to wait for the election of the primary
-            instance to complete. Minimum is 30. Maximum is 3600.
+            The maximum time (in seconds) to wait for the election of the
+            primary instance to complete. Minimum is 30. Maximum is 3600.
     HeartBeatInterval:
         Type: Number
         Default: 30
@@ -266,9 +271,9 @@ Parameters:
         MaxValue: 90
         ConstraintDescription: must be a valid number between 30 and 90.
         Description: >-
-            The length of time (in seconds) that a FortiGate instance waits between
-            sending heartbeat requests to the Autoscale handler. Minimum is 30.
-            Maximum is 90.
+            The length of time (in seconds) that a FortiGate instance waits
+            between sending heartbeat requests to the Autoscale handler. Minimum
+            is 30. Maximum is 90.
     HeartBeatLossCount:
         Type: Number
         Default: 3
@@ -276,16 +281,17 @@ Parameters:
         MaxValue: 65535
         ConstraintDescription: must be a valid number between 1 and 65535.
         Description: >-
-            Number of consecutively lost heartbeats. When the Heartbeat Loss Count has
-            been reached, the VM is deemed unhealthy and fail-over activities will
-            commence.
+            Number of consecutively lost heartbeats. When the Heartbeat Loss
+            Count has been reached, the VM is deemed unhealthy and fail-over
+            activities will commence.
     HeartBeatDelayAllowance:
         Type: Number
         Default: 2
         MinValue: 0
         Description: >-
-            The maximum amount of time (in seconds) allowed for network latency of the
-            FortiGate heartbeat arriving at the Autoscale handler. Minimum is 0.
+            The maximum amount of time (in seconds) allowed for network latency
+            of the FortiGate heartbeat arriving at the Autoscale handler.
+            Minimum is 0.
     LoadBalancingTrafficProtocol:
         Type: String
         Default: HTTPS
@@ -302,8 +308,9 @@ Parameters:
         MaxValue: 65535
         ConstraintDescription: must be a valid port number between 1 and 65535.
         Description: >-
-            Balance web service traffic over this port if the internal web-service
-            load balancer is enabled. Minimum is 1. Maximum is 65535.
+            Balance web service traffic over this port if the internal
+            web-service load balancer is enabled. Minimum is 1. Maximum is
+            65535.
     LoadBalancingHealthCheckThreshold:
         Type: Number
         Default: 3
@@ -321,9 +328,9 @@ Parameters:
             - do not need one
         ConstraintDescription: must choose from the provided options.
         Description: >-
-            (Optional) Add a predefined Elastic Load Balancer (ELB) to route traffic
-            to web service in the private subnets. You can optionally use your own one
-            or decide to not need one.
+            (Optional) Add a predefined Elastic Load Balancer (ELB) to route
+            traffic to web service in the private subnets. You can optionally
+            use your own one or decide to not need one.
     InternalTargetGroupHealthCheckPath:
         Type: String
         Default: /
@@ -333,24 +340,26 @@ Parameters:
             This path must begin with a '/' character, and can be at most 1024
             characters in length.
         Description: >-
-            (Optional) The destination path for health checks. This path must begin
-            with a '/' character, and can be at most 1024 characters in length.
+            (Optional) The destination path for health checks. This path must
+            begin with a '/' character, and can be at most 1024 characters in
+            length.
     InternalLoadBalancerDnsName:
         Type: String
         Default: ''
         Description: >-
-            (Optional) Specify the DNS Name of an existing internal load balancer used
-            to route traffic from a FortiGate to targets in a specified target group.
-            Leave it blank if you don't use an existing load balancer.
+            (Optional) Specify the DNS Name of an existing internal load
+            balancer used to route traffic from a FortiGate to targets in a
+            specified target group. Leave it blank if you don't use an existing
+            load balancer.
     GetLicenseGracePeriod:
         Type: Number
         Default: 600
         MinValue: 300
         ConstraintDescription: must be a valid number not less than 300.
         Description: >-
-            The minimum time (in seconds) permitted before a distributed license can
-            be revoked from a non-responsive FortiGate and re-distributed. Minimum is
-            300.
+            The minimum time (in seconds) permitted before a distributed license
+            can be revoked from a non-responsive FortiGate and re-distributed.
+            Minimum is 300.
     UseCustomAssetLocation:
         Type: String
         Default: 'no'
@@ -363,21 +372,21 @@ Parameters:
         Type: String
         Default: ''
         Description: >-
-            The name of the S3 bucket which contains your custom assets. Required if
-            'use custom asset location' is set to 'yes'.
+            The name of the S3 bucket which contains your custom assets.
+            Required if 'use custom asset location' is set to 'yes'.
     CustomAssetDirectory:
         Type: String
         AllowedPattern: '^$|^[0-9a-zA-Z-/]*/$'
         ConstraintDescription: >-
-            Deployment package S3 key prefix can include numbers, lowercase letters,
-            uppercase letters, hyphens (-), and forward slash (/). If provided, it
-            must end with a forward slash (/).
+            Deployment package S3 key prefix can include numbers, lowercase
+            letters, uppercase letters, hyphens (-), and forward slash (/). If
+            provided, it must end with a forward slash (/).
         Default: ''
         Description: >-
-            The sub path within the 'custom asset container' which serves as the top
-            level directory of all your custom assets. If 'use custom asset location'
-            is set to 'yes', and this value is left empty, the 'custom asset
-            container' will serve as the top level directory.
+            The sub path within the 'custom asset container' which serves as the
+            top level directory of all your custom assets. If 'use custom asset
+            location' is set to 'yes', and this value is left empty, the 'custom
+            asset container' will serve as the top level directory.
 Conditions:
     GovCloudCondition: !Equals
         - !Ref 'AWS::Region'
@@ -644,8 +653,8 @@ Metadata:
 Outputs:
     ResourceTagPrefix:
         Description: >-
-            The value for the Tag Key 'ResourceGroup' on all resources deployed in
-            this stack.
+            The value for the Tag Key 'ResourceGroup' on all resources deployed
+            in this stack.
         Value: !If
             - HasResourceTagPrefix
             - !Join
@@ -671,16 +680,17 @@ Outputs:
                     - !Ref 'AWS::StackId'
     CustomIdentifier:
         Description: >-
-            The custom identifier specified for this stack. This is used as a resource
-            name prefix on those resources that have a strict naming requirement.
+            The custom identifier specified for this stack. This is used as a
+            resource name prefix on those resources that have a strict naming
+            requirement.
         Value: !Ref CustomIdentifier
     FortiOSVersion:
         Description: The selected FortiOS version.
         Value: !Ref FortiOSVersion
     UniqueId:
         Description: >-
-            An automatically generated random string as a unique ID for all resources
-            in the deployment stack and nested stacks.
+            An automatically generated random string as a unique ID for all
+            resources in the deployment stack and nested stacks.
         Value: !Select
             - 0
             - !Split
@@ -692,8 +702,9 @@ Outputs:
                   - !Ref 'AWS::StackId'
     FgtLicensingModel:
         Description: >-
-            The FortiGate licensing model in the Auto Scaling group(s) for the initial
-            deployment of this stack. (Options: On-Demand-Only, BYOL-Only, Hybrid)
+            The FortiGate licensing model in the Auto Scaling group(s) for the
+            initial deployment of this stack. (Options: On-Demand-Only,
+            BYOL-Only, Hybrid)
         Value: !GetAtt
             - StackMainWorkload
             - Outputs.FgtLicensingModel
