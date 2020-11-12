@@ -72,6 +72,7 @@ Conditions:
 Resources:
     TransitGateway:
         Type: 'AWS::EC2::TransitGateway'
+        Condition: IfCreateTransitGateway
         Properties:
             VpnEcmpSupport: enable
             DefaultRouteTablePropagation: disable
