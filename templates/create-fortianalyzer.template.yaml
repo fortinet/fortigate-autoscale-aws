@@ -71,9 +71,6 @@ Parameters:
             ^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]){1}(\/([0-9]|[1-2][0-9]|3[0-2]))?$
         ConstraintDescription: must be a valid CIDR block format.
         Description: The CIDR block for the VPC where the FortiAnalyzer will be deployed.
-    VPCEndpoint:
-        Type: String
-        Description: The VPCEndpoint for calling the service through the API Gateway.
     SubnetId:
         Type: 'AWS::EC2::Subnet::Id'
         Description: The ID of the subnet where FortiAnalyzer will be deployed.
@@ -272,7 +269,7 @@ Resources:
             ServiceToken: !GetAtt
                 - LambdaFunctionFazHandler
                 - Arn
-            ServiceType: registration
+            ServiceType: registerFortiAnalyzer
             InstanceId: !Ref ec2InstanceFortiAnalyzer
             PrivateIp: !GetAtt
                 - ec2InstanceFortiAnalyzer
@@ -307,7 +304,7 @@ Resources:
             SourceArn: !GetAtt
                 - FazHandlerServiceScheduledRule
                 - Arn
-    StackCopyLambda:
+    StackCopyLambdaSource:
         Type: 'AWS::CloudFormation::Stack'
         Properties:
             Parameters:
@@ -323,33 +320,32 @@ Resources:
                       - s3
             TimeoutInMinutes: 10
     LambdaFunctionFazHandler:
+        Type: 'AWS::Lambda::Function'
         Properties:
+            Description: Register a FortiAnalyzer in the DB for FortiGate Auto Scaling.
             FunctionName: !Join
                 - '-'
                 - - !Ref CustomIdentifier
                   - !Ref UniqueId
-                  - fortianalyzer-handler
+                  - fortianalyzer-integration-handler
+            Runtime: nodejs12.x
             Code:
                 S3Bucket: !GetAtt
-                    - StackCopyLambda
+                    - StackCopyLambdaSource
                     - Outputs.DestinationBucket
                 S3Key: !Sub
-                    - '${S3KeyPrefix}functions/packages/faz-handler.zip'
-                    - S3KeyPrefix: !GetAtt
-                          - StackCopyLambda
+                    - '${KeyPrefix}functions/packages/fgt-as-handler.zip'
+                    - KeyPrefix: !GetAtt
+                          - StackCopyLambdaSource
                           - Outputs.KeyPrefix
-            Description: Register a FortiAnalyzer in the DB for FortiGate Auto Scaling.
-            Handler: index.handler
+            Handler: index.fazIntegrationHandler
             Role: !GetAtt
                 - IamRoleFazHandler
                 - Arn
-            Runtime: nodejs12.x
             Timeout: 300
             Environment:
                 Variables:
                     RESOURCE_TAG_PREFIX: !Ref ResourceTagPrefix
-                    CUSTOM_ID: ''
-                    UNIQUE_ID: ''
                     STACK_ID: !Ref 'AWS::StackId'
                     INSTANCE_ID: !Ref ec2InstanceFortiAnalyzer
                     AUTOSCALE_ADMIN_USERNAME: !Ref AutoscaleAdminUsername
@@ -361,8 +357,9 @@ Resources:
                           - ec2InstanceFortiAnalyzer
                           - PublicIp
                     FORTIANALYZER_PORT: '443'
-                    USE_AUTOSCALE_ADMIN_ACCOUNT: 'true'
-        Type: 'AWS::Lambda::Function'
+            Tags:
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
     IamRoleFazHandler:
         Properties:
             AssumeRolePolicyDocument:
@@ -424,55 +421,6 @@ Resources:
             PolicyName: faz-handler-lambda-function-policy
             Roles:
                 - !Ref IamRoleFazHandler
-    ApiGatewayFazService:
-        Type: 'AWS::ApiGateway::RestApi'
-        Properties:
-            Name: !Join
-                - '-'
-                - - !Ref CustomIdentifier
-                  - fortianalyzer-handler
-                  - !Ref UniqueId
-            EndpointConfiguration:
-                Types:
-                    - PRIVATE
-            Policy: !Sub
-                - >-
-                    {\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":\"*\",\"Action\":\"execute-api:Invoke\",\"Resource\":\"execute-api:\/*\",\"Condition\":{\"StringEquals\":{\"aws:sourceVpce\":\"${vpce}\"}}}]}
-                - vpce: !Ref VPCEndpoint
-    ApiGwResFazHandler:
-        Type: 'AWS::ApiGateway::Resource'
-        Properties:
-            RestApiId: !Ref ApiGatewayFazService
-            PathPart: faz-handler
-            ParentId: !GetAtt
-                - ApiGatewayFazService
-                - RootResourceId
-    ApiGwMethodFazHandler:
-        Type: 'AWS::ApiGateway::Method'
-        Properties:
-            ResourceId: !Ref ApiGwResFazHandler
-            RestApiId: !Ref ApiGatewayFazService
-            AuthorizationType: NONE
-            HttpMethod: POST
-            Integration:
-                Type: AWS_PROXY
-                IntegrationHttpMethod: POST
-                Uri: !Join
-                    - ''
-                    - - 'arn:aws:apigateway:'
-                      - !Ref 'AWS::Region'
-                      - ':lambda:path/2015-03-31/functions/'
-                      - !GetAtt
-                        - LambdaFunctionFazHandler
-                        - Arn
-                      - /invocations
-    ApiGwDeploymentFazHandler:
-        DependsOn:
-            - ApiGwMethodFazHandler
-        Type: 'AWS::ApiGateway::Deployment'
-        Properties:
-            RestApiId: !Ref ApiGatewayFazService
-            StageName: prod
 Outputs:
     InstanceID:
         Description: The instance ID of the created FortiAnalyzer.
@@ -499,9 +447,6 @@ Outputs:
         Value: !GetAtt
             - LambdaFunctionFazHandler
             - Arn
-    RestAPIID:
-        Description: The API ID of the API Gateway for FAZ service.
-        Value: !Ref ApiGatewayFazService
     FazHandlerFunctionName:
         Description: FortiGate Auto Scaling - FortiAnalyzer handler function name.
         Value: !Ref LambdaFunctionFazHandler

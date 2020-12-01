@@ -9,7 +9,8 @@ import {
     AwsPlatformAdaptee,
     AwsPlatformAdapter,
     AwsScheduledEventProxy,
-    AwsLambdaInvocationProxy
+    AwsLambdaInvocationProxy,
+    AwsFortiGateAutoscaleFazIntegrationHandler
 } from 'autoscale-core';
 import {
     APIGatewayProxyEvent,
@@ -146,5 +147,20 @@ export async function tgwLambdaPeerInvocationHandler(
     const platform = new AwsPlatformAdapter(new AwsPlatformAdaptee(), proxy);
     const autoscale = new AwsFortiGateAutoscaleTgw<JSONable, Context, void>(platform, env, proxy);
     const handler = new AwsFortiGateAutoscaleTgwLambdaInvocationHandler(autoscale);
+    return await handler.handleLambdaPeerInvocation();
+}
+
+/**
+ * handle peer invocation between lamba functions
+ * @param {JSONable} event incoming payload
+ * @param {Context} context Lambda context
+ */
+export async function fazIntegrationHandler(event: JSONable, context: Context): Promise<void> {
+    console.log(event);
+    const env = {} as AutoscaleEnvironment;
+    const proxy = new AwsLambdaInvocationProxy(event, context);
+    const platform = new AwsPlatformAdapter(new AwsPlatformAdaptee(), proxy);
+    const autoscale = new AwsFortiGateAutoscaleTgw<JSONable, Context, void>(platform, env, proxy);
+    const handler = new AwsFortiGateAutoscaleFazIntegrationHandler(autoscale);
     return await handler.handleLambdaPeerInvocation();
 }
