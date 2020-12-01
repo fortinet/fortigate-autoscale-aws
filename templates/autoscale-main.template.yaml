@@ -410,6 +410,56 @@ Parameters:
             level directory of all your custom assets. If 'use custom asset location'
             is set to 'yes', and this value is left empty, the 'custom asset
             container' will serve as the top level directory.
+    FortiAnalyzerIntegrationOptions:
+        Type: String
+        AllowedValues:
+            - 'yes'
+            - 'no'
+        Description: >-
+            Choose 'yes' to incorporate FortiAnalyzer into FortiGate Auto Scaling to
+            use extended features that include storing logs into FortiAnalyzer.
+    FortiAnalyzerInstanceType:
+        Type: String
+        Description: >-
+            The instance type to launch as FortiAnalyzer On-Demand instances. There
+            are t2.small and compute-optimized instances such as m4 and c4 available
+            with different vCPU sizes and bandwidths. For more information about
+            instance types, see https://aws.amazon.com/ec2/instance-types/
+    FortiAnalyzerVersion:
+        Type: String
+        Description: The FortiAnalyzer version supported by FortiGate Auto Scaling.
+    FortiAnalyzerAutoscaleAdminUsername:
+        Type: String
+        AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
+        ConstraintDescription: >-
+            This FortiAnalyzer account name can include numbers, lowercase letters,
+            uppercase letters, and hyphens (-). It cannot start or end with a hyphen
+            (-).
+        Description: >-
+            The name of the secondary administrator level account in the
+            FortiAnalyzer, which FortiGate Auto Scaling uses to connect to the
+            FortiAnalyzer to authorize any FortiGate device in the Auto Scaling group.
+            To conform to the FortiAnalyzer naming policy, the username can only
+            contain numbers, lowercase letters, uppercase letters, and hyphens. It
+            cannot start or end with a hyphen (-).
+    FortiAnalyzerAutoscaleAdminPassword:
+        Type: String
+        NoEcho: true
+        MinLength: 8
+        MaxLength: 128
+        Description: >-
+            The password for the 'Autoscale admin username'. The password must conform
+            to the FortiAnalyzer password policy and have a min length of 8 and a max
+            length 128. If you need to enable KMS encryption, refer to the
+            documentation.
+    FortiAnalyzerCustomPrivateIpAddress:
+        Type: String
+        AllowedPattern: >-
+            ^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]){1}$
+        ConstraintDescription: must be a valid IPv4 format.
+        Description: >-
+            The static private IP address allocated for the FortiAnalyzer in the
+            designated subnet.
 Conditions:
     GovCloudCondition: !Equals
         - !Ref 'AWS::Region'
@@ -475,6 +525,9 @@ Conditions:
         - is always false
     IfUseCustomAssetContainer: !Equals
         - !Ref UseCustomAssetLocation
+        - 'yes'
+    IfIntegrateFortiAnalyzer: !Equals
+        - !Ref FortiAnalyzerIntegrationOptions
         - 'yes'
 Mappings:
     ProductVersionMap:
@@ -929,6 +982,62 @@ Resources:
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
             TimeoutInMinutes: '10'
+    StackCreateFortiAnalyzer:
+        Type: 'AWS::CloudFormation::Stack'
+        Condition: IfIntegrateFortiAnalyzer
+        Properties:
+            Parameters:
+                S3BucketName: !Ref S3BucketName
+                S3KeyPrefix: !Ref S3KeyPrefix
+                ResourceTagPrefix: !Ref ResourceTagPrefix
+                CustomIdentifier: !Ref CustomIdentifier
+                UniqueId: !Select
+                    - 0
+                    - !Split
+                      - '-'
+                      - !Select
+                        - 2
+                        - !Split
+                          - /
+                          - !Ref 'AWS::StackId'
+                DdbTableArnList: !GetAtt
+                    - StackCreateDynamoDBTable
+                    - Outputs.TableArnList
+                VpcId: !Ref VpcId
+                VpcCidr: !Ref VpcCidr
+                SubnetId: !Ref PublicSubnet1
+                InstanceType: !Ref FortiAnalyzerInstanceType
+                AdminCidr: !Ref FortiGateAdminCidr
+                KeyPairName: !Ref KeyPairName
+                AutoscaleAdminUsername: !If
+                    - IfIntegrateFortiAnalyzer
+                    - !Ref FortiAnalyzerAutoscaleAdminUsername
+                    - ''
+                AutoscaleAdminPassword: !If
+                    - IfIntegrateFortiAnalyzer
+                    - !Ref FortiAnalyzerAutoscaleAdminPassword
+                    - ''
+                ProductAMI: !FindInMap
+                    - AWSAMIRegionMap
+                    - !Ref 'AWS::Region'
+                    - !FindInMap
+                      - ProductVersionMap
+                      - FortiAnalyzerPayg
+                      - !Ref FortiAnalyzerVersion
+                CustomPrivateIpAddress: !If
+                    - IfIntegrateFortiAnalyzer
+                    - !Ref FortiAnalyzerCustomPrivateIpAddress
+                    - ''
+            TemplateURL: !Sub
+                - >-
+                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-fortianalyzer.template.yaml
+                - S3Region: !If
+                      - GovCloudCondition
+                      - s3-us-gov-west-1
+                      - s3
+                  S3BucketName: !Ref S3BucketName
+                  S3KeyPrefix: !Ref S3KeyPrefix
+            TimeoutInMinutes: 10
     SaveSettings:
         Type: 'AWS::CloudFormation::CustomResource'
         Properties:
@@ -970,7 +1079,10 @@ Resources:
             egress-traffic-route-table: !Join
                 - ','
                 - - !Ref PrivateSubnetRouteTable
-            enable-fortianalyzer-integration: 'false'
+            enable-fortianalyzer-integration: !If
+                - IfIntegrateFortiAnalyzer
+                - 'true'
+                - 'false'
             enable-hybrid-licensing: 'true'
             enable-internal-elb: !If
                 - IfUseInternalLoadBalancer
