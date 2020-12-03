@@ -389,7 +389,7 @@ Resources:
                             - !Ref 'AWS::StackId'
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.s3.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-new-vpc.template.yaml
+                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-new-vpc.template.yaml
                 - S3Region: !If
                       - GovCloudCondition
                       - s3-us-gov-west-1
@@ -503,7 +503,7 @@ Resources:
                 CustomAssetDirectory: !Ref CustomAssetDirectory
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.s3.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/autoscale-main.template.yaml
+                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/autoscale-main.template.yaml
                 - S3Region: !If
                       - GovCloudCondition
                       - s3-us-gov-west-1
