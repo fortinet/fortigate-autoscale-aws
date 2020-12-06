@@ -1,0 +1,56 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Configure the FortiAnalyzer integration additional services.
+Parameters:
+    FazHandlerFunctionName:
+        Type: String
+        Description: FortiGate Autoscale - FortiAnalyzer integration handler function name.
+    FazHandlerFunctionArn:
+        Type: String
+        Description: FortiGate Autoscale - FortiAnalyzer integration handler function ARN.
+    FazHandlerServiceFunctionName:
+        Type: String
+        Description: >-
+            FortiGate Autoscale - FortiAnalyzer integration handler service function
+            name.
+    FazHandlerServiceFunctionArn:
+        Type: String
+        Description: >-
+            FortiGate Autoscale - FortiAnalyzer integration handler service function
+            ARN.
+Mappings: {}
+Conditions: {}
+Resources:
+    FazDeviceAuthServiceScheduledRule:
+        Type: 'AWS::Events::Rule'
+        Properties:
+            Description: >-
+                Trigger FortiAnalyzer to authorize unregistered devices on a 5-min
+                basis.
+            ScheduleExpression: rate(5 minutes)
+            State: ENABLED
+            Targets:
+                - Arn: !Ref FazHandlerServiceFunctionArn
+                  Id: !Sub
+                      - '${FunctionName}-scheduled-rule'
+                      - FunctionName: !Ref FazHandlerServiceFunctionName
+                  Input: !Sub
+                      - |-
+                          {
+                              "source": "fortinet.autoscale",
+                              "detail-type": "FortiAnalyzer Authorization Request",
+                              "detail": {
+                                  "ServiceType": "triggerFazDeviceAuth",
+                                  "ServiceToken": "${ServiceToken}"
+                              }
+                          }
+                      - ServiceToken: !Ref FazHandlerServiceFunctionArn
+    LambdaPermissionScheduledEventInvokeFazHandlerService:
+        Type: 'AWS::Lambda::Permission'
+        Properties:
+            FunctionName: !Ref FazHandlerServiceFunctionName
+            Action: 'lambda:InvokeFunction'
+            Principal: events.amazonaws.com
+            SourceArn: !GetAtt
+                - FazDeviceAuthServiceScheduledRule
+                - Arn
+Outputs: {}

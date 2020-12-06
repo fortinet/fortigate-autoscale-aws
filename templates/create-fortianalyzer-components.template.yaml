@@ -1,4 +1,3 @@
----
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
     Deploys a FortiAnalyzer to a selected subnet and configures all FortiGates to
@@ -117,7 +116,7 @@ Parameters:
             length 128. If you need to enable KMS encryption, refer to the
             documentation.
     ProductAMI:
-        Type: AWS::EC2::Image::Id
+        Type: 'AWS::EC2::Image::Id'
         Description: The AMI for the product created with the EC2 instance in this stack.
     CustomPrivateIpAddress:
         Type: String
@@ -264,53 +263,13 @@ Resources:
         Properties:
             Domain: vpc
             InstanceId: !Ref ec2InstanceFortiAnalyzer
-    FazHandlerService:
-        Properties:
-            ServiceToken: !GetAtt
-                - LambdaFunctionFazHandler
-                - Arn
-            ServiceType: registerFortiAnalyzer
-            InstanceId: !Ref ec2InstanceFortiAnalyzer
-            PrivateIp: !GetAtt
-                - ec2InstanceFortiAnalyzer
-                - PrivateIp
-            CustomIdentifier: !Ref CustomIdentifier
-            UniqueId: !Ref UniqueId
-        Type: 'AWS::CloudFormation::CustomResource'
-    FazHandlerServiceScheduledRule:
-        Type: 'AWS::Events::Rule'
-        DependsOn:
-            - FazHandlerService
-        Properties:
-            Description: >-
-                Trigger FortiAnalyzer to authorize unregistered devices on a 5-min
-                basis.
-            ScheduleExpression: rate(5 minutes)
-            State: ENABLED
-            Targets:
-                - Arn: !GetAtt
-                      - LambdaFunctionFazHandler
-                      - Arn
-                  Id: !Sub
-                      - '${FunctionName}-scheduled-rule'
-                      - FunctionName: !Ref LambdaFunctionFazHandler
-                  Input: '{ "ResourceProperties": {"ServiceType": "authorizeFgt"} }'
-    PermissionForEventsToInvokeLambda:
-        Type: 'AWS::Lambda::Permission'
-        Properties:
-            FunctionName: !Ref LambdaFunctionFazHandler
-            Action: 'lambda:InvokeFunction'
-            Principal: events.amazonaws.com
-            SourceArn: !GetAtt
-                - FazHandlerServiceScheduledRule
-                - Arn
     StackCopyLambdaSource:
         Type: 'AWS::CloudFormation::Stack'
         Properties:
             Parameters:
                 S3BucketName: !Ref S3BucketName
                 S3KeyPrefix: !Ref S3KeyPrefix
-                ObjectPaths: functions/packages/faz-handler.zip
+                ObjectPaths: functions/packages/fgt-as-handler.zip
             TemplateURL: !Sub
                 - >-
                     https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/copy-objects.template.yaml
@@ -322,12 +281,14 @@ Resources:
     LambdaFunctionFazHandler:
         Type: 'AWS::Lambda::Function'
         Properties:
-            Description: Register a FortiAnalyzer in the DB for FortiGate Auto Scaling.
+            Description: >-
+                Handle device authorization requests for any connected device from Autoscale using
+                AWS Lambda function peer invocations.
             FunctionName: !Join
                 - '-'
                 - - !Ref CustomIdentifier
                   - !Ref UniqueId
-                  - fortianalyzer-integration-handler
+                  - faz-handler
             Runtime: nodejs12.x
             Code:
                 S3Bucket: !GetAtt
@@ -398,6 +359,17 @@ Resources:
                                 - 'ec2:DescribeSubnets'
                                 - 'ec2:DescribeSecurityGroups'
                             Resource: '*'
+                          - Effect: Allow
+                            Action:
+                                - 'lambda:InvokeFunction'
+                                - 'lambda:InvokeAsync'
+                            Resource: !Sub
+                                - >-
+                                    arn:aws:lambda:${AWS_REGION}:${AWS_ACCOUNT_ID}:function:${CUSTOM_ID}-${UNIQUE_ID}*
+                                - AWS_REGION: !Ref 'AWS::Region'
+                                  AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
+                                  CUSTOM_ID: !Ref CustomIdentifier
+                                  UNIQUE_ID: !Ref UniqueId
                       Version: 2012-10-17
         Type: 'AWS::IAM::Role'
     IamPolicyFazHandler:
@@ -421,37 +393,64 @@ Resources:
             PolicyName: faz-handler-lambda-function-policy
             Roles:
                 - !Ref IamRoleFazHandler
+    LambdaFunctionFazHandlerService:
+        Type: 'AWS::Lambda::Function'
+        Properties:
+            Description: >-
+                Handle device authorization requests by making periodic calls to the faz handler.
+            FunctionName: !Join
+                - '-'
+                - - !Ref CustomIdentifier
+                  - !Ref UniqueId
+                  - faz-handler-service
+            Runtime: nodejs12.x
+            Code:
+                S3Bucket: !GetAtt
+                    - StackCopyLambdaSource
+                    - Outputs.DestinationBucket
+                S3Key: !Sub
+                    - '${KeyPrefix}functions/packages/fgt-as-handler.zip'
+                    - KeyPrefix: !GetAtt
+                          - StackCopyLambdaSource
+                          - Outputs.KeyPrefix
+            Handler: index.fazIntegrationHandlerService
+            Role: !GetAtt
+                - IamRoleFazHandler
+                - Arn
+            Timeout: 300
+            Environment:
+                Variables:
+                    RESOURCE_TAG_PREFIX: !Ref ResourceTagPrefix
+            Tags:
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
 Outputs:
-    InstanceID:
+    FazInstanceID:
         Description: The instance ID of the created FortiAnalyzer.
-        Value: !GetAtt
-            - FazHandlerService
-            - InstanceId
-    PublicIP:
+        Value: !Ref ec2InstanceFortiAnalyzer
+    FazPublicIp:
         Description: The public IP address of the created FortiAnalyzer.
         Value: !GetAtt
             - ec2InstanceFortiAnalyzer
             - PublicIp
-    PrivateIP:
+    FazPrivateIp:
         Description: The private IP address of the created FortiAnalyzer.
         Value: !GetAtt
             - ec2InstanceFortiAnalyzer
             - PrivateIp
-    VIP:
-        Description: The VIP of the created FortiAnalyzer.
-        Value: !GetAtt
-            - FazHandlerService
-            - VIP
-    FazHandlerServiceToken:
-        Description: The service token for the FortiAnalyzer registration service.
+    FazHandlerFunctionName:
+        Description: FortiGate Autoscale - FortiAnalyzer integration handler function name.
+        Value: !Ref LambdaFunctionFazHandler
+    FazHandlerFunctionArn:
+        Description: FortiGate Autoscale - FortiAnalyzer integration handler function ARN.
         Value: !GetAtt
             - LambdaFunctionFazHandler
             - Arn
-    FazHandlerFunctionName:
-        Description: FortiGate Auto Scaling - FortiAnalyzer handler function name.
-        Value: !Ref LambdaFunctionFazHandler
-    FazHandlerFunctionArn:
-        Description: FortiGate Auto Scaling - FortiAnalyzer handler function ARN.
+    FazHandlerServiceFunctionName:
+        Description: FortiGate Autoscale - FortiAnalyzer integration handler service function name.
+        Value: !Ref LambdaFunctionFazHandlerService
+    FazHandlerServiceFunctionArn:
+        Description: FortiGate Autoscale - FortiAnalyzer integration handler service function ARN.
         Value: !GetAtt
-            - LambdaFunctionFazHandler
+            - LambdaFunctionFazHandlerService
             - Arn
