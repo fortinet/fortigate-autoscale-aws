@@ -6,7 +6,8 @@ import {
     licenseHandler,
     cfnServiceEventHandler,
     tgwLambdaPeerInvocationHandler,
-    fazIntegrationHandler
+    fazIntegrationHandler,
+    fazIntegrationHandlerService
 } from './func';
 
 // NOTE: this exports style is for AWS Lambda compatibility
@@ -32,3 +33,6 @@ exports.tgwLambdaPeerInvocationHandler = tgwLambdaPeerInvocationHandler;
 
 // NOTE: this exports style is for AWS Lambda compatibility
 exports.fazIntegrationHandler = fazIntegrationHandler;
+
+// NOTE: this exports style is for AWS Lambda compatibility
+exports.fazIntegrationHandlerService = fazIntegrationHandlerService;
