@@ -123,8 +123,9 @@ Parameters:
             https://aws.amazon.com/ec2/instance-types/.
     FortiOSVersion:
         Type: String
-        Default: 6.2.3
+        Default: 6.4.3
         AllowedValues:
+            - 6.4.3
             - 6.2.3
         ConstraintDescription: must be a valid FortiOS version from the selection.
         Description: FortiOS version.
