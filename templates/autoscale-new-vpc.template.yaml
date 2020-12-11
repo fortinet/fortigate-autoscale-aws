@@ -401,9 +401,13 @@ Parameters:
             location' is set to 'yes', and this value is left empty, the 'custom
             asset container' will serve as the top level directory.
 Conditions:
-    GovCloudCondition: !Equals
-        - !Ref 'AWS::Region'
-        - us-gov-west-1
+    IfInUSGovCloud: !Or
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-east-1
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-west-1
     HasResourceTagPrefix: !Not
         - !Equals
           - !Ref ResourceTagPrefix
@@ -448,13 +452,12 @@ Resources:
                             - !Ref 'AWS::StackId'
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-new-vpc.template.yaml
-                - S3Region: !If
-                      - GovCloudCondition
-                      - s3-us-gov-west-1
-                      - !Sub
-                        - 's3.${Region}'
-                        - Region: !Ref 'AWS::Region'
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/create-new-vpc.template.yaml
+                - S3SubDomain: !If
+                      - IfInUSGovCloud
+                      - s3-
+                      - s3.
+                  Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
             TimeoutInMinutes: '5'
@@ -564,13 +567,14 @@ Resources:
                 CustomAssetDirectory: !Ref CustomAssetDirectory
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/autoscale-main.template.yaml
-                - S3Region: !If
-                      - GovCloudCondition
-                      - s3-us-gov-west-1
-                      - !Sub
-                        - 's3.${Region}'
-                        - Region: !Ref 'AWS::Region'
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/autoscale-main.template.yaml
+                - S3SubDomain: !If
+                      - IfInUSGovCloud
+                      - s3-
+                      - s3.
+                  Region: !Ref 'AWS::Region'
+                  S3BucketName: !Ref S3BucketName
+                  S3KeyPrefix: !Ref S3KeyPrefix
             TimeoutInMinutes: 30
 Metadata:
     'AWS::CloudFormation::Interface':

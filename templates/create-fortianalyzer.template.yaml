@@ -127,9 +127,13 @@ Mappings:
         us-gov-west-1:
             FAZVM64PAYG602: ''
 Conditions:
-    GovCloudCondition: !Equals
-        - !Ref 'AWS::Region'
-        - us-gov-west-1
+    IfInUSGovCloud: !Or
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-east-1
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-west-1
     IfAddCustomTag: !Not
         - !Equals
           - !Ref CustomIdentifier
@@ -246,14 +250,15 @@ Resources:
                 ObjectPaths: functions/packages/faz-handler.zip
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/copy-objects.template.yaml
-                - S3Region: !If
-                      - GovCloudCondition
-                      - s3-us-gov-west-1
-                      - !Sub
-                        - 's3.${Region}'
-                        - Region: !Ref 'AWS::Region'
-            TimeoutInMinutes: '10'
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/copy-objects.template.yaml
+                - S3SubDomain: !If
+                      - IfInUSGovCloud
+                      - s3-
+                      - s3.
+                  Region: !Ref 'AWS::Region'
+                  S3BucketName: !Ref S3BucketName
+                  S3KeyPrefix: !Ref S3KeyPrefix
+            TimeoutInMinutes: 10
     LambdaFunctionFazHandler:
         Properties:
             Code:

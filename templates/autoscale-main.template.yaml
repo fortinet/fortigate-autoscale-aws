@@ -420,9 +420,13 @@ Parameters:
             location' is set to 'yes', and this value is left empty, the 'custom
             asset container' will serve as the top level directory.
 Conditions:
-    GovCloudCondition: !Equals
-        - !Ref 'AWS::Region'
-        - us-gov-west-1
+    IfInUSGovCloud: !Or
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-east-1
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-west-1
     IfNewInternalLoadBalancer: !And
         - !Equals
           - !Ref NetworkLoadBalancerIntegration
@@ -633,13 +637,12 @@ Resources:
                     - 'no'
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-db-table.template.yaml
-                - S3Region: !If
-                      - GovCloudCondition
-                      - s3-us-gov-west-1
-                      - !Sub
-                        - 's3.${Region}'
-                        - Region: !Ref 'AWS::Region'
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/create-db-table.template.yaml
+                - S3SubDomain: !If
+                      - IfInUSGovCloud
+                      - s3-
+                      - s3.
+                  Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
             TimeoutInMinutes: '10'
@@ -647,8 +650,18 @@ Resources:
         Type: 'AWS::IAM::Role'
         Properties:
             ManagedPolicyArns:
-                - 'arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess'
-                - 'arn:aws:iam::aws:policy/AWSLambdaExecute'
+                - !Sub
+                  - 'arn:aws${GovCloudSuffix}:iam::aws:policy/AmazonS3ReadOnlyAccess'
+                  - GovCloudSuffix: !If
+                        - IfInUSGovCloud
+                        - '-us-gov'
+                        - ''
+                - !Sub
+                  - 'arn:aws${GovCloudSuffix}:iam::aws:policy/AWSLambdaExecute'
+                  - GovCloudSuffix: !If
+                        - IfInUSGovCloud
+                        - '-us-gov'
+                        - ''
             AssumeRolePolicyDocument:
                 Version: 2012-10-17
                 Statement:
@@ -666,7 +679,6 @@ Resources:
                             Resource:
                                 - !If
                                   - IfUseCustomAssetContainer
-                                    arn:aws:s3:::${bucketname}/${keyprefix}assets/*
                                   - !Sub
                                     - 'arn:aws${GovCloudSuffix}:s3:::${CustomContainer}'
                                     - GovCloudSuffix: !If
@@ -684,14 +696,17 @@ Resources:
                             Effect: Allow
                           - Action:
                                 - 's3:GetObject'
-                            Resource:
-                                - !If
-                                  - IfUseCustomAssetContainer
+                            Resource: !If
+                                - IfUseCustomAssetContainer
                                 - - !Sub
                                     - >-
-                                        arn:aws:s3:::${bucketname}/${keyprefix}assets/*
-                                    - bucketname: !Ref S3BucketName
-                                      keyprefix: !Ref S3KeyPrefix
+                                        arn:aws${GovCloudSuffix}:s3:::${S3BucketName}/${S3KeyPrefix}assets/*
+                                    - GovCloudSuffix: !If
+                                          - IfInUSGovCloud
+                                          - '-us-gov'
+                                          - ''
+                                      S3BucketName: !Ref S3BucketName
+                                      S3KeyPrefix: !Ref S3KeyPrefix
                                   - !Sub
                                     - >-
                                         arn:aws${GovCloudSuffix}:s3:::${CustomContainer}/${CustomDirectory}*
@@ -701,7 +716,7 @@ Resources:
                                           - ''
                                       CustomContainer: !Ref CustomAssetContainer
                                       CustomDirectory: !Ref CustomAssetDirectory
-                                  - !Sub
+                                - - !Sub
                                     - >-
                                         arn:aws${GovCloudSuffix}:s3:::${S3BucketName}/${S3KeyPrefix}assets/*
                                     - GovCloudSuffix: !If
@@ -832,13 +847,12 @@ Resources:
                 RoutePermissionRouteTableId: !Ref PrivateSubnetRouteTable
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-autoscale-handler.template.yaml
-                - S3Region: !If
-                      - GovCloudCondition
-                      - s3-us-gov-west-1
-                      - !Sub
-                        - 's3.${Region}'
-                        - Region: !Ref 'AWS::Region'
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/create-autoscale-handler.template.yaml
+                - S3SubDomain: !If
+                      - IfInUSGovCloud
+                      - s3-
+                      - s3.
+                  Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
             TimeoutInMinutes: '10'
@@ -862,13 +876,12 @@ Resources:
                     - !Ref 'AWS::NoValue'
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-tgw-vpn-handler.template.yaml
-                - S3Region: !If
-                      - GovCloudCondition
-                      - s3-us-gov-west-1
-                      - !Sub
-                        - 's3.${Region}'
-                        - Region: !Ref 'AWS::Region'
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/create-tgw-vpn-handler.template.yaml
+                - S3SubDomain: !If
+                      - IfInUSGovCloud
+                      - s3-
+                      - s3.
+                  Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
             TimeoutInMinutes: 10
@@ -900,13 +913,12 @@ Resources:
                       - !Ref PrivateSubnet2
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-load-balancer.template.yaml
-                - S3Region: !If
-                      - GovCloudCondition
-                      - s3-us-gov-west-1
-                      - !Sub
-                        - 's3.${Region}'
-                        - Region: !Ref 'AWS::Region'
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/create-load-balancer.template.yaml
+                - S3SubDomain: !If
+                      - IfInUSGovCloud
+                      - s3-
+                      - s3.
+                  Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
             TimeoutInMinutes: '10'
@@ -931,13 +943,12 @@ Resources:
                     - Outputs.FgtAsgHandlerIamRoleName
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-transit-gateway-components.template.yaml
-                - S3Region: !If
-                      - GovCloudCondition
-                      - s3-us-gov-west-1
-                      - !Sub
-                        - 's3.${Region}'
-                        - Region: !Ref 'AWS::Region'
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/create-transit-gateway-components.template.yaml
+                - S3SubDomain: !If
+                      - IfInUSGovCloud
+                      - s3-
+                      - s3.
+                  Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
             TimeoutInMinutes: '10'
@@ -1018,13 +1029,12 @@ Resources:
                       resource: byol-license
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-hybrid-auto-scaling-group.template.yaml
-                - S3Region: !If
-                      - GovCloudCondition
-                      - s3-us-gov-west-1
-                      - !Sub
-                        - 's3.${Region}'
-                        - Region: !Ref 'AWS::Region'
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/create-hybrid-auto-scaling-group.template.yaml
+                - S3SubDomain: !If
+                      - IfInUSGovCloud
+                      - s3-
+                      - s3.
+                  Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
             TimeoutInMinutes: '10'
