@@ -130,6 +130,15 @@
             }
         },
         {
+            "settingValue": "10.0.0.200",
+            "settingKey": "faz-ip",
+            "editable": true,
+            "description": "The FortiGate Autoscale - FortiAnalyzer private IP.",
+            "jsonEncoded": {
+                "BOOL": false
+            }
+        },
+        {
             "settingValue": "443",
             "settingKey": "fortigate-traffic-port",
             "editable": false,
