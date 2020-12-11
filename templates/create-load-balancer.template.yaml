@@ -106,6 +106,13 @@ Conditions:
     IfNewInternalLoadBalancer: !Equals
         - !Ref NewInternalLoadBalancer
         - 'yes'
+    IfInUSGovCloud: !Or
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-east-1
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-west-1
 Mappings:
     ProtocolMap:
         HTTP:

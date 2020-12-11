@@ -172,8 +172,20 @@ Resources:
         Type: 'AWS::IAM::Role'
         Properties:
             ManagedPolicyArns:
-                - 'arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess'
-                - 'arn:aws:iam::aws:policy/AWSLambdaExecute'
+                - !Sub
+                  - >-
+                      arn:aws${GovCloudSuffix}:iam::aws:policy/AmazonS3ReadOnlyAccess
+                  - GovCloudSuffix: !If
+                        - IfInUSGovCloud
+                        - '-us-gov'
+                        - ''
+                - !Sub
+                  - >-
+                      arn:aws${GovCloudSuffix}:iam::aws:policy/AWSLambdaExecute
+                  - GovCloudSuffix: !If
+                        - IfInUSGovCloud
+                        - '-us-gov'
+                        - ''
             AssumeRolePolicyDocument:
                 Version: 2012-10-17
                 Statement:
@@ -189,8 +201,12 @@ Resources:
                           - Action:
                                 - 's3:GetObject'
                             Resource: !Sub
-                                - 'arn:aws:s3:::${S3BucketName}/${S3KeyPrefix}*'
-                                - S3BucketName: !Ref S3BucketName
+                                - 'arn:aws${GovCloudSuffix}:s3:::${S3BucketName}/${S3KeyPrefix}*'
+                                - GovCloudSuffix: !If
+                                      - IfInUSGovCloud
+                                      - '-us-gov'
+                                      - ''
+                                  S3BucketName: !Ref S3BucketName
                                   S3KeyPrefix: !Ref S3KeyPrefix
                             Effect: Allow
                   PolicyName: aws-quick-start-s3-policy
@@ -293,7 +309,13 @@ Resources:
                           Service: lambda.amazonaws.com
                 Version: 2012-10-17
             ManagedPolicyArns:
-                - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+                - !Sub
+                  - >-
+                      arn:aws${GovCloudSuffix}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+                  - GovCloudSuffix: !If
+                        - IfInUSGovCloud
+                        - '-us-gov'
+                        - ''
             Path: /
             Policies:
                 - PolicyName: faz-handler-inline-policy

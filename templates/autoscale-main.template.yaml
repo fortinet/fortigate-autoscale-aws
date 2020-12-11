@@ -645,7 +645,7 @@ Resources:
                   Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
-            TimeoutInMinutes: '10'
+            TimeoutInMinutes: 10
     FgtInstanceIamRole:
         Type: 'AWS::IAM::Role'
         Properties:

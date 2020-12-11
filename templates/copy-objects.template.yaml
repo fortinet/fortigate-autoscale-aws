@@ -39,6 +39,14 @@ Parameters:
             include numbers, lowercase letters, uppercase letters, hyphens (-), and
             forward slash (/).
         Type: String
+Conditions:
+    IfInUSGovCloud: !Or
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-east-1
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-west-1
 Resources:
     CopyObjects:
         Properties:
@@ -148,7 +156,13 @@ Resources:
                           Service: lambda.amazonaws.com
                 Version: 2012-10-17
             ManagedPolicyArns:
-                - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+                - !Sub
+                  - >-
+                      arn:aws${GovCloudSuffix}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+                  - GovCloudSuffix: !If
+                        - IfInUSGovCloud
+                        - '-us-gov'
+                        - ''
             Path: /
             Policies:
                 - PolicyDocument:
@@ -157,7 +171,15 @@ Resources:
                                 - 's3:GetObject'
                             Effect: Allow
                             Resource:
-                                - !Sub 'arn:aws:s3:::${S3BucketName}/${S3KeyPrefix}*'
+                                - !Sub
+                                  - >-
+                                      arn:aws${GovCloudSuffix}:s3:::${S3BucketName}/${S3KeyPrefix}*
+                                  - GovCloudSuffix: !If
+                                        - IfInUSGovCloud
+                                        - '-us-gov'
+                                        - ''
+                                    S3BucketName: !Ref S3BucketName
+                                    S3KeyPrefix: !Ref S3KeyPrefix
                           - Action:
                                 - 's3:PutObject'
                                 - 's3:DeleteObject'
@@ -169,8 +191,18 @@ Resources:
                                 - 's3:GetBucketVersioning'
                             Effect: Allow
                             Resource:
-                                - !Sub 'arn:aws:s3:::${DestinationBucket}/${S3KeyPrefix}*'
-                                - !Sub 'arn:aws:s3:::${DestinationBucket}'
+                                - - !GetAtt
+                                  - DestinationBucket
+                                  - Arn
+                                - !Sub
+                                  - >-
+                                      arn:aws${GovCloudSuffix}:s3:::${S3BucketName}/${S3KeyPrefix}*
+                                  - GovCloudSuffix: !If
+                                        - IfInUSGovCloud
+                                        - '-us-gov'
+                                        - ''
+                                    S3BucketName: !Ref S3BucketName
+                                    S3KeyPrefix: !Ref S3KeyPrefix
                       Version: 2012-10-17
                   PolicyName: object-copier
         Type: 'AWS::IAM::Role'
@@ -293,7 +325,13 @@ Resources:
                           Service: lambda.amazonaws.com
                 Version: 2012-10-17
             ManagedPolicyArns:
-                - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+                - !Sub
+                  - >-
+                      arn:aws${GovCloudSuffix}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+                  - GovCloudSuffix: !If
+                        - IfInUSGovCloud
+                        - '-us-gov'
+                        - ''
             Path: /
             Policies:
                 - PolicyDocument:
@@ -312,7 +350,15 @@ Resources:
                                 - !GetAtt
                                   - DestinationBucket
                                   - Arn
-                                - !Sub 'arn:aws:s3:::*'
+                                - !Sub
+                                  - >-
+                                      arn:aws${GovCloudSuffix}:s3:::${S3BucketName}/${S3KeyPrefix}*
+                                  - GovCloudSuffix: !If
+                                        - IfInUSGovCloud
+                                        - '-us-gov'
+                                        - ''
+                                    S3BucketName: !Ref S3BucketName
+                                    S3KeyPrefix: !Ref S3KeyPrefix
                       Version: 2012-10-17
                   PolicyName: Empty-bucket
         Type: 'AWS::IAM::Role'
