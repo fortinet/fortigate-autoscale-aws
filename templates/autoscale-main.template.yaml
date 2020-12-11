@@ -855,7 +855,7 @@ Resources:
                   Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
-            TimeoutInMinutes: '10'
+            TimeoutInMinutes: 10
     StackCreateTransitGatewayVpnHandler:
         Type: 'AWS::CloudFormation::Stack'
         Condition: IfRequireTransitGatewayIntegration
@@ -921,7 +921,7 @@ Resources:
                   Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
-            TimeoutInMinutes: '10'
+            TimeoutInMinutes: 10
     StackCreateTransitGatewayComponents:
         Type: 'AWS::CloudFormation::Stack'
         Condition: IfRequireTransitGatewayIntegration
@@ -951,7 +951,7 @@ Resources:
                   Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
-            TimeoutInMinutes: '10'
+            TimeoutInMinutes: 10
     StackCreateFortiGateAutoScalingGroup:
         Type: 'AWS::CloudFormation::Stack'
         Properties:
@@ -1037,7 +1037,7 @@ Resources:
                   Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
-            TimeoutInMinutes: '10'
+            TimeoutInMinutes: 10
     SaveSettings:
         Type: 'AWS::CloudFormation::CustomResource'
         Properties:

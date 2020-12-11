@@ -155,7 +155,7 @@ Resources:
                   Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
-            TimeoutInMinutes: '5'
+            TimeoutInMinutes: 5
     FgtAsgApiGateway:
         Type: 'AWS::ApiGateway::RestApi'
         Properties:
