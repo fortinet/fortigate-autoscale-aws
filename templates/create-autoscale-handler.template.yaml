@@ -404,7 +404,15 @@ Resources:
                           - Effect: Allow
                             Action:
                                 - 'apigateway:GET'
-                            Resource: !Ref FgtAsgApiGateway
+                            Resource: !Sub
+                                - >-
+                                    arn:aws${GovCloudSuffix}:apigateway:${Region}::/restapis/${AgwId}/*
+                                - GovCloudSuffix: !If
+                                      - IfInUSGovCloud
+                                      - '-us-gov'
+                                      - ''
+                                  Region: !Ref 'AWS::Region'
+                                  AgwId: !Ref FgtAsgApiGateway
                           - Effect: Allow
                             Action:
                                 - 'elasticloadbalancing:DescribeLoadBalancers'
