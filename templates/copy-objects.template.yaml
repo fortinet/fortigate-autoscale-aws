@@ -191,9 +191,6 @@ Resources:
                                 - 's3:GetBucketVersioning'
                             Effect: Allow
                             Resource:
-                                - - !GetAtt
-                                  - DestinationBucket
-                                  - Arn
                                 - !Sub
                                   - >-
                                       arn:aws${GovCloudSuffix}:s3:::${S3BucketName}/${S3KeyPrefix}*
@@ -203,6 +200,12 @@ Resources:
                                         - ''
                                     S3BucketName: !Ref S3BucketName
                                     S3KeyPrefix: !Ref S3KeyPrefix
+                                - !Join
+                                  - '/'
+                                  - - !GetAtt
+                                      - DestinationBucket
+                                      - Arn
+                                    - '*'
                       Version: 2012-10-17
                   PolicyName: object-copier
         Type: 'AWS::IAM::Role'
@@ -347,20 +350,14 @@ Resources:
                                 - 's3:GetBucketVersioning'
                             Effect: Allow
                             Resource:
-                                - !GetAtt
-                                  - DestinationBucket
-                                  - Arn
-                                - !Sub
-                                  - >-
-                                      arn:aws${GovCloudSuffix}:s3:::${S3BucketName}/${S3KeyPrefix}*
-                                  - GovCloudSuffix: !If
-                                        - IfInUSGovCloud
-                                        - '-us-gov'
-                                        - ''
-                                    S3BucketName: !Ref S3BucketName
-                                    S3KeyPrefix: !Ref S3KeyPrefix
+                                - !Join
+                                  - '/'
+                                  - - !GetAtt
+                                      - DestinationBucket
+                                      - Arn
+                                    - '*'
                       Version: 2012-10-17
-                  PolicyName: Empty-bucket
+                  PolicyName: bucket-dumper
         Type: 'AWS::IAM::Role'
 Outputs:
     DestinationBucket:
