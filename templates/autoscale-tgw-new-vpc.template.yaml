@@ -484,7 +484,7 @@ Resources:
                       - s3
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
-            TimeoutInMinutes: '5'
+            TimeoutInMinutes: 5
     StackMainWorkload:
         Type: 'AWS::CloudFormation::Stack'
         Properties:
