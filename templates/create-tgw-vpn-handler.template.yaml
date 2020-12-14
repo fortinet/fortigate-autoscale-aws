@@ -90,7 +90,7 @@ Resources:
                 ObjectPaths: functions/packages/fgt-as-handler.zip
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/copy-objects.template.yaml
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/copy-objects.template.yaml
                 - S3SubDomain: !If
                       - IfInUSGovCloud
                       - s3-
@@ -387,7 +387,7 @@ Resources:
                             Action: 'ec2:DeleteCustomerGateway'
                             Resource: !Sub
                                 - >-
-                                    arn:${GovCloudSuffix}:ec2:${Region}:${AccountId}:customer-gateway/*
+                                    arn:aws${GovCloudSuffix}:ec2:${Region}:${AccountId}:customer-gateway/*
                                 - GovCloudSuffix: !If
                                       - IfInUSGovCloud
                                       - '-us-gov'
