@@ -1,6 +1,6 @@
 {
     "name": "fortigate-autoscale-aws",
-    "version": "3.2.0",
+    "version": "3.2.1-test.0",
     "description": "Fortinet FortiGate Autoscale for AWS.",
     "main": "dist/transpiled/index.js",
     "types": "dist/types/index.d.ts",
