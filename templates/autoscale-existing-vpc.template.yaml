@@ -110,9 +110,9 @@ Parameters:
             more information, see https://aws.amazon.com/ec2/instance-types/.
     FortiOSVersion:
         Type: String
-        Default: 6.4.3
+        Default: 6.4.4
         AllowedValues:
-            - 6.4.3
+            - 6.4.4
             - 6.2.3
         ConstraintDescription: must be a valid FortiOS version from the selection.
         Description: FortiOS version supported by FortiGate Autoscale for AWS.
@@ -422,9 +422,9 @@ Parameters:
             https://aws.amazon.com/ec2/instance-types/
     FortiAnalyzerVersion:
         Type: String
-        Default: 6.4.3
+        Default: 6.4.4
         AllowedValues:
-            - 6.4.3
+            - 6.4.4
             - 6.2.5
         ConstraintDescription: must choose from the provided options.
         Description: >-
