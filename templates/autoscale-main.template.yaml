@@ -1138,7 +1138,7 @@ Resources:
                       - s3
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
-            TimeoutInMinutes: 10
+            TimeoutInMinutes: 20
     SaveSettings:
         Type: 'AWS::CloudFormation::CustomResource'
         Properties:
