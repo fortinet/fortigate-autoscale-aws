@@ -664,6 +664,15 @@ Metadata:
                   - TransitGatewaySupportOptions
                   - TransitGatewayId
             - Label:
+                  default: FortiAnalyzer configuration
+              Parameters:
+                  - FortiAnalyzerIntegrationOptions
+                  - FortiAnalyzerVersion
+                  - FortiAnalyzerInstanceType
+                  - FortiAnalyzerCustomPrivateIpAddress
+                  - FortiAnalyzerAutoscaleAdminUsername
+                  - FortiAnalyzerAutoscaleAdminPassword
+            - Label:
                   default: Custom asset location configuration
               Parameters:
                   - UseCustomAssetLocation
@@ -747,6 +756,18 @@ Metadata:
                 default: Custom asset S3 bucket
             CustomAssetDirectory:
                 default: Custom asset folder
+            FortiAnalyzerIntegrationOptions:
+                default: FortiAnalyzer integration
+            FortiAnalyzerVersion:
+                default: FortiAnalyzer version
+            FortiAnalyzerInstanceType:
+                default: FortiAnalyzer instance type
+            FortiAnalyzerCustomPrivateIpAddress:
+                default: FortiAnalyzer custom IP
+            FortiAnalyzerAutoscaleAdminUsername:
+                default: Autoscale admin username
+            FortiAnalyzerAutoscaleAdminPassword:
+                default: Autoscale admin password
 Outputs:
     ResourceTagPrefix:
         Description: >-
