@@ -825,12 +825,12 @@ Metadata:
                 default: Custom asset folder
             FortiAnalyzerIntegrationOptions:
                 default: FortiAnalyzer integration
-            FortiAnalyzerVersion:
-                default: FortiAnalyzer version
             FortiAnalyzerInstanceType:
                 default: FortiAnalyzer instance type
+            FortiAnalyzerVersion:
+                default: FortiAnalyzer version
             FortiAnalyzerCustomPrivateIpAddress:
-                default: FortiAnalyzer custom IP
+                default: FortiAnalyzer private IP address
             FortiAnalyzerAutoscaleAdminUsername:
                 default: Autoscale admin username
             FortiAnalyzerAutoscaleAdminPassword:
