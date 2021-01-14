@@ -721,6 +721,15 @@ Metadata:
                   - InternalTargetGroupHealthCheckPath
                   - InternalLoadBalancerDnsName
             - Label:
+                  default: FortiAnalyzer configuration
+              Parameters:
+                  - FortiAnalyzerIntegrationOptions
+                  - FortiAnalyzerVersion
+                  - FortiAnalyzerInstanceType
+                  - FortiAnalyzerAutoscaleAdminUsername
+                  - FortiAnalyzerAutoscaleAdminPassword
+                  - FortiAnalyzerCustomPrivateIpAddress
+            - Label:
                   default: Custom asset location configuration
               Parameters:
                   - UseCustomAssetLocation
@@ -814,6 +823,18 @@ Metadata:
                 default: Custom asset S3 bucket
             CustomAssetDirectory:
                 default: Custom asset folder
+            FortiAnalyzerIntegrationOptions:
+                default: FortiAnalyzer integration
+            FortiAnalyzerInstanceType:
+                default: FortiAnalyzer instance type
+            FortiAnalyzerVersion:
+                default: FortiAnalyzer version
+            FortiAnalyzerCustomPrivateIpAddress:
+                default: FortiAnalyzer private IP address
+            FortiAnalyzerAutoscaleAdminUsername:
+                default: Autoscale admin username
+            FortiAnalyzerAutoscaleAdminPassword:
+                default: Autoscale admin password
 Outputs:
     ResourceTagPrefix:
         Description: >-
