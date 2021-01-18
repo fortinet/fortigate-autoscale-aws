@@ -468,6 +468,28 @@ Parameters:
             be within the Public subnet 1 CIDR range. Required if 'FortiAnalyzer
             Integration' is set to 'yes'. If 'FortiAnalyzer Integration' is set
             to 'no', any input will be ignored.
+Rules:
+    FortiAnalyzerSupport:
+        RuleCondition: !Equals
+            - !Ref FortiAnalyzerIntegrationOptions
+            - 'yes'
+        Assertions:
+            - Assert: !Not
+                  - !Equals
+                    - !Ref FortiAnalyzerAutoscaleAdminUsername
+                    - ''
+              AssertDescription: If FortiAnalyzer integration set to 'yes', the 'Autoscale admin username' parameter must not be empty.
+            - Assert: !Not
+                  - !Equals
+                    - !Ref FortiAnalyzerAutoscaleAdminPassword
+                    - ''
+              AssertDescription: If FortiAnalyzer integration set to 'yes', the 'Autoscale admin password' parameter must not be empty.
+            - Assert: !Not
+                  - !Equals
+                    - !Ref FortiAnalyzerCustomPrivateIpAddress
+                    - ''
+              AssertDescription: If FortiAnalyzer integration set to 'yes', the 'FortiAnalyzer private IP address' parameter must not be empty.
+
 Conditions:
     GovCloudCondition: !Equals
         - !Ref 'AWS::Region'
@@ -476,6 +498,9 @@ Conditions:
         - !Equals
           - !Ref ResourceTagPrefix
           - ''
+    IfIntegrateFortiAnalyzer: !Equals
+        - !Ref FortiAnalyzerIntegrationOptions
+        - 'yes'
 Resources:
     StackMainWorkload:
         Type: 'AWS::CloudFormation::Stack'
@@ -579,7 +604,10 @@ Resources:
                           - ' '
                           - !Ref FortiAnalyzerVersion
                 FortiAnalyzerAutoscaleAdminUsername: !Ref FortiAnalyzerAutoscaleAdminUsername
-                FortiAnalyzerAutoscaleAdminPassword: !Ref FortiAnalyzerAutoscaleAdminPassword
+                FortiAnalyzerAutoscaleAdminPassword: !If
+                    - IfIntegrateFortiAnalyzer
+                    - !Ref FortiAnalyzerAutoscaleAdminPassword
+                    - 'NoValuePlaceHolderForTemplateParameterWithMinLength'
                 FortiAnalyzerCustomPrivateIpAddress: !Ref FortiAnalyzerCustomPrivateIpAddress
             TemplateURL: !Sub
                 - >-
