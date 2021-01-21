@@ -69,6 +69,13 @@ Conditions:
     IfCreateTransitGateway: !Equals
         - !Ref CreateNewTransitGateway
         - 'yes'
+    IfInUSGovCloud: !Or
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-east-1
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-west-1
 Resources:
     TransitGateway:
         Type: 'AWS::EC2::TransitGateway'
@@ -164,22 +171,40 @@ Resources:
                       Resource:
                           - !Sub
                             - >-
-                                arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:transit-gateway-route-table/*
-                            - AWS_REGION: !Ref 'AWS::Region'
-                              AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
-                          - !Sub
-                            - 'arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:vpc/*'
-                            - AWS_REGION: !Ref 'AWS::Region'
-                              AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
-                          - !Sub
-                            - 'arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:transit-gateway/*'
-                            - AWS_REGION: !Ref 'AWS::Region'
-                              AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
+                                arn:aws${GovCloudSuffix}:ec2:${Region}:${AccountId}:transit-gateway-route-table/*
+                            - GovCloudSuffix: !If
+                                  - IfInUSGovCloud
+                                  - '-us-gov'
+                                  - ''
+                              Region: !Ref 'AWS::Region'
+                              AccountId: !Ref 'AWS::AccountId'
                           - !Sub
                             - >-
-                                arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:transit-gateway-attachment/*
-                            - AWS_REGION: !Ref 'AWS::Region'
-                              AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
+                                arn:aws${GovCloudSuffix}:ec2:${Region}:${AccountId}:vpc/*
+                            - GovCloudSuffix: !If
+                                  - IfInUSGovCloud
+                                  - '-us-gov'
+                                  - ''
+                              Region: !Ref 'AWS::Region'
+                              AccountId: !Ref 'AWS::AccountId'
+                          - !Sub
+                            - >-
+                                arn:aws${GovCloudSuffix}:ec2:${Region}:${AccountId}:transit-gateway/*
+                            - GovCloudSuffix: !If
+                                  - IfInUSGovCloud
+                                  - '-us-gov'
+                                  - ''
+                              Region: !Ref 'AWS::Region'
+                              AccountId: !Ref 'AWS::AccountId'
+                          - !Sub
+                            - >-
+                                arn:aws${GovCloudSuffix}:ec2:${Region}:${AccountId}:transit-gateway-attachment/*
+                            - GovCloudSuffix: !If
+                                  - IfInUSGovCloud
+                                  - '-us-gov'
+                                  - ''
+                              Region: !Ref 'AWS::Region'
+                              AccountId: !Ref 'AWS::AccountId'
                     - Effect: Allow
                       Action:
                           - 'ec2:ExportTransitGatewayRoutes'
@@ -200,20 +225,28 @@ Resources:
                     - Effect: Allow
                       Action: 'ec2:DeleteCustomerGateway'
                       Resource: !Sub
-                          - 'arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:customer-gateway/*'
-                          - AWS_REGION: !Ref 'AWS::Region'
-                            AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
+                          - 'arn:aws${GovCloudSuffix}:ec2:${Region}:${AccountId}:customer-gateway/*'
+                          - GovCloudSuffix: !If
+                                - IfInUSGovCloud
+                                - '-us-gov'
+                                - ''
+                            Region: !Ref 'AWS::Region'
+                            AccountId: !Ref 'AWS::AccountId'
                     - Effect: Allow
                       Action:
                           - 'lambda:InvokeFunction'
                           - 'lambda:InvokeAsync'
                       Resource: !Sub
                           - >-
-                              arn:aws:lambda:${AWS_REGION}:${AWS_ACCOUNT_ID}:function:${CUSTOM_ID}-${UNIQUE_ID}*
-                          - AWS_REGION: !Ref 'AWS::Region'
-                            AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
-                            CUSTOM_ID: !Ref CustomIdentifier
-                            UNIQUE_ID: !Ref UniqueId
+                              arn:aws${GovCloudSuffix}:lambda:${Region}:${AccountId}:function:${CustomId}-${UniqueId}*
+                          - GovCloudSuffix: !If
+                                - IfInUSGovCloud
+                                - '-us-gov'
+                                - ''
+                            Region: !Ref 'AWS::Region'
+                            AccountId: !Ref 'AWS::AccountId'
+                            CustomId: !Ref CustomIdentifier
+                            UniqueId: !Ref UniqueId
             PolicyName: fortigate-autoscale-transit-gateway-management-policy
             Roles:
                 - !Ref AutoscaleHandlerIamRoleName

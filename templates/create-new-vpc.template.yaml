@@ -108,6 +108,13 @@ Conditions:
         - !Equals
           - !Ref DeployPrivateSubnet2
           - 'yes'
+    IfInUSGovCloud: !Or
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-east-1
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-west-1
 Resources:
     FgtAsgVpc:
         Type: 'AWS::EC2::VPC'

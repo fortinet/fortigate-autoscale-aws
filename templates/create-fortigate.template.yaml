@@ -48,6 +48,13 @@ Conditions:
         - !Equals
           - !Ref CustomTagValue
           - ''
+    IfInUSGovCloud: !Or
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-east-1
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-west-1
 Resources:
     nic0:
         Type: 'AWS::EC2::NetworkInterface'

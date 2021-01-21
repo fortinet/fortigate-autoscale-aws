@@ -69,9 +69,13 @@ Parameters:
             is set to 'yes', and this value is left empty, the 'custom asset
             container' will serve as the top level directory.
 Conditions:
-    GovCloudCondition: !Equals
-        - !Ref 'AWS::Region'
-        - us-gov-west-1
+    IfInUSGovCloud: !Or
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-east-1
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-west-1
     IfUseCustomAssetContainer: !Not
         - !Equals
           - !Ref CustomAssetContainer
@@ -86,14 +90,15 @@ Resources:
                 ObjectPaths: functions/packages/fgt-as-handler.zip
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/copy-objects.template.yaml
-                - S3Region: !If
-                      - GovCloudCondition
-                      - s3-us-gov-west-1
-                      - s3
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/copy-objects.template.yaml
+                - S3SubDomain: !If
+                      - IfInUSGovCloud
+                      - s3-
+                      - s3.
+                  Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
-            TimeoutInMinutes: '5'
+            TimeoutInMinutes: 5
     TransitGatewayVpnHandler:
         Type: 'AWS::Lambda::Function'
         Properties:
@@ -130,8 +135,20 @@ Resources:
         Type: 'AWS::IAM::Role'
         Properties:
             ManagedPolicyArns:
-                - 'arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess'
-                - 'arn:aws:iam::aws:policy/AWSLambdaExecute'
+                - !Sub
+                  - >-
+                      arn:aws${GovCloudSuffix}:iam::aws:policy/AmazonS3ReadOnlyAccess
+                  - GovCloudSuffix: !If
+                        - IfInUSGovCloud
+                        - '-us-gov'
+                        - ''
+                - !Sub
+                  - >-
+                      arn:aws${GovCloudSuffix}:iam::aws:policy/AWSLambdaExecute
+                  - GovCloudSuffix: !If
+                        - IfInUSGovCloud
+                        - '-us-gov'
+                        - ''
             AssumeRolePolicyDocument:
                 Version: 2012-10-17
                 Statement:
@@ -159,10 +176,14 @@ Resources:
                                 - 'dynamodb:UpdateItem'
                             Resource: !Sub
                                 - >-
-                                    arn:aws:dynamodb:${AWS_REGION}:${AWS_ACCOUNT_ID}:table/${RESOURCE_PREFIX}*
-                                - AWS_REGION: !Ref 'AWS::Region'
-                                  AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
-                                  RESOURCE_PREFIX: !Ref ResourceTagPrefix
+                                    arn:aws${GovCloudSuffix}:dynamodb:${Region}:${AccountId}:table/${ResourcePrefix}*
+                                - GovCloudSuffix: !If
+                                      - IfInUSGovCloud
+                                      - '-us-gov'
+                                      - ''
+                                  Region: !Ref 'AWS::Region'
+                                  AccountId: !Ref 'AWS::AccountId'
+                                  ResourcePrefix: !Ref ResourceTagPrefix
                           - Effect: Allow
                             Action:
                                 - 'autoscaling:CompleteLifecycleAction'
@@ -197,10 +218,14 @@ Resources:
                                 - 'autoscaling:RecordLifecycleActionHeartbeat'
                             Resource: !Sub
                                 - >-
-                                    arn:aws:autoscaling:${AWS_REGION}:${AWS_ACCOUNT_ID}:autoScalingGroup:*:autoScalingGroupName/${RESOURCE_PREFIX}*
-                                - AWS_REGION: !Ref 'AWS::Region'
-                                  AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
-                                  RESOURCE_PREFIX: !Ref ResourceTagPrefix
+                                    arn:aws${GovCloudSuffix}:autoscaling:${Region}:${AccountId}:autoScalingGroup:*:autoScalingGroupName/${ResourcePrefix}*
+                                - GovCloudSuffix: !If
+                                      - IfInUSGovCloud
+                                      - '-us-gov'
+                                      - ''
+                                  Region: !Ref 'AWS::Region'
+                                  AccountId: !Ref 'AWS::AccountId'
+                                  ResourcePrefix: !Ref ResourceTagPrefix
                           - Effect: Allow
                             Action:
                                 - 'autoscaling:DescribeAutoScalingNotificationTypes'
@@ -240,30 +265,55 @@ Resources:
                             Resource: '*'
                           - Effect: Allow
                             Action:
-                                - 'apigateway:GET'
-                            Resource: !Sub
-                                - 'arn:aws:apigateway:${AWS_REGION}::*'
-                                - AWS_REGION: !Ref 'AWS::Region'
-                          - Effect: Allow
-                            Action:
                                 - 's3:GetObject'
-                                - 's3:ListBucket'
                             Resource: !If
                                 - IfUseCustomAssetContainer
                                 - - !Sub
                                     - >-
-                                        arn:aws:s3:::${bucketname}/${keyprefix}assets/configset/*
-                                    - bucketname: !Ref S3BucketName
-                                      keyprefix: !Ref S3KeyPrefix
+                                        arn:aws${GovCloudSuffix}:s3:::${S3BucketName}/${S3KeyPrefix}assets/configset/*
+                                    - GovCloudSuffix: !If
+                                          - IfInUSGovCloud
+                                          - '-us-gov'
+                                          - ''
+                                      S3BucketName: !Ref S3BucketName
+                                      S3KeyPrefix: !Ref S3KeyPrefix
                                   - !Sub
-                                    - 'arn:aws:s3:::${customContainer}/${customDirectory}/*'
-                                    - customContainer: !Ref CustomAssetContainer
-                                      customDirectory: !Ref CustomAssetDirectory
+                                    - 'arn:aws${GovCloudSuffix}:s3:::${CustomContainer}/${CustomDirectory}/*'
+                                    - GovCloudSuffix: !If
+                                          - IfInUSGovCloud
+                                          - '-us-gov'
+                                          - ''
+                                      CustomContainer: !Ref CustomAssetContainer
+                                      CustomDirectory: !Ref CustomAssetDirectory
                                 - - !Sub
                                     - >-
-                                        arn:aws:s3:::${bucketname}/${keyprefix}assets/configset/*
-                                    - bucketname: !Ref S3BucketName
-                                      keyprefix: !Ref S3KeyPrefix
+                                        arn:aws${GovCloudSuffix}:s3:::${S3BucketName}/${S3KeyPrefix}assets/configset/*
+                                    - GovCloudSuffix: !If
+                                          - IfInUSGovCloud
+                                          - '-us-gov'
+                                          - ''
+                                      S3BucketName: !Ref S3BucketName
+                                      S3KeyPrefix: !Ref S3KeyPrefix
+                          - Effect: Allow
+                            Action:
+                                - 's3:ListBucket'
+                            Resource:
+                                - !If
+                                  - IfUseCustomAssetContainer
+                                  - !Sub
+                                    - 'arn:aws${GovCloudSuffix}:s3:::${CustomContainer}'
+                                    - GovCloudSuffix: !If
+                                          - IfInUSGovCloud
+                                          - '-us-gov'
+                                          - ''
+                                      CustomContainer: !Ref CustomAssetContainer
+                                  - !Sub
+                                    - 'arn:aws${GovCloudSuffix}:s3:::${S3BucketName}'
+                                    - GovCloudSuffix: !If
+                                          - IfInUSGovCloud
+                                          - '-us-gov'
+                                          - ''
+                                      S3BucketName: !Ref S3BucketName
                           - Effect: Allow
                             Action:
                                 - 'ec2:DisassociateTransitGatewayRouteTable'
@@ -283,23 +333,39 @@ Resources:
                             Resource:
                                 - !Sub
                                   - >-
-                                      arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:transit-gateway-route-table/*
-                                  - AWS_REGION: !Ref 'AWS::Region'
-                                    AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
+                                      arn:aws${GovCloudSuffix}:ec2:${Region}:${AccountId}:transit-gateway-route-table/*
+                                  - GovCloudSuffix: !If
+                                        - IfInUSGovCloud
+                                        - '-us-gov'
+                                        - ''
+                                    Region: !Ref 'AWS::Region'
+                                    AccountId: !Ref 'AWS::AccountId'
                                 - !Sub
-                                  - 'arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:vpc/*'
-                                  - AWS_REGION: !Ref 'AWS::Region'
-                                    AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
+                                  - 'arn:aws${GovCloudSuffix}:ec2:${Region}:${AccountId}:vpc/*'
+                                  - GovCloudSuffix: !If
+                                        - IfInUSGovCloud
+                                        - '-us-gov'
+                                        - ''
+                                    Region: !Ref 'AWS::Region'
+                                    AccountId: !Ref 'AWS::AccountId'
                                 - !Sub
                                   - >-
-                                      arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:transit-gateway/*
-                                  - AWS_REGION: !Ref 'AWS::Region'
-                                    AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
+                                      arn:aws${GovCloudSuffix}:ec2:${Region}:${AccountId}:transit-gateway/*
+                                  - GovCloudSuffix: !If
+                                        - IfInUSGovCloud
+                                        - '-us-gov'
+                                        - ''
+                                    Region: !Ref 'AWS::Region'
+                                    AccountId: !Ref 'AWS::AccountId'
                                 - !Sub
                                   - >-
-                                      arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:transit-gateway-attachment/*
-                                  - AWS_REGION: !Ref 'AWS::Region'
-                                    AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
+                                      arn:aws${GovCloudSuffix}:ec2:${Region}:${AccountId}:transit-gateway-attachment/*
+                                  - GovCloudSuffix: !If
+                                        - IfInUSGovCloud
+                                        - '-us-gov'
+                                        - ''
+                                    Region: !Ref 'AWS::Region'
+                                    AccountId: !Ref 'AWS::AccountId'
                           - Effect: Allow
                             Action:
                                 - 'ec2:ExportTransitGatewayRoutes'
@@ -321,20 +387,28 @@ Resources:
                             Action: 'ec2:DeleteCustomerGateway'
                             Resource: !Sub
                                 - >-
-                                    arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:customer-gateway/*
-                                - AWS_REGION: !Ref 'AWS::Region'
-                                  AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
+                                    arn:aws${GovCloudSuffix}:ec2:${Region}:${AccountId}:customer-gateway/*
+                                - GovCloudSuffix: !If
+                                      - IfInUSGovCloud
+                                      - '-us-gov'
+                                      - ''
+                                  Region: !Ref 'AWS::Region'
+                                  AccountId: !Ref 'AWS::AccountId'
                           - Effect: Allow
                             Action:
                                 - 'lambda:InvokeFunction'
                                 - 'lambda:InvokeAsync'
                             Resource: !Sub
                                 - >-
-                                    arn:aws:lambda:${AWS_REGION}:${AWS_ACCOUNT_ID}:function:${CUSTOM_ID}-${UNIQUE_ID}*
-                                - AWS_REGION: !Ref 'AWS::Region'
-                                  AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
-                                  CUSTOM_ID: !Ref CustomIdentifier
-                                  UNIQUE_ID: !Ref UniqueId
+                                    arn:aws${GovCloudSuffix}:lambda:${Region}:${AccountId}:function:${CustomId}-${UniqueId}*
+                                - GovCloudSuffix: !If
+                                      - IfInUSGovCloud
+                                      - '-us-gov'
+                                      - ''
+                                  Region: !Ref 'AWS::Region'
+                                  AccountId: !Ref 'AWS::AccountId'
+                                  CustomId: !Ref CustomIdentifier
+                                  UniqueId: !Ref UniqueId
 Outputs:
     HandlerArn:
         Description: Transit Gateway VPN management handler function ARN

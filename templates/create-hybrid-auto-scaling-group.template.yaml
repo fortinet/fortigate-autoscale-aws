@@ -218,9 +218,13 @@ Parameters:
         Type: String
         Description: The Autoscale License handler URL.
 Conditions:
-    GovCloudCondition: !Equals
-        - !Ref 'AWS::Region'
-        - us-gov-west-1
+    IfInUSGovCloud: !Or
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-east-1
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-west-1
     ELBV2TargetGroupIsDefined: !Not
         - !Equals
           - !Ref ELBV2TargetGroupARNs

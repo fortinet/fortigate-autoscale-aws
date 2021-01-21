@@ -107,10 +107,18 @@ Parameters:
             level directory of all your custom assets. If 'use custom asset location'
             is set to 'yes', and this value is left empty, the 'custom asset
             container' will serve as the top level directory.
+    RoutePermissionRouteTableId:
+        Type: String
+        Default: ''
+        Description: Route table ID that requires IAM permission to replace route in.
 Conditions:
-    GovCloudCondition: !Equals
-        - !Ref 'AWS::Region'
-        - us-gov-west-1
+    IfInUSGovCloud: !Or
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-east-1
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-west-1
     VpcEndpointIsDefined: !Not
         - !Equals
           - !Ref VpcEndPoint
@@ -125,6 +133,10 @@ Conditions:
         - !Equals
           - !Ref CustomAssetContainer
           - ''
+    IfSpecifyRoutePermissionRouteTableId: !Not
+        - !Equals
+          - !Ref RoutePermissionRouteTableId
+          - ''
 Resources:
     StackCopyLambdaSource:
         Type: 'AWS::CloudFormation::Stack'
@@ -135,14 +147,15 @@ Resources:
                 ObjectPaths: functions/packages/fgt-as-handler.zip
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/copy-objects.template.yaml
-                - S3Region: !If
-                      - GovCloudCondition
-                      - s3-us-gov-west-1
-                      - s3
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/copy-objects.template.yaml
+                - S3SubDomain: !If
+                      - IfInUSGovCloud
+                      - s3-
+                      - s3.
+                  Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
-            TimeoutInMinutes: '5'
+            TimeoutInMinutes: 5
     FgtAsgApiGateway:
         Type: 'AWS::ApiGateway::RestApi'
         Properties:
@@ -180,13 +193,17 @@ Resources:
                 IntegrationHttpMethod: POST
                 Uri: !Join
                     - ''
-                    - - 'arn:aws:apigateway:'
-                      - !Ref 'AWS::Region'
-                      - ':lambda:path/2015-03-31/functions/'
-                      - !GetAtt
-                        - FgtAsgLambdaFunctionAsgHandler
-                        - Arn
-                      - /invocations
+                    - - !Sub
+                        - >-
+                            arn:aws${GovCloudSuffix}:apigateway:${Region}:lambda:path/2015-03-31/functions/${FunctionARN}/invocations
+                        - GovCloudSuffix: !If
+                              - IfInUSGovCloud
+                              - '-us-gov'
+                              - ''
+                          Region: !Ref 'AWS::Region'
+                          FunctionARN: !GetAtt
+                              - FgtAsgLambdaFunctionAsgHandler
+                              - Arn
     FgtAsgApiGatewayAsgHandlerMethodPost:
         Type: 'AWS::ApiGateway::Method'
         Properties:
@@ -199,13 +216,17 @@ Resources:
                 IntegrationHttpMethod: POST
                 Uri: !Join
                     - ''
-                    - - 'arn:aws:apigateway:'
-                      - !Ref 'AWS::Region'
-                      - ':lambda:path/2015-03-31/functions/'
-                      - !GetAtt
-                        - FgtAsgLambdaFunctionAsgHandler
-                        - Arn
-                      - /invocations
+                    - - !Sub
+                        - >-
+                            arn:aws${GovCloudSuffix}:apigateway:${Region}:lambda:path/2015-03-31/functions/${FunctionARN}/invocations
+                        - GovCloudSuffix: !If
+                              - IfInUSGovCloud
+                              - '-us-gov'
+                              - ''
+                          Region: !Ref 'AWS::Region'
+                          FunctionARN: !GetAtt
+                              - FgtAsgLambdaFunctionAsgHandler
+                              - Arn
     FgtAsgApiGatewayByolLicenseHandlerResource:
         Type: 'AWS::ApiGateway::Resource'
         Condition: CreateByolLicenseHandler
@@ -228,13 +249,17 @@ Resources:
                 IntegrationHttpMethod: POST
                 Uri: !Join
                     - ''
-                    - - 'arn:aws:apigateway:'
-                      - !Ref 'AWS::Region'
-                      - ':lambda:path/2015-03-31/functions/'
-                      - !GetAtt
-                        - FgtAsgLambdaFunctionByolLicenseHandler
-                        - Arn
-                      - /invocations
+                    - - !Sub
+                        - >-
+                            arn:aws${GovCloudSuffix}:apigateway:${Region}:lambda:path/2015-03-31/functions/${FunctionARN}/invocations
+                        - GovCloudSuffix: !If
+                              - IfInUSGovCloud
+                              - '-us-gov'
+                              - ''
+                          Region: !Ref 'AWS::Region'
+                          FunctionARN: !GetAtt
+                              - FgtAsgLambdaFunctionByolLicenseHandler
+                              - Arn
     FgtAsgApiGatewayDeployment:
         Type: 'AWS::ApiGateway::Deployment'
         Properties:
@@ -247,8 +272,20 @@ Resources:
         Type: 'AWS::IAM::Role'
         Properties:
             ManagedPolicyArns:
-                - 'arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess'
-                - 'arn:aws:iam::aws:policy/AWSLambdaExecute'
+                - !Sub
+                  - >-
+                      arn:aws${GovCloudSuffix}:iam::aws:policy/AWSLambdaExecute
+                  - GovCloudSuffix: !If
+                        - IfInUSGovCloud
+                        - '-us-gov'
+                        - ''
+                - !Sub
+                  - >-
+                      arn:aws${GovCloudSuffix}:iam::aws:policy/AmazonS3ReadOnlyAccess
+                  - GovCloudSuffix: !If
+                        - IfInUSGovCloud
+                        - '-us-gov'
+                        - ''
             AssumeRolePolicyDocument:
                 Version: 2012-10-17
                 Statement:
@@ -276,10 +313,14 @@ Resources:
                                 - 'dynamodb:UpdateItem'
                             Resource: !Sub
                                 - >-
-                                    arn:aws:dynamodb:${AWS_REGION}:${AWS_ACCOUNT_ID}:table/${TABLE_NAME_PREFIX}*
-                                - AWS_REGION: !Ref 'AWS::Region'
-                                  AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
-                                  TABLE_NAME_PREFIX: !Ref ResourceTagPrefix
+                                    arn:aws${GovCloudSuffix}:dynamodb:${Region}:${AccountId}:table/${ResourceTagPrefix}*
+                                - GovCloudSuffix: !If
+                                      - IfInUSGovCloud
+                                      - '-us-gov'
+                                      - ''
+                                  Region: !Ref 'AWS::Region'
+                                  AccountId: !Ref 'AWS::AccountId'
+                                  ResourceTagPrefix: !Ref ResourceTagPrefix
                           - Effect: Allow
                             Action:
                                 - 'autoscaling:CompleteLifecycleAction'
@@ -314,10 +355,14 @@ Resources:
                                 - 'autoscaling:RecordLifecycleActionHeartbeat'
                             Resource: !Sub
                                 - >-
-                                    arn:aws:autoscaling:${AWS_REGION}:${AWS_ACCOUNT_ID}:autoScalingGroup:*:autoScalingGroupName/${ASG_NAME}*
-                                - AWS_REGION: !Ref 'AWS::Region'
-                                  AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
-                                  ASG_NAME: !Ref ResourceTagPrefix
+                                    arn:aws${GovCloudSuffix}:autoscaling:${Region}:${AccountId}:autoScalingGroup:*:autoScalingGroupName/${AsgName}*
+                                - GovCloudSuffix: !If
+                                      - IfInUSGovCloud
+                                      - '-us-gov'
+                                      - ''
+                                  Region: !Ref 'AWS::Region'
+                                  AccountId: !Ref 'AWS::AccountId'
+                                  AsgName: !Ref ResourceTagPrefix
                           - Effect: Allow
                             Action:
                                 - 'autoscaling:DescribeAutoScalingNotificationTypes'
@@ -355,32 +400,19 @@ Resources:
                                 - 'ec2:DescribeVpcs'
                                 - 'ec2:DescribeSubnets'
                                 - 'ec2:CreateRoute'
-                                - 'ec2:ReplaceRoute'
                             Resource: '*'
                           - Effect: Allow
                             Action:
                                 - 'apigateway:GET'
                             Resource: !Sub
-                                - 'arn:aws:apigateway:${AWS_REGION}::*'
-                                - AWS_REGION: !Ref 'AWS::Region'
-                          - Effect: Allow
-                            Action:
-                                - 's3:GetObject'
-                                - 's3:ListBucket'
-                            Resource: !If
-                                - IfUseCustomAssetContainer
-                                - - !Sub
-                                    - 'arn:aws:s3:::${bucketname}/${keyprefix}assets/*'
-                                    - bucketname: !Ref S3BucketName
-                                      keyprefix: !Ref S3KeyPrefix
-                                  - !Sub
-                                    - 'arn:aws:s3:::${customContainer}/${customDirectory}/*'
-                                    - customContainer: !Ref CustomAssetContainer
-                                      customDirectory: !Ref CustomAssetDirectory
-                                - - !Sub
-                                    - 'arn:aws:s3:::${bucketname}/${keyprefix}assets/*'
-                                    - bucketname: !Ref S3BucketName
-                                      keyprefix: !Ref S3KeyPrefix
+                                - >-
+                                    arn:aws${GovCloudSuffix}:apigateway:${Region}::/restapis/${AgwId}/*
+                                - GovCloudSuffix: !If
+                                      - IfInUSGovCloud
+                                      - '-us-gov'
+                                      - ''
+                                  Region: !Ref 'AWS::Region'
+                                  AgwId: !Ref FgtAsgApiGateway
                           - Effect: Allow
                             Action:
                                 - 'elasticloadbalancing:DescribeLoadBalancers'
@@ -398,16 +430,47 @@ Resources:
                             Resource:
                                 - !Sub
                                   - >-
-                                      arn:aws:elasticloadbalancing:${AWS_REGION}:${AWS_ACCOUNT_ID}:loadbalancer/net/${CUSTOM_ID}*/*
-                                  - AWS_REGION: !Ref 'AWS::Region'
-                                    AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
-                                    CUSTOM_ID: !Ref CustomIdentifier
+                                      arn:aws${GovCloudSuffix}:elasticloadbalancing:${Region}:${AccountId}:loadbalancer/net/${CustomId}*/*
+                                  - GovCloudSuffix: !If
+                                        - IfInUSGovCloud
+                                        - '-us-gov'
+                                        - ''
+                                    Region: !Ref 'AWS::Region'
+                                    AccountId: !Ref 'AWS::AccountId'
+                                    CustomId: !Ref CustomIdentifier
                                 - !Sub
                                   - >-
-                                      arn:aws:elasticloadbalancing:${AWS_REGION}:${AWS_ACCOUNT_ID}:targetgroup/${CUSTOM_ID}*/*
-                                  - AWS_REGION: !Ref 'AWS::Region'
-                                    AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
-                                    CUSTOM_ID: !Ref CustomIdentifier
+                                      arn:aws${GovCloudSuffix}:elasticloadbalancing:${Region}:${AccountId}:targetgroup/${CustomId}*/*
+                                  - GovCloudSuffix: !If
+                                        - IfInUSGovCloud
+                                        - '-us-gov'
+                                        - ''
+                                    Region: !Ref 'AWS::Region'
+                                    AccountId: !Ref 'AWS::AccountId'
+                                    CustomId: !Ref CustomIdentifier
+    FgtAsgHandlerIamRoleReplaceRoutePolicy:
+        Type: 'AWS::IAM::Policy'
+        Condition: IfSpecifyRoutePermissionRouteTableId
+        Properties:
+            PolicyDocument:
+                Version: 2012-10-17
+                Statement:
+                    - Effect: Allow
+                      Action:
+                          - 'ec2:ReplaceRoute'
+                      Resource: !Sub
+                          - >-
+                              arn:aws${GovCloudSuffix}:ec2:${Region}:${AccountId}:route-table/${RouteTable}
+                          - GovCloudSuffix: !If
+                                - IfInUSGovCloud
+                                - '-us-gov'
+                                - ''
+                            Region: !Ref 'AWS::Region'
+                            AccountId: !Ref 'AWS::AccountId'
+                            RouteTable: !Ref RoutePermissionRouteTableId
+            PolicyName: fortigate-autoscale-handler-policy-route-table
+            Roles:
+                - !Ref FgtAsgHandlerIamRole
     FgtAsgLambdaFunctionAsgHandler:
         Type: 'AWS::Lambda::Function'
         Properties:
@@ -529,10 +592,14 @@ Resources:
             Action: 'lambda:InvokeFunction'
             Principal: apigateway.amazonaws.com
             SourceArn: !Sub
-                - 'arn:aws:execute-api:${region}:${account}:${api}/*'
-                - region: !Ref 'AWS::Region'
-                  account: !Ref 'AWS::AccountId'
-                  api: !Ref FgtAsgApiGateway
+                - 'arn:aws${GovCloudSuffix}:execute-api:${Region}:${AccountId}:${AgwARN}/*'
+                - GovCloudSuffix: !If
+                      - IfInUSGovCloud
+                      - '-us-gov'
+                      - ''
+                  Region: !Ref 'AWS::Region'
+                  AccountId: !Ref 'AWS::AccountId'
+                  AgwARN: !Ref FgtAsgApiGateway
     FgtAsgLambdaFunctionByolLicenseHandler:
         Type: 'AWS::Lambda::Function'
         Condition: CreateByolLicenseHandler
@@ -577,10 +644,14 @@ Resources:
             Action: 'lambda:InvokeFunction'
             Principal: apigateway.amazonaws.com
             SourceArn: !Sub
-                - 'arn:aws:execute-api:${region}:${account}:${api}/*'
-                - region: !Ref 'AWS::Region'
-                  account: !Ref 'AWS::AccountId'
-                  api: !Ref FgtAsgApiGateway
+                - 'arn:aws${GovCloudSuffix}:execute-api:${Region}:${AccountId}:${AgwARN}/*'
+                - GovCloudSuffix: !If
+                      - IfInUSGovCloud
+                      - '-us-gov'
+                      - ''
+                  Region: !Ref 'AWS::Region'
+                  AccountId: !Ref 'AWS::AccountId'
+                  AgwARN: !Ref FgtAsgApiGateway
 Outputs:
     ApiGatewayId:
         Description: API Gateway ID
@@ -589,8 +660,8 @@ Outputs:
         Description: API Gateway URL of the FortiGate Autoscale Handler URL
         Value: !Sub
             - >-
-                https://${gatewayId}.execute-api.${region}.amazonaws.com/prod/fgt-as-handler
-            - region: !Ref 'AWS::Region'
+                https://${gatewayId}.execute-api.${Region}.amazonaws.com/prod/fgt-as-handler
+            - Region: !Ref 'AWS::Region'
               gatewayId: !Ref FgtAsgApiGateway
     FgtAsgHandlerFunctionName:
         Description: FortiGate Autoscale handler function Name

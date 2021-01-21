@@ -420,9 +420,13 @@ Parameters:
             location' is set to 'yes', and this value is left empty, the 'custom
             asset container' will serve as the top level directory.
 Conditions:
-    GovCloudCondition: !Equals
-        - !Ref 'AWS::Region'
-        - us-gov-west-1
+    IfInUSGovCloud: !Or
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-east-1
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-west-1
     IfNewInternalLoadBalancer: !And
         - !Equals
           - !Ref NetworkLoadBalancerIntegration
@@ -587,6 +591,12 @@ Mappings:
             FGTVM64BYOL623: ami-02dfca9796bfaff10
             FGTVM64PAYG643: ami-0fa6c260237788eb1
             FGTVM64PAYG623: ami-05a4ac8312f7911b9
+        us-gov-east-1:
+            FGTVM64BYOL623: ami-098e9e192874d72ef
+            FGTVM64PAYG623: ami-0853720f0c23a9aa5
+        us-gov-west-1:
+            FGTVM64BYOL623: ami-0322d6594b0ed4e2a
+            FGTVM64PAYG623: ami-09c92a5b0035c8558
         us-west-1:
             FGTVM64BYOL643: ami-0717fc4ad21d83d92
             FGTVM64BYOL623: ami-012fa84a251f3e63f
@@ -627,20 +637,31 @@ Resources:
                     - 'no'
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-db-table.template.yaml
-                - S3Region: !If
-                      - GovCloudCondition
-                      - s3-us-gov-west-1
-                      - s3
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/create-db-table.template.yaml
+                - S3SubDomain: !If
+                      - IfInUSGovCloud
+                      - s3-
+                      - s3.
+                  Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
-            TimeoutInMinutes: '10'
+            TimeoutInMinutes: 10
     FgtInstanceIamRole:
         Type: 'AWS::IAM::Role'
         Properties:
             ManagedPolicyArns:
-                - 'arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess'
-                - 'arn:aws:iam::aws:policy/AWSLambdaExecute'
+                - !Sub
+                  - 'arn:aws${GovCloudSuffix}:iam::aws:policy/AmazonS3ReadOnlyAccess'
+                  - GovCloudSuffix: !If
+                        - IfInUSGovCloud
+                        - '-us-gov'
+                        - ''
+                - !Sub
+                  - 'arn:aws${GovCloudSuffix}:iam::aws:policy/AWSLambdaExecute'
+                  - GovCloudSuffix: !If
+                        - IfInUSGovCloud
+                        - '-us-gov'
+                        - ''
             AssumeRolePolicyDocument:
                 Version: 2012-10-17
                 Statement:
@@ -654,25 +675,56 @@ Resources:
                       Version: 2012-10-17
                       Statement:
                           - Action:
-                                - 's3:GetObject'
                                 - 's3:ListBucket'
+                            Resource:
+                                - !If
+                                  - IfUseCustomAssetContainer
+                                  - !Sub
+                                    - 'arn:aws${GovCloudSuffix}:s3:::${CustomContainer}'
+                                    - GovCloudSuffix: !If
+                                          - IfInUSGovCloud
+                                          - '-us-gov'
+                                          - ''
+                                      CustomContainer: !Ref CustomAssetContainer
+                                  - !Sub
+                                    - 'arn:aws${GovCloudSuffix}:s3:::${S3BucketName}'
+                                    - GovCloudSuffix: !If
+                                          - IfInUSGovCloud
+                                          - '-us-gov'
+                                          - ''
+                                      S3BucketName: !Ref S3BucketName
+                            Effect: Allow
+                          - Action:
+                                - 's3:GetObject'
                             Resource: !If
                                 - IfUseCustomAssetContainer
                                 - - !Sub
                                     - >-
-                                        arn:aws:s3:::${bucketname}/${keyprefix}assets/*
-                                    - bucketname: !Ref S3BucketName
-                                      keyprefix: !Ref S3KeyPrefix
+                                        arn:aws${GovCloudSuffix}:s3:::${S3BucketName}/${S3KeyPrefix}assets/*
+                                    - GovCloudSuffix: !If
+                                          - IfInUSGovCloud
+                                          - '-us-gov'
+                                          - ''
+                                      S3BucketName: !Ref S3BucketName
+                                      S3KeyPrefix: !Ref S3KeyPrefix
                                   - !Sub
                                     - >-
-                                        arn:aws:s3:::${customContainer}/${customDirectory}*
-                                    - customContainer: !Ref CustomAssetContainer
-                                      customDirectory: !Ref CustomAssetDirectory
+                                        arn:aws${GovCloudSuffix}:s3:::${CustomContainer}/${CustomDirectory}*
+                                    - GovCloudSuffix: !If
+                                          - IfInUSGovCloud
+                                          - '-us-gov'
+                                          - ''
+                                      CustomContainer: !Ref CustomAssetContainer
+                                      CustomDirectory: !Ref CustomAssetDirectory
                                 - - !Sub
                                     - >-
-                                        arn:aws:s3:::${bucketname}/${keyprefix}assets/*
-                                    - bucketname: !Ref S3BucketName
-                                      keyprefix: !Ref S3KeyPrefix
+                                        arn:aws${GovCloudSuffix}:s3:::${S3BucketName}/${S3KeyPrefix}assets/*
+                                    - GovCloudSuffix: !If
+                                          - IfInUSGovCloud
+                                          - '-us-gov'
+                                          - ''
+                                      S3BucketName: !Ref S3BucketName
+                                      S3KeyPrefix: !Ref S3KeyPrefix
                             Effect: Allow
                   PolicyName: fortigate-autoscale-instance-policy
     FgtInstanceProfile:
@@ -792,16 +844,18 @@ Resources:
                     - IfUseCustomAssetContainer
                     - !Ref CustomAssetDirectory
                     - !Ref 'AWS::NoValue'
+                RoutePermissionRouteTableId: !Ref PrivateSubnetRouteTable
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-autoscale-handler.template.yaml
-                - S3Region: !If
-                      - GovCloudCondition
-                      - s3-us-gov-west-1
-                      - s3
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/create-autoscale-handler.template.yaml
+                - S3SubDomain: !If
+                      - IfInUSGovCloud
+                      - s3-
+                      - s3.
+                  Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
-            TimeoutInMinutes: '10'
+            TimeoutInMinutes: 10
     StackCreateTransitGatewayVpnHandler:
         Type: 'AWS::CloudFormation::Stack'
         Condition: IfRequireTransitGatewayIntegration
@@ -822,11 +876,12 @@ Resources:
                     - !Ref 'AWS::NoValue'
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-tgw-vpn-handler.template.yaml
-                - S3Region: !If
-                      - GovCloudCondition
-                      - s3-us-gov-west-1
-                      - s3
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/create-tgw-vpn-handler.template.yaml
+                - S3SubDomain: !If
+                      - IfInUSGovCloud
+                      - s3-
+                      - s3.
+                  Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
             TimeoutInMinutes: 10
@@ -858,14 +913,15 @@ Resources:
                       - !Ref PrivateSubnet2
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-load-balancer.template.yaml
-                - S3Region: !If
-                      - GovCloudCondition
-                      - s3-us-gov-west-1
-                      - s3
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/create-load-balancer.template.yaml
+                - S3SubDomain: !If
+                      - IfInUSGovCloud
+                      - s3-
+                      - s3.
+                  Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
-            TimeoutInMinutes: '10'
+            TimeoutInMinutes: 10
     StackCreateTransitGatewayComponents:
         Type: 'AWS::CloudFormation::Stack'
         Condition: IfRequireTransitGatewayIntegration
@@ -887,14 +943,15 @@ Resources:
                     - Outputs.FgtAsgHandlerIamRoleName
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-transit-gateway-components.template.yaml
-                - S3Region: !If
-                      - GovCloudCondition
-                      - s3-us-gov-west-1
-                      - s3
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/create-transit-gateway-components.template.yaml
+                - S3SubDomain: !If
+                      - IfInUSGovCloud
+                      - s3-
+                      - s3.
+                  Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
-            TimeoutInMinutes: '10'
+            TimeoutInMinutes: 10
     StackCreateFortiGateAutoScalingGroup:
         Type: 'AWS::CloudFormation::Stack'
         Properties:
@@ -972,14 +1029,15 @@ Resources:
                       resource: byol-license
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-hybrid-auto-scaling-group.template.yaml
-                - S3Region: !If
-                      - GovCloudCondition
-                      - s3-us-gov-west-1
-                      - s3
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/create-hybrid-auto-scaling-group.template.yaml
+                - S3SubDomain: !If
+                      - IfInUSGovCloud
+                      - s3-
+                      - s3.
+                  Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
-            TimeoutInMinutes: '10'
+            TimeoutInMinutes: 10
     SaveSettings:
         Type: 'AWS::CloudFormation::CustomResource'
         Properties:
