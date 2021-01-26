@@ -4,12 +4,14 @@ import {
     AwsCloudFormationCustomResourceEventProxy,
     AwsFortiGateAutoscale,
     AwsFortiGateAutoscaleTgwLambdaInvocationHandler,
-    AwsFortiGateAutoscaleServiceProvider,
+    AwsFortiGateAutoscaleCfnServiceProvider,
     AwsFortiGateAutoscaleTgw,
     AwsPlatformAdaptee,
     AwsPlatformAdapter,
     AwsScheduledEventProxy,
-    AwsLambdaInvocationProxy
+    AwsLambdaInvocationProxy,
+    AwsFortiGateAutoscaleFazIntegrationHandler,
+    AwsFortiGateAutoscaleFazIntegrationServiceProvider
 } from 'autoscale-core';
 import {
     APIGatewayProxyEvent,
@@ -125,7 +127,7 @@ export async function cfnServiceEventHandler(
         env,
         proxy
     );
-    const serviceProvider: AwsFortiGateAutoscaleServiceProvider = new AwsFortiGateAutoscaleServiceProvider(
+    const serviceProvider: AwsFortiGateAutoscaleCfnServiceProvider = new AwsFortiGateAutoscaleCfnServiceProvider(
         autoscale
     );
     return await serviceProvider.handleServiceRequest();
@@ -147,4 +149,41 @@ export async function tgwLambdaPeerInvocationHandler(
     const autoscale = new AwsFortiGateAutoscaleTgw<JSONable, Context, void>(platform, env, proxy);
     const handler = new AwsFortiGateAutoscaleTgwLambdaInvocationHandler(autoscale);
     return await handler.handleLambdaPeerInvocation();
+}
+
+/**
+ * handle peer invocation between lamba functions for FAZ integration
+ * @param {JSONable} event incoming payload
+ * @param {Context} context Lambda context
+ */
+export async function fazIntegrationHandler(event: JSONable, context: Context): Promise<void> {
+    console.log(event);
+    const env = {} as AutoscaleEnvironment;
+    const proxy = new AwsLambdaInvocationProxy(event, context);
+    const platform = new AwsPlatformAdapter(new AwsPlatformAdaptee(), proxy);
+    const autoscale = new AwsFortiGateAutoscaleTgw<JSONable, Context, void>(platform, env, proxy);
+    const handler = new AwsFortiGateAutoscaleFazIntegrationHandler(autoscale);
+    return await handler.handleLambdaPeerInvocation();
+}
+
+/**
+ * handle FAZ integration service event
+ * @param {JSONable} event incoming payload
+ * @param {Context} context Lambda context
+ */
+export async function fazIntegrationHandlerService(
+    event: ScheduledEvent,
+    context: Context
+): Promise<void> {
+    console.log(event);
+    const env = {} as AutoscaleEnvironment;
+    const proxy = new AwsScheduledEventProxy(event, context);
+    const platform = new AwsPlatformAdapter(new AwsPlatformAdaptee(), proxy);
+    const autoscale = new AwsFortiGateAutoscale<ScheduledEvent, Context, void>(
+        platform,
+        env,
+        proxy
+    );
+    const handler = new AwsFortiGateAutoscaleFazIntegrationServiceProvider(autoscale);
+    return await handler.handleServiceRequest();
 }

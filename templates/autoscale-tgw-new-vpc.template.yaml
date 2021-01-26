@@ -102,9 +102,9 @@ Parameters:
             more information, see https://aws.amazon.com/ec2/instance-types/.
     FortiOSVersion:
         Type: String
-        Default: 6.4.3
+        Default: 6.4.4
         AllowedValues:
-            - 6.4.3
+            - 6.4.4
             - 6.2.3
         ConstraintDescription: must be a valid FortiOS version from the selection.
         Description: FortiOS version supported by FortiGate Autoscale for AWS.
@@ -345,6 +345,109 @@ Parameters:
             top level directory of all your custom assets. If 'use custom asset
             location' is set to 'yes', and this value is left empty, the 'custom
             asset container' will serve as the top level directory.
+    FortiAnalyzerIntegrationOptions:
+        Type: String
+        Default: 'yes'
+        AllowedValues:
+            - 'yes'
+            - 'no'
+        ConstraintDescription: must choose from the provided options.
+        Description: >-
+            Choose 'yes' to incorporate FortiAnalyzer into Fortinet FortiGate
+            Auto Scaling to use extended features that include storing logs into
+            FortiAnalyzer.
+    FortiAnalyzerInstanceType:
+        Type: String
+        Default: m5.large
+        AllowedValues:
+            - h1.2xlarge
+            - h1.4xlarge
+            - h1.8xlarge
+            - m5.large
+            - m5.xlarge
+            - m5.2xlarge
+            - m5.4xlarge
+            - m5.12xlarge
+            - t2.medium
+            - t2.large
+            - t2.xlarge
+        ConstraintDescription: must be a valid EC2 instance type.
+        Description: >-
+            The instance type to launch as FortiAnalyzer On-Demand instances.
+            There are t2.small and compute-optimized instances such as m4 and c4
+            available with different vCPU sizes and bandwidths. For more
+            information about instance types, see
+            https://aws.amazon.com/ec2/instance-types/
+    FortiAnalyzerVersion:
+        Type: String
+        Default: 6.4.4
+        AllowedValues:
+            - 6.4.4
+            - 6.2.5
+        ConstraintDescription: must choose from the provided options.
+        Description: >-
+            The FortiAnalyzer version supported by Fortinet FortiGate Auto
+            Scaling. **IMPORTANT!** Requires a subscription to the Fortinet
+            FortiAnalyzer Centralized Logging/Reporting (10 managed devices)
+            AMI.
+    FortiAnalyzerAutoscaleAdminUsername:
+        Type: String
+        Default: ''
+        AllowedPattern: '^$|^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
+        ConstraintDescription: >-
+            This FortiAnalyzer account name can include numbers, lowercase
+            letters, uppercase letters, and hyphens (-). It cannot start or end
+            with a hyphen (-).
+        Description: >-
+            The name of the secondary administrator level account in the
+            FortiAnalyzer, which Fortinet FortiGate Auto Scaling uses to connect
+            to the FortiAnalyzer to authorize any FortiGate device in the Auto
+            Scaling group. To conform to the FortiAnalyzer naming policy, the
+            username can only contain numbers, lowercase letters, uppercase
+            letters, and hyphens. It cannot start or end with a hyphen (-).
+    FortiAnalyzerAutoscaleAdminPassword:
+        Type: String
+        NoEcho: true
+        Default: ''
+        MaxLength: 128
+        Description: >-
+            The password for the 'Autoscale admin username'. The password must
+            conform to the FortiAnalyzer password policy and have a min length
+            of 8 and a max length 128. If you need to enable KMS encryption,
+            refer to the documentation.
+    FortiAnalyzerCustomPrivateIpAddress:
+        Type: String
+        Default: ''
+        AllowedPattern: >-
+            ^$|^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]){1}$
+        ConstraintDescription: must be a valid IPv4 format.
+        Description: >-
+            The custom private IP address to be used by the FortiAnalyzer. Must
+            be within the Public subnet 1 CIDR range. Required if 'FortiAnalyzer
+            Integration' is set to 'yes'. If 'FortiAnalyzer Integration' is set
+            to 'no', any input will be ignored.
+Rules:
+    FortiAnalyzerSupport:
+        RuleCondition: !Equals
+            - !Ref FortiAnalyzerIntegrationOptions
+            - 'yes'
+        Assertions:
+            - Assert: !Not
+                  - !Equals
+                    - !Ref FortiAnalyzerAutoscaleAdminUsername
+                    - ''
+              AssertDescription: If FortiAnalyzer integration set to 'yes', the 'Autoscale admin username' parameter must not be empty.
+            - Assert: !Not
+                  - !Equals
+                    - !Ref FortiAnalyzerAutoscaleAdminPassword
+                    - ''
+              AssertDescription: If FortiAnalyzer integration set to 'yes', the 'Autoscale admin password' parameter must not be empty.
+            - Assert: !Not
+                  - !Equals
+                    - !Ref FortiAnalyzerCustomPrivateIpAddress
+                    - ''
+              AssertDescription: If FortiAnalyzer integration set to 'yes', the 'FortiAnalyzer private IP address' parameter must not be empty.
+
 Conditions:
     GovCloudCondition: !Equals
         - !Ref 'AWS::Region'
@@ -356,6 +459,9 @@ Conditions:
     CreateTransitGateway: !Equals
         - !Ref TransitGatewaySupportOptions
         - create one
+    IfIntegrateFortiAnalyzer: !Equals
+        - !Ref FortiAnalyzerIntegrationOptions
+        - 'yes'
 Resources:
     StackCreateNewVPC:
         Type: 'AWS::CloudFormation::Stack'
@@ -403,7 +509,7 @@ Resources:
                       - s3
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
-            TimeoutInMinutes: '5'
+            TimeoutInMinutes: 5
     StackMainWorkload:
         Type: 'AWS::CloudFormation::Stack'
         Properties:
@@ -508,6 +614,23 @@ Resources:
                 UseCustomAssetLocation: !Ref UseCustomAssetLocation
                 CustomAssetContainer: !Ref CustomAssetContainer
                 CustomAssetDirectory: !Ref CustomAssetDirectory
+                FortiAnalyzerIntegrationOptions: !Ref FortiAnalyzerIntegrationOptions
+                FortiAnalyzerInstanceType: !Ref FortiAnalyzerInstanceType
+                FortiAnalyzerVersion: !Join
+                    - ''
+                    - !Split
+                      - .
+                      - !Select
+                        - 0
+                        - !Split
+                          - ' '
+                          - !Ref FortiAnalyzerVersion
+                FortiAnalyzerAutoscaleAdminUsername: !Ref FortiAnalyzerAutoscaleAdminUsername
+                FortiAnalyzerAutoscaleAdminPassword: !If
+                    - IfIntegrateFortiAnalyzer
+                    - !Ref FortiAnalyzerAutoscaleAdminPassword
+                    - 'NoValuePlaceHolderForTemplateParameterWithMinLength'
+                FortiAnalyzerCustomPrivateIpAddress: !Ref FortiAnalyzerCustomPrivateIpAddress
             TemplateURL: !Sub
                 - >-
                     https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/autoscale-main.template.yaml
@@ -568,6 +691,15 @@ Metadata:
               Parameters:
                   - TransitGatewaySupportOptions
                   - TransitGatewayId
+            - Label:
+                  default: FortiAnalyzer configuration
+              Parameters:
+                  - FortiAnalyzerIntegrationOptions
+                  - FortiAnalyzerVersion
+                  - FortiAnalyzerInstanceType
+                  - FortiAnalyzerCustomPrivateIpAddress
+                  - FortiAnalyzerAutoscaleAdminUsername
+                  - FortiAnalyzerAutoscaleAdminPassword
             - Label:
                   default: Custom asset location configuration
               Parameters:
@@ -652,6 +784,18 @@ Metadata:
                 default: Custom asset S3 bucket
             CustomAssetDirectory:
                 default: Custom asset folder
+            FortiAnalyzerIntegrationOptions:
+                default: FortiAnalyzer integration
+            FortiAnalyzerInstanceType:
+                default: FortiAnalyzer instance type
+            FortiAnalyzerVersion:
+                default: FortiAnalyzer version
+            FortiAnalyzerCustomPrivateIpAddress:
+                default: FortiAnalyzer private IP address
+            FortiAnalyzerAutoscaleAdminUsername:
+                default: Autoscale admin username
+            FortiAnalyzerAutoscaleAdminPassword:
+                default: Autoscale admin password
 Outputs:
     ResourceTagPrefix:
         Description: >-
