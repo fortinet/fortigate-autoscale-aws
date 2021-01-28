@@ -761,7 +761,7 @@ Metadata:
             KeyPairName:
                 default: Key pair name
             FortiGatePskSecret:
-                default: FortiGate PSK secret
+                default: FortiGate PSK secret key
             HeartBeatInterval:
                 default: Heart beat interval
             HeartBeatLossCount:
