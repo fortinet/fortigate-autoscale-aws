@@ -1,0 +1,456 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+    Deploys a FortiAnalyzer to a selected subnet and configures all FortiGates to
+    connect to it.
+Parameters:
+    S3BucketName:
+        Type: String
+        AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
+        ConstraintDescription: >-
+            Deployment resource S3 bucket name can include numbers, lowercase letters,
+            uppercase letters, and hyphens (-). It cannot start or end with a hyphen
+            (-).
+        Description: >-
+            Name of the S3 bucket that contains the FortiGate Autoscale deployment
+            package. Can only contain numbers, lowercase letters, uppercase letters,
+            and hyphens (-). It cannot start or end with a hyphen (-).
+    S3KeyPrefix:
+        Type: String
+        AllowedPattern: '^[0-9a-zA-Z-/]*$'
+        ConstraintDescription: >-
+            Deployment package S3 key prefix can include numbers, lowercase letters,
+            uppercase letters, hyphens (-), and forward slash (/).
+        Description: >-
+            Name of the S3 folder that stores the FortiGate Autoscale deployment
+            resources. Can only contain numbers, lowercase letters, uppercase letters,
+            hyphens (-), and forward slashes (/). If provided, it must end with a
+            forward slash (/).
+    ResourceTagPrefix:
+        Type: String
+        AllowedPattern: '[0-9a-zA-Z@.#-]+'
+        MaxLength: 64
+        ConstraintDescription: >-
+            Resource tag prefix can include numbers, lowercase letters, uppercase
+            letters, ampersat(@) , hyphens (-), period (.), and hash (#). Max length
+            is 64.
+        Description: >-
+            The ResourceGroup Tag Key used on all resources and as the name prefix of
+            all applicable resources. Can only contain numbers, lowercase letters,
+            uppercase letters, ampersat(@), hyphens (-), period (.), and hash (#). Max
+            length is 64.
+    CustomIdentifier:
+        Type: String
+        MaxLength: '10'
+        AllowedPattern: '[A-Za-z0-9]+'
+        ConstraintDescription: must only contain uppercase and lowercase letters and numbers
+        Description: >-
+            An alternative name prefix to be used on a resource that the 'Resource tag
+            prefix' cannot apply to. Can only contain numbers, lowercase letters, and
+            uppercase letters. Max length is 10.
+    UniqueId:
+        Type: String
+        Description: >-
+            The unique ID assigned to DynamoDB table in this solution. This parameter
+            should be passed down from the caller stack for consistency.
+    DdbTableArnList:
+        Type: String
+        Description: >-
+            The DynamoDB table ARN list that this stack needs to access to. This
+            parameter should be passed down from the caller stack for consistency.
+    VpcId:
+        Type: 'AWS::EC2::VPC::Id'
+        Description: >-
+            The ID of the existing VPC where FortiGate Auto Scaling will be deployed.
+            The VPC must have the option 'DNS hostnames' enabled and each of the two
+            Availability Zones in the VPC must have at least 1 public subnet and at
+            least 1 private subnet.
+    VpcCidr:
+        Type: String
+        AllowedPattern: >-
+            ^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]){1}(\/([0-9]|[1-2][0-9]|3[0-2]))?$
+        ConstraintDescription: must be a valid CIDR block format.
+        Description: The CIDR block for the VPC where the FortiAnalyzer will be deployed.
+    SubnetId:
+        Type: 'AWS::EC2::Subnet::Id'
+        Description: The ID of the subnet where FortiAnalyzer will be deployed.
+    InstanceType:
+        Type: String
+        Description: >-
+            Instance type. This parameter should be passed down from the caller stack
+            for consistency.
+    AdminCidr:
+        Type: String
+        AllowedPattern: >-
+            ^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]){1}(\/([0-9]|[1-2][0-9]|3[0-2]))?$
+        ConstraintDescription: must be a valid CIDR block format and 0.0.0.0/0 is not recommended.
+        MinLength: 9
+        Description: >-
+            The CIDR block for external admin management access. **WARNING!** The
+            default value 0.0.0.0/0 accepts connections from any IP address. Please
+            consider changing it to match your needs.
+    KeyPairName:
+        Type: 'AWS::EC2::KeyPair::KeyName'
+        Description: The Amazon EC2 Key Pair for admin access.
+    AutoscaleAdminUsername:
+        Type: String
+        AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
+        ConstraintDescription: >-
+            This FortiAnalyzer account name can include numbers, lowercase letters,
+            uppercase letters, and hyphens (-). It cannot start or end with a hyphen
+            (-).
+        Description: >-
+            The name of the secondary administrator level account in the
+            FortiAnalyzer, which FortiGate Auto Scaling uses to connect to the
+            FortiAnalyzer to authorize any FortiGate device in the Auto Scaling group.
+            To conform to the FortiAnalyzer naming policy, the username can only
+            contain numbers, lowercase letters, uppercase letters, and hyphens. It
+            cannot start or end with a hyphen (-).
+    AutoscaleAdminPassword:
+        Type: String
+        NoEcho: true
+        MinLength: 8
+        MaxLength: 128
+        Description: >-
+            The password for the 'Autoscale admin username'. The password must conform
+            to the FortiAnalyzer password policy and have a min length of 8 and a max
+            length 128. If you need to enable KMS encryption, refer to the
+            documentation.
+    ProductAMI:
+        Type: 'AWS::EC2::Image::Id'
+        Description: The AMI for the product created with the EC2 instance in this stack.
+    CustomPrivateIpAddress:
+        Type: String
+        AllowedPattern: >-
+            ^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]){1}$
+        ConstraintDescription: must be a valid IPv4 format.
+        Description: >-
+            The static private IP address allocated for the FortiAnalyzer in the
+            designated subnet.
+    UseElasticIP:
+        Type: String
+        Default: 'yes'
+        AllowedValues:
+            - 'yes'
+            - 'no'
+        ConstraintDescription: must be a valid option from the list.
+        Description: >-
+            Use an Elastic IP address as the public IP address of each created
+            FortiAnalyzer.
+Mappings: {}
+Conditions:
+    GovCloudCondition: !Equals
+        - !Ref 'AWS::Region'
+        - us-gov-west-1
+    IfAddCustomTag: !Not
+        - !Equals
+          - !Ref CustomIdentifier
+          - ''
+    IfNoCustomPrivateIPAddress: !Equals
+        - !Ref CustomPrivateIpAddress
+        - ''
+    IfUseEIP: !Equals
+        - !Ref UseElasticIP
+        - 'yes'
+Resources:
+    sgFortiAnalyzerInstance:
+        Type: 'AWS::EC2::SecurityGroup'
+        Properties:
+            GroupDescription: FortiAnalyzer security group
+            SecurityGroupIngress:
+                - IpProtocol: tcp
+                  CidrIp: !Ref AdminCidr
+                  FromPort: 22
+                  ToPort: 22
+                - IpProtocol: tcp
+                  CidrIp: !Ref AdminCidr
+                  FromPort: 443
+                  ToPort: 443
+                - IpProtocol: tcp
+                  CidrIp: !Ref VpcCidr
+                  FromPort: 541
+                  ToPort: 541
+                - IpProtocol: tcp
+                  CidrIp: !Ref VpcCidr
+                  FromPort: 514
+                  ToPort: 514
+                - IpProtocol: udp
+                  CidrIp: !Ref VpcCidr
+                  FromPort: 514
+                  ToPort: 514
+            SecurityGroupEgress:
+                - IpProtocol: '-1'
+                  CidrIp: 0.0.0.0/0
+            VpcId: !Ref VpcId
+    IAMRoleFazInstance:
+        Type: 'AWS::IAM::Role'
+        Properties:
+            ManagedPolicyArns:
+                - 'arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess'
+                - 'arn:aws:iam::aws:policy/AWSLambdaExecute'
+            AssumeRolePolicyDocument:
+                Version: 2012-10-17
+                Statement:
+                    - Effect: Allow
+                      Principal:
+                          Service: ec2.amazonaws.com
+                      Action: 'sts:AssumeRole'
+            Path: /
+            Policies:
+                - PolicyDocument:
+                      Version: 2012-10-17
+                      Statement:
+                          - Action:
+                                - 's3:GetObject'
+                            Resource: !Sub
+                                - 'arn:aws:s3:::${S3BucketName}/${S3KeyPrefix}*'
+                                - S3BucketName: !Ref S3BucketName
+                                  S3KeyPrefix: !Ref S3KeyPrefix
+                            Effect: Allow
+                  PolicyName: fortigate-autoscale-s3-access-policy
+    IamInstanceProfileFaz:
+        Type: 'AWS::IAM::InstanceProfile'
+        Properties:
+            Roles:
+                - !Ref IAMRoleFazInstance
+    ec2InstanceFortiAnalyzer:
+        Type: 'AWS::EC2::Instance'
+        Properties:
+            KeyName: !Ref KeyPairName
+            IamInstanceProfile: !Ref IamInstanceProfileFaz
+            ImageId: !Ref ProductAMI
+            InstanceType: !Ref InstanceType
+            NetworkInterfaces:
+                - DeviceIndex: '0'
+                  AssociatePublicIpAddress: !If
+                      - IfUseEIP
+                      - false
+                      - true
+                  PrivateIpAddress: !If
+                      - IfNoCustomPrivateIPAddress
+                      - !Ref 'AWS::NoValue'
+                      - !Ref CustomPrivateIpAddress
+                  SubnetId: !Ref SubnetId
+                  GroupSet:
+                      - !Ref sgFortiAnalyzerInstance
+            Monitoring: true
+            Tags:
+                - Key: Name
+                  Value: !Join
+                      - '-'
+                      - - !Ref ResourceTagPrefix
+                        - fortigate-autoscale-fortianalyzer
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
+            UserData: !Base64
+                'Fn::Join':
+                    - |+
+
+                    - - config system admin user
+                      - !Sub
+                        - '  edit ${AdminUsername}'
+                        - AdminUsername: !Ref AutoscaleAdminUsername
+                      - !Sub
+                        - '    set password ${AdminPasword}'
+                        - AdminPasword: !Ref AutoscaleAdminPassword
+                      - '    set profileid "Super_User"'
+                      - '    set adom "all_adoms"'
+                      - '    set rpc-permit read-write'
+                      - '  next'
+                      - end
+    FazEIP:
+        Condition: IfUseEIP
+        Type: 'AWS::EC2::EIP'
+        Properties:
+            Domain: vpc
+            InstanceId: !Ref ec2InstanceFortiAnalyzer
+    StackCopyLambdaSource:
+        Type: 'AWS::CloudFormation::Stack'
+        Properties:
+            Parameters:
+                S3BucketName: !Ref S3BucketName
+                S3KeyPrefix: !Ref S3KeyPrefix
+                ObjectPaths: functions/packages/fgt-as-handler.zip
+            TemplateURL: !Sub
+                - >-
+                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/copy-objects.template.yaml
+                - S3Region: !If
+                      - GovCloudCondition
+                      - s3-us-gov-west-1
+                      - s3
+            TimeoutInMinutes: 10
+    LambdaFunctionFazHandler:
+        Type: 'AWS::Lambda::Function'
+        Properties:
+            Description: >-
+                Handle device authorization requests for any connected device from Autoscale using
+                AWS Lambda function peer invocations.
+            FunctionName: !Join
+                - '-'
+                - - !Ref CustomIdentifier
+                  - !Ref UniqueId
+                  - faz-handler
+            Runtime: nodejs12.x
+            Code:
+                S3Bucket: !GetAtt
+                    - StackCopyLambdaSource
+                    - Outputs.DestinationBucket
+                S3Key: !Sub
+                    - '${KeyPrefix}functions/packages/fgt-as-handler.zip'
+                    - KeyPrefix: !GetAtt
+                          - StackCopyLambdaSource
+                          - Outputs.KeyPrefix
+            Handler: index.fazIntegrationHandler
+            Role: !GetAtt
+                - IamRoleFazHandler
+                - Arn
+            Timeout: 300
+            Environment:
+                Variables:
+                    RESOURCE_TAG_PREFIX: !Ref ResourceTagPrefix
+                    STACK_ID: !Ref 'AWS::StackId'
+                    INSTANCE_ID: !Ref ec2InstanceFortiAnalyzer
+                    AUTOSCALE_ADMIN_USERNAME: !Ref AutoscaleAdminUsername
+                    AUTOSCALE_ADMIN_PASSWORD: !Ref AutoscaleAdminPassword
+                    FORTIANALYZER_IP: !If
+                        - IfUseEIP
+                        - !Ref FazEIP
+                        - !GetAtt
+                          - ec2InstanceFortiAnalyzer
+                          - PublicIp
+                    FORTIANALYZER_PORT: '443'
+            Tags:
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
+    IamRoleFazHandler:
+        Properties:
+            AssumeRolePolicyDocument:
+                Statement:
+                    - Action: 'sts:AssumeRole'
+                      Effect: Allow
+                      Principal:
+                          Service: lambda.amazonaws.com
+                Version: 2012-10-17
+            ManagedPolicyArns:
+                - 'arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole'
+            Path: /
+            Policies:
+                - PolicyName: faz-handler-inline-policy
+                  PolicyDocument:
+                      Statement:
+                          - Effect: Allow
+                            Action:
+                                - 'dynamodb:CreateTable'
+                                - 'dynamodb:DescribeTable'
+                                - 'dynamodb:Scan'
+                                - 'dynamodb:Query'
+                                - 'dynamodb:DeleteItem'
+                                - 'dynamodb:GetItem'
+                                - 'dynamodb:PutItem'
+                                - 'dynamodb:UpdateItem'
+                            Resource: !Sub
+                                - >-
+                                    arn:aws:dynamodb:${AWS_REGION}:${AWS_ACCOUNT_ID}:table/${TABLE_NAME_PREFIX}*
+                                - AWS_REGION: !Ref 'AWS::Region'
+                                  AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
+                                  TABLE_NAME_PREFIX: !Ref ResourceTagPrefix
+                          - Effect: Allow
+                            Action:
+                                - 'ec2:DescribeVpcs'
+                                - 'ec2:DescribeSubnets'
+                                - 'ec2:DescribeSecurityGroups'
+                            Resource: '*'
+                          - Effect: Allow
+                            Action:
+                                - 'lambda:InvokeFunction'
+                                - 'lambda:InvokeAsync'
+                            Resource: !Sub
+                                - >-
+                                    arn:aws:lambda:${AWS_REGION}:${AWS_ACCOUNT_ID}:function:${CUSTOM_ID}-${UNIQUE_ID}*
+                                - AWS_REGION: !Ref 'AWS::Region'
+                                  AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
+                                  CUSTOM_ID: !Ref CustomIdentifier
+                                  UNIQUE_ID: !Ref UniqueId
+                      Version: 2012-10-17
+        Type: 'AWS::IAM::Role'
+    IamPolicyFazHandler:
+        Type: 'AWS::IAM::Policy'
+        Properties:
+            PolicyDocument:
+                Version: 2012-10-17
+                Statement:
+                    - Effect: Allow
+                      Action:
+                          - 'kms:Decrypt'
+                      Resource: 'arn:aws:kms:*:*:key/*'
+                    - Effect: Allow
+                      Action:
+                          - 'lambda:GetFunction'
+                          - 'lambda:GetFunctionConfiguration'
+                          - 'lambda:UpdateFunctionConfiguration'
+                      Resource: !GetAtt
+                          - LambdaFunctionFazHandler
+                          - Arn
+            PolicyName: faz-handler-lambda-function-policy
+            Roles:
+                - !Ref IamRoleFazHandler
+    LambdaFunctionFazHandlerService:
+        Type: 'AWS::Lambda::Function'
+        Properties:
+            Description: >-
+                Handle device authorization requests by making periodic calls to the faz handler.
+            FunctionName: !Join
+                - '-'
+                - - !Ref CustomIdentifier
+                  - !Ref UniqueId
+                  - faz-handler-service
+            Runtime: nodejs12.x
+            Code:
+                S3Bucket: !GetAtt
+                    - StackCopyLambdaSource
+                    - Outputs.DestinationBucket
+                S3Key: !Sub
+                    - '${KeyPrefix}functions/packages/fgt-as-handler.zip'
+                    - KeyPrefix: !GetAtt
+                          - StackCopyLambdaSource
+                          - Outputs.KeyPrefix
+            Handler: index.fazIntegrationHandlerService
+            Role: !GetAtt
+                - IamRoleFazHandler
+                - Arn
+            Timeout: 300
+            Environment:
+                Variables:
+                    RESOURCE_TAG_PREFIX: !Ref ResourceTagPrefix
+            Tags:
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
+Outputs:
+    FazInstanceID:
+        Description: The instance ID of the created FortiAnalyzer.
+        Value: !Ref ec2InstanceFortiAnalyzer
+    FazPublicIp:
+        Description: The public IP address of the created FortiAnalyzer.
+        Value: !GetAtt
+            - ec2InstanceFortiAnalyzer
+            - PublicIp
+    FazPrivateIp:
+        Description: The private IP address of the created FortiAnalyzer.
+        Value: !GetAtt
+            - ec2InstanceFortiAnalyzer
+            - PrivateIp
+    FazHandlerFunctionName:
+        Description: FortiGate Autoscale - FortiAnalyzer integration handler function name.
+        Value: !Ref LambdaFunctionFazHandler
+    FazHandlerFunctionArn:
+        Description: FortiGate Autoscale - FortiAnalyzer integration handler function ARN.
+        Value: !GetAtt
+            - LambdaFunctionFazHandler
+            - Arn
+    FazHandlerServiceFunctionName:
+        Description: FortiGate Autoscale - FortiAnalyzer integration handler service function name.
+        Value: !Ref LambdaFunctionFazHandlerService
+    FazHandlerServiceFunctionArn:
+        Description: FortiGate Autoscale - FortiAnalyzer integration handler service function ARN.
+        Value: !GetAtt
+            - LambdaFunctionFazHandlerService
+            - Arn
