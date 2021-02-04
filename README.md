@@ -3,6 +3,7 @@
 An implementation of FortiGate Autoscale for the Amazon AWS platform API with a Dynamo DB storage backend.
 
 This project provides multi-group Auto Scaling functionality for Fortinet FortiGate EC2 instances to form an HA cluster with failover protection. For deployment on other cloud platforms, visit the relevant repository:
+
 * The **AliCloud** deployment is in the  [alicloud-autoscale](https://github.com/fortinet/alicloud-autoscale/) repository.
 * The **Azure** deployment is in the [fortigate-autoscale](https://github.com/fortinet/fortigate-autoscale) repository.
 * The **GCP** deployment is in the [fortigate-autoscale-gcp](https://github.com/fortinet/fortigate-autoscale-gcp) repository.
@@ -10,13 +11,16 @@ This project provides multi-group Auto Scaling functionality for Fortinet FortiG
 This project has the following features:
 
 1. Multi-group Hybrid Licensing models:
-   1. **BYOL-Only**: 1 dynamically scalable Auto Scaling group of (0 or more) Bring Your Own Licence (BYOL) FortiGate instances.
-   2. **PAYG-Only**: 1 dynamically scalable Auto Scaling group of (0 or more) On-Demand FortiGate instances.
-   3. **Hybrid**: 1 fix-sized Auto Scaling group of 2 (and more) BYOL FortiGate instances, and 1 dynamically scalable Auto Scaling group of (0 or more) On-Demand FortiGate instances.
-2. AWS Transit Gateway Integration.
+   1. **BYOL-Only**: 1 dynamically scalable Auto Scaling group of (0 or more) Bring Your Own License (BYOL) FortiGate instances.
+   2. **PAYG-Only**: 1 dynamically scalable Auto Scaling group of (0 or more) on-demand FortiGate instances.
+   3. **Hybrid**: 1 fix-sized Auto Scaling group of 2 (or more) BYOL FortiGate instances, and 1 dynamically scalable Auto Scaling group of (0 or more) on-demand FortiGate instances.
+2. AWS Transit Gateway integration.
+3. FortiAnalyzer integration.
 
 ## Deployment packages
+
 To obtain the deployment package, use one of the following:
+
   * Download the package **aws-cloudformation.zip** directly from the [project release page](https://github.com/fortinet/fortigate-autoscale-aws/releases).
   * Manually generate the deployment package in your local workspace:
     1. From the [project release page](https://github.com/fortinet/fortigate-autoscale-aws/releases), download the source code (.zip or .tar.gz) for the latest version.
@@ -27,7 +31,7 @@ To obtain the deployment package, use one of the following:
 
 ## Deployment guide
 
-A deployment guide is available from the Fortinet Document Library:
+Deployment guides are available from the Fortinet Document Library:
 
   + [ FortiGate / FortiOS 6.2 Deploying auto scaling on AWS](https://docs.fortinet.com/vm/aws/fortigate/6.2/aws-cookbook/6.2.0/397979/deploying-auto-scaling-on-aws)
   + [ FortiGate / FortiOS 6.4 Deploying auto scaling on AWS](https://docs.fortinet.com/vm/aws/fortigate/6.4/aws-cookbook/6.4.0/397979/deploying-auto-scaling-on-aws)
