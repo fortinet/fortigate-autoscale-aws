@@ -1453,13 +1453,13 @@ Metadata:
             VpcCidr:
                 default: VPC CIDR
             PublicSubnet1:
-                default: Autoscale subnet 1 Id
+                default: Autoscale subnet 1 ID
             PublicSubnet2:
-                default: Autoscale subnet 2 Id
+                default: Autoscale subnet 2 ID
             PrivateSubnet1:
-                default: Private subnet 1 Id
+                default: Private subnet 1 ID
             PrivateSubnet2:
-                default: Private subnet 2 Id
+                default: Private subnet 2 ID
             PrivateSubnetRouteTable:
                 default: Private subnet route table
             FortiGateInstanceType:
