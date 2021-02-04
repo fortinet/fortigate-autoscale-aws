@@ -1495,7 +1495,7 @@ Metadata:
             KeyPairName:
                 default: Key pair name
             FortiGatePskSecret:
-                default: FortiGate PSK secret key
+                default: FortiGate PSK secret
             PrimaryElectionTimeout:
                 default: Primary election timeout
             HeartBeatInterval:
