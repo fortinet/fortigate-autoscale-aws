@@ -286,4 +286,5 @@ jobs:
       - id: sync_to_s3_main_branch
         name: sync files to AWS s3 location (main branch)
         run: |
+          git checkout main
           aws s3 sync dist s3://fortinet-github-aws-release-artifacts/fortigate-autoscale-aws/${GITHUB_REF##*/} --region=${{env.AWS_REGION}} --delete --acl=public-read
