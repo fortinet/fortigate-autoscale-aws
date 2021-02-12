@@ -265,6 +265,10 @@ jobs:
       # checkout the branch
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          # see: https://github.com/actions/checkout
+          # Number of commits to fetch. 0 indicates all history for all branches and tags.
+          fetch-depth: 0
       # (required) install dependencies
       - name: Install
         run: npm ci
@@ -286,5 +290,6 @@ jobs:
       - id: sync_to_s3_main_branch
         name: sync files to AWS s3 location (main branch)
         run: |
+          git fetch
           git checkout main
           aws s3 sync dist s3://fortinet-github-aws-release-artifacts/fortigate-autoscale-aws/${GITHUB_REF##*/} --region=${{env.AWS_REGION}} --delete --acl=public-read
