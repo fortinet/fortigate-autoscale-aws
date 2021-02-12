@@ -503,9 +503,13 @@ Rules:
                     - ''
               AssertDescription: If FortiAnalyzer integration set to 'yes', the 'FortiAnalyzer private IP address' parameter must not be empty.
 Conditions:
-    GovCloudCondition: !Equals
-        - !Ref 'AWS::Region'
-        - us-gov-west-1
+    IfInUSGovCloud: !Or
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-east-1
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-west-1
     HasResourceTagPrefix: !Not
         - !Equals
           - !Ref ResourceTagPrefix
@@ -553,11 +557,12 @@ Resources:
                             - !Ref 'AWS::StackId'
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/create-new-vpc.template.yaml
-                - S3Region: !If
-                      - GovCloudCondition
-                      - s3-us-gov-west-1
-                      - s3
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/create-new-vpc.template.yaml
+                - S3SubDomain: !If
+                      - IfInUSGovCloud
+                      - s3-
+                      - s3.
+                  Region: !Ref 'AWS::Region'
                   S3BucketName: !Ref S3BucketName
                   S3KeyPrefix: !Ref S3KeyPrefix
             TimeoutInMinutes: 5
@@ -684,11 +689,14 @@ Resources:
                 FortiAnalyzerCustomPrivateIpAddress: !Ref FortiAnalyzerCustomPrivateIpAddress
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/autoscale-main.template.yaml
-                - S3Region: !If
-                      - GovCloudCondition
-                      - s3-us-gov-west-1
-                      - s3
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/autoscale-main.template.yaml
+                - S3SubDomain: !If
+                      - IfInUSGovCloud
+                      - s3-
+                      - s3.
+                  Region: !Ref 'AWS::Region'
+                  S3BucketName: !Ref S3BucketName
+                  S3KeyPrefix: !Ref S3KeyPrefix
             TimeoutInMinutes: 30
 Metadata:
     'AWS::CloudFormation::Interface':

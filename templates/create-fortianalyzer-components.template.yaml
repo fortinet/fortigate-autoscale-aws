@@ -138,9 +138,13 @@ Parameters:
             FortiAnalyzer.
 Mappings: {}
 Conditions:
-    GovCloudCondition: !Equals
-        - !Ref 'AWS::Region'
-        - us-gov-west-1
+    IfInUSGovCloud: !Or
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-east-1
+        - !Equals
+          - !Ref 'AWS::Region'
+          - us-gov-west-1
     IfAddCustomTag: !Not
         - !Equals
           - !Ref CustomIdentifier
@@ -185,8 +189,20 @@ Resources:
         Type: 'AWS::IAM::Role'
         Properties:
             ManagedPolicyArns:
-                - 'arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess'
-                - 'arn:aws:iam::aws:policy/AWSLambdaExecute'
+                - !Sub
+                  - >-
+                      arn:aws${GovCloudSuffix}:iam::aws:policy/AmazonS3ReadOnlyAccess
+                  - GovCloudSuffix: !If
+                        - IfInUSGovCloud
+                        - '-us-gov'
+                        - ''
+                - !Sub
+                  - >-
+                      arn:aws${GovCloudSuffix}:iam::aws:policy/AWSLambdaExecute
+                  - GovCloudSuffix: !If
+                        - IfInUSGovCloud
+                        - '-us-gov'
+                        - ''
             AssumeRolePolicyDocument:
                 Version: 2012-10-17
                 Statement:
@@ -202,8 +218,12 @@ Resources:
                           - Action:
                                 - 's3:GetObject'
                             Resource: !Sub
-                                - 'arn:aws:s3:::${S3BucketName}/${S3KeyPrefix}*'
-                                - S3BucketName: !Ref S3BucketName
+                                - 'arn:aws${GovCloudSuffix}:s3:::${S3BucketName}/${S3KeyPrefix}*'
+                                - GovCloudSuffix: !If
+                                      - IfInUSGovCloud
+                                      - '-us-gov'
+                                      - ''
+                                  S3BucketName: !Ref S3BucketName
                                   S3KeyPrefix: !Ref S3KeyPrefix
                             Effect: Allow
                   PolicyName: fortigate-autoscale-s3-access-policy
@@ -272,11 +292,14 @@ Resources:
                 ObjectPaths: functions/packages/fgt-as-handler.zip
             TemplateURL: !Sub
                 - >-
-                    https://${S3BucketName}.${S3Region}.amazonaws.com/${S3KeyPrefix}templates/copy-objects.template.yaml
-                - S3Region: !If
-                      - GovCloudCondition
-                      - s3-us-gov-west-1
-                      - s3
+                    https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/copy-objects.template.yaml
+                - S3SubDomain: !If
+                      - IfInUSGovCloud
+                      - s3-
+                      - s3.
+                  Region: !Ref 'AWS::Region'
+                  S3BucketName: !Ref S3BucketName
+                  S3KeyPrefix: !Ref S3KeyPrefix
             TimeoutInMinutes: 10
     LambdaFunctionFazHandler:
         Type: 'AWS::Lambda::Function'
@@ -331,7 +354,13 @@ Resources:
                           Service: lambda.amazonaws.com
                 Version: 2012-10-17
             ManagedPolicyArns:
-                - 'arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole'
+                - !Sub
+                  - >-
+                      arn:aws${GovCloudSuffix}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+                  - GovCloudSuffix: !If
+                        - IfInUSGovCloud
+                        - '-us-gov'
+                        - ''
             Path: /
             Policies:
                 - PolicyName: faz-handler-inline-policy
@@ -349,10 +378,14 @@ Resources:
                                 - 'dynamodb:UpdateItem'
                             Resource: !Sub
                                 - >-
-                                    arn:aws:dynamodb:${AWS_REGION}:${AWS_ACCOUNT_ID}:table/${TABLE_NAME_PREFIX}*
-                                - AWS_REGION: !Ref 'AWS::Region'
-                                  AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
-                                  TABLE_NAME_PREFIX: !Ref ResourceTagPrefix
+                                    arn:aws${GovCloudSuffix}:dynamodb:${Region}:${AccountId}:table/${ResourcePrefix}*
+                                - GovCloudSuffix: !If
+                                      - IfInUSGovCloud
+                                      - '-us-gov'
+                                      - ''
+                                  Region: !Ref 'AWS::Region'
+                                  AccountId: !Ref 'AWS::AccountId'
+                                  ResourcePrefix: !Ref ResourceTagPrefix
                           - Effect: Allow
                             Action:
                                 - 'ec2:DescribeVpcs'
@@ -365,11 +398,16 @@ Resources:
                                 - 'lambda:InvokeAsync'
                             Resource: !Sub
                                 - >-
-                                    arn:aws:lambda:${AWS_REGION}:${AWS_ACCOUNT_ID}:function:${CUSTOM_ID}-${UNIQUE_ID}*
-                                - AWS_REGION: !Ref 'AWS::Region'
-                                  AWS_ACCOUNT_ID: !Ref 'AWS::AccountId'
-                                  CUSTOM_ID: !Ref CustomIdentifier
-                                  UNIQUE_ID: !Ref UniqueId
+                                    arn:aws${GovCloudSuffix}:lambda:${Region}:${AccountId}:function:${CustomId}-${UniqueId}*
+                                - GovCloudSuffix: !If
+                                      - IfInUSGovCloud
+                                      - '-us-gov'
+                                      - ''
+                                  Region: !Ref 'AWS::Region'
+                                  AccountId: !Ref 'AWS::AccountId'
+                                  ResourcePrefix: !Ref ResourceTagPrefix
+                                  CustomId: !Ref CustomIdentifier
+                                  UniqueId: !Ref UniqueId
                       Version: 2012-10-17
         Type: 'AWS::IAM::Role'
     IamPolicyFazHandler:
@@ -381,7 +419,13 @@ Resources:
                     - Effect: Allow
                       Action:
                           - 'kms:Decrypt'
-                      Resource: 'arn:aws:kms:*:*:key/*'
+                      Resource: !Sub
+                          - >-
+                              arn:aws${GovCloudSuffix}:kms:*:*:key/*
+                          - GovCloudSuffix: !If
+                                - IfInUSGovCloud
+                                - '-us-gov'
+                                - ''
                     - Effect: Allow
                       Action:
                           - 'lambda:GetFunction'
