@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add support for deploying to the US gov cloud regions
 
+### Changed
+
+- All Trinsit Gateway VPN connections now use DF Group 14 and SHA256, previously used DF Group 2 and SHA128
+
 ## [3.2.1] - 2021-01-26
 
 ### Added
