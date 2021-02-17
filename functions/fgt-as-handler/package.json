@@ -1,6 +1,6 @@
 {
     "name": "fgt-as-handler",
-    "version": "3.2.2",
+    "version": "3.3.0",
     "description": "FortiGate Autoscale Handler function for AWS.",
     "main": "index.js",
     "scripts": {},
