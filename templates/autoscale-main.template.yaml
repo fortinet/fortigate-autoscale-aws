@@ -487,17 +487,24 @@ Rules:
                   - !Equals
                     - !Ref FortiAnalyzerAutoscaleAdminUsername
                     - ''
-              AssertDescription: If FortiAnalyzer integration set to 'yes', the 'Autoscale admin username' parameter must not be empty.
+              AssertDescription: >-
+                  If FortiAnalyzer integration set to 'yes', the 'Autoscale
+                  admin username' parameter must not be empty.
             - Assert: !Not
                   - !Equals
                     - !Ref FortiAnalyzerAutoscaleAdminPassword
                     - ''
-              AssertDescription: If FortiAnalyzer integration set to 'yes', the 'Autoscale admin password' parameter must not be empty.
+              AssertDescription: >-
+                  If FortiAnalyzer integration set to 'yes', the 'Autoscale
+                  admin password' parameter must not be empty.
             - Assert: !Not
                   - !Equals
                     - !Ref FortiAnalyzerCustomPrivateIpAddress
                     - ''
-              AssertDescription: If FortiAnalyzer integration set to 'yes', the 'FortiAnalyzer private IP address' parameter must not be empty.
+              AssertDescription: >-
+                  If FortiAnalyzer integration set to 'yes', the
+                  'FortiAnalyzer private IP address' parameter must not be
+                  empty.
 Conditions:
     IfInUSGovCloud: !Or
         - !Equals
@@ -577,174 +584,208 @@ Conditions:
 Mappings:
     ProductVersionMap:
         FortiGateByol:
-            '623': FGTVM64BYOL623
-            '644': FGTVM64BYOL644
+            '625': FGTVM64BYOL625
+            '646': FGTVM64BYOL646
+            '700': FGTVM64BYOL700
         FortiGatePayg:
-            '623': FGTVM64PAYG623
-            '644': FGTVM64PAYG644
+            '625': FGTVM64PAYG625
+            '646': FGTVM64PAYG646
+            '700': FGTVM64PAYG700
         FortiAnalyzerPayg:
             '625': FAZVM64PAYG625
-            '644': FAZVM64PAYG644
+            '646': FAZVM64PAYG646
     AWSAMIRegionMap:
         AMI:
-            FGTVM64BYOL623: >-
-                aws-marketplace/FortiGate-VM64-AWS build8404 (6.2.3)
-                GA-e5936f4a-0d69-479f-919c-d5e158bd4d12-ami-01c5698f7658a8322.4
-            FGTVM64PAYG623: >-
-                aws-marketplace/FortiGate-VM64-AWSONDEMAND build8404 (6.2.3)
-                GA-3124a694-441c-4ff1-8bf7-4d153be424a6-ami-0462507a813be3282.4
+            FGTVM64BYOL700: >-
+                aws-marketplace/FortiGate-VM64-AWS build0066 (7.0.0)
+                GA-e5936f4a-0d69-479f-919c-d5e158bd4d12
+            FGTVM64BYOL646: >-
+                aws-marketplace/FortiGate-VM64-AWS build1879 (6.4.6)
+                GA-e5936f4a-0d69-479f-919c-d5e158bd4d12
+            FGTVM64BYOL625: >-
+                aws-marketplace/FortiGate-VM64-AWS build1142 (6.2.5)
+                GA-e5936f4a-0d69-479f-919c-d5e158bd4d12-ami-00bbcf1a9e105fdd9.4
+            FGTVM64PAYG700: >-
+                aws-marketplace/FortiGate-VM64-AWSONDEMAND build0066 (7.0.0)
+                GA-3124a694-441c-4ff1-8bf7-4d153be424a6
+            FGTVM64PAYG646: >-
+                aws-marketplace/FortiGate-VM64-AWSONDEMAND build1879 (6.4.6)
+                GA-3124a694-441c-4ff1-8bf7-4d153be424a6
+            FGTVM64PAYG625: >-
+                aws-marketplace/FortiGate-VM64-AWSONDEMAND build1142 (6.2.5)
+                GA-3124a694-441c-4ff1-8bf7-4d153be424a6-ami-039c7057c0cb2f28c.4
+            FAZVM64PAYG646: >-
+                aws-marketplace/FortiAnalyzer VM64-AWSOnDemand build2363 (6.4.6)
+                GA-5bc06b01-2e8b-4205-b84c-8ac24e5925cb
             FAZVM64PAYG625: >-
                 aws-marketplace/FortiAnalyzer VM64-AWSOnDemand build1307 (6.2.5)
                 GA-5bc06b01-2e8b-4205-b84c-8ac24e5925cb-ami-0ad43fcfba0fdf465.4
-            FGTVM64BYOL644: >-
-                aws-marketplace/FortiGate-VM64-AWS build1803 (6.4.4)
-                GA-e5936f4a-0d69-479f-919c-d5e158bd4d12-ami-0e853a95f885d1c2f.4
-            FGTVM64PAYG644: >-
-                aws-marketplace/FortiGate-VM64-AWSONDEMAND build1803 (6.4.4)
-                GA-3124a694-441c-4ff1-8bf7-4d153be424a6-ami-0a3106ba12de96d5d.4
-            FAZVM64PAYG644: >-
-                aws-marketplace/FortiAnalyzer VM64-AWSOnDemand build2253 (6.4.4)
-                GA-5bc06b01-2e8b-4205-b84c-8ac24e5925cb-ami-0c06f9f19170442e4.4
         ap-east-1:
-            FGTVM64BYOL623: ami-0bfc475f9b1de6da9
-            FGTVM64PAYG623: ami-0437be57fc361c67b
+            FGTVM64BYOL700: ami-04c86a4d790dfc955
+            FGTVM64BYOL646: ami-0c494d02920054924
+            FGTVM64BYOL625: ami-0bc80777e8ecd2fd4
+            FGTVM64PAYG700: ami-02148e751d8ce6c1d
+            FGTVM64PAYG646: ami-0a001d08d7b5d18a0
+            FGTVM64PAYG625: ami-0f87879707d7eb53b
+            FAZVM64PAYG646: ami-0b3f2ebec825fe9b2
             FAZVM64PAYG625: ami-02cd3bc5abdee1e2b
-            FGTVM64BYOL644: ami-0825413a2e42daea8
-            FGTVM64PAYG644: ami-06fd2d4785b68d8cf
-            FAZVM64PAYG644: ami-07fd779d4a727d93f
         ap-northeast-1:
-            FGTVM64BYOL623: ami-0bc8cacacf3dfcfc8
-            FGTVM64PAYG623: ami-0444162d604179bf6
+            FGTVM64BYOL700: ami-0656212a93166e13f
+            FGTVM64BYOL646: ami-0ac940c7a68e05199
+            FGTVM64BYOL625: ami-03a44d551d2655520
+            FGTVM64PAYG700: ami-0c549c1d962b7cc28
+            FGTVM64PAYG646: ami-0b81ee38d9205761f
+            FGTVM64PAYG625: ami-0719f5a76c460f5d5
+            FAZVM64PAYG646: ami-0372eced64d39b113
             FAZVM64PAYG625: ami-058bb5281554ea853
-            FGTVM64BYOL644: ami-0ede7fceeb91d9ec4
-            FGTVM64PAYG644: ami-0c84d4defa5bf575f
-            FAZVM64PAYG644: ami-035be6dbc81d5f87b
         ap-northeast-2:
-            FGTVM64BYOL623: ami-0a2a06f3cbde68482
-            FGTVM64PAYG623: ami-065b67d14c722617a
+            FGTVM64BYOL700: ami-00eda4a12b5e6abf3
+            FGTVM64BYOL646: ami-080aac17979acbe8a
+            FGTVM64BYOL625: ami-0b23bc07c2fa3e877
+            FGTVM64PAYG700: ami-040206dd95f5dae4d
+            FGTVM64PAYG646: ami-0f69a72652e376805
+            FGTVM64PAYG625: ami-0a6031ab5eab79c20
+            FAZVM64PAYG646: ami-026b4cfa5d22a63a4
             FAZVM64PAYG625: ami-091491ec939b91b4a
-            FGTVM64BYOL644: ami-051e5f232fb9e8047
-            FGTVM64PAYG644: ami-05bcba53c232cc81c
-            FAZVM64PAYG644: ami-046c978f6fd21f643
         ap-south-1:
-            FGTVM64BYOL623: ami-053b6c12f13183b41
-            FGTVM64PAYG623: ami-0f6693857523585b8
+            FGTVM64BYOL700: ami-005f774c3443d956e
+            FGTVM64BYOL646: ami-0e74793df70561ae0
+            FGTVM64BYOL625: ami-0b68a611afe49fc71
+            FGTVM64PAYG700: ami-07def664c3a7d57b8
+            FGTVM64PAYG646: ami-0a40a56775ad40c3c
+            FGTVM64PAYG625: ami-0fef6a98991903a53
+            FAZVM64PAYG646: ami-090e429c16342495e
             FAZVM64PAYG625: ami-0f9202563d8cf347d
-            FGTVM64BYOL644: ami-0d1d3ce256537fe84
-            FGTVM64PAYG644: ami-037195aab5c0862bb
-            FAZVM64PAYG644: ami-0fa25732d4996dd06
         ap-southeast-1:
-            FGTVM64BYOL623: ami-039c20a560db91564
-            FGTVM64PAYG623: ami-0155fb808596ae522
+            FGTVM64BYOL700: ami-0bc23aee33e9c0b6c
+            FGTVM64BYOL646: ami-069f5672f4dd9dc3e
+            FGTVM64BYOL625: ami-0549e633fb851ac8d
+            FGTVM64PAYG700: ami-0bec3fa7b49492202
+            FGTVM64PAYG646: ami-039794888c9b1e500
+            FGTVM64PAYG625: ami-05828bd3f0a3db641
+            FAZVM64PAYG646: ami-0629876ac75c8be66
             FAZVM64PAYG625: ami-048f31c63e075d14e
-            FGTVM64BYOL644: ami-0af57535c61bc6c30
-            FGTVM64PAYG644: ami-07c7d2b7860822939
-            FAZVM64PAYG644: ami-051c88be1e0e298de
         ap-southeast-2:
-            FGTVM64BYOL623: ami-0fce8cb38dad71632
-            FGTVM64PAYG623: ami-0b67711c6be07aa0b
+            FGTVM64BYOL700: ami-0241253d4175098df
+            FGTVM64BYOL646: ami-0edb09abd4de17b20
+            FGTVM64BYOL625: ami-0e0aaee103a2bcbdb
+            FGTVM64PAYG700: ami-0a7013c7c28f2c667
+            FGTVM64PAYG646: ami-091b98549e5675bbe
+            FGTVM64PAYG625: ami-0f4fab7f013056f76
+            FAZVM64PAYG646: ami-01761ede87089faf1
             FAZVM64PAYG625: ami-079ef4c6aca62da73
-            FGTVM64BYOL644: ami-0cdb73f24016bdba4
-            FGTVM64PAYG644: ami-0e9c903b7a4fa5504
-            FAZVM64PAYG644: ami-0f9aad8c8006468ea
         ca-central-1:
-            FGTVM64BYOL623: ami-047aac44951feb9fb
-            FGTVM64PAYG623: ami-099941e57393c2225
+            FGTVM64BYOL700: ami-00f4cf5a2ec67f01a
+            FGTVM64BYOL646: ami-0d8e2e78e928def11
+            FGTVM64BYOL625: ami-004648d19cfd860e7
+            FGTVM64PAYG700: ami-02d3b40ce0f2be79e
+            FGTVM64PAYG646: ami-08ac0958fe75153e2
+            FGTVM64PAYG625: ami-0d612c780a379a0fa
+            FAZVM64PAYG646: ami-0196e5f5f42d24113
             FAZVM64PAYG625: ami-00f47a3e5f20cafa1
-            FGTVM64BYOL644: ami-0cf732b7a31e698d4
-            FGTVM64PAYG644: ami-0cd53df921304e190
-            FAZVM64PAYG644: ami-0919d45543b330822
         eu-central-1:
-            FGTVM64BYOL623: ami-050d93bdbc31fcc64
-            FGTVM64PAYG623: ami-0c380ca68f2b1f6e8
+            FGTVM64BYOL700: ami-0fbc69c41159026cd
+            FGTVM64BYOL646: ami-0529297f63bef8b4d
+            FGTVM64BYOL625: ami-027d165eaf560c9eb
+            FGTVM64PAYG700: ami-07a164a40b3fab627
+            FGTVM64PAYG646: ami-0781f07684853501c
+            FGTVM64PAYG625: ami-074ed751bba670031
+            FAZVM64PAYG646: ami-027e27b0fbf34a4af
             FAZVM64PAYG625: ami-0c15ecda03070ed9d
-            FGTVM64BYOL644: ami-05b3feef6ce4eb779
-            FGTVM64PAYG644: ami-0243001b5a7ac84fa
-            FAZVM64PAYG644: ami-0f078b078626d80b5
         eu-north-1:
-            FGTVM64BYOL623: ami-071a868b96c93d6da
-            FGTVM64PAYG623: ami-0d49417aa3a3912e1
+            FGTVM64BYOL700: ami-0cfc06894012624ab
+            FGTVM64BYOL646: ami-0d565793fcafcc38d
+            FGTVM64BYOL625: ami-081a7b2f8ad208918
+            FGTVM64PAYG700: ami-091492883a1e4e2b6
+            FGTVM64PAYG646: ami-026922081bf660a55
+            FGTVM64PAYG625: ami-018fddc5a66efd4f7
+            FAZVM64PAYG646: ami-0dd417b29b9491506
             FAZVM64PAYG625: ami-0663c71f97fc203b6
-            FGTVM64BYOL644: ami-04441fa360060eb3a
-            FGTVM64PAYG644: ami-0c72003c6b2d1a573
-            FAZVM64PAYG644: ami-026f5e60c7399075e
         eu-west-1:
-            FGTVM64BYOL623: ami-013de57d4a8680ade
-            FGTVM64PAYG623: ami-0874d1d29263b27ff
+            FGTVM64BYOL700: ami-05cd458dd16b40fc8
+            FGTVM64BYOL646: ami-05d1628fbb3c4578a
+            FGTVM64BYOL625: ami-06e464877bd092274
+            FGTVM64PAYG700: ami-0fcd573f69714ed57
+            FGTVM64PAYG646: ami-0313241e3849e200d
+            FGTVM64PAYG625: ami-02c09d8eb6fd583f9
+            FAZVM64PAYG646: ami-0b13842c5eb85ae11
             FAZVM64PAYG625: ami-0b8ea17ab0826a944
-            FGTVM64BYOL644: ami-049e7c376b1a39b6e
-            FGTVM64PAYG644: ami-080914b57c95affc4
-            FAZVM64PAYG644: ami-0b2fb79249175144d
         eu-west-2:
-            FGTVM64BYOL623: ami-0aad5e076fa22e8c4
-            FGTVM64PAYG623: ami-04eba63bb19dbeebe
+            FGTVM64BYOL700: ami-06d26c9c2b173184d
+            FGTVM64BYOL646: ami-0317f3b2e62373002
+            FGTVM64BYOL625: ami-0ed6d602c754a9c40
+            FGTVM64PAYG700: ami-0deb30f490c8dd07f
+            FGTVM64PAYG646: ami-094ac06a8c76d4ab9
+            FGTVM64PAYG625: ami-05c9d427d1f35d743
+            FAZVM64PAYG646: ami-00029a49066218b92
             FAZVM64PAYG625: ami-0b4528aca3c1b55bd
-            FGTVM64BYOL644: ami-062610ff75716be70
-            FGTVM64PAYG644: ami-0a042f452e36fe070
-            FAZVM64PAYG644: ami-0def75eedbbecaa85
         eu-west-3:
-            FGTVM64BYOL623: ami-092a7d4eb40332b32
-            FGTVM64PAYG623: ami-0c104a0848b644152
+            FGTVM64BYOL700: ami-0d25245082df1074a
+            FGTVM64BYOL646: ami-00a280c8a4261248d
+            FGTVM64BYOL625: ami-084ea96a1e1c65c58
+            FGTVM64PAYG700: ami-0d16a8df07a13375d
+            FGTVM64PAYG646: ami-02e98b116ca7b3e07
+            FGTVM64PAYG625: ami-070a87ca27e3f49a8
+            FAZVM64PAYG646: ami-0bcb9fea61d390d17
             FAZVM64PAYG625: ami-0f6435b452cf7c82f
-            FGTVM64BYOL644: ami-07ad717aeb7589448
-            FGTVM64PAYG644: ami-06839d1b6c5b22390
-            FAZVM64PAYG644: ami-07b645d6d8485fc28
         me-south-1:
-            FGTVM64BYOL623: ami-0063dcdb7c00646a5
-            FGTVM64PAYG623: ami-0fcd028d7d86a0695
+            FGTVM64BYOL700: ami-051f14f36368e32ed
+            FGTVM64BYOL646: ami-06d5df3d3fa7ee303
+            FGTVM64BYOL625: ami-00e1681caf8c9fa9e
+            FGTVM64PAYG700: ami-04a68927aa0cc21ab
+            FGTVM64PAYG646: ami-086944e0448c9dbed
+            FGTVM64PAYG625: ami-00adf30362358258c
+            FAZVM64PAYG646: ami-0971ecc780edeeee2
             FAZVM64PAYG625: ami-048340a2b75936111
-            FGTVM64BYOL644: ami-002240bf66e41453e
-            FGTVM64PAYG644: ami-07eee8c78fb8bbe6e
-            FAZVM64PAYG644: ami-01df942ae37053e64
         sa-east-1:
-            FGTVM64BYOL623: ami-0feee4be0b03e070d
-            FGTVM64PAYG623: ami-04de901f24e8532db
+            FGTVM64BYOL700: ami-089b5807bf62919a0
+            FGTVM64BYOL646: ami-0bb84b0b8fe08f99e
+            FGTVM64BYOL625: ami-0bf329b3e3b77a5f7
+            FGTVM64PAYG700: ami-01ab2ddf70adbae51
+            FGTVM64PAYG646: ami-0d4a43052db2cfb3d
+            FGTVM64PAYG625: ami-0a9f0f421cf4664d9
+            FAZVM64PAYG646: ami-08ab49f8a1f5083f2
             FAZVM64PAYG625: ami-05bbb60d2960f36a4
-            FGTVM64BYOL644: ami-04acf42b911191b07
-            FGTVM64PAYG644: ami-01576fcc0419c1be7
-            FAZVM64PAYG644: ami-0d92dc6a490d69e2b
         us-east-1:
-            FGTVM64BYOL623: ami-056b8cbed90f235f7
-            FGTVM64PAYG623: ami-027f258cda3df62de
+            FGTVM64BYOL700: ami-0eb86d725cdceaebc
+            FGTVM64BYOL646: ami-076ce1e827764065b
+            FGTVM64BYOL625: ami-0c006e740dba8ed86
+            FGTVM64PAYG700: ami-01a54d044634cf0f6
+            FGTVM64PAYG646: ami-02dfec160890bf070
+            FGTVM64PAYG625: ami-0622e983a045449fb
+            FAZVM64PAYG646: ami-0fc8788974f1efa85
             FAZVM64PAYG625: ami-0aec62149ff70fcbf
-            FGTVM64BYOL644: ami-048bcc579fae59b10
-            FGTVM64PAYG644: ami-07a2b724815412830
-            FAZVM64PAYG644: ami-0459e4a47e0821ee5
         us-east-2:
-            FGTVM64BYOL623: ami-02dfca9796bfaff10
-            FGTVM64PAYG623: ami-05a4ac8312f7911b9
+            FGTVM64BYOL700: ami-04e4d720d31e93509
+            FGTVM64BYOL646: ami-0d10c9cc98e5d13ec
+            FGTVM64BYOL625: ami-091a2d656744ed01a
+            FGTVM64PAYG700: ami-03ab0acba901bbec4
+            FGTVM64PAYG646: ami-045bf7672b62be89c
+            FGTVM64PAYG625: ami-0028f84cdc301b03f
+            FAZVM64PAYG646: ami-05ab479c695965c84
             FAZVM64PAYG625: ami-0185408b148b00d58
-            FGTVM64BYOL644: ami-0415913c8102a5fd6
-            FGTVM64PAYG644: ami-0edd7a2e2ddd15b13
-            FAZVM64PAYG644: ami-09e922415dfd5c081
         us-gov-east-1:
-            FGTVM64BYOL623: ami-098e9e192874d72ef
-            FGTVM64PAYG623: ami-0853720f0c23a9aa5
             FAZVM64PAYG625: ami-f7997686
-            FGTVM64BYOL644: ami-0d05dbda9d9543ffd
-            FGTVM64PAYG644: ami-03395c0db743e1d60
-            FAZVM64PAYG644: ami-08a93667c56dbc0dd
         us-gov-west-1:
-            FGTVM64BYOL623: ami-0322d6594b0ed4e2a
-            FGTVM64PAYG623: ami-09c92a5b0035c8558
             FAZVM64PAYG625: ami-71e0dc10
-            FGTVM64BYOL644: ami-086853fbf8afb836b
-            FGTVM64PAYG644: ami-0eb85718115f004ee
-            FAZVM64PAYG644: ami-051552e76235b643a
         us-west-1:
-            FGTVM64BYOL623: ami-012fa84a251f3e63f
-            FGTVM64PAYG623: ami-0f54d37e47fa994a0
+            FGTVM64BYOL700: ami-01c16bdc91332f7ab
+            FGTVM64BYOL646: ami-0d0ee5453bacacdc3
+            FGTVM64BYOL625: ami-0882a73188ba2e149
+            FGTVM64PAYG700: ami-0d47e4065bc75afd0
+            FGTVM64PAYG646: ami-088426c38c82189c4
+            FGTVM64PAYG625: ami-00be71abeaee9792a
+            FAZVM64PAYG646: ami-0e99754cbbad84a96
             FAZVM64PAYG625: ami-0362a553a3d81e6ab
-            FGTVM64BYOL644: ami-0c7336886c55caf99
-            FGTVM64PAYG644: ami-08f558c88d066cd22
-            FAZVM64PAYG644: ami-0e0bad2ae16001d5a
         us-west-2:
-            FGTVM64BYOL623: ami-00efdd54f8b4755da
-            FGTVM64PAYG623: ami-02b9cc036cab1071d
+            FGTVM64BYOL700: ami-06001decb1cc65300
+            FGTVM64BYOL646: ami-0a79ef31f760b0a6d
+            FGTVM64BYOL625: ami-0dd91f0e4b4c0c749
+            FGTVM64PAYG700: ami-0bcde5f20befaef29
+            FGTVM64PAYG646: ami-0aeebdd62d4b9393e
+            FGTVM64PAYG625: ami-05cfe4f5761707079
+            FAZVM64PAYG646: ami-0b8b854d1521adc10
             FAZVM64PAYG625: ami-03babf421c5f09e17
-            FGTVM64BYOL644: ami-081dc0143534e7a10
-            FGTVM64PAYG644: ami-00b7c2fdcc89f090a
-            FAZVM64PAYG644: ami-011e9794e0214cd9a
     ProtocolPortMap:
         HTTP:
             defaultport: '80'
@@ -789,13 +830,15 @@ Resources:
         Properties:
             ManagedPolicyArns:
                 - !Sub
-                  - 'arn:aws${GovCloudSuffix}:iam::aws:policy/AmazonS3ReadOnlyAccess'
+                  - >-
+                      arn:aws${GovCloudSuffix}:iam::aws:policy/AmazonS3ReadOnlyAccess
                   - GovCloudSuffix: !If
                         - IfInUSGovCloud
                         - '-us-gov'
                         - ''
                 - !Sub
-                  - 'arn:aws${GovCloudSuffix}:iam::aws:policy/AWSLambdaExecute'
+                  - >-
+                      arn:aws${GovCloudSuffix}:iam::aws:policy/AWSLambdaExecute
                   - GovCloudSuffix: !If
                         - IfInUSGovCloud
                         - '-us-gov'
@@ -818,14 +861,16 @@ Resources:
                                 - !If
                                   - IfUseCustomAssetContainer
                                   - !Sub
-                                    - 'arn:aws${GovCloudSuffix}:s3:::${CustomContainer}'
+                                    - >-
+                                        arn:aws${GovCloudSuffix}:s3:::${CustomContainer}
                                     - GovCloudSuffix: !If
                                           - IfInUSGovCloud
                                           - '-us-gov'
                                           - ''
                                       CustomContainer: !Ref CustomAssetContainer
                                   - !Sub
-                                    - 'arn:aws${GovCloudSuffix}:s3:::${S3BucketName}'
+                                    - >-
+                                        arn:aws${GovCloudSuffix}:s3:::${S3BucketName}
                                     - GovCloudSuffix: !If
                                           - IfInUSGovCloud
                                           - '-us-gov'

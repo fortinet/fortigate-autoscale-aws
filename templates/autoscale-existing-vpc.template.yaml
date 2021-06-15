@@ -116,10 +116,11 @@ Parameters:
             more information, see https://aws.amazon.com/ec2/instance-types/.
     FortiOSVersion:
         Type: String
-        Default: 6.4.4
+        Default: 7.0.0
         AllowedValues:
-            - 6.4.4
-            - 6.2.3
+            - 7.0.0
+            - 6.4.6
+            - 6.2.5
         ConstraintDescription: must be a valid FortiOS version from the selection.
         Description: FortiOS version supported by FortiGate Autoscale for AWS.
     LifecycleHookTimeout:
@@ -428,9 +429,9 @@ Parameters:
             https://aws.amazon.com/ec2/instance-types/
     FortiAnalyzerVersion:
         Type: String
-        Default: 6.4.4
+        Default: 6.4.6
         AllowedValues:
-            - 6.4.4
+            - 6.4.6
             - 6.2.5
         ConstraintDescription: must choose from the provided options.
         Description: >-
@@ -484,17 +485,24 @@ Rules:
                   - !Equals
                     - !Ref FortiAnalyzerAutoscaleAdminUsername
                     - ''
-              AssertDescription: If FortiAnalyzer integration set to 'yes', the 'Autoscale admin username' parameter must not be empty.
+              AssertDescription: >-
+                  If FortiAnalyzer integration set to 'yes', the 'Autoscale
+                  admin username' parameter must not be empty.
             - Assert: !Not
                   - !Equals
                     - !Ref FortiAnalyzerAutoscaleAdminPassword
                     - ''
-              AssertDescription: If FortiAnalyzer integration set to 'yes', the 'Autoscale admin password' parameter must not be empty.
+              AssertDescription: >-
+                  If FortiAnalyzer integration set to 'yes', the 'Autoscale
+                  admin password' parameter must not be empty.
             - Assert: !Not
                   - !Equals
                     - !Ref FortiAnalyzerCustomPrivateIpAddress
                     - ''
-              AssertDescription: If FortiAnalyzer integration set to 'yes', the 'FortiAnalyzer private IP address' parameter must not be empty.
+              AssertDescription: >-
+                  If FortiAnalyzer integration set to 'yes', the
+                  'FortiAnalyzer private IP address' parameter must not be
+                  empty.
             - Assert: !Not
                   - !Equals
                     - !Ref VpcEndpointId
@@ -622,7 +630,7 @@ Resources:
                 FortiAnalyzerAutoscaleAdminPassword: !If
                     - IfIntegrateFortiAnalyzer
                     - !Ref FortiAnalyzerAutoscaleAdminPassword
-                    - 'NoValuePlaceHolderForTemplateParameterWithMinLength'
+                    - NoValuePlaceHolderForTemplateParameterWithMinLength
                 FortiAnalyzerCustomPrivateIpAddress: !Ref FortiAnalyzerCustomPrivateIpAddress
             TemplateURL: !Sub
                 - >-
