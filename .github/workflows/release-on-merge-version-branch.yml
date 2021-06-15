@@ -1,0 +1,110 @@
+name: >-
+  Automatically create a release if there's a pull request merged from a version branch.
+on:
+  pull_request:
+    branches:
+      - main
+    types: [closed]
+  workflow_dispatch:
+    inputs:
+      pr-number:
+        description: >-
+          The pull request id that triggers the release (for manual trigger only)
+        required: false
+jobs:
+  main_job:
+    runs-on: ubuntu-latest
+    name: process pull request merge event
+    # conditionally run only when the pull request is merged.
+    if: github.event.pull_request.merged == true || github.event.inputs.pr-number != ''
+    steps:
+      # check if this pull request coming from a version-branch
+      # if yes then proceed to create a release
+      # if no then skip the following steps
+      - id: fetch-versioning-info
+        name: fetch versioning info
+        uses: fortinet/github-action-version-branch@1.1.2
+        with:
+          pr-number: ${{ github.event.number || github.event.inputs.pr-number}}
+          github-token: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      # create a release
+      - name: 'prep: git checkout'
+        uses: actions/checkout@v2
+      - name: 'prep: install dependencies'
+        run: npm ci
+      - name: build project
+        run: npm run build
+      - name: make release assets
+        # the make release command may vary
+        run: npm run make-dist
+      - id: create-release
+        name: create release
+        # run only if the merged pull request is from a version branch
+        if: ${{ steps['fetch-versioning-info'].outputs['is-version-branch'] == 'true' }}
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ steps['fetch-versioning-info'].outputs['head-version'] }} # Use the output from the `fetch-versioning-info` step
+          release_name: ${{ steps['fetch-versioning-info'].outputs['head-version'] }} # Use the output from the `fetch-versioning-info` step
+          draft: false
+          prerelease: ${{ steps['fetch-versioning-info'].outputs['is-prerelease'] == 'true' }} # Use the output from the `fetch-versioning-info` step
+      - id: upload-release-asset
+        name: upload release assets
+        # run only if the merged pull request is from a version branch
+        if: ${{ steps['fetch-versioning-info'].outputs['is-version-branch'] == 'true' }}
+        uses: svenstaro/upload-release-action@2.2.0
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps['fetch-versioning-info'].outputs['head-version'] }} # Use the output from the `fetch-versioning-info` step
+          prerelease: ${{ steps['fetch-versioning-info'].outputs['is-prerelease'] == 'true' }} # Use the output from the `fetch-versioning-info` step
+          file: ./dist/artifacts/*
+          file_glob: true
+          overwrite: true
+      # TODO: if GitHub has official actions that support dispatching repository_workflow event,
+      # can migrate the upload_build_artifacts_to_aws_s3 into a separate workflow file.
+      # Now only integrate the workflow in one workflow file.
+      # fire a repository_dispatch event to trigger the next workflow that uploads the build artifacts to a target location in AWS S3
+      - id: trigger_upload_build_artifacts_to_aws_s3
+        name: Trigger upload build artifacts to AWS S3
+        if: ${{ success() }}
+        run: echo done
+  upload_build_artifacts_to_aws_s3:
+      name: upload build artifacts to aws s3
+      runs-on: ubuntu-latest
+      needs: ['main_job']
+      environment: devops_automation
+      env:
+        AWS_REGION: us-west-2
+      steps:
+        # checkout the branch
+        - name: Checkout code
+          uses: actions/checkout@v2
+          with:
+            # see: https://github.com/actions/checkout
+            # Number of commits to fetch. 0 indicates all history for all branches and tags.
+            fetch-depth: 0
+        # (required) install dependencies
+        - name: Install
+          run: npm ci
+        - name: Build artifacts
+          run: npm run build-artifacts
+        - name: Unzip build artifacts
+          run: npm run unzip-artifacts
+        - id: configure_aws_cli_credentials
+          name: conigure AWS CLI credentials
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{env.AWS_REGION}}
+        - id: sync_to_s3_current_tag
+          name: sync files to AWS s3 location (current tag)
+          run: |
+            aws s3 sync dist s3://fortinet-github-aws-release-artifacts/fortigate-autoscale-aws/${{ jobs.main_job.steps['fetch-versioning-info'].outputs['head-version'] }} --region=${{env.AWS_REGION}} --delete --acl=public-read
+        - id: sync_to_s3_main_branch
+          name: sync files to AWS s3 location (main branch)
+          run: |
+            git fetch
+            git checkout main
+            aws s3 sync dist s3://fortinet-github-aws-release-artifacts/fortigate-autoscale-aws/main --region=${{env.AWS_REGION}} --delete --acl=public-read
