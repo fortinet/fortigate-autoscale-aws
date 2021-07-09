@@ -72,6 +72,12 @@ Parameters:
         Description: >-
             The CIDR block of the selected existing VPC. This can be found in
             parentheses in the VPC ID parameter selection.
+    VpcEndpointId:
+        Type: String
+        Description: >-
+            Specify the ID of the Private VPC Endpoint associated with the existing VPC. This
+            parameter is required when deploying with an existing VPC. The Private VPC Endpoint
+            is a VPC Endpoint that has enabled the 'Private DNS names'.
     PublicSubnet1:
         Type: 'AWS::EC2::Subnet::Id'
         Description: >-
@@ -565,6 +571,9 @@ Conditions:
     IfIntegrateFortiAnalyzer: !Equals
         - !Ref FortiAnalyzerIntegrationOptions
         - 'yes'
+    IfCreateVPCEndpoint: !Equals
+        - !Ref VpcEndpointId
+        - ''
 Mappings:
     ProductVersionMap:
         FortiGateByol:
@@ -936,6 +945,7 @@ Resources:
             CidrIp: 0.0.0.0/0
     FgtAsgVpcEndpoint:
         Type: 'AWS::EC2::VPCEndpoint'
+        Condition: IfCreateVPCEndpoint
         Properties:
             VpcEndpointType: Interface
             VpcId: !Ref VpcId
@@ -957,7 +967,10 @@ Resources:
                 ResourceTagPrefix: !Ref ResourceTagPrefix
                 CustomIdentifier: !Ref CustomIdentifier
                 UniqueId: !Ref UniqueId
-                VpcEndPoint: !Ref FgtAsgVpcEndpoint
+                VpcEndPoint: !If
+                    - IfCreateVPCEndpoint
+                    - !Ref FgtAsgVpcEndpoint
+                    - !Ref VpcEndpointId
                 HandlerScriptTimeout: 300
                 ServiceScriptTimeout: 900
                 CreateByolLicenseHandler: 'yes'
