@@ -101,7 +101,7 @@ jobs:
         - id: sync_to_s3_current_tag
           name: sync files to AWS s3 location (current tag)
           run: |
-            aws s3 sync dist s3://fortinet-github-aws-release-artifacts/fortigate-autoscale-aws/${{ jobs.main_job.steps['fetch-versioning-info'].outputs['head-version'] }} --region=${{env.AWS_REGION}} --delete --acl=public-read
+            aws s3 sync dist s3://fortinet-github-aws-release-artifacts/fortigate-autoscale-aws/${{ main_job.steps['fetch-versioning-info'].outputs['head-version'] }} --region=${{env.AWS_REGION}} --delete --acl=public-read
         - id: sync_to_s3_main_branch
           name: sync files to AWS s3 location (main branch)
           run: |
