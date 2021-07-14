@@ -68,6 +68,12 @@ Parameters:
         Description: >-
             The CIDR block of the selected existing VPC. This can be found in
             parentheses in the VPC ID parameter selection.
+    VpcEndpointId:
+        Type: String
+        Description: >-
+            Specify the ID of the Private VPC Endpoint associated with the existing VPC.
+            The Private VPC Endpoint is a VPC Endpoint that has enabled the 'Private DNS names'.
+            A Private VPC Endpoint is required for FortiGate Autoscale.
     PublicSubnet1:
         Type: 'AWS::EC2::Subnet::Id'
         Description: >-
@@ -489,7 +495,11 @@ Rules:
                     - !Ref FortiAnalyzerCustomPrivateIpAddress
                     - ''
               AssertDescription: If FortiAnalyzer integration set to 'yes', the 'FortiAnalyzer private IP address' parameter must not be empty.
-
+            - Assert: !Not
+                  - !Equals
+                    - !Ref VpcEndpointId
+                    - ''
+              AssertDescription: A Private VPC Endpoint is required for FortiGate Autoscale. The 'Private VPC Endpoint ID' parameter must not be empty.
 Conditions:
     HasResourceTagPrefix: !Not
         - !Equals
@@ -547,6 +557,7 @@ Resources:
                           - !Ref 'AWS::StackId'
                 VpcCidr: !Ref VpcCidr
                 VpcId: !Ref VpcId
+                VpcEndpointId: !Ref VpcEndpointId
                 PublicSubnet1: !Ref PublicSubnet1
                 PublicSubnet2: !Ref PublicSubnet2
                 PrivateSubnet1: !Ref PrivateSubnet1
@@ -637,6 +648,7 @@ Metadata:
               Parameters:
                   - VpcId
                   - VpcCidr
+                  - VpcEndpointId
                   - PublicSubnet1
                   - PublicSubnet2
                   - PrivateSubnet1
@@ -711,6 +723,8 @@ Metadata:
                 default: VPC ID
             VpcCidr:
                 default: VPC CIDR
+            VpcEndpointId:
+                default: Private VPC Endpoint ID
             PublicSubnet1:
                 default: Autoscale subnet 1 ID
             PublicSubnet2:
