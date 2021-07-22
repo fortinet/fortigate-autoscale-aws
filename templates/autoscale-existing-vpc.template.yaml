@@ -71,9 +71,10 @@ Parameters:
     VpcEndpointId:
         Type: String
         Description: >-
-            Specify the ID of the Private VPC Endpoint associated with the existing VPC.
-            The Private VPC Endpoint is a VPC Endpoint that has enabled the 'Private DNS names'.
-            A Private VPC Endpoint is required for FortiGate Autoscale.
+            Specify the ID of the Private VPC Endpoint associated with the
+            existing VPC. The Private VPC Endpoint is a VPC Endpoint that has
+            enabled the 'Private DNS names'. A Private VPC Endpoint is required
+            for FortiGate Autoscale.
     PublicSubnet1:
         Type: 'AWS::EC2::Subnet::Id'
         Description: >-
@@ -116,8 +117,9 @@ Parameters:
             more information, see https://aws.amazon.com/ec2/instance-types/.
     FortiOSVersion:
         Type: String
-        Default: 7.0.0
+        Default: 7.0.1
         AllowedValues:
+            - 7.0.1
             - 7.0.0
             - 6.4.6
             - 6.2.5
@@ -432,7 +434,6 @@ Parameters:
         Default: 6.4.6
         AllowedValues:
             - 6.4.6
-            - 6.2.5
         ConstraintDescription: must choose from the provided options.
         Description: >-
             The FortiAnalyzer version supported by Fortinet FortiGate Auto
@@ -507,7 +508,9 @@ Rules:
                   - !Equals
                     - !Ref VpcEndpointId
                     - ''
-              AssertDescription: A Private VPC Endpoint is required for FortiGate Autoscale. The 'Private VPC Endpoint ID' parameter must not be empty.
+              AssertDescription: >-
+                  A Private VPC Endpoint is required for FortiGate Autoscale.
+                  The 'Private VPC Endpoint ID' parameter must not be empty.
 Conditions:
     HasResourceTagPrefix: !Not
         - !Equals
