@@ -560,6 +560,7 @@ Resources:
                 VpcId: !GetAtt
                     - StackCreateNewVPC
                     - Outputs.VpcId
+                VpcEndpointId: ''
                 PublicSubnet1: !GetAtt
                     - StackCreateNewVPC
                     - Outputs.PublicSubnet1Id
