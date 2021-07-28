@@ -23,7 +23,7 @@
             "jsonEncoded": false
         },
         {
-            "settingValue": "",
+            "settingValue": "test-bucket",
             "settingKey": "asset-storage-name",
             "editable": false,
             "description": "Asset storage name.",
@@ -257,6 +257,14 @@
             "settingKey": "resource-tag-prefix",
             "editable": false,
             "description": "Resource tag prefix.",
+            "jsonEncoded": false
+        },
+        ,
+        {
+            "settingValue": "true",
+            "settingKey": "terminate-unhealthy-vm",
+            "editable": true,
+            "description": "Toggle for unhealthy vm handling behaviours. Set to true to terminate unhealthy vm or set to false to keep the unhealthy vm.",
             "jsonEncoded": false
         },
         {
