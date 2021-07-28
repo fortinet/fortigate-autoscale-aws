@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { LicenseUsageRecord } from '@fortinet/fortigate-autoscale/dist/aws';
 import {
     AwsTestMan,
     createAwsApiGatewayEventHandler,
@@ -10,9 +11,8 @@ import {
     MockEC2,
     MockElbv2,
     MockLambda,
-    MockS3,
-    LicenseUsageRecord
-} from 'autoscale-core';
+    MockS3
+} from '@fortinet/fortigate-autoscale/dist/aws/test-helper';
 import { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import * as HttpStatusCode from 'http-status-codes';
 import { describe, it } from 'mocha';

@@ -5,7 +5,9 @@
 import {
     AutoscaleEnvironment,
     AwsFortiGateBootstrapTgwStrategy,
-    AwsPlatformAdapter,
+    AwsPlatformAdapter
+} from '@fortinet/fortigate-autoscale/dist/aws';
+import {
     AwsTestMan,
     createAwsApiGatewayEventHandler,
     createAwsTgwApiGatewayEventHandler,
@@ -18,7 +20,7 @@ import {
     TestAwsApiGatewayEventProxy,
     TestAwsPlatformAdaptee,
     TestAwsTgwFortiGateAutoscale
-} from 'autoscale-core';
+} from '@fortinet/fortigate-autoscale/dist/aws/test-helper';
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
 import * as HttpStatusCode from 'http-status-codes';
 import { describe, it } from 'mocha';
