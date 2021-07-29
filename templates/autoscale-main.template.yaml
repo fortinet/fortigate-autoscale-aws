@@ -478,6 +478,13 @@ Parameters:
         Description: >-
             The static private IP address allocated for the FortiAnalyzer in the
             designated subnet.
+    AutoscaleNotificationSubscriberEmail:
+        Type: String
+        AllowedPattern: >-
+            ^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$
+        ConstraintDescription: must be a valid email address.
+        Description: >-
+            The email address (AWS SNS Topic subscriber) to receive Autoscale notifications. A confirmation letter will be sent to it. Only one email address is allowed.
 Rules:
     FortiAnalyzerSupport:
         RuleCondition: !Equals
@@ -1461,6 +1468,7 @@ Resources:
             scaling-group-desired-capacity: !Ref FgtAsgDesiredCapacityPayg
             scaling-group-max-size: !Ref FgtAsgMaxSizePayg
             scaling-group-min-size: !Ref FgtAsgMinSizePayg
+            sns-topic-arn: !Ref AutoscaleSNSTopic
             transit-gateway-id: !If
                 - IfRequireTransitGatewayIntegration
                 - !GetAtt
@@ -1534,6 +1542,25 @@ Resources:
         DependsOn:
             - SaveSettings
             - StackCreateDynamoDBTable
+    AutoscaleSNSTopic:
+        Type: AWS::SNS::Topic
+        Properties:
+            DisplayName: !Sub
+                - FortiGate Autoscale (${UniqueId}) Notifications
+                - UniqueId: !Ref UniqueId
+            TopicName: !Join
+                - '-'
+                - - !Ref ResourceTagPrefix
+                  - fortigate-autoscale-notification-sns-topic
+            Tags:
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
+    AutoscaleSNSSubscription:
+        Type: AWS::SNS::Subscription
+        Properties:
+            Endpoint: !Ref AutoscaleNotificationSubscriberEmail
+            Protocol: email
+            TopicArn: !Ref AutoscaleSNSTopic
 Metadata:
     'AWS::CloudFormation::Interface':
         ParameterGroups:
@@ -1690,3 +1717,7 @@ Outputs:
               - IfBYOLOnly
               - BYOL-Only
               - Hybrid
+    AutoscaleSNSTopicArn:
+        Description: >-
+            ARN of the FortiGate Autoscale notifications (SNS Topic)
+        Value: !Ref AutoscaleSNSTopic

@@ -427,6 +427,13 @@ Parameters:
             be within the Public subnet 1 CIDR range. Required if 'FortiAnalyzer
             Integration' is set to 'yes'. If 'FortiAnalyzer Integration' is set
             to 'no', any input will be ignored.
+    AutoscaleNotificationSubscriberEmail:
+        Type: String
+        AllowedPattern: >-
+            ^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$
+        ConstraintDescription: must be a valid email address.
+        Description: >-
+            The email address (AWS SNS Topic subscriber) to receive Autoscale notifications. A confirmation letter will be sent to it. Only one email address is allowed.
 Rules:
     FortiAnalyzerSupport:
         RuleCondition: !Equals
@@ -644,6 +651,7 @@ Resources:
                     - !Ref FortiAnalyzerAutoscaleAdminPassword
                     - NoValuePlaceHolderForTemplateParameterWithMinLength
                 FortiAnalyzerCustomPrivateIpAddress: !Ref FortiAnalyzerCustomPrivateIpAddress
+                AutoscaleNotificationSubscriberEmail: !Ref AutoscaleNotificationSubscriberEmail
             TemplateURL: !Sub
                 - >-
                     https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/autoscale-main.template.yaml
@@ -702,6 +710,7 @@ Metadata:
                   - HeartBeatInterval
                   - HeartBeatLossCount
                   - HeartBeatDelayAllowance
+                  - AutoscaleNotificationSubscriberEmail
             - Label:
                   default: Transit Gateway configuration
               Parameters:
@@ -812,6 +821,8 @@ Metadata:
                 default: Autoscale admin username
             FortiAnalyzerAutoscaleAdminPassword:
                 default: Autoscale admin password
+            AutoscaleNotificationSubscriberEmail:
+                default: Autoscale Notifications subscriber email
 Outputs:
     ResourceTagPrefix:
         Description: >-
@@ -870,3 +881,9 @@ Outputs:
         Value: !GetAtt
             - StackMainWorkload
             - Outputs.FgtLicensingModel
+    AutoscaleSNSTopicArn:
+        Description: >-
+            ARN of the FortiGate Autoscale notifications (SNS Topic)
+        Value: !GetAtt
+            - StackMainWorkload
+            - Outputs.AutoscaleSNSTopicArn
