@@ -34,6 +34,10 @@ jobs:
     runs-on: ubuntu-latest
     name: main job
     steps:
+      - name: Use NodeJS version 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14'
       - name: create version branch
         id: create-branch
         uses: fortinet/github-action-version-branch@1.1.2
