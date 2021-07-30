@@ -485,10 +485,10 @@ Parameters:
     AutoscaleNotificationSubscriberEmail:
         Type: String
         AllowedPattern: >-
-            ^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$
+            ^$|^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$
         ConstraintDescription: must be a valid email address.
         Description: >-
-            The email address (AWS SNS Topic subscriber) to receive Autoscale notifications. A confirmation letter will be sent to it. Only one email address is allowed.
+            The email address (AWS SNS Topic subscriber) to receive Autoscale notifications. A confirmation letter will be sent to it. If provided, only one email address is allowed.
 Rules:
     FortiAnalyzerSupport:
         RuleCondition: !Equals
