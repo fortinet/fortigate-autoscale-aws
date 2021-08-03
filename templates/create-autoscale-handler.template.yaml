@@ -448,6 +448,23 @@ Resources:
                                     Region: !Ref 'AWS::Region'
                                     AccountId: !Ref 'AWS::AccountId'
                                     CustomId: !Ref CustomIdentifier
+                          - Effect: Allow
+                            Action:
+                                - 'sns:Publish'
+                            Resource:
+                                - !Sub
+                                  - >-
+                                      arn:aws${GovCloudSuffix}:sns:${Region}:${AccountId}:${SNSTopicName}
+                                  - GovCloudSuffix: !If
+                                        - IfInUSGovCloud
+                                        - '-us-gov'
+                                        - ''
+                                    Region: !Ref 'AWS::Region'
+                                    AccountId: !Ref 'AWS::AccountId'
+                                    SNSTopicName: !Join
+                                        - '-'
+                                        - - !Ref ResourceTagPrefix
+                                          - fortigate-autoscale-notification-sns-topic
     FgtAsgHandlerIamRoleReplaceRoutePolicy:
         Type: 'AWS::IAM::Policy'
         Condition: IfSpecifyRoutePermissionRouteTableId

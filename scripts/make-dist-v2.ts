@@ -1,8 +1,8 @@
-import path from 'path';
-import fs from 'fs';
 import { Command } from 'commander';
 import { parse as CommentJsonParse } from 'comment-json';
-import { CodePackman } from 'autoscale-core';
+import fs from 'fs';
+import path from 'path';
+import { CodePackman } from './code-packman';
 
 let projectRoot: string;
 let tsConfigJson: {

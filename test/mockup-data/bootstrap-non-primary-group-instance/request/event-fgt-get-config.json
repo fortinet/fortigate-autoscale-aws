@@ -1,6 +1,6 @@
 {
-    "resource": "/fgt-asg-handler",
-    "path": "/fgt-asg-handler",
+    "resource": "/fgt-as-handler",
+    "path": "/fgt-as-handler",
     "httpMethod": "GET",
     "headers": {
         "Accept": "*/*",
@@ -28,7 +28,7 @@
     "stageVariables": null,
     "requestContext": {
         "resourceId": "y35dtl",
-        "resourcePath": "/fgt-asg-handler",
+        "resourcePath": "/fgt-as-handler",
         "httpMethod": "GET",
         "extendedRequestId": "GoMpEFqGBcwFnUQ=",
         "requestTime": "21/Jan/2020:01:59:34 +0000",

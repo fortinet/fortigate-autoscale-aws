@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import path from 'path';
+import { AwsTestMan } from '@fortinet/fortigate-autoscale/dist/aws/test-helper';
 import { Command } from 'commander';
-import { AwsTestMan } from 'autoscale-core';
+import path from 'path';
 import {
     autoscaleHandler,
     autoscaleTgwHandler,
+    licenseHandler,
     scheduledEventHandler,
     scheduledEventTgwHandler,
-    tgwLambdaPeerInvocationHandler,
-    licenseHandler
+    tgwLambdaPeerInvocationHandler
 } from '../functions/fgt-as-handler/func';
 
 const REAL_PROJECT_ROOT = path.resolve(__dirname, '../../');
