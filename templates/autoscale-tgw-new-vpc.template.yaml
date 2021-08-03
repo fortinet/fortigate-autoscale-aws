@@ -270,7 +270,7 @@ Parameters:
             is 30. Maximum is 90.
     HeartBeatLossCount:
         Type: Number
-        Default: 3
+        Default: 10
         MinValue: 1
         MaxValue: 65535
         ConstraintDescription: must be a valid number between 1 and 65535.
