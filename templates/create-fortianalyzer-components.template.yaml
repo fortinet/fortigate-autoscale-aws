@@ -5,7 +5,7 @@ Description: >-
 Parameters:
     S3BucketName:
         Type: String
-        AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
+        AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-.]*[0-9a-zA-Z])*$'
         ConstraintDescription: >-
             Deployment resource S3 bucket name can include numbers, lowercase letters,
             uppercase letters, and hyphens (-). It cannot start or end with a hyphen
@@ -16,7 +16,7 @@ Parameters:
             and hyphens (-). It cannot start or end with a hyphen (-).
     S3KeyPrefix:
         Type: String
-        AllowedPattern: '^[0-9a-zA-Z-/]*$'
+        AllowedPattern: '^[0-9a-zA-Z-./]*$'
         ConstraintDescription: >-
             Deployment package S3 key prefix can include numbers, lowercase letters,
             uppercase letters, hyphens (-), and forward slash (/).
@@ -93,7 +93,7 @@ Parameters:
         Description: The Amazon EC2 Key Pair for admin access.
     AutoscaleAdminUsername:
         Type: String
-        AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
+        AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-.]*[0-9a-zA-Z])*$'
         ConstraintDescription: >-
             This FortiAnalyzer account name can include numbers, lowercase letters,
             uppercase letters, and hyphens (-). It cannot start or end with a hyphen
