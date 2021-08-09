@@ -4,7 +4,7 @@ Description: A service for Transit Gateway VPN management.
 Parameters:
     S3BucketName:
         Type: String
-        AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
+        AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-.]*[0-9a-zA-Z])*$'
         ConstraintDescription: >-
             Deployment resource S3 bucket name can include numbers, lowercase letters,
             uppercase letters, and hyphens (-). It cannot start or end with a hyphen
@@ -15,7 +15,7 @@ Parameters:
             start or end with a hyphen (-).
     S3KeyPrefix:
         Type: String
-        AllowedPattern: '^[0-9a-zA-Z-/]*$'
+        AllowedPattern: '^[0-9a-zA-Z-./]*$'
         ConstraintDescription: >-
             Deployment package S3 key prefix can include numbers, lowercase letters,
             uppercase letters, hyphens (-), and forward slash (/).

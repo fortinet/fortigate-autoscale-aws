@@ -9,7 +9,7 @@ Description: >-
     version from a source template origin: qs-1op312ie1.
 Parameters:
     S3BucketName:
-        AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
+        AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-.]*[0-9a-zA-Z])*$'
         ConstraintDescription: >-
             Quick Start bucket name can include numbers, lowercase letters, uppercase
             letters, and hyphens (-). It cannot start or end with a hyphen (-).
