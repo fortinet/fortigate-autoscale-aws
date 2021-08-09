@@ -436,6 +436,21 @@ Parameters:
         ConstraintDescription: must be a valid email address.
         Description: >-
             The email address (AWS SNS Topic subscriber) to receive Autoscale notifications. A confirmation letter will be sent to it. If provided, only one email address is allowed.
+    TerminateUnhealthyVm:
+        Type: String
+        Default: 'no'
+        AllowedValues:
+            - 'yes'
+            - 'no'
+        ConstraintDescription: must choose from the provided options.
+        Description: Terminate any VM that is deemed unhealthy by the Autoscale.
+    SyncRecoveryCount:
+        Type: Number
+        MinValue: 3
+        Default: 3
+        Description: >-
+            Number of consecutively on-time heartbeats for a VM to become healthy again. When 'Terminate Unhealthy VM' is set to false
+            and a VM is once deemed unhealthy, it allows for the VM to recovery from the unhealthy state within an amount of on-time heartbeat sync.
 Rules:
     FortiAnalyzerSupport:
         RuleCondition: !Equals
@@ -654,6 +669,8 @@ Resources:
                     - NoValuePlaceHolderForTemplateParameterWithMinLength
                 FortiAnalyzerCustomPrivateIpAddress: !Ref FortiAnalyzerCustomPrivateIpAddress
                 AutoscaleNotificationSubscriberEmail: !Ref AutoscaleNotificationSubscriberEmail
+                TerminateUnhealthyVm: !Ref TerminateUnhealthyVm
+                SyncRecoveryCount: !Ref SyncRecoveryCount
             TemplateURL: !Sub
                 - >-
                     https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/autoscale-main.template.yaml
@@ -713,6 +730,8 @@ Metadata:
                   - HeartBeatLossCount
                   - HeartBeatDelayAllowance
                   - AutoscaleNotificationSubscriberEmail
+                  - TerminateUnhealthyVm
+                  - SyncRecoveryCount
             - Label:
                   default: Transit Gateway configuration
               Parameters:
@@ -825,6 +844,10 @@ Metadata:
                 default: Autoscale admin password
             AutoscaleNotificationSubscriberEmail:
                 default: Autoscale Notifications subscriber email
+            TerminateUnhealthyVm:
+                default: Terminate Unhealthy VM
+            SyncRecoveryCount:
+                default: Autoscale Sync Recovery Count
 Outputs:
     ResourceTagPrefix:
         Description: >-

@@ -485,6 +485,21 @@ Parameters:
         ConstraintDescription: must be a valid email address.
         Description: >-
             The email address (AWS SNS Topic subscriber) to receive Autoscale notifications. A confirmation letter will be sent to it. Only one email address is allowed.
+    TerminateUnhealthyVm:
+        Type: String
+        Default: 'no'
+        AllowedValues:
+            - 'yes'
+            - 'no'
+        ConstraintDescription: must choose from the provided options.
+        Description: Terminate any VM that is deemed unhealthy by the Autoscale.
+    SyncRecoveryCount:
+        Type: Number
+        MinValue: 3
+        Default: 3
+        Description: >-
+            Number of consecutively on-time heartbeats for a VM to become healthy again. When 'Terminate Unhealthy VM' is set to false
+            and a VM is once deemed unhealthy, it allows for the VM to recovery from the unhealthy state within an amount of on-time heartbeat sync.
 Rules:
     FortiAnalyzerSupport:
         RuleCondition: !Equals
@@ -589,6 +604,9 @@ Conditions:
     IfCreateVPCEndpoint: !Equals
         - !Ref VpcEndpointId
         - ''
+    IfTerminateUnhealthyVm: !Equals
+        - !Ref TerminateUnhealthyVm
+        - 'yes'
 Mappings:
     ProductVersionMap:
         FortiGateByol:
@@ -1464,11 +1482,15 @@ Resources:
                 - StackCreateFortiGateAutoScalingGroup
                 - Outputs.AutoScalingGroupNamePayg
             resource-tag-prefix: !Ref ResourceTagPrefix
-            terminate-unhealthy-vm: 'false'
             scaling-group-desired-capacity: !Ref FgtAsgDesiredCapacityPayg
             scaling-group-max-size: !Ref FgtAsgMaxSizePayg
             scaling-group-min-size: !Ref FgtAsgMinSizePayg
             sns-topic-arn: !Ref AutoscaleSNSTopic
+            sync-recovery-count: !Ref SyncRecoveryCount
+            terminate-unhealthy-vm: !If
+                - IfTerminateUnhealthyVm
+                - 'true'
+                - 'false'
             transit-gateway-id: !If
                 - IfRequireTransitGatewayIntegration
                 - !GetAtt
