@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-    FortiGate Autoscale Solution (with Transit Gateway integration). This
+    FortiGate Autoscale Solution (version 3.3.2) (with Transit Gateway integration). This
     template collects information for deployment then calls the actual
     deployment template. Please see the FortiGate Autoscale documentation for
     more details. **WARNING** You will be billed for the FortiGate On-Demand
@@ -912,3 +912,6 @@ Outputs:
         Value: !GetAtt
             - StackMainWorkload
             - Outputs.AutoscaleSNSTopicArn
+    DeploymentPackageVersion:
+        Description: Deployment package version
+        Value: 3.3.2
