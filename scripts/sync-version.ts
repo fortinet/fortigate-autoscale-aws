@@ -90,7 +90,7 @@ function syncVersionOnReadMe(newVersion: semver.SemVer): void {
     console.log(`current version found on README is ${chalk.yellow(currentVersion)}.`);
     console.log(`new version is set to: ${chalk.green(newVersion.version)}.`);
     const newContent = readmeContent.replace(
-        new RegExp(versionPattern),
+        new RegExp(versionPattern, 'gm'),
         `fortigate-autoscale-aws%2F${newVersion.version}%2Faws-cloudformation`
     );
     fs.writeFileSync(filePath, newContent);
