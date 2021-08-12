@@ -1,10 +1,10 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-    FortiGate Autoscale Solution (version 3.3.2) [in an existing VPC]. This
-    template deploys FortiGate Autoscale into an existing VPC. For more details,
-    please see the FortiGate Autoscale documentation. **WARNING** You will be
-    billed for the FortiGate On-Demand instances and related AWS resources if
-    you create a stack from this template.
+    FortiGate Autoscale Solution (version 3.3.3-dev.11) [in an existing VPC].
+    This template deploys FortiGate Autoscale into an existing VPC. For more
+    details, please see the FortiGate Autoscale documentation. **WARNING** You
+    will be billed for the FortiGate On-Demand instances and related AWS
+    resources if you create a stack from this template.
 Parameters:
     ResourceTagPrefix:
         Type: String
@@ -928,4 +928,4 @@ Outputs:
             - Outputs.AutoscaleSNSTopicArn
     DeploymentPackageVersion:
         Description: Deployment package version
-        Value: 3.3.2
+        Value: 3.3.3-dev.11
