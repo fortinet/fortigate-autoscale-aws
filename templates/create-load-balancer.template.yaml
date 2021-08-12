@@ -1,20 +1,21 @@
----
 AWSTemplateFormatVersion: 2010-09-09
-Description: Deploy Network traffic Load Balancers and components for FortiGate Autoscale.
+Description: >-
+    Deploy Network traffic Load Balancers and components for FortiGate
+    Autoscale.
 Parameters:
     ResourceTagPrefix:
         Type: String
         AllowedPattern: '[0-9a-zA-Z@.#-]+'
         MaxLength: 64
         ConstraintDescription: >-
-            Resource tag prefix can include numbers, lowercase letters, uppercase
-            letters, ampersat(@) , hyphens (-), period (.), and hash (#). Max length
-            is 64.
+            Resource tag prefix can include numbers, lowercase letters,
+            uppercase letters, ampersat(@) , hyphens (-), period (.), and hash
+            (#). Max length is 64.
         Description: >-
-            A prefix for tag key ResourceGroup on all resources. It's also used as the
-            name prefix of all applicable resources. Can only contain numbers,
-            lowercase letters, uppercase letters, ampersat(@) , hyphens (-), period
-            (.), and hash (#). Max length is 64.
+            A prefix for tag key ResourceGroup on all resources. It's also used
+            as the name prefix of all applicable resources. Can only contain
+            numbers, lowercase letters, uppercase letters, ampersat(@) , hyphens
+            (-), period (.), and hash (#). Max length is 64.
     CustomIdentifier:
         Type: String
         Default: fgtASG
@@ -22,18 +23,18 @@ Parameters:
         AllowedPattern: '[A-Za-z0-9]+'
         ConstraintDescription: must only contain uppercase and lowercase letters and numbers
         Description: >-
-            A short custom identifier as resource name prefix. This shorter version of
-            name prefix is used on a resource that Resource tag prefix cannot apply
-            to. Must be at most 10 characters long and only contain uppercase,
-            lowercase letters, and numbers. Max length is 10.
+            A short custom identifier as resource name prefix. This shorter
+            version of name prefix is used on a resource that Resource tag
+            prefix cannot apply to. Must be at most 10 characters long and only
+            contain uppercase, lowercase letters, and numbers. Max length is 10.
     UniqueId:
         Type: String
         MaxLength: '8'
         AllowedPattern: '[A-Za-z0-9]+'
         ConstraintDescription: must only contain uppercase and lowercase letters and digits
         Description: >-
-            A random string as a unique ID for all resources in this deployment stack
-            and nested stacks. Max length is 8.
+            A random string as a unique ID for all resources in this deployment
+            stack and nested stacks. Max length is 8.
     TrafficProtocol:
         Type: String
         Default: HTTPS
@@ -49,7 +50,9 @@ Parameters:
         MinValue: 1
         MaxValue: 65535
         ConstraintDescription: must be a valid port number between 1 and 65535.
-        Description: Port for balancing incoming web traffic. Minimum is 1. Maximum is 65535.
+        Description: >-
+            Port for balancing incoming web traffic. Minimum is 1. Maximum is
+            65535.
     HealthCheckPort:
         Type: Number
         Default: 443
@@ -74,8 +77,8 @@ Parameters:
     FgtSubnetIds:
         Type: String
         Description: >-
-            A comma-delimited list of subnet IDs that FortiGate Autoscale instances
-            locate in.
+            A comma-delimited list of subnet IDs that FortiGate Autoscale
+            instances locate in.
     NewInternalLoadBalancer:
         Type: String
         Default: 'yes'
@@ -95,13 +98,14 @@ Parameters:
             This path must begin with a '/' character, and can be at most 1024
             characters in length.
         Description: >-
-            Optional. The destination path for health checks. This path must begin
-            with a '/' character, and can be at most 1024 characters in length.
+            Optional. The destination path for health checks. This path must
+            begin with a '/' character, and can be at most 1024 characters in
+            length.
     InternalLoadBalancingSubnetIds:
         Type: String
         Description: >-
-            Optional. A comma-delimited list of subnet IDs that the internal load
-            balancing instances locate in.
+            Optional. A comma-delimited list of subnet IDs that the internal
+            load balancing instances locate in.
 Conditions:
     IfNewInternalLoadBalancer: !Equals
         - !Ref NewInternalLoadBalancer

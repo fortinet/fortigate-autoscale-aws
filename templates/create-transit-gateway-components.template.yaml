@@ -1,4 +1,3 @@
----
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
     This template configure the FortiGate Autoscale For Transit Gateway
@@ -9,14 +8,14 @@ Parameters:
         AllowedPattern: '[0-9a-zA-Z@.#-]+'
         MaxLength: 64
         ConstraintDescription: >-
-            Resource tag prefix can include numbers, lowercase letters, uppercase
-            letters, ampersat(@) , hyphens (-), period (.), and hash (#). Max length
-            is 64.
+            Resource tag prefix can include numbers, lowercase letters,
+            uppercase letters, ampersat(@) , hyphens (-), period (.), and hash
+            (#). Max length is 64.
         Description: >-
-            A prefix for tag key ResourceGroup on all resources. It's also used as the
-            name prefix of all applicable resources. Can only contain numbers,
-            lowercase letters, uppercase letters, ampersat(@) , hyphens (-), period
-            (.), and hash (#). Max length is 64.
+            A prefix for tag key ResourceGroup on all resources. It's also used
+            as the name prefix of all applicable resources. Can only contain
+            numbers, lowercase letters, uppercase letters, ampersat(@) , hyphens
+            (-), period (.), and hash (#). Max length is 64.
     CustomIdentifier:
         Type: String
         Default: fgtASG
@@ -24,31 +23,31 @@ Parameters:
         AllowedPattern: '[A-Za-z0-9]+'
         ConstraintDescription: must only contain uppercase and lowercase letters and numbers
         Description: >-
-            An alternative name prefix to be used on a resource that the 'Resource tag
-            prefix' cannot apply to. Can only contain numbers, lowercase letters, and
-            uppercase letters. Max length is 10.
+            An alternative name prefix to be used on a resource that the
+            'Resource tag prefix' cannot apply to. Can only contain numbers,
+            lowercase letters, and uppercase letters. Max length is 10.
     UniqueId:
         Type: String
         MaxLength: '8'
         AllowedPattern: '[A-Za-z0-9]+'
         ConstraintDescription: must only contain uppercase and lowercase letters and digits
         Description: >-
-            An automatically generated random string as a unique ID for all resources
-            in the deployment stack and nested stacks.
+            An automatically generated random string as a unique ID for all
+            resources in the deployment stack and nested stacks.
     CreateNewTransitGateway:
         Type: String
         AllowedValues:
             - 'yes'
             - 'no'
         Description: >-
-            Whether create a new Transit Gateway or use an existing one as provided to
-            deploy the related components.
+            Whether create a new Transit Gateway or use an existing one as
+            provided to deploy the related components.
     TransitGatewayId:
         Type: String
         Default: ''
         Description: >-
-            The ID of an existing Transit Gateway where the related components will be
-            deployed to.
+            The ID of an existing Transit Gateway where the related components
+            will be deployed to.
     VpcId:
         Type: 'AWS::EC2::VPC::Id'
         Description: The ID of the FortiGate VPC where FortiGate Autoscale is deployed.
@@ -225,7 +224,8 @@ Resources:
                     - Effect: Allow
                       Action: 'ec2:DeleteCustomerGateway'
                       Resource: !Sub
-                          - 'arn:aws${GovCloudSuffix}:ec2:${Region}:${AccountId}:customer-gateway/*'
+                          - >-
+                              arn:aws${GovCloudSuffix}:ec2:${Region}:${AccountId}:customer-gateway/*
                           - GovCloudSuffix: !If
                                 - IfInUSGovCloud
                                 - '-us-gov'

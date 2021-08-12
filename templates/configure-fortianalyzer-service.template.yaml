@@ -3,20 +3,24 @@ Description: Configure the FortiAnalyzer integration additional services.
 Parameters:
     FazHandlerFunctionName:
         Type: String
-        Description: FortiGate Autoscale - FortiAnalyzer integration handler function name.
+        Description: >-
+            FortiGate Autoscale - FortiAnalyzer integration handler function
+            name.
     FazHandlerFunctionArn:
         Type: String
-        Description: FortiGate Autoscale - FortiAnalyzer integration handler function ARN.
+        Description: >-
+            FortiGate Autoscale - FortiAnalyzer integration handler function
+            ARN.
     FazHandlerServiceFunctionName:
         Type: String
         Description: >-
-            FortiGate Autoscale - FortiAnalyzer integration handler service function
-            name.
+            FortiGate Autoscale - FortiAnalyzer integration handler service
+            function name.
     FazHandlerServiceFunctionArn:
         Type: String
         Description: >-
-            FortiGate Autoscale - FortiAnalyzer integration handler service function
-            ARN.
+            FortiGate Autoscale - FortiAnalyzer integration handler service
+            function ARN.
 Mappings: {}
 Conditions: {}
 Resources:
@@ -24,8 +28,8 @@ Resources:
         Type: 'AWS::Events::Rule'
         Properties:
             Description: >-
-                Trigger FortiAnalyzer to authorize unregistered devices on a 5-min
-                basis.
+                Trigger FortiAnalyzer to authorize unregistered devices on a
+                5-min basis.
             ScheduleExpression: rate(5 minutes)
             State: ENABLED
             Targets:
