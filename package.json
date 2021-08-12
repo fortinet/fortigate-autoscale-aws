@@ -13,7 +13,7 @@
         "build": "npm run clear-dist && npm run compile",
         "make-dist": "npm run build && npm run bundle && node dist/transpiled/scripts/make-dist-v2.js build-all --project-root './'",
         "build-artifacts": "npm-run-all build make-dist",
-        "sync-version": "node dist/transpiled/scripts/sync-version.js && npm run lint-fix",
+        "sync-version": "node dist/transpiled/scripts/sync-version.js",
         "unzip-artifacts": "unzip dist/artifacts/aws-cloudformation.zip -d dist/aws-cloudformation",
         "test": "mocha --timeout 3600000 -r ts-node/register test/*.spec.ts",
         "lint-check-code": "npx ftnt-devops-ci c -fl  -F .eslintignore -L .eslintignore \"{*,**/*}{.js,.json,.ts}\"",
@@ -21,7 +21,8 @@
         "lint-check": "npm run lint-check-code && npm run lint-check-template",
         "lint-fix-code": "npx ftnt-devops-ci f -fl  -F .eslintignore -L .eslintignore \"**/*{.js,.json,.ts}\"",
         "lint-fix-template": "npx ftnt-devops-ci f -f -F .eslintignore -L .eslintignore \"**/*.template.yaml\" --parser \"yaml\"",
-        "lint-fix": "npm run lint-fix-code && npm run lint-fix-template"
+        "lint-fix": "npm run lint-fix-code && npm run lint-fix-template",
+        "version": "npm run sync-version && npm run lint-fix && git add -u"
     },
     "husky": {
         "hooks": {
