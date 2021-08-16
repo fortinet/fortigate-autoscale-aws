@@ -1,10 +1,10 @@
----
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
     Deploys a FortiGate EC2 instance to a subnet using a given FortiGate AMI,
     security group, and instance profile. **WARNING!** This template is designed
     for being called within FortiGate AutoScale Solution only but not compatible
-    with any other Cloud Formation template. Do not directly use it anywhere else.
+    with any other Cloud Formation template. Do not directly use it anywhere
+    else.
 Parameters:
     CustomTagValue:
         AllowedPattern: '^([a-zA-Z0-9+\-.,_:/@ *\\"''\[\]\{\}]*)?$'
@@ -24,8 +24,8 @@ Parameters:
         MaxValue: 65535
         ConstraintDescription: must be a valid port number between 1 and 65535.
         Description: >-
-            A port number for FortiGate administration. Default to 8443. Do not use:
-            443, 541, 514, 703.
+            A port number for FortiGate administration. Default to 8443. Do not
+            use: 443, 541, 514, 703.
     FortiGateSecurityGroupId:
         Type: String
         Description: The security group ID which is attached to this FortiGate instance.
@@ -41,8 +41,8 @@ Parameters:
     InstanceProfile:
         Type: String
         Description: >-
-            The instance profile that passes a proper IAM role to the FortiGate EC2
-            instance.
+            The instance profile that passes a proper IAM role to the FortiGate
+            EC2 instance.
 Conditions:
     IfAddCustomTag: !Not
         - !Equals

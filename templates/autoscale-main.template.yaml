@@ -480,11 +480,12 @@ Parameters:
             designated subnet.
     AutoscaleNotificationSubscriberEmail:
         Type: String
-        AllowedPattern: >-
-            ^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$
+        AllowedPattern: '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
         ConstraintDescription: must be a valid email address.
         Description: >-
-            The email address (AWS SNS Topic subscriber) to receive Autoscale notifications. A confirmation letter will be sent to it. Only one email address is allowed.
+            The email address (AWS SNS Topic subscriber) to receive Autoscale
+            notifications. A confirmation letter will be sent to it. Only one
+            email address is allowed.
     TerminateUnhealthyVm:
         Type: String
         Default: 'no'
@@ -498,8 +499,10 @@ Parameters:
         MinValue: 3
         Default: 3
         Description: >-
-            Number of consecutively on-time heartbeats for a VM to become healthy again. When 'Terminate Unhealthy VM' is set to false
-            and a VM is once deemed unhealthy, it allows for the VM to recovery from the unhealthy state within an amount of on-time heartbeat sync.
+            Number of consecutively on-time heartbeats for a VM to become
+            healthy again. When 'Terminate Unhealthy VM' is set to false and a
+            VM is once deemed unhealthy, it allows for the VM to recovery from
+            the unhealthy state within an amount of on-time heartbeat sync.
 Rules:
     FortiAnalyzerSupport:
         RuleCondition: !Equals
@@ -1565,10 +1568,10 @@ Resources:
             - SaveSettings
             - StackCreateDynamoDBTable
     AutoscaleSNSTopic:
-        Type: AWS::SNS::Topic
+        Type: 'AWS::SNS::Topic'
         Properties:
             DisplayName: !Sub
-                - FortiGate Autoscale (${UniqueId}) Notifications
+                - 'FortiGate Autoscale (${UniqueId}) Notifications'
                 - UniqueId: !Ref UniqueId
             TopicName: !Join
                 - '-'
@@ -1578,7 +1581,7 @@ Resources:
                 - Key: ResourceGroup
                   Value: !Ref ResourceTagPrefix
     AutoscaleSNSSubscription:
-        Type: AWS::SNS::Subscription
+        Type: 'AWS::SNS::Subscription'
         Properties:
             Endpoint: !Ref AutoscaleNotificationSubscriberEmail
             Protocol: email
@@ -1740,6 +1743,5 @@ Outputs:
               - BYOL-Only
               - Hybrid
     AutoscaleSNSTopicArn:
-        Description: >-
-            ARN of the FortiGate Autoscale notifications (SNS Topic)
+        Description: ARN of the FortiGate Autoscale notifications (SNS Topic)
         Value: !Ref AutoscaleSNSTopic

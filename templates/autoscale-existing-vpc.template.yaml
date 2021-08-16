@@ -1,10 +1,10 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-    FortiGate Autoscale Solution [in an existing VPC]. This template deploys
-    FortiGate Autoscale into an existing VPC. For more details, please see the
-    FortiGate Autoscale documentation. **WARNING** You will be billed for the
-    FortiGate On-Demand instances and related AWS resources if you create a
-    stack from this template.
+    FortiGate Autoscale Solution (version 3.3.2) [in an existing VPC]. This
+    template deploys FortiGate Autoscale into an existing VPC. For more details,
+    please see the FortiGate Autoscale documentation. **WARNING** You will be
+    billed for the FortiGate On-Demand instances and related AWS resources if
+    you create a stack from this template.
 Parameters:
     ResourceTagPrefix:
         Type: String
@@ -36,25 +36,25 @@ Parameters:
         AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-.]*[0-9a-zA-Z])*$'
         ConstraintDescription: >-
             Deployment resource S3 bucket name can include numbers, lowercase
-            letters, uppercase letters, period (.), and hyphens (-). It cannot start or end
-            with a hyphen (-).
+            letters, uppercase letters, period (.), and hyphens (-). It cannot
+            start or end with a hyphen (-).
         Description: >-
             Name of the S3 bucket that contains the FortiGate Autoscale
             deployment package. Can only contain numbers, lowercase letters,
-            uppercase letters, period (.), and hyphens (-). It cannot start or end with a
-            hyphen (-).
+            uppercase letters, period (.), and hyphens (-). It cannot start or
+            end with a hyphen (-).
     S3KeyPrefix:
         Type: String
         AllowedPattern: '^$|^[0-9a-zA-Z-./]*/$'
         ConstraintDescription: >-
             Deployment package S3 key prefix can include numbers, lowercase
-            letters, uppercase letters, hyphens (-), period (.), and forward slash (/). If
-            provided, it must end with a forward slash (/).
+            letters, uppercase letters, hyphens (-), period (.), and forward
+            slash (/). If provided, it must end with a forward slash (/).
         Description: >-
             Name of the S3 folder that stores the FortiGate Autoscale deployment
             resources. Can only contain numbers, lowercase letters, uppercase
-            letters, hyphens (-), period (.), and forward slashes (/). If provided, it must
-            end with a forward slash (/).
+            letters, hyphens (-), period (.), and forward slashes (/). If
+            provided, it must end with a forward slash (/).
     VpcId:
         Type: 'AWS::EC2::VPC::Id'
         Description: >-
@@ -480,11 +480,12 @@ Parameters:
             to 'no', any input will be ignored.
     AutoscaleNotificationSubscriberEmail:
         Type: String
-        AllowedPattern: >-
-            ^$|^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$
+        AllowedPattern: '^$|^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
         ConstraintDescription: must be a valid email address.
         Description: >-
-            The email address (AWS SNS Topic subscriber) to receive Autoscale notifications. A confirmation letter will be sent to it. If provided, only one email address is allowed.
+            The email address (AWS SNS Topic subscriber) to receive Autoscale
+            notifications. A confirmation letter will be sent to it. If
+            provided, only one email address is allowed.
     TerminateUnhealthyVm:
         Type: String
         Default: 'no'
@@ -498,8 +499,10 @@ Parameters:
         MinValue: 3
         Default: 3
         Description: >-
-            Number of consecutively on-time heartbeats for a VM to become healthy again. When 'Terminate Unhealthy VM' is set to false
-            and a VM is once deemed unhealthy, it allows for the VM to recovery from the unhealthy state within an amount of on-time heartbeat sync.
+            Number of consecutively on-time heartbeats for a VM to become
+            healthy again. When 'Terminate Unhealthy VM' is set to false and a
+            VM is once deemed unhealthy, it allows for the VM to recovery from
+            the unhealthy state within an amount of on-time heartbeat sync.
 Rules:
     FortiAnalyzerSupport:
         RuleCondition: !Equals
@@ -919,8 +922,10 @@ Outputs:
             - StackMainWorkload
             - Outputs.FgtLicensingModel
     AutoscaleSNSTopicArn:
-        Description: >-
-            ARN of the FortiGate Autoscale notifications (SNS Topic)
+        Description: ARN of the FortiGate Autoscale notifications (SNS Topic)
         Value: !GetAtt
             - StackMainWorkload
             - Outputs.AutoscaleSNSTopicArn
+    DeploymentPackageVersion:
+        Description: Deployment package version
+        Value: 3.3.2

@@ -1,82 +1,82 @@
----
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-    This template creates a FortiGate Autoscale Handler Lambda function and an API
-    Gateway.
+    This template creates a FortiGate Autoscale Handler Lambda function and an
+    API Gateway.
 Parameters:
     S3BucketName:
         Type: String
         AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-.]*[0-9a-zA-Z])*$'
         ConstraintDescription: >-
-            Deployment resource S3 bucket name can include numbers, lowercase letters,
-            uppercase letters, and hyphens (-). It cannot start or end with a hyphen
-            (-).
+            Deployment resource S3 bucket name can include numbers, lowercase
+            letters, uppercase letters, and hyphens (-). It cannot start or end
+            with a hyphen (-).
         Description: >-
             S3 bucket name for the Deployment package. Bucket name can include
-            numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot
-            start or end with a hyphen (-).
+            numbers, lowercase letters, uppercase letters, and hyphens (-). It
+            cannot start or end with a hyphen (-).
     S3KeyPrefix:
         Type: String
         AllowedPattern: '^[0-9a-zA-Z-./]*$'
         ConstraintDescription: >-
-            Deployment package S3 key prefix can include numbers, lowercase letters,
-            uppercase letters, hyphens (-), and forward slash (/).
+            Deployment package S3 key prefix can include numbers, lowercase
+            letters, uppercase letters, hyphens (-), and forward slash (/).
         Description: >-
-            S3 key prefix for the deployment package. Key prefix can include numbers,
-            lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
+            S3 key prefix for the deployment package. Key prefix can include
+            numbers, lowercase letters, uppercase letters, hyphens (-), and
+            forward slash (/).
     ResourceTagPrefix:
         Type: String
         AllowedPattern: '[0-9a-zA-Z@.#-]+'
         MaxLength: 64
         ConstraintDescription: >-
-            Resource tag prefix can include numbers, lowercase letters, uppercase
-            letters, ampersat(@) , hyphens (-), period (.), and hash (#). Max length
-            is 64.
+            Resource tag prefix can include numbers, lowercase letters,
+            uppercase letters, ampersat(@) , hyphens (-), period (.), and hash
+            (#). Max length is 64.
         Description: >-
-            A prefix for tag key ResourceGroup on all resources. It's also used as the
-            name prefix of all applicable resources. Can only contain numbers,
-            lowercase letters, uppercase letters, ampersat(@) , hyphens (-), period
-            (.), and hash (#). Max length is 64.
+            A prefix for tag key ResourceGroup on all resources. It's also used
+            as the name prefix of all applicable resources. Can only contain
+            numbers, lowercase letters, uppercase letters, ampersat(@) , hyphens
+            (-), period (.), and hash (#). Max length is 64.
     CustomIdentifier:
         Type: String
         MaxLength: '10'
         AllowedPattern: '[A-Za-z0-9]+'
         ConstraintDescription: must only contain uppercase and lowercase letters and numbers
         Description: >-
-            An alternative name prefix. This shorter version of prefix is used on a
-            resource that Resource tag prefix cannot apply to. Must be at most 10
-            characters long and only contain uppercase, lowercase letters, and
-            numbers. Max length is 10.
+            An alternative name prefix. This shorter version of prefix is used
+            on a resource that Resource tag prefix cannot apply to. Must be at
+            most 10 characters long and only contain uppercase, lowercase
+            letters, and numbers. Max length is 10.
     UniqueId:
         Type: String
         MaxLength: '8'
         AllowedPattern: '[A-Za-z0-9]+'
         ConstraintDescription: must only contain uppercase and lowercase letters and digits
         Description: >-
-            A random text suffix for the DynamoDB table name which can help ensure the
-            DB table name is unique per region. Can only contain uppercase, lowercase
-            letters, and digits. Max length is 8.
+            A random text suffix for the DynamoDB table name which can help
+            ensure the DB table name is unique per region. Can only contain
+            uppercase, lowercase letters, and digits. Max length is 8.
     HandlerScriptTimeout:
         Type: Number
         Default: 300
         MinValue: 300
         MaxValue: 900
         Description: >-
-            The Autoscale handler script timeout in seconds. Minimum is 300. Maximum
-            is 900.
+            The Autoscale handler script timeout in seconds. Minimum is 300.
+            Maximum is 900.
     ServiceScriptTimeout:
         Type: Number
         Default: 900
         MinValue: 300
         MaxValue: 900
         Description: >-
-            The CloudFormation service provider script timeout in seconds. Minimum is
-            300. Maximum is 900.
+            The CloudFormation service provider script timeout in seconds.
+            Minimum is 300. Maximum is 900.
     VpcEndPoint:
         Type: String
         Description: >-
-            The ID of a VPC Endpoint to associate with the deployed API Gateway. This
-            Endpoint ID is optional.
+            The ID of a VPC Endpoint to associate with the deployed API Gateway.
+            This Endpoint ID is optional.
     CreateByolLicenseHandler:
         Type: String
         Default: 'no'
@@ -97,16 +97,16 @@ Parameters:
         Type: String
         Default: ''
         Description: >-
-            The name of the S3 bucket which contains your custom assets. Required if
-            'use custom asset location' is set to 'yes'.
+            The name of the S3 bucket which contains your custom assets.
+            Required if 'use custom asset location' is set to 'yes'.
     CustomAssetDirectory:
         Type: String
         Default: ''
         Description: >-
-            The sub path within the 'custom asset container' which serves as the top
-            level directory of all your custom assets. If 'use custom asset location'
-            is set to 'yes', and this value is left empty, the 'custom asset
-            container' will serve as the top level directory.
+            The sub path within the 'custom asset container' which serves as the
+            top level directory of all your custom assets. If 'use custom asset
+            location' is set to 'yes', and this value is left empty, the 'custom
+            asset container' will serve as the top level directory.
     RoutePermissionRouteTableId:
         Type: String
         Default: ''
@@ -327,22 +327,28 @@ Resources:
                                 - 'autoscaling:SetDesiredCapacity'
                                 - 'autoscaling:SetInstanceProtection'
                                 - 'autoscaling:ExitStandby'
-                                - 'autoscaling:BatchPutScheduledUpdateGroupAction'
+                                - >-
+                                    autoscaling:BatchPutScheduledUpdateGroupAction
                                 - 'autoscaling:EnterStandby'
-                                - 'autoscaling:PutScheduledUpdateGroupAction'
+                                - >-
+                                    autoscaling:PutScheduledUpdateGroupAction
                                 - 'autoscaling:UpdateAutoScalingGroup'
-                                - 'autoscaling:DeleteNotificationConfiguration'
+                                - >-
+                                    autoscaling:DeleteNotificationConfiguration
                                 - 'autoscaling:SetInstanceHealth'
-                                - 'autoscaling:TerminateInstanceInAutoScalingGroup'
+                                - >-
+                                    autoscaling:TerminateInstanceInAutoScalingGroup
                                 - 'autoscaling:AttachLoadBalancers'
                                 - 'autoscaling:DetachLoadBalancers'
                                 - 'autoscaling:BatchDeleteScheduledAction'
                                 - 'autoscaling:ResumeProcesses'
                                 - 'autoscaling:SetDesiredCapacity'
                                 - 'autoscaling:PutLifecycleHook'
-                                - 'autoscaling:DetachLoadBalancerTargetGroups'
+                                - >-
+                                    autoscaling:DetachLoadBalancerTargetGroups
                                 - 'autoscaling:SuspendProcesses'
-                                - 'autoscaling:AttachLoadBalancerTargetGroups'
+                                - >-
+                                    autoscaling:AttachLoadBalancerTargetGroups
                                 - 'autoscaling:AttachInstances'
                                 - 'autoscaling:CompleteLifecycleAction'
                                 - 'autoscaling:CreateOrUpdateTags'
@@ -352,7 +358,8 @@ Resources:
                                 - 'autoscaling:CreateAutoScalingGroup'
                                 - 'autoscaling:DeleteScheduledAction'
                                 - 'autoscaling:DetachInstances'
-                                - 'autoscaling:RecordLifecycleActionHeartbeat'
+                                - >-
+                                    autoscaling:RecordLifecycleActionHeartbeat
                             Resource: !Sub
                                 - >-
                                     arn:aws${GovCloudSuffix}:autoscaling:${Region}:${AccountId}:autoScalingGroup:*:autoScalingGroupName/${AsgName}*
@@ -365,11 +372,13 @@ Resources:
                                   AsgName: !Ref ResourceTagPrefix
                           - Effect: Allow
                             Action:
-                                - 'autoscaling:DescribeAutoScalingNotificationTypes'
+                                - >-
+                                    autoscaling:DescribeAutoScalingNotificationTypes
                                 - 'autoscaling:DescribeAutoScalingInstances'
                                 - 'ec2:DescribeInstances'
                                 - 'autoscaling:DescribeScalingProcessTypes'
-                                - 'autoscaling:DescribeTerminationPolicyTypes'
+                                - >-
+                                    autoscaling:DescribeTerminationPolicyTypes
                                 - 'dynamodb:ListTables'
                                 - 'autoscaling:DescribePolicies'
                                 - 'ec2:DescribeInstanceAttribute'
@@ -380,13 +389,16 @@ Resources:
                                 - 'autoscaling:DescribeAccountLimits'
                                 - 'autoscaling:DescribeAutoScalingGroups'
                                 - 'autoscaling:DescribeScheduledActions'
-                                - 'autoscaling:DescribeLoadBalancerTargetGroups'
-                                - 'autoscaling:DescribeNotificationConfigurations'
+                                - >-
+                                    autoscaling:DescribeLoadBalancerTargetGroups
+                                - >-
+                                    autoscaling:DescribeNotificationConfigurations
                                 - 'autoscaling:DescribeLifecycleHookTypes'
                                 - 'ec2:DetachNetworkInterface'
                                 - 'autoscaling:DescribeTags'
                                 - 'ec2:DeleteNetworkInterface'
-                                - 'autoscaling:DescribeMetricCollectionTypes'
+                                - >-
+                                    autoscaling:DescribeMetricCollectionTypes
                                 - 'autoscaling:DescribeLoadBalancers'
                                 - 'autoscaling:DescribeLifecycleHooks'
                                 - 'ec2:CreateNetworkInterface'
@@ -415,12 +427,17 @@ Resources:
                                   AgwId: !Ref FgtAsgApiGateway
                           - Effect: Allow
                             Action:
-                                - 'elasticloadbalancing:DescribeLoadBalancers'
+                                - >-
+                                    elasticloadbalancing:DescribeLoadBalancers
                                 - 'elasticloadbalancing:DescribeListeners'
-                                - 'elasticloadbalancing:DescribeLoadBalancerAttributes'
-                                - 'elasticloadbalancing:DescribeTargetGroupAttributes'
-                                - 'elasticloadbalancing:DescribeTargetHealth'
-                                - 'elasticloadbalancing:DescribeTargetGroups'
+                                - >-
+                                    elasticloadbalancing:DescribeLoadBalancerAttributes
+                                - >-
+                                    elasticloadbalancing:DescribeTargetGroupAttributes
+                                - >-
+                                    elasticloadbalancing:DescribeTargetHealth
+                                - >-
+                                    elasticloadbalancing:DescribeTargetGroups
                             Resource: '*'
                           - Effect: Allow
                             Action:
@@ -464,7 +481,8 @@ Resources:
                                     SNSTopicName: !Join
                                         - '-'
                                         - - !Ref ResourceTagPrefix
-                                          - fortigate-autoscale-notification-sns-topic
+                                          - >-
+                                              fortigate-autoscale-notification-sns-topic
     FgtAsgHandlerIamRoleReplaceRoutePolicy:
         Type: 'AWS::IAM::Policy'
         Condition: IfSpecifyRoutePermissionRouteTableId
@@ -569,7 +587,9 @@ Resources:
     FgtAsgLambdaFunctionCfnService:
         Type: 'AWS::Lambda::Function'
         Properties:
-            Description: FortiGate Autoscale service provider function for Cloud Formation stack.
+            Description: >-
+                FortiGate Autoscale service provider function for Cloud
+                Formation stack.
             FunctionName: !Join
                 - '-'
                 - - !Ref CustomIdentifier
@@ -609,7 +629,8 @@ Resources:
             Action: 'lambda:InvokeFunction'
             Principal: apigateway.amazonaws.com
             SourceArn: !Sub
-                - 'arn:aws${GovCloudSuffix}:execute-api:${Region}:${AccountId}:${AgwARN}/*'
+                - >-
+                    arn:aws${GovCloudSuffix}:execute-api:${Region}:${AccountId}:${AgwARN}/*
                 - GovCloudSuffix: !If
                       - IfInUSGovCloud
                       - '-us-gov'
@@ -661,7 +682,8 @@ Resources:
             Action: 'lambda:InvokeFunction'
             Principal: apigateway.amazonaws.com
             SourceArn: !Sub
-                - 'arn:aws${GovCloudSuffix}:execute-api:${Region}:${AccountId}:${AgwARN}/*'
+                - >-
+                    arn:aws${GovCloudSuffix}:execute-api:${Region}:${AccountId}:${AgwARN}/*
                 - GovCloudSuffix: !If
                       - IfInUSGovCloud
                       - '-us-gov'
@@ -724,6 +746,6 @@ Outputs:
             - Arn
     RequiredConfigsetList:
         Description: >-
-            A comma-delimited list of required configset for the FortiGate Autoscale
-            handling.
+            A comma-delimited list of required configset for the FortiGate
+            Autoscale handling.
         Value: ''

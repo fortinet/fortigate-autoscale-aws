@@ -1,32 +1,32 @@
----
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
     This template creates an S3 bucket in the same region where the stack is
     launched and copy a set of selected objects from original bucket to the new
     bucket. The use of this template is mainly to provide S3 storage for any
     Lambda zip files in the same region as the Lambda function, where the
-    same-region policy is required by AWS Lambda. This is a modified and enhanced
-    version from a source template origin: qs-1op312ie1.
+    same-region policy is required by AWS Lambda. This is a modified and
+    enhanced version from a source template origin: qs-1op312ie1.
 Parameters:
     S3BucketName:
         AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-.]*[0-9a-zA-Z])*$'
         ConstraintDescription: >-
-            Quick Start bucket name can include numbers, lowercase letters, uppercase
-            letters, and hyphens (-). It cannot start or end with a hyphen (-).
+            Quick Start bucket name can include numbers, lowercase letters,
+            uppercase letters, and hyphens (-). It cannot start or end with a
+            hyphen (-).
         Description: >-
-            S3 bucket name for the Quick Start assets. Quick Start bucket name can
-            include numbers, lowercase letters, uppercase letters, and hyphens (-). It
-            cannot start or end with a hyphen (-).
+            S3 bucket name for the Quick Start assets. Quick Start bucket name
+            can include numbers, lowercase letters, uppercase letters, and
+            hyphens (-). It cannot start or end with a hyphen (-).
         Type: String
     S3KeyPrefix:
         AllowedPattern: '^$|^[0-9a-zA-Z-/]*$'
         ConstraintDescription: >-
-            Quick Start key prefix can include numbers, lowercase letters, uppercase
-            letters, hyphens (-), and forward slash (/).
+            Quick Start key prefix can include numbers, lowercase letters,
+            uppercase letters, hyphens (-), and forward slash (/).
         Description: >-
             S3 key prefix for the Quick Start assets. Quick Start key prefix can
-            include numbers, lowercase letters, uppercase letters, hyphens (-), and
-            forward slash (/).
+            include numbers, lowercase letters, uppercase letters, hyphens (-),
+            and forward slash (/).
         Type: String
     ObjectPaths:
         AllowedPattern: '^[0-9a-zA-Z-/.,]*$'
@@ -34,10 +34,10 @@ Parameters:
             The paths can include numbers, lowercase letters, uppercase letters,
             hyphens (-), forward slash (/), period (.), and comma (,).
         Description: >-
-            A comma-delimited list of paths to each source file to be copied from.
-            Each path is resolved as directly following the S3KeyPrefix. It can
-            include numbers, lowercase letters, uppercase letters, hyphens (-), and
-            forward slash (/).
+            A comma-delimited list of paths to each source file to be copied
+            from. Each path is resolved as directly following the S3KeyPrefix.
+            It can include numbers, lowercase letters, uppercase letters,
+            hyphens (-), and forward slash (/).
         Type: String
 Conditions:
     IfInUSGovCloud: !Or
@@ -73,7 +73,9 @@ Resources:
                       - import cfnresponse
                       - ''
                       - ''
-                      - 'def copy_objects(source_bucket, dest_bucket, prefix, objects):'
+                      - >-
+                          def copy_objects(source_bucket, dest_bucket, prefix,
+                          objects):
                       - "    s3 = boto3.client('s3')"
                       - '    for o in objects:'
                       - '        key = prefix + o'
@@ -138,7 +140,9 @@ Resources:
                       - '        timer.cancel()'
                       - '        cfnresponse.send(event, context, status, {}, None)'
                       - ''
-            Description: Copies objects from a source S3 bucket to a destination S3 bucket
+            Description: >-
+                Copies objects from a source S3 bucket to a destination S3
+                bucket
             Handler: index.handler
             Role: !GetAtt
                 - CopyObjectsRole
@@ -215,7 +219,7 @@ Resources:
                                     S3BucketName: !Ref S3BucketName
                                     S3KeyPrefix: !Ref S3KeyPrefix
                                 - !Join
-                                  - '/'
+                                  - /
                                   - - !GetAtt
                                       - DestinationBucket
                                       - Arn
@@ -370,7 +374,7 @@ Resources:
                             Effect: Allow
                             Resource:
                                 - !Join
-                                  - '/'
+                                  - /
                                   - - !GetAtt
                                       - DestinationBucket
                                       - Arn
