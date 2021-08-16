@@ -13,11 +13,10 @@ let cpm: CodePackman;
 
 const init = (command: Command): Promise<void> => {
     projectRoot = path.resolve(command.projectRoot);
-    console.log(projectRoot, command);
+    console.log(projectRoot);
     tsConfigJson = CommentJsonParse(
         fs.readFileSync(path.resolve(projectRoot, 'tsconfig.json')).toString()
     );
-    console.log(tsConfigJson);
     cpm = new CodePackman(projectRoot, tsConfigJson.compilerOptions.outDir);
     return Promise.resolve();
 };
