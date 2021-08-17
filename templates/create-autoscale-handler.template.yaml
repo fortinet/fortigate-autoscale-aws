@@ -540,6 +540,7 @@ Resources:
                     RESOURCE_TAG_PREFIX: !Ref ResourceTagPrefix
                     CUSTOM_ID: ''
                     UNIQUE_ID: ''
+                    LOG_SERVICE_PROCESSING_TIME: 'false'
             Tags:
                 - Key: ResourceGroup
                   Value: !Ref ResourceTagPrefix
@@ -579,6 +580,7 @@ Resources:
                     RESOURCE_TAG_PREFIX: !Ref ResourceTagPrefix
                     CUSTOM_ID: ''
                     UNIQUE_ID: ''
+                    LOG_SERVICE_PROCESSING_TIME: 'false'
             Tags:
                 - Key: ResourceGroup
                   Value: !Ref ResourceTagPrefix
@@ -615,6 +617,7 @@ Resources:
                     RESOURCE_TAG_PREFIX: !Ref ResourceTagPrefix
                     CUSTOM_ID: ''
                     UNIQUE_ID: ''
+                    LOG_SERVICE_PROCESSING_TIME: 'false'
             Tags:
                 - Key: ResourceGroup
                   Value: !Ref ResourceTagPrefix
@@ -668,6 +671,7 @@ Resources:
                     RESOURCE_TAG_PREFIX: !Ref ResourceTagPrefix
                     CUSTOM_ID: ''
                     UNIQUE_ID: ''
+                    LOG_SERVICE_PROCESSING_TIME: 'false'
             Tags:
                 - Key: ResourceGroup
                   Value: !Ref ResourceTagPrefix
