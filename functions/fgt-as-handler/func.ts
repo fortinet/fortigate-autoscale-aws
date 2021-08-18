@@ -3,16 +3,17 @@ import {
     AwsApiGatewayEventProxy,
     AwsCloudFormationCustomResourceEventProxy,
     AwsFortiGateAutoscale,
-    AwsFortiGateAutoscaleTgwLambdaInvocationHandler,
     AwsFortiGateAutoscaleCfnServiceProvider,
+    AwsFortiGateAutoscaleFazIntegrationHandler,
+    AwsFortiGateAutoscaleFortiGateAutoscaleServiceProvider,
     AwsFortiGateAutoscaleTgw,
+    AwsFortiGateAutoscaleTgwLambdaInvocationHandler,
+    AwsLambdaInvocationProxy,
     AwsPlatformAdaptee,
     AwsPlatformAdapter,
     AwsScheduledEventProxy,
-    AwsLambdaInvocationProxy,
-    AwsFortiGateAutoscaleFazIntegrationHandler,
-    AwsFortiGateAutoscaleFazIntegrationServiceProvider
-} from 'autoscale-core';
+    JSONable
+} from '@fortinet/fortigate-autoscale/dist/aws';
 import {
     APIGatewayProxyEvent,
     APIGatewayProxyResult,
@@ -20,7 +21,6 @@ import {
     Context,
     ScheduledEvent
 } from 'aws-lambda';
-import { JSONable } from 'autoscale-core/jsonable';
 
 // API Gateway event handler for http requests coming from FortiGate callback
 export async function autoscaleHandler(
@@ -148,7 +148,7 @@ export async function tgwLambdaPeerInvocationHandler(
     const platform = new AwsPlatformAdapter(new AwsPlatformAdaptee(), proxy);
     const autoscale = new AwsFortiGateAutoscaleTgw<JSONable, Context, void>(platform, env, proxy);
     const handler = new AwsFortiGateAutoscaleTgwLambdaInvocationHandler(autoscale);
-    return await handler.handleLambdaPeerInvocation();
+    return await handler.handlePeerInvocation(context.functionName);
 }
 
 /**
@@ -163,7 +163,7 @@ export async function fazIntegrationHandler(event: JSONable, context: Context): 
     const platform = new AwsPlatformAdapter(new AwsPlatformAdaptee(), proxy);
     const autoscale = new AwsFortiGateAutoscaleTgw<JSONable, Context, void>(platform, env, proxy);
     const handler = new AwsFortiGateAutoscaleFazIntegrationHandler(autoscale);
-    return await handler.handleLambdaPeerInvocation();
+    return await handler.handlePeerInvocation(context.functionName);
 }
 
 /**
@@ -184,6 +184,6 @@ export async function fazIntegrationHandlerService(
         env,
         proxy
     );
-    const handler = new AwsFortiGateAutoscaleFazIntegrationServiceProvider(autoscale);
+    const handler = new AwsFortiGateAutoscaleFortiGateAutoscaleServiceProvider(autoscale);
     return await handler.handleServiceRequest();
 }

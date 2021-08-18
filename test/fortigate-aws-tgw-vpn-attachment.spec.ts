@@ -9,7 +9,7 @@ import {
     MockElbv2,
     MockLambda,
     MockS3
-} from 'autoscale-core';
+} from '@fortinet/fortigate-autoscale/dist/aws/test-helper';
 import { Context, ScheduledEvent } from 'aws-lambda';
 import * as HttpStatusCode from 'http-status-codes';
 import { describe, it } from 'mocha';

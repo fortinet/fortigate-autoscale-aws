@@ -1,7 +1,7 @@
-import path from 'path';
-import fs from 'fs';
 import { Command } from 'commander';
-import { CodePackman, CodePackmanModule } from 'autoscale-core';
+import fs from 'fs';
+import path from 'path';
+import { CodePackman, CodePackmanModule } from './code-packman';
 
 const REAL_PROJECT_ROOT = path.resolve(__dirname, '../');
 const cpm = new CodePackman(REAL_PROJECT_ROOT, './dist');
@@ -18,7 +18,7 @@ const makeDistAWSLambdaFgtAsgHandler = async (
     console.info('Making distribution zip package for: AWS FortiGate Autoscale Handler function');
     await cpm.createpWorkSpace();
     const cleanPaths = ['node_modules', 'local*', 'test', '.nyc_output', '.vscode'];
-    // NOTE: create fgt-asg-handler
+    // NOTE: create fgt-as-handler
     const modCore = cpm.createModule('./core', 'core', cleanPaths);
     const modAws = cpm.createModule('./aws', 'aws', cleanPaths);
     // aws add core as local dependency
@@ -33,7 +33,7 @@ const makeDistAWSLambdaFgtAsgHandler = async (
 
     const modFgtAsgHandler = cpm.createModule(
         './aws_lambda_fgt_asg_handler',
-        'fgt-asg-handler',
+        'fgt-as-handler',
         cleanPaths
     );
     // copy module to temp dir
@@ -523,8 +523,8 @@ const program = new Command();
 program.description('( ͡° ͜ʖ ͡°) FortiGate Autoscale make dist script.');
 
 program
-    .command('build-aws-lambda-fgt-asg-handler')
-    .description('build aws lambda function: fgt-asg-handler.')
+    .command('build-aws-lambda-fgt-as-handler')
+    .description('build aws lambda function: fgt-as-handler.')
     .action(async () => {
         await makeDistAWSLambdaFgtAsgHandler({ includeZip: true, finalize: true });
     });

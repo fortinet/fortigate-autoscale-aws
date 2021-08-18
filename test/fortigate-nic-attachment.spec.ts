@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { AutoscaleEnvironment, AwsPlatformAdapter } from '@fortinet/fortigate-autoscale/dist/aws';
 import {
-    AutoscaleEnvironment,
-    AwsPlatformAdapter,
     AwsTestMan,
     createTestAwsScheduledEventHandler,
     MockAutoScaling,
@@ -14,7 +13,7 @@ import {
     TestAwsFortiGateAutoscale,
     TestAwsPlatformAdaptee,
     TestAwsScheduledEventProxy
-} from 'autoscale-core';
+} from '@fortinet/fortigate-autoscale/dist/aws/test-helper';
 import { Context, ScheduledEvent } from 'aws-lambda';
 import * as HttpStatusCode from 'http-status-codes';
 import { describe, it } from 'mocha';

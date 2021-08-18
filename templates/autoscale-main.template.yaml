@@ -28,7 +28,7 @@ Parameters:
             lowercase letters, and uppercase letters. Max length is 10.
     S3BucketName:
         Type: String
-        AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
+        AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-.]*[0-9a-zA-Z])*$'
         ConstraintDescription: >-
             Deployment resource S3 bucket name can include numbers, lowercase
             letters, uppercase letters, and hyphens (-). It cannot start or end
@@ -40,7 +40,7 @@ Parameters:
             hyphen (-).
     S3KeyPrefix:
         Type: String
-        AllowedPattern: '^[0-9a-zA-Z-/]*$'
+        AllowedPattern: '^[0-9a-zA-Z-./]*$'
         ConstraintDescription: >-
             Deployment package S3 key prefix can include numbers, lowercase
             letters, uppercase letters, hyphens (-), and forward slash (/).
@@ -278,7 +278,7 @@ Parameters:
             is 30. Maximum is 90.
     HeartBeatLossCount:
         Type: Number
-        Default: 3
+        Default: 10
         MinValue: 1
         MaxValue: 65535
         ConstraintDescription: must be a valid number between 1 and 65535.
@@ -478,6 +478,31 @@ Parameters:
         Description: >-
             The static private IP address allocated for the FortiAnalyzer in the
             designated subnet.
+    AutoscaleNotificationSubscriberEmail:
+        Type: String
+        AllowedPattern: '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+        ConstraintDescription: must be a valid email address.
+        Description: >-
+            The email address (AWS SNS Topic subscriber) to receive Autoscale
+            notifications. A confirmation letter will be sent to it. Only one
+            email address is allowed.
+    TerminateUnhealthyVm:
+        Type: String
+        Default: 'no'
+        AllowedValues:
+            - 'yes'
+            - 'no'
+        ConstraintDescription: must choose from the provided options.
+        Description: Terminate any VM that is deemed unhealthy by the Autoscale.
+    SyncRecoveryCount:
+        Type: Number
+        MinValue: 3
+        Default: 3
+        Description: >-
+            Number of consecutively on-time heartbeats for a VM to become
+            healthy again. When 'Terminate Unhealthy VM' is set to false and a
+            VM is once deemed unhealthy, it allows for the VM to recovery from
+            the unhealthy state within an amount of on-time heartbeat sync.
 Rules:
     FortiAnalyzerSupport:
         RuleCondition: !Equals
@@ -582,6 +607,9 @@ Conditions:
     IfCreateVPCEndpoint: !Equals
         - !Ref VpcEndpointId
         - ''
+    IfTerminateUnhealthyVm: !Equals
+        - !Ref TerminateUnhealthyVm
+        - 'yes'
 Mappings:
     ProductVersionMap:
         FortiGateByol:
@@ -1460,6 +1488,12 @@ Resources:
             scaling-group-desired-capacity: !Ref FgtAsgDesiredCapacityPayg
             scaling-group-max-size: !Ref FgtAsgMaxSizePayg
             scaling-group-min-size: !Ref FgtAsgMinSizePayg
+            sns-topic-arn: !Ref AutoscaleSNSTopic
+            sync-recovery-count: !Ref SyncRecoveryCount
+            terminate-unhealthy-vm: !If
+                - IfTerminateUnhealthyVm
+                - 'true'
+                - 'false'
             transit-gateway-id: !If
                 - IfRequireTransitGatewayIntegration
                 - !GetAtt
@@ -1533,6 +1567,25 @@ Resources:
         DependsOn:
             - SaveSettings
             - StackCreateDynamoDBTable
+    AutoscaleSNSTopic:
+        Type: 'AWS::SNS::Topic'
+        Properties:
+            DisplayName: !Sub
+                - 'FortiGate Autoscale (${UniqueId}) Notifications'
+                - UniqueId: !Ref UniqueId
+            TopicName: !Join
+                - '-'
+                - - !Ref ResourceTagPrefix
+                  - fortigate-autoscale-notification-sns-topic
+            Tags:
+                - Key: ResourceGroup
+                  Value: !Ref ResourceTagPrefix
+    AutoscaleSNSSubscription:
+        Type: 'AWS::SNS::Subscription'
+        Properties:
+            Endpoint: !Ref AutoscaleNotificationSubscriberEmail
+            Protocol: email
+            TopicArn: !Ref AutoscaleSNSTopic
 Metadata:
     'AWS::CloudFormation::Interface':
         ParameterGroups:
@@ -1689,3 +1742,6 @@ Outputs:
               - IfBYOLOnly
               - BYOL-Only
               - Hybrid
+    AutoscaleSNSTopicArn:
+        Description: ARN of the FortiGate Autoscale notifications (SNS Topic)
+        Value: !Ref AutoscaleSNSTopic

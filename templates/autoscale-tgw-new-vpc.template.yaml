@@ -1,11 +1,11 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-    FortiGate Autoscale Solution (with Transit Gateway integration). This
-    template collects information for deployment then calls the actual
-    deployment template. Please see the FortiGate Autoscale documentation for
-    more details. **WARNING** You will be billed for the FortiGate On-Demand
-    instances and related AWS resources if you create a stack from this
-    template.
+    FortiGate Autoscale Solution (version 3.3.2) (with Transit Gateway
+    integration). This template collects information for deployment then calls
+    the actual deployment template. Please see the FortiGate Autoscale
+    documentation for more details. **WARNING** You will be billed for the
+    FortiGate On-Demand instances and related AWS resources if you create a
+    stack from this template.
 Parameters:
     ResourceTagPrefix:
         Type: String
@@ -32,28 +32,30 @@ Parameters:
             lowercase letters, and uppercase letters. Max length is 10.
     S3BucketName:
         Type: String
-        AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
+        MinLength: 3
+        MaxLength: 63
+        AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-.]*[0-9a-zA-Z])*$'
         ConstraintDescription: >-
             Deployment resource S3 bucket name can include numbers, lowercase
-            letters, uppercase letters, and hyphens (-). It cannot start or end
-            with a hyphen (-).
+            letters, uppercase letters, period (.), and hyphens (-). It cannot
+            start or end with a hyphen (-).
         Description: >-
             Name of the S3 bucket that contains the FortiGate Autoscale
             deployment package. Can only contain numbers, lowercase letters,
-            uppercase letters, and hyphens (-). It cannot start or end with a
-            hyphen (-).
+            uppercase letters, period (.), and hyphens (-). It cannot start or
+            end with a hyphen (-).
     S3KeyPrefix:
         Type: String
-        AllowedPattern: '^$|^[0-9a-zA-Z-/]*/$'
+        AllowedPattern: '^$|^[0-9a-zA-Z-./]*/$'
         ConstraintDescription: >-
             Deployment package S3 key prefix can include numbers, lowercase
-            letters, uppercase letters, hyphens (-), and forward slash (/). If
-            provided, it must end with a forward slash (/).
+            letters, uppercase letters, hyphens (-), period (.), and forward
+            slash (/). If provided, it must end with a forward slash (/).
         Description: >-
             Name of the S3 folder that stores the FortiGate Autoscale deployment
             resources. Can only contain numbers, lowercase letters, uppercase
-            letters, hyphens (-), and forward slashes (/). If provided, it must
-            end with a forward slash (/).
+            letters, hyphens (-), period (.), and forward slashes (/). If
+            provided, it must end with a forward slash (/).
     AvailabilityZones:
         Description: >-
             The list of Availability Zones to use for the subnets in the VPC.
@@ -270,7 +272,7 @@ Parameters:
             is 30. Maximum is 90.
     HeartBeatLossCount:
         Type: Number
-        Default: 3
+        Default: 10
         MinValue: 1
         MaxValue: 65535
         ConstraintDescription: must be a valid number between 1 and 65535.
@@ -427,6 +429,31 @@ Parameters:
             be within the Public subnet 1 CIDR range. Required if 'FortiAnalyzer
             Integration' is set to 'yes'. If 'FortiAnalyzer Integration' is set
             to 'no', any input will be ignored.
+    AutoscaleNotificationSubscriberEmail:
+        Type: String
+        AllowedPattern: '^$|^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+        ConstraintDescription: must be a valid email address.
+        Description: >-
+            The email address (AWS SNS Topic subscriber) to receive Autoscale
+            notifications. A confirmation letter will be sent to it. If
+            provided, only one email address is allowed.
+    TerminateUnhealthyVm:
+        Type: String
+        Default: 'no'
+        AllowedValues:
+            - 'yes'
+            - 'no'
+        ConstraintDescription: must choose from the provided options.
+        Description: Terminate any VM that is deemed unhealthy by the Autoscale.
+    SyncRecoveryCount:
+        Type: Number
+        MinValue: 3
+        Default: 3
+        Description: >-
+            Number of consecutively on-time heartbeats for a VM to become
+            healthy again. When 'Terminate Unhealthy VM' is set to false and a
+            VM is once deemed unhealthy, it allows for the VM to recovery from
+            the unhealthy state within an amount of on-time heartbeat sync.
 Rules:
     FortiAnalyzerSupport:
         RuleCondition: !Equals
@@ -644,6 +671,9 @@ Resources:
                     - !Ref FortiAnalyzerAutoscaleAdminPassword
                     - NoValuePlaceHolderForTemplateParameterWithMinLength
                 FortiAnalyzerCustomPrivateIpAddress: !Ref FortiAnalyzerCustomPrivateIpAddress
+                AutoscaleNotificationSubscriberEmail: !Ref AutoscaleNotificationSubscriberEmail
+                TerminateUnhealthyVm: !Ref TerminateUnhealthyVm
+                SyncRecoveryCount: !Ref SyncRecoveryCount
             TemplateURL: !Sub
                 - >-
                     https://${S3BucketName}.${S3SubDomain}${Region}.amazonaws.com/${S3KeyPrefix}templates/autoscale-main.template.yaml
@@ -702,6 +732,9 @@ Metadata:
                   - HeartBeatInterval
                   - HeartBeatLossCount
                   - HeartBeatDelayAllowance
+                  - AutoscaleNotificationSubscriberEmail
+                  - TerminateUnhealthyVm
+                  - SyncRecoveryCount
             - Label:
                   default: Transit Gateway configuration
               Parameters:
@@ -812,6 +845,12 @@ Metadata:
                 default: Autoscale admin username
             FortiAnalyzerAutoscaleAdminPassword:
                 default: Autoscale admin password
+            AutoscaleNotificationSubscriberEmail:
+                default: Autoscale Notifications subscriber email
+            TerminateUnhealthyVm:
+                default: Terminate Unhealthy VM
+            SyncRecoveryCount:
+                default: Autoscale Sync Recovery Count
 Outputs:
     ResourceTagPrefix:
         Description: >-
@@ -870,3 +909,11 @@ Outputs:
         Value: !GetAtt
             - StackMainWorkload
             - Outputs.FgtLicensingModel
+    AutoscaleSNSTopicArn:
+        Description: ARN of the FortiGate Autoscale notifications (SNS Topic)
+        Value: !GetAtt
+            - StackMainWorkload
+            - Outputs.AutoscaleSNSTopicArn
+    DeploymentPackageVersion:
+        Description: Deployment package version
+        Value: 3.3.2

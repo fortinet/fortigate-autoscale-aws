@@ -5,7 +5,9 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import {
     AwsFortiGateAutoscaleSetting,
-    AwsFortiGateAutoscaleSettingItemDictionary,
+    AwsFortiGateAutoscaleSettingItemDictionary
+} from '@fortinet/fortigate-autoscale/dist/aws';
+import {
     AwsTestMan,
     createAwsApiGatewayEventHandler,
     MockAutoScaling,
@@ -14,7 +16,7 @@ import {
     MockElbv2,
     MockLambda,
     MockS3
-} from 'autoscale-core';
+} from '@fortinet/fortigate-autoscale/dist/aws/test-helper';
 import { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { describe, it } from 'mocha';
 import * as path from 'path';

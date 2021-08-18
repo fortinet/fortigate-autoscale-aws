@@ -1,4 +1,3 @@
----
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create all necessary DynamoDB tables for FortiGate Autoscale Solution.
 Parameters:
@@ -7,14 +6,14 @@ Parameters:
         AllowedPattern: '[0-9a-zA-Z@.#-]+'
         MaxLength: 64
         ConstraintDescription: >-
-            Resource tag prefix can include numbers, lowercase letters, uppercase
-            letters, ampersat(@) , hyphens (-), period (.), and hash (#). Max length
-            is 64.
+            Resource tag prefix can include numbers, lowercase letters,
+            uppercase letters, ampersat(@) , hyphens (-), period (.), and hash
+            (#). Max length is 64.
         Description: >-
-            A prefix for tag key ResourceGroup on all resources. It's also used as the
-            name prefix of all applicable resources. Can only contain numbers,
-            lowercase letters, uppercase letters, ampersat(@) , hyphens (-), period
-            (.), and hash (#). Max length is 64.
+            A prefix for tag key ResourceGroup on all resources. It's also used
+            as the name prefix of all applicable resources. Can only contain
+            numbers, lowercase letters, uppercase letters, ampersat(@) , hyphens
+            (-), period (.), and hash (#). Max length is 64.
     EnableSecondNic:
         Type: String
         Default: 'no'

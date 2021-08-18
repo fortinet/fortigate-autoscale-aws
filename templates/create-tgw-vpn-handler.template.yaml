@@ -1,73 +1,73 @@
----
 AWSTemplateFormatVersion: 2010-09-09
 Description: A service for Transit Gateway VPN management.
 Parameters:
     S3BucketName:
         Type: String
-        AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
+        AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-.]*[0-9a-zA-Z])*$'
         ConstraintDescription: >-
-            Deployment resource S3 bucket name can include numbers, lowercase letters,
-            uppercase letters, and hyphens (-). It cannot start or end with a hyphen
-            (-).
+            Deployment resource S3 bucket name can include numbers, lowercase
+            letters, uppercase letters, and hyphens (-). It cannot start or end
+            with a hyphen (-).
         Description: >-
             S3 bucket name for the Deployment package. Bucket name can include
-            numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot
-            start or end with a hyphen (-).
+            numbers, lowercase letters, uppercase letters, and hyphens (-). It
+            cannot start or end with a hyphen (-).
     S3KeyPrefix:
         Type: String
-        AllowedPattern: '^[0-9a-zA-Z-/]*$'
+        AllowedPattern: '^[0-9a-zA-Z-./]*$'
         ConstraintDescription: >-
-            Deployment package S3 key prefix can include numbers, lowercase letters,
-            uppercase letters, hyphens (-), and forward slash (/).
+            Deployment package S3 key prefix can include numbers, lowercase
+            letters, uppercase letters, hyphens (-), and forward slash (/).
         Description: >-
-            S3 key prefix for the deployment package. Key prefix can include numbers,
-            lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
+            S3 key prefix for the deployment package. Key prefix can include
+            numbers, lowercase letters, uppercase letters, hyphens (-), and
+            forward slash (/).
     ResourceTagPrefix:
         Type: String
         AllowedPattern: '[0-9a-zA-Z@.#-]+'
         MaxLength: 64
         ConstraintDescription: >-
-            Resource tag prefix can include numbers, lowercase letters, uppercase
-            letters, ampersat(@) , hyphens (-), period (.), and hash (#). Max length
-            is 64.
+            Resource tag prefix can include numbers, lowercase letters,
+            uppercase letters, ampersat(@) , hyphens (-), period (.), and hash
+            (#). Max length is 64.
         Description: >-
-            A prefix for tag key ResourceGroup on all resources. It's also used as the
-            name prefix of all applicable resources. Can only contain numbers,
-            lowercase letters, uppercase letters, ampersat(@) , hyphens (-), period
-            (.), and hash (#). Max length is 64.
+            A prefix for tag key ResourceGroup on all resources. It's also used
+            as the name prefix of all applicable resources. Can only contain
+            numbers, lowercase letters, uppercase letters, ampersat(@) , hyphens
+            (-), period (.), and hash (#). Max length is 64.
     CustomIdentifier:
         Type: String
         MaxLength: '10'
         AllowedPattern: '[A-Za-z0-9]+'
         ConstraintDescription: must only contain uppercase and lowercase letters and numbers
         Description: >-
-            An alternative name prefix. This shorter version of prefix is used on a
-            resource that Resource tag prefix cannot apply to. Must be at most 10
-            characters long and only contain uppercase, lowercase letters, and
-            numbers. Max length is 10.
+            An alternative name prefix. This shorter version of prefix is used
+            on a resource that Resource tag prefix cannot apply to. Must be at
+            most 10 characters long and only contain uppercase, lowercase
+            letters, and numbers. Max length is 10.
     UniqueId:
         Type: String
         MaxLength: '8'
         AllowedPattern: '[A-Za-z0-9]+'
         ConstraintDescription: must only contain uppercase and lowercase letters and digits
         Description: >-
-            A random text suffix for the DynamoDB table name which can help ensure the
-            DB table name is unique per region. Can only contain uppercase, lowercase
-            letters, and digits. Max length is 8.
+            A random text suffix for the DynamoDB table name which can help
+            ensure the DB table name is unique per region. Can only contain
+            uppercase, lowercase letters, and digits. Max length is 8.
     CustomAssetContainer:
         Type: String
         Default: ''
         Description: >-
-            The name of the S3 bucket which contains your custom assets. Required if
-            'use custom asset location' is set to 'yes'.
+            The name of the S3 bucket which contains your custom assets.
+            Required if 'use custom asset location' is set to 'yes'.
     CustomAssetDirectory:
         Type: String
         Default: ''
         Description: >-
-            The sub path within the 'custom asset container' which serves as the top
-            level directory of all your custom assets. If 'use custom asset location'
-            is set to 'yes', and this value is left empty, the 'custom asset
-            container' will serve as the top level directory.
+            The sub path within the 'custom asset container' which serves as the
+            top level directory of all your custom assets. If 'use custom asset
+            location' is set to 'yes', and this value is left empty, the 'custom
+            asset container' will serve as the top level directory.
 Conditions:
     IfInUSGovCloud: !Or
         - !Equals
@@ -190,22 +190,28 @@ Resources:
                                 - 'autoscaling:SetDesiredCapacity'
                                 - 'autoscaling:SetInstanceProtection'
                                 - 'autoscaling:ExitStandby'
-                                - 'autoscaling:BatchPutScheduledUpdateGroupAction'
+                                - >-
+                                    autoscaling:BatchPutScheduledUpdateGroupAction
                                 - 'autoscaling:EnterStandby'
-                                - 'autoscaling:PutScheduledUpdateGroupAction'
+                                - >-
+                                    autoscaling:PutScheduledUpdateGroupAction
                                 - 'autoscaling:UpdateAutoScalingGroup'
-                                - 'autoscaling:DeleteNotificationConfiguration'
+                                - >-
+                                    autoscaling:DeleteNotificationConfiguration
                                 - 'autoscaling:SetInstanceHealth'
-                                - 'autoscaling:TerminateInstanceInAutoScalingGroup'
+                                - >-
+                                    autoscaling:TerminateInstanceInAutoScalingGroup
                                 - 'autoscaling:AttachLoadBalancers'
                                 - 'autoscaling:DetachLoadBalancers'
                                 - 'autoscaling:BatchDeleteScheduledAction'
                                 - 'autoscaling:ResumeProcesses'
                                 - 'autoscaling:SetDesiredCapacity'
                                 - 'autoscaling:PutLifecycleHook'
-                                - 'autoscaling:DetachLoadBalancerTargetGroups'
+                                - >-
+                                    autoscaling:DetachLoadBalancerTargetGroups
                                 - 'autoscaling:SuspendProcesses'
-                                - 'autoscaling:AttachLoadBalancerTargetGroups'
+                                - >-
+                                    autoscaling:AttachLoadBalancerTargetGroups
                                 - 'autoscaling:AttachInstances'
                                 - 'autoscaling:CompleteLifecycleAction'
                                 - 'autoscaling:CreateOrUpdateTags'
@@ -215,7 +221,8 @@ Resources:
                                 - 'autoscaling:CreateAutoScalingGroup'
                                 - 'autoscaling:DeleteScheduledAction'
                                 - 'autoscaling:DetachInstances'
-                                - 'autoscaling:RecordLifecycleActionHeartbeat'
+                                - >-
+                                    autoscaling:RecordLifecycleActionHeartbeat
                             Resource: !Sub
                                 - >-
                                     arn:aws${GovCloudSuffix}:autoscaling:${Region}:${AccountId}:autoScalingGroup:*:autoScalingGroupName/${ResourcePrefix}*
@@ -228,11 +235,13 @@ Resources:
                                   ResourcePrefix: !Ref ResourceTagPrefix
                           - Effect: Allow
                             Action:
-                                - 'autoscaling:DescribeAutoScalingNotificationTypes'
+                                - >-
+                                    autoscaling:DescribeAutoScalingNotificationTypes
                                 - 'autoscaling:DescribeAutoScalingInstances'
                                 - 'ec2:DescribeInstances'
                                 - 'autoscaling:DescribeScalingProcessTypes'
-                                - 'autoscaling:DescribeTerminationPolicyTypes'
+                                - >-
+                                    autoscaling:DescribeTerminationPolicyTypes
                                 - 'dynamodb:ListTables'
                                 - 'autoscaling:DescribePolicies'
                                 - 'ec2:DescribeInstanceAttribute'
@@ -243,13 +252,16 @@ Resources:
                                 - 'autoscaling:DescribeAccountLimits'
                                 - 'autoscaling:DescribeAutoScalingGroups'
                                 - 'autoscaling:DescribeScheduledActions'
-                                - 'autoscaling:DescribeLoadBalancerTargetGroups'
-                                - 'autoscaling:DescribeNotificationConfigurations'
+                                - >-
+                                    autoscaling:DescribeLoadBalancerTargetGroups
+                                - >-
+                                    autoscaling:DescribeNotificationConfigurations
                                 - 'autoscaling:DescribeLifecycleHookTypes'
                                 - 'ec2:DetachNetworkInterface'
                                 - 'autoscaling:DescribeTags'
                                 - 'ec2:DeleteNetworkInterface'
-                                - 'autoscaling:DescribeMetricCollectionTypes'
+                                - >-
+                                    autoscaling:DescribeMetricCollectionTypes
                                 - 'autoscaling:DescribeLoadBalancers'
                                 - 'autoscaling:DescribeLifecycleHooks'
                                 - 'ec2:CreateNetworkInterface'
@@ -278,7 +290,8 @@ Resources:
                                       S3BucketName: !Ref S3BucketName
                                       S3KeyPrefix: !Ref S3KeyPrefix
                                   - !Sub
-                                    - 'arn:aws${GovCloudSuffix}:s3:::${CustomContainer}/${CustomDirectory}/*'
+                                    - >-
+                                        arn:aws${GovCloudSuffix}:s3:::${CustomContainer}/${CustomDirectory}/*
                                     - GovCloudSuffix: !If
                                           - IfInUSGovCloud
                                           - '-us-gov'
@@ -301,14 +314,16 @@ Resources:
                                 - !If
                                   - IfUseCustomAssetContainer
                                   - !Sub
-                                    - 'arn:aws${GovCloudSuffix}:s3:::${CustomContainer}'
+                                    - >-
+                                        arn:aws${GovCloudSuffix}:s3:::${CustomContainer}
                                     - GovCloudSuffix: !If
                                           - IfInUSGovCloud
                                           - '-us-gov'
                                           - ''
                                       CustomContainer: !Ref CustomAssetContainer
                                   - !Sub
-                                    - 'arn:aws${GovCloudSuffix}:s3:::${S3BucketName}'
+                                    - >-
+                                        arn:aws${GovCloudSuffix}:s3:::${S3BucketName}
                                     - GovCloudSuffix: !If
                                           - IfInUSGovCloud
                                           - '-us-gov'
@@ -318,7 +333,8 @@ Resources:
                             Action:
                                 - 'ec2:DisassociateTransitGatewayRouteTable'
                                 - 'ec2:ModifyTransitGatewayVpcAttachment'
-                                - 'ec2:DisableTransitGatewayRouteTablePropagation'
+                                - >-
+                                    ec2:DisableTransitGatewayRouteTablePropagation
                                 - 'ec2:CreateTransitGatewayRouteTable'
                                 - 'ec2:AcceptTransitGatewayVpcAttachment'
                                 - 'ec2:ReplaceTransitGatewayRoute'
@@ -329,7 +345,8 @@ Resources:
                                 - 'ec2:DeleteTransitGatewayVpcAttachment'
                                 - 'ec2:AssociateTransitGatewayRouteTable'
                                 - 'ec2:RejectTransitGatewayVpcAttachment'
-                                - 'ec2:EnableTransitGatewayRouteTablePropagation'
+                                - >-
+                                    ec2:EnableTransitGatewayRouteTablePropagation
                             Resource:
                                 - !Sub
                                   - >-
@@ -341,7 +358,8 @@ Resources:
                                     Region: !Ref 'AWS::Region'
                                     AccountId: !Ref 'AWS::AccountId'
                                 - !Sub
-                                  - 'arn:aws${GovCloudSuffix}:ec2:${Region}:${AccountId}:vpc/*'
+                                  - >-
+                                      arn:aws${GovCloudSuffix}:ec2:${Region}:${AccountId}:vpc/*
                                   - GovCloudSuffix: !If
                                         - IfInUSGovCloud
                                         - '-us-gov'
@@ -370,17 +388,20 @@ Resources:
                             Action:
                                 - 'ec2:ExportTransitGatewayRoutes'
                                 - 'ec2:DescribeVpnConnections'
-                                - 'ec2:GetTransitGatewayAttachmentPropagations'
+                                - >-
+                                    ec2:GetTransitGatewayAttachmentPropagations
                                 - 'ec2:DescribeTransitGateways'
                                 - 'ec2:CreateCustomerGateway'
                                 - 'ec2:DescribeCustomerGateways'
                                 - 'ec2:SearchTransitGatewayRoutes'
                                 - 'ec2:DescribeTransitGatewayAttachments'
                                 - 'ec2:DescribeTransitGatewayRouteTables'
-                                - 'ec2:GetTransitGatewayRouteTablePropagations'
+                                - >-
+                                    ec2:GetTransitGatewayRouteTablePropagations
                                 - 'ec2:DescribeTransitGatewayVpcAttachments'
                                 - 'ec2:DeleteVpnConnection'
-                                - 'ec2:GetTransitGatewayRouteTableAssociations'
+                                - >-
+                                    ec2:GetTransitGatewayRouteTableAssociations
                                 - 'ec2:CreateVpnConnection'
                             Resource: '*'
                           - Effect: Allow
