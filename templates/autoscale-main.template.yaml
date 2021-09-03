@@ -500,7 +500,7 @@ Parameters:
         Default: 3
         Description: >-
             Number of consecutively on-time heartbeats for a VM to become
-            healthy again. When 'Terminate Unhealthy VM' is set to false and a
+            healthy again. When 'Terminate Unhealthy VM' is set to 'no' and a
             VM is once deemed unhealthy, it allows for the VM to recovery from
             the unhealthy state within an amount of on-time heartbeat sync.
 Rules:

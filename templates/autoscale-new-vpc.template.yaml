@@ -490,7 +490,7 @@ Parameters:
         ConstraintDescription: must be a valid email address.
         Description: >-
             The email address (AWS SNS Topic subscriber) to receive Autoscale
-            notifications. A confirmation letter will be sent to it. If
+            notifications. A confirmation email will be sent to it. If
             provided, only one email address is allowed.
     TerminateUnhealthyVm:
         Type: String
@@ -506,7 +506,7 @@ Parameters:
         Default: 3
         Description: >-
             Number of consecutively on-time heartbeats for a VM to become
-            healthy again. When 'Terminate Unhealthy VM' is set to false and a
+            healthy again. When 'Terminate Unhealthy VM' is set to 'no' and a
             VM is once deemed unhealthy, it allows for the VM to recovery from
             the unhealthy state within an amount of on-time heartbeat sync.
 Rules:
@@ -913,7 +913,7 @@ Metadata:
             FortiAnalyzerAutoscaleAdminPassword:
                 default: Autoscale admin password
             AutoscaleNotificationSubscriberEmail:
-                default: Autoscale Notifications subscriber email
+                default: Autoscale Notifications Subscriber Email
             TerminateUnhealthyVm:
                 default: Terminate Unhealthy VM
             SyncRecoveryCount:
