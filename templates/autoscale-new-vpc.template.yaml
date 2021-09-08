@@ -489,9 +489,7 @@ Parameters:
         AllowedPattern: '^$|^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
         ConstraintDescription: must be a valid email address.
         Description: >-
-            The email address (AWS SNS Topic subscriber) to receive Autoscale
-            notifications. A confirmation letter will be sent to it. If
-            provided, only one email address is allowed.
+            The email address (AWS SNS Topic subscriber) to receive Autoscale notifications. If provided, the template can only accept one email address. An email will be sent to the address to confirm the subscription.
     TerminateUnhealthyVm:
         Type: String
         Default: 'no'
@@ -505,10 +503,7 @@ Parameters:
         MinValue: 3
         Default: 3
         Description: >-
-            Number of consecutively on-time heartbeats for a VM to become
-            healthy again. When 'Terminate Unhealthy VM' is set to false and a
-            VM is once deemed unhealthy, it allows for the VM to recovery from
-            the unhealthy state within an amount of on-time heartbeat sync.
+            Number of consecutive on-time heartbeats required for a VM to become healthy again. This parameter is only used when 'Terminate unhealthy VM' is set to ‘no’ and allows for the VM to recover from an unhealthy state.
 Rules:
     FortiAnalyzerSupport:
         RuleCondition: !Equals
@@ -913,11 +908,11 @@ Metadata:
             FortiAnalyzerAutoscaleAdminPassword:
                 default: Autoscale admin password
             AutoscaleNotificationSubscriberEmail:
-                default: Autoscale Notifications subscriber email
+                default: Autoscale notifications subscriber email
             TerminateUnhealthyVm:
-                default: Terminate Unhealthy VM
+                default: Terminate unhealthy VM
             SyncRecoveryCount:
-                default: Autoscale Sync Recovery Count
+                default: Autoscale sync recovery count
 Outputs:
     ResourceTagPrefix:
         Description: >-

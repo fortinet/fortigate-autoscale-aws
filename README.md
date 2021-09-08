@@ -33,8 +33,10 @@ To obtain the deployment package, use one of the following:
 
 Deployment guides are available from the Fortinet Document Library:
 
-  + [ FortiGate / FortiOS 6.2 Deploying auto scaling on AWS](https://docs.fortinet.com/vm/aws/fortigate/6.2/aws-cookbook/6.2.0/397979/deploying-auto-scaling-on-aws)
+  + [ FortiGate / FortiOS 7.0 Deploying auto scaling on AWS](https://docs.fortinet.com/document/fortigate-public-cloud/7.0.0/aws-administration-guide/397979/deploying-auto-scaling-on-aws)
   + [ FortiGate / FortiOS 6.4 Deploying auto scaling on AWS](https://docs.fortinet.com/vm/aws/fortigate/6.4/aws-cookbook/6.4.0/397979/deploying-auto-scaling-on-aws)
+  + [ FortiGate / FortiOS 6.2 Deploying auto scaling on AWS](https://docs.fortinet.com/vm/aws/fortigate/6.2/aws-cookbook/6.2.0/397979/deploying-auto-scaling-on-aws)
+
 
 ## Launch a demo
 
