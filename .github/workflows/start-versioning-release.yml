@@ -56,7 +56,7 @@ jobs:
           custom-version: ${{ github.event.inputs.custom-version }}
       - name: preparation
         run: |
-          echo "arg-allow-same-version=${{ github.event.inputs.allow-same-version == 'true' && github.event.inputs.custom-version == steps['create-branch'].outputs['head-branch'] && ' --allow-same-version' || '' }}" >> $GITHUB_ENV
+          echo "arg-allow-same-version=${{ github.event.inputs.allow-same-version == 'true' && github.event.inputs.custom-version == steps['create-branch'].outputs['head-version'] && ' --allow-same-version' || '' }}" >> $GITHUB_ENV
       # checkout the versioning branch
       - name: checkout version branch
         uses: actions/checkout@v2
