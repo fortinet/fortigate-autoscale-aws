@@ -317,6 +317,7 @@ Resources:
                   - !Ref UniqueId
                   - faz-handler
             Runtime: nodejs12.x
+            MemorySize: 256
             Code:
                 S3Bucket: !GetAtt
                     - StackCopyLambdaSource
@@ -452,6 +453,7 @@ Resources:
                   - !Ref UniqueId
                   - faz-handler-service
             Runtime: nodejs12.x
+            MemorySize: 256
             Code:
                 S3Bucket: !GetAtt
                     - StackCopyLambdaSource
