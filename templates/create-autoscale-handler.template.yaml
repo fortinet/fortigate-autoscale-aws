@@ -516,6 +516,7 @@ Resources:
                   - !Ref UniqueId
                   - fortigate-autoscale-handler
             Runtime: nodejs12.x
+            MemorySize: 256
             Role: !GetAtt
                 - FgtAsgHandlerIamRole
                 - Arn
@@ -556,6 +557,7 @@ Resources:
                   - !Ref UniqueId
                   - fortigate-autoscale-auto-scaling-event
             Runtime: nodejs12.x
+            MemorySize: 256
             Role: !GetAtt
                 - FgtAsgHandlerIamRole
                 - Arn
@@ -598,6 +600,7 @@ Resources:
                   - !Ref UniqueId
                   - fortigate-autoscale-cloud-formation-service
             Runtime: nodejs12.x
+            MemorySize: 256
             Role: !GetAtt
                 - FgtAsgHandlerIamRole
                 - Arn
@@ -652,6 +655,7 @@ Resources:
                   - !Ref UniqueId
                   - fortigate-autoscale-byol-license
             Runtime: nodejs12.x
+            MemorySize: 256
             Role: !GetAtt
                 - FgtAsgHandlerIamRole
                 - Arn

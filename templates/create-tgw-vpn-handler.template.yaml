@@ -109,6 +109,7 @@ Resources:
                   - !Ref UniqueId
                   - fortigate-transit-gateway-vpn-handler
             Runtime: nodejs12.x
+            MemorySize: 256
             Role: !GetAtt
                 - IamRoleTransitGatewayVpnHandler
                 - Arn
