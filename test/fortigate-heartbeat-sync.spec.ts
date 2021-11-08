@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable mocha/no-mocha-arrows */
 import { compare } from '@fortinet/fortigate-autoscale';
 import {
     AwsTestMan,
@@ -35,12 +36,24 @@ describe('FortiGate first heartbeat sync.', () => {
         awsTestMan = new AwsTestMan(mockDataRootDir);
     });
     after(function() {
-        mockEC2.restoreAll();
-        mockS3.restoreAll();
-        mockElbv2.restoreAll();
-        mockLambda.restoreAll();
-        mockAutoscaling.restoreAll();
-        mocDocClient.restoreAll();
+        if (mockEC2) {
+            mockEC2.restoreAll();
+        }
+        if (mockS3) {
+            mockS3.restoreAll();
+        }
+        if (mockElbv2) {
+            mockElbv2.restoreAll();
+        }
+        if (mockLambda) {
+            mockLambda.restoreAll();
+        }
+        if (mockAutoscaling) {
+            mockAutoscaling.restoreAll();
+        }
+        if (mocDocClient) {
+            mocDocClient.restoreAll();
+        }
         Sinon.restore();
     });
     it('First heartbeat from the pending primary.', async () => {
@@ -85,30 +98,24 @@ describe('FortiGate first heartbeat sync.', () => {
             return await platformAdapter.listPrimaryRoleVmId();
         });
 
+        const spyAdapterUpdatePrimaryRecord = Sinon.spy(platformAdapter, 'updatePrimaryRecord');
+
         await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
 
         const primaryElectionResult = await spyPromisesPrimaryElectionResult[0];
         const candidate = primaryElectionResult.candidate;
         const newPrimary = primaryElectionResult.newPrimary;
-        const newPrimaryRecord = primaryElectionResult.newPrimaryRecord;
 
-        // ASSERT: new primary elected
-        Sinon.assert.match(newPrimary !== null, true);
+        // ASSERT: no new primary elected
+        Sinon.assert.match(newPrimary, null);
         // ASSERT: new primary should be done
-        Sinon.assert.match(newPrimaryRecord.voteState, 'done');
+        Sinon.assert.match(spyAdapterUpdatePrimaryRecord.called, true);
+        Sinon.assert.match(spyAdapterUpdatePrimaryRecord.args[0][0].voteState, 'done');
         // ASSERT: candidate is the new primary
-        Sinon.assert.match(compare(candidate).isEqualTo(newPrimary), true);
-
-        // ASSERT: proxy responds with http code 200 and candidate's private ip as primary ip
-        Sinon.assert.match(
-            spyProxyFormatResponse.calledWith(
-                HttpStatusCode.OK,
-                JSON.stringify({ 'master-ip': candidate.primaryPrivateIpAddress })
-            ),
-            true
-        );
+        Sinon.assert.match(candidate.id, spyAdapterUpdatePrimaryRecord.args[0][0].vmId);
 
         stubAdapterListPrimaryRoleVmId.restore();
+        spyAdapterUpdatePrimaryRecord.restore();
         spyProxyFormatResponse.restore();
     });
     it('First heartbeat from secondary (BYOL). Primary election is pending.', async () => {
@@ -213,12 +220,14 @@ describe('FortiGate first heartbeat sync.', () => {
         Sinon.assert.match(compare(candidate).isEqualTo(newPrimary), true);
 
         // ASSERT: proxy responds with http code 200 and candidate's private ip as primary ip
+        Sinon.assert.match(spyProxyFormatResponse.returnValues[0].body !== null, true);
         Sinon.assert.match(
-            spyProxyFormatResponse.calledWith(
-                HttpStatusCode.OK,
-                JSON.stringify({ 'master-ip': candidate.primaryPrivateIpAddress })
-            ),
-            true
+            JSON.parse(spyProxyFormatResponse.returnValues[0].body)['master-ip'],
+            candidate.primaryPrivateIpAddress
+        );
+        Sinon.assert.match(
+            JSON.parse(spyProxyFormatResponse.returnValues[0].body)['primary-ip'],
+            candidate.primaryPrivateIpAddress
         );
         spyProxyFormatResponse.restore();
     });
@@ -266,76 +275,12 @@ describe('FortiGate first heartbeat sync.', () => {
 
         // ASSERT: proxy responds with http code 200 and oldPrimary's private ip as primary ip
         Sinon.assert.match(
-            spyProxyFormatResponse.calledWith(
-                HttpStatusCode.OK,
-                JSON.stringify({ 'master-ip': oldPrimary.primaryPrivateIpAddress })
-            ),
-            true
+            JSON.parse(spyProxyFormatResponse.returnValues[0].body)['master-ip'],
+            oldPrimary.primaryPrivateIpAddress
         );
-    });
-    it('First heartbeat from secondary (BYOL). Primary election is done. Primary is unhealthy. Replace primary role.', async () => {
-        mockDataDir = path.resolve(
-            mockDataRootDir,
-            'heartbeat-first-secondary-me-done-unhealthy-replaced'
-        );
-        event = await awsTestMan.fakeApiGatewayRequest(
-            path.resolve(mockDataDir, 'request/event-fgt-heartbeat-sync.json')
-        );
-        context = await awsTestMan.fakeLambdaContext();
-
-        const {
-            autoscale,
-            env,
-            platformAdaptee,
-            platformAdapter,
-            proxy
-        } = await createTestAwsApiGatewayEventHandler(event, context);
-
-        ({
-            s3: mockS3,
-            ec2: mockEC2,
-            autoscaling: mockAutoscaling,
-            elbv2: mockElbv2,
-            lambda: mockLambda,
-            docClient: mocDocClient
-        } = platformAdaptee.stubAwsServices(path.resolve(mockDataDir, 'aws-api')));
-
-        const spyProxyFormatResponse = Sinon.spy(proxy, 'formatResponse');
-        const spyPromisesPrimaryElectionResult = Sinon.spy(autoscale, 'handlePrimaryElection')
-            .returnValues;
-
-        const stubAdapterListPrimaryRoleVmId = Sinon.stub(platformAdapter, 'listPrimaryRoleVmId');
-
-        stubAdapterListPrimaryRoleVmId.callsFake(async () => {
-            const callCount = mockEC2.getStub('describeInstances').callCount;
-            mockEC2.callSubOnNthFake(
-                'describeInstances',
-                callCount + 1,
-                'i-0000000000byol001',
-                true
-            );
-            stubAdapterListPrimaryRoleVmId.restore();
-            return await platformAdapter.listPrimaryRoleVmId();
-        });
-
-        await autoscale.handleAutoscaleRequest(proxy, platformAdapter, env);
-
-        const primaryElectionResult = await spyPromisesPrimaryElectionResult[0];
-        const candidate = primaryElectionResult.candidate;
-        const newPrimary = primaryElectionResult.newPrimary;
-
-        // ASSERT: new primary elected
-        Sinon.assert.match(newPrimary !== null, true);
-        // ASSERT: candidate is the new primary
-        Sinon.assert.match(compare(candidate).isEqualTo(newPrimary), true);
-
-        // ASSERT: proxy responds with http code 200 and candidate's private ip as primary ip
         Sinon.assert.match(
-            spyProxyFormatResponse.calledWith(
-                HttpStatusCode.OK,
-                JSON.stringify({ 'master-ip': candidate.primaryPrivateIpAddress })
-            ),
-            true
+            JSON.parse(spyProxyFormatResponse.returnValues[0].body)['primary-ip'],
+            oldPrimary.primaryPrivateIpAddress
         );
     });
     it('First heartbeat from secondary (PAYG). Primary election is done. Primary is unhealthy. stay primaryless role.', async () => {
@@ -398,12 +343,24 @@ describe('FortiGate regular heartbeat sync.', () => {
         awsTestMan = new AwsTestMan(mockDataRootDir);
     });
     after(function() {
-        mockEC2.restoreAll();
-        mockS3.restoreAll();
-        mockElbv2.restoreAll();
-        mockLambda.restoreAll();
-        mockAutoscaling.restoreAll();
-        mocDocClient.restoreAll();
+        if (mockEC2) {
+            mockEC2.restoreAll();
+        }
+        if (mockS3) {
+            mockS3.restoreAll();
+        }
+        if (mockElbv2) {
+            mockElbv2.restoreAll();
+        }
+        if (mockLambda) {
+            mockLambda.restoreAll();
+        }
+        if (mockAutoscaling) {
+            mockAutoscaling.restoreAll();
+        }
+        if (mocDocClient) {
+            mocDocClient.restoreAll();
+        }
         Sinon.restore();
     });
     it('Regular heartbeat from the primary. Arrives on-time.', async () => {
@@ -541,12 +498,24 @@ describe('FortiGate irregular heartbeat sync.', () => {
         awsTestMan = new AwsTestMan(mockDataRootDir);
     });
     after(function() {
-        mockEC2.restoreAll();
-        mockS3.restoreAll();
-        mockElbv2.restoreAll();
-        mockLambda.restoreAll();
-        mockAutoscaling.restoreAll();
-        mocDocClient.restoreAll();
+        if (mockEC2) {
+            mockEC2.restoreAll();
+        }
+        if (mockS3) {
+            mockS3.restoreAll();
+        }
+        if (mockElbv2) {
+            mockElbv2.restoreAll();
+        }
+        if (mockLambda) {
+            mockLambda.restoreAll();
+        }
+        if (mockAutoscaling) {
+            mockAutoscaling.restoreAll();
+        }
+        if (mocDocClient) {
+            mocDocClient.restoreAll();
+        }
         Sinon.restore();
     });
     it('Primary heartbeat is late for the first time.', async () => {
