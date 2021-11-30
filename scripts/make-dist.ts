@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import fs from 'fs';
 import path from 'path';
-import { CodePackman, CodePackmanModule } from './code-packman';
+import { CodePackman, CodePackmanModule, createModule } from './code-packman';
 
 const REAL_PROJECT_ROOT = path.resolve(__dirname, '../');
 const cpm = new CodePackman(REAL_PROJECT_ROOT, './dist');
@@ -19,19 +19,21 @@ const makeDistAWSLambdaFgtAsgHandler = async (
     await cpm.createpWorkSpace();
     const cleanPaths = ['node_modules', 'local*', 'test', '.nyc_output', '.vscode'];
     // NOTE: create fgt-as-handler
-    const modCore = cpm.createModule('./core', 'core', cleanPaths);
-    const modAws = cpm.createModule('./aws', 'aws', cleanPaths);
+    const modCore = createModule(cpm, './core', 'core', cleanPaths);
+    const modAws = createModule(cpm, './aws', 'aws', cleanPaths);
     // aws add core as local dependency
     await modAws.addMod(modCore);
     await modAws.install();
 
-    const modAwsCfnResponse = cpm.createModule(
+    const modAwsCfnResponse = createModule(
+        cpm,
         './aws_cfn_response',
         'aws-cfn-response',
         cleanPaths
     );
 
-    const modFgtAsgHandler = cpm.createModule(
+    const modFgtAsgHandler = createModule(
+        cpm,
         './aws_lambda_fgt_asg_handler',
         'fgt-as-handler',
         cleanPaths
@@ -67,19 +69,20 @@ const makeDistAWSLambdaFazHandler = async (
     await cpm.createpWorkSpace();
     const cleanPaths = ['node_modules', 'local*', 'test', '.nyc_output', '.vscode'];
     // NOTE: create module
-    const modCore = cpm.createModule('./core', 'core', cleanPaths);
-    const modAws = cpm.createModule('./aws', 'aws', cleanPaths);
+    const modCore = createModule(cpm, './core', 'core', cleanPaths);
+    const modAws = createModule(cpm, './aws', 'aws', cleanPaths);
     // aws add core as local dependency
     await modAws.addMod(modCore);
     await modAws.install();
 
-    const modAwsCfnResponse = cpm.createModule(
+    const modAwsCfnResponse = createModule(
+        cpm,
         './aws_cfn_response',
         'aws-cfn-response',
         cleanPaths
     );
 
-    const modFazHandler = cpm.createModule('./aws_lambda_faz_handler', 'faz-handler', cleanPaths);
+    const modFazHandler = createModule(cpm, './aws_lambda_faz_handler', 'faz-handler', cleanPaths);
     // copy module to temp dir
     await modFazHandler.copy();
     // clean unused directories and files
@@ -111,19 +114,21 @@ const makeDistAWSLambdaNicAttachment = async (
     await cpm.createpWorkSpace();
     const cleanPaths = ['node_modules', 'local*', 'test', '.nyc_output', '.vscode'];
     // NOTE: create module
-    const modCore = cpm.createModule('./core', 'core', cleanPaths);
-    const modAws = cpm.createModule('./aws', 'aws', cleanPaths);
+    const modCore = createModule(cpm, './core', 'core', cleanPaths);
+    const modAws = createModule(cpm, './aws', 'aws', cleanPaths);
     // aws add core as local dependency
     await modAws.addMod(modCore);
     await modAws.install();
 
-    const modAwsCfnResponse = cpm.createModule(
+    const modAwsCfnResponse = createModule(
+        cpm,
         './aws_cfn_response',
         'aws-cfn-response',
         cleanPaths
     );
 
-    const modNicAttachment = cpm.createModule(
+    const modNicAttachment = createModule(
+        cpm,
         './aws_lambda_nic_attachment',
         'nic-attachment',
         cleanPaths
@@ -161,19 +166,21 @@ const makeDistAWSLambdaTgwVpnHandler = async (
     await cpm.createpWorkSpace();
     const cleanPaths = ['node_modules', 'local*', 'test', '.nyc_output', '.vscode'];
     // NOTE: create module
-    const modCore = cpm.createModule('./core', 'core', cleanPaths);
-    const modAws = cpm.createModule('./aws', 'aws', cleanPaths);
+    const modCore = createModule(cpm, './core', 'core', cleanPaths);
+    const modAws = createModule(cpm, './aws', 'aws', cleanPaths);
     // aws add core as local dependency
     await modAws.addMod(modCore);
     await modAws.install();
 
-    const modAwsCfnResponse = cpm.createModule(
+    const modAwsCfnResponse = createModule(
+        cpm,
         './aws_cfn_response',
         'aws-cfn-response',
         cleanPaths
     );
 
-    const modTgwVpnHandler = cpm.createModule(
+    const modTgwVpnHandler = createModule(
+        cpm,
         './aws_lambda_tgw_vpn_handler',
         'tgw-vpn-handler',
         cleanPaths
@@ -213,7 +220,8 @@ const makeDistAwsCloudFormation = async (
     const excludeList = (buildOptions && buildOptions.excludeList) || [];
     await cpm.createpWorkSpace();
     // cloud formation directory
-    const modAwsCloudFormation = cpm.createModule(
+    const modAwsCloudFormation = createModule(
+        cpm,
         './aws_cloudformation',
         'aws-cloudformation',
         cleanPaths
@@ -322,7 +330,8 @@ const makeDistAwsQuickStartGuide = async (
     const excludeList = (buildOptions && buildOptions.excludeList) || [];
     await cpm.createpWorkSpace();
     // cloud formation directory
-    const modAwsCloudFormation = cpm.createModule(
+    const modAwsCloudFormation = createModule(
+        cpm,
         './aws_cloudformation',
         'aws-quickstart-guide',
         cleanPaths
@@ -433,13 +442,14 @@ const makeDistAzureFuncApp = async (buildOptions?: BuildOptions): Promise<CodePa
         'local.settings.json'
     ];
     // NOTE: create module
-    const modCore = cpm.createModule('./core', 'core', cleanPaths);
-    const modAzure = cpm.createModule('./azure', 'azure', cleanPaths);
+    const modCore = createModule(cpm, './core', 'core', cleanPaths);
+    const modAzure = createModule(cpm, './azure', 'azure', cleanPaths);
     // azure add core as local dependency
     await modAzure.addMod(modCore);
     await modAzure.install();
 
-    const modAzureFuncApp = cpm.createModule(
+    const modAzureFuncApp = createModule(
+        cpm,
         './azure_funcapp',
         null, // passing a null to use the name in package.json
         cleanPaths
@@ -478,7 +488,8 @@ const makeDistAzureTemplateDeployment = async (
     const excludeList = (buildOptions && buildOptions.excludeList) || [];
     await cpm.createpWorkSpace();
     // cloud formation directory
-    const modAzureDeploymentTemplate = cpm.createModule(
+    const modAzureDeploymentTemplate = createModule(
+        cpm,
         './azure_template_deployment',
         'fortigate-autoscale-azure-template-deployment',
         cleanPaths
