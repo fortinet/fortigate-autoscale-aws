@@ -112,10 +112,10 @@ Resources:
         Type: 'AWS::DynamoDB::Table'
         Properties:
             AttributeDefinitions:
-                - AttributeName: scalingGroupName
+                - AttributeName: id
                   AttributeType: S
             KeySchema:
-                - AttributeName: scalingGroupName
+                - AttributeName: id
                   KeyType: HASH
             ProvisionedThroughput:
                 ReadCapacityUnits: '1'

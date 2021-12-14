@@ -10,6 +10,7 @@ export type JSONable = {
     [key in string | number]: string | number | boolean | JSONable | JSONable[];
 };
 
+// eslint-disable-next-line no-shadow
 export enum ExitCode {
     Ok,
     Error
@@ -103,6 +104,7 @@ export interface PackmanConfig extends JSONable {
     output: PackmanConigOutput;
 }
 
+// eslint-disable-next-line no-shadow
 export enum ArchiverType {
     file,
     directory,
@@ -128,197 +130,6 @@ const defaultOptions: CodePackmanOptions = {
 
 export interface Stats extends fs.Stats {
     name: string;
-}
-
-export class CodePackmanModule {
-    private cpm: CodePackman;
-    private rPath: string;
-    private rLibPath: string;
-    private srcDir: string;
-    private _tempSrcDir: string;
-    private _zipFilePath: string;
-    private _copied: boolean;
-    private _installed: boolean;
-    private cleanPaths: string[];
-    private _cleaned: boolean;
-    private _moduleName: string;
-    packageJson: JSONable;
-    _zipped: boolean;
-    get copied(): boolean {
-        return this._copied;
-    }
-    get installed(): boolean {
-        return this._installed;
-    }
-    get cleaned(): boolean {
-        return this._cleaned;
-    }
-    get zipFilePath(): string {
-        return this._zipFilePath;
-    }
-    get tempSrcDir(): string {
-        return this._tempSrcDir;
-    }
-    get moduleName(): string {
-        return this._moduleName;
-    }
-    constructor(cpm: CodePackman, relativePath: string, name?: string, cleanPaths?: string[]) {
-        this.cpm = cpm;
-        this.rPath = relativePath;
-        this._moduleName = name;
-        this.srcDir = path.resolve(this.cpm.projectRoot, this.rPath);
-        this.cleanPaths = cleanPaths;
-    }
-
-    async copy(): Promise<ExitCode> {
-        if (!this.cpm.workSpace) {
-            throw new Error('Cannot copy. Work space not created.');
-        }
-        if (!this._copied) {
-            // get package json
-            this.packageJson = await this.cpm.readPackageJson(this.srcDir, {
-                suppressError: true
-            });
-            if (!this._moduleName) {
-                this._moduleName = this.packageJson.name as string;
-            }
-            // set module temp dir name
-            this._tempSrcDir = path.resolve(this.cpm.tempSrcDir, this._moduleName);
-            let code: ExitCode = ExitCode.Ok;
-            // check if the module is copied already
-            if (!ShellJs.test('-e', this._tempSrcDir)) {
-                // create module dir inside temp src dir
-                await this.cpm.makeDir(this._tempSrcDir);
-                // copy module to temp src dir
-                code = await this.cpm.copyDir(this.srcDir, this._tempSrcDir);
-            }
-
-            this._copied = true;
-            return code;
-        } else {
-            return ExitCode.Ok;
-        }
-    }
-
-    async install(): Promise<ExitCode> {
-        if (!this._installed) {
-            this.cpm.enterDir(this._tempSrcDir);
-            await this.cpm.npmPrune(true);
-            const code = await this.cpm.npmInstallProd();
-            this._installed = true;
-            this.cpm.leaveDir();
-            return code;
-        } else {
-            return ExitCode.Ok;
-        }
-    }
-
-    async clean(): Promise<ExitCode> {
-        if (!this._cleaned) {
-            this.cpm.enterDir(this._tempSrcDir);
-            const code = await this.cpm.remove(this.cleanPaths);
-            this._cleaned = true;
-            return code;
-        } else {
-            return ExitCode.Ok;
-        }
-    }
-
-    async remove(pathList: string[]): Promise<ExitCode> {
-        this.cpm.enterDir(this._tempSrcDir);
-        const code = await this.cpm.remove(pathList);
-        this._cleaned = true;
-        return code;
-    }
-
-    async addMod(mod: CodePackmanModule): Promise<ExitCode> {
-        if (!this.copied) {
-            await this.copy();
-        }
-        if (!this.cleaned) {
-            await this.clean();
-        }
-        if (!mod.copied) {
-            await mod.copy();
-        }
-        if (!mod.cleaned) {
-            await mod.clean();
-        }
-        if (!mod.installed) {
-            await mod.install();
-        }
-
-        let rModPath = '';
-        if (!this.rLibPath) {
-            const rLibPath = './lib';
-            await this.cpm.makeDir(path.resolve(this._tempSrcDir, rLibPath));
-            this.rLibPath = rLibPath;
-        }
-        rModPath = path.posix.join(this.rLibPath, mod.moduleName);
-        // copy mod from its temp src dir into this lib dir
-        await this.cpm.copyDir(mod._tempSrcDir, path.resolve(this._tempSrcDir, rModPath));
-
-        this.cpm.enterDir(this._tempSrcDir);
-        await this.cpm.npmInstall(rModPath);
-        this.cpm.leaveDir();
-        // clear the zip file if exists
-        if (this._zipFilePath && ShellJs.test('-e', this._zipFilePath)) {
-            await this.cpm.remove([this._zipFilePath]);
-            this._zipped = false;
-            this._zipFilePath = undefined;
-        }
-        return ExitCode.Ok;
-    }
-
-    async zip(): Promise<ExitCode> {
-        if (!this._zipped) {
-            this.cpm.enterDir(this.cpm.tempDir);
-            const zipFIlePath = path.resolve(this.cpm.tempDir, `${this._moduleName}.zip`);
-            const code = await this.cpm.zip(
-                [
-                    {
-                        name: this._tempSrcDir,
-                        type: ArchiverType.directory
-                    }
-                ],
-                zipFIlePath
-            );
-            this.cpm.leaveDir();
-            this._zipFilePath = zipFIlePath;
-            return code;
-        } else {
-            return ExitCode.Ok;
-        }
-    }
-
-    async createSubDir(relativeDirPath: string): Promise<ExitCode> {
-        return await this.cpm.makeDir(path.resolve(this.tempSrcDir, relativeDirPath));
-    }
-
-    copyZipToDist(): Promise<ExitCode> {
-        return this.copyZipTo(this.cpm.tempDistDir);
-    }
-
-    // copy to temp dist dir
-    async copySrcToDist(): Promise<ExitCode> {
-        return await this.copySrcTo(this.cpm.tempDistDir);
-    }
-
-    async copyZipTo(dest: string): Promise<ExitCode> {
-        if (!this.cpm.safeDirCheck(dest)) {
-            return ExitCode.Error;
-        }
-        await this.zip();
-        await this.cpm.cp([this.zipFilePath], dest);
-        return ExitCode.Ok;
-    }
-
-    async copySrcTo(dest: string): Promise<ExitCode> {
-        if (!this.cpm.safeDirCheck(dest)) {
-            return ExitCode.Error;
-        }
-        return await this.cpm.cp([this.tempSrcDir], dest);
-    }
 }
 
 export class CodePackman {
@@ -1118,10 +929,6 @@ export class CodePackman {
         return ExitCode.Ok;
     }
 
-    createModule(relativePath: string, name?: string, cleanPaths?: string[]): CodePackmanModule {
-        return new CodePackmanModule(this, relativePath, name, cleanPaths);
-    }
-
     async finalize(): Promise<ExitCode> {
         return await this.copyDir(this.tempDistDir, this.distDir);
     }
@@ -1377,4 +1184,203 @@ export class CodePackman {
             resourceLocation: outDir
         });
     }
+}
+export class CodePackmanModule {
+    private cpm: CodePackman;
+    private rPath: string;
+    private rLibPath: string;
+    private srcDir: string;
+    private _tempSrcDir: string;
+    private _zipFilePath: string;
+    private _copied: boolean;
+    private _installed: boolean;
+    private cleanPaths: string[];
+    private _cleaned: boolean;
+    private _moduleName: string;
+    packageJson: JSONable;
+    _zipped: boolean;
+    get copied(): boolean {
+        return this._copied;
+    }
+    get installed(): boolean {
+        return this._installed;
+    }
+    get cleaned(): boolean {
+        return this._cleaned;
+    }
+    get zipFilePath(): string {
+        return this._zipFilePath;
+    }
+    get tempSrcDir(): string {
+        return this._tempSrcDir;
+    }
+    get moduleName(): string {
+        return this._moduleName;
+    }
+    constructor(cpm: CodePackman, relativePath: string, name?: string, cleanPaths?: string[]) {
+        this.cpm = cpm;
+        this.rPath = relativePath;
+        this._moduleName = name;
+        this.srcDir = path.resolve(this.cpm.projectRoot, this.rPath);
+        this.cleanPaths = cleanPaths;
+    }
+
+    async copy(): Promise<ExitCode> {
+        if (!this.cpm.workSpace) {
+            throw new Error('Cannot copy. Work space not created.');
+        }
+        if (!this._copied) {
+            // get package json
+            this.packageJson = await this.cpm.readPackageJson(this.srcDir, {
+                suppressError: true
+            });
+            if (!this._moduleName) {
+                this._moduleName = this.packageJson.name as string;
+            }
+            // set module temp dir name
+            this._tempSrcDir = path.resolve(this.cpm.tempSrcDir, this._moduleName);
+            let code: ExitCode = ExitCode.Ok;
+            // check if the module is copied already
+            if (!ShellJs.test('-e', this._tempSrcDir)) {
+                // create module dir inside temp src dir
+                await this.cpm.makeDir(this._tempSrcDir);
+                // copy module to temp src dir
+                code = await this.cpm.copyDir(this.srcDir, this._tempSrcDir);
+            }
+
+            this._copied = true;
+            return code;
+        } else {
+            return ExitCode.Ok;
+        }
+    }
+
+    async install(): Promise<ExitCode> {
+        if (!this._installed) {
+            this.cpm.enterDir(this._tempSrcDir);
+            await this.cpm.npmPrune(true);
+            const code = await this.cpm.npmInstallProd();
+            this._installed = true;
+            this.cpm.leaveDir();
+            return code;
+        } else {
+            return ExitCode.Ok;
+        }
+    }
+
+    async clean(): Promise<ExitCode> {
+        if (!this._cleaned) {
+            this.cpm.enterDir(this._tempSrcDir);
+            const code = await this.cpm.remove(this.cleanPaths);
+            this._cleaned = true;
+            return code;
+        } else {
+            return ExitCode.Ok;
+        }
+    }
+
+    async remove(pathList: string[]): Promise<ExitCode> {
+        this.cpm.enterDir(this._tempSrcDir);
+        const code = await this.cpm.remove(pathList);
+        this._cleaned = true;
+        return code;
+    }
+
+    async addMod(mod: CodePackmanModule): Promise<ExitCode> {
+        if (!this.copied) {
+            await this.copy();
+        }
+        if (!this.cleaned) {
+            await this.clean();
+        }
+        if (!mod.copied) {
+            await mod.copy();
+        }
+        if (!mod.cleaned) {
+            await mod.clean();
+        }
+        if (!mod.installed) {
+            await mod.install();
+        }
+
+        let rModPath = '';
+        if (!this.rLibPath) {
+            const rLibPath = './lib';
+            await this.cpm.makeDir(path.resolve(this._tempSrcDir, rLibPath));
+            this.rLibPath = rLibPath;
+        }
+        rModPath = path.posix.join(this.rLibPath, mod.moduleName);
+        // copy mod from its temp src dir into this lib dir
+        await this.cpm.copyDir(mod._tempSrcDir, path.resolve(this._tempSrcDir, rModPath));
+
+        this.cpm.enterDir(this._tempSrcDir);
+        await this.cpm.npmInstall(rModPath);
+        this.cpm.leaveDir();
+        // clear the zip file if exists
+        if (this._zipFilePath && ShellJs.test('-e', this._zipFilePath)) {
+            await this.cpm.remove([this._zipFilePath]);
+            this._zipped = false;
+            this._zipFilePath = undefined;
+        }
+        return ExitCode.Ok;
+    }
+
+    async zip(): Promise<ExitCode> {
+        if (!this._zipped) {
+            this.cpm.enterDir(this.cpm.tempDir);
+            const zipFIlePath = path.resolve(this.cpm.tempDir, `${this._moduleName}.zip`);
+            const code = await this.cpm.zip(
+                [
+                    {
+                        name: this._tempSrcDir,
+                        type: ArchiverType.directory
+                    }
+                ],
+                zipFIlePath
+            );
+            this.cpm.leaveDir();
+            this._zipFilePath = zipFIlePath;
+            return code;
+        } else {
+            return ExitCode.Ok;
+        }
+    }
+
+    async createSubDir(relativeDirPath: string): Promise<ExitCode> {
+        return await this.cpm.makeDir(path.resolve(this.tempSrcDir, relativeDirPath));
+    }
+
+    copyZipToDist(): Promise<ExitCode> {
+        return this.copyZipTo(this.cpm.tempDistDir);
+    }
+
+    // copy to temp dist dir
+    async copySrcToDist(): Promise<ExitCode> {
+        return await this.copySrcTo(this.cpm.tempDistDir);
+    }
+
+    async copyZipTo(dest: string): Promise<ExitCode> {
+        if (!this.cpm.safeDirCheck(dest)) {
+            return ExitCode.Error;
+        }
+        await this.zip();
+        await this.cpm.cp([this.zipFilePath], dest);
+        return ExitCode.Ok;
+    }
+
+    async copySrcTo(dest: string): Promise<ExitCode> {
+        if (!this.cpm.safeDirCheck(dest)) {
+            return ExitCode.Error;
+        }
+        return await this.cpm.cp([this.tempSrcDir], dest);
+    }
+}
+
+export function createModule(
+    cpm: CodePackman,
+    relativePath: string,
+    name?: string,
+    cleanPaths?: string[]
+): CodePackmanModule {
+    return new CodePackmanModule(cpm, relativePath, name, cleanPaths);
 }

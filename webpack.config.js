@@ -1,3 +1,4 @@
+'use strict';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const config = require('./packman.config.json');
