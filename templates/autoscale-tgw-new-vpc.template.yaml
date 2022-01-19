@@ -386,10 +386,7 @@ Parameters:
         Type: String
         Default: 6.4.7
         AllowedValues:
-            - 7.0.2
-            - 7.0.1
             - 6.4.7
-            - 6.4.6
         ConstraintDescription: must choose from the provided options.
         Description: >-
             The FortiAnalyzer version supported by Fortinet FortiGate Auto
