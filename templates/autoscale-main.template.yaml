@@ -815,8 +815,26 @@ Mappings:
             FGTVM64PAYG648: ami-00c6be1a1b825deed
             FGTVM64PAYG647: ami-0d5333f9359d76a8e
             FAZVM64PAYG647: ami-0d429f30f7ec705fc
-        us-gov-east-1: {}
-        us-gov-west-1: {}
+        us-gov-east-1:
+            FGTVM64BYOL702: ami-086250888766a0872
+            FGTVM64PAYG702: ami-0722e1deb6b3bf949
+            FGTVM64BYOL703: ami-046bc4156f6aac91a
+            FGTVM64BYOL648: ami-089be6880d51357d5
+            FGTVM64BYOL647: ami-0bed7ff93e49d8e61
+            FGTVM64PAYG703: ami-002297e06ad54efb3
+            FGTVM64PAYG648: ami-051e27704ae2dcd5a
+            FGTVM64PAYG647: ami-073a4d4d31e77aa7f
+            FAZVM64PAYG647: ami-010fb04956c267dc4
+        us-gov-west-1:
+            FGTVM64BYOL702: ami-0884ea6cc86870736
+            FGTVM64PAYG702: ami-0200c651d047ce4da
+            FGTVM64BYOL703: ami-04609c6f6f88ca918
+            FGTVM64BYOL648: ami-096987deae151d446
+            FGTVM64BYOL647: ami-0956368e663294724
+            FGTVM64PAYG703: ami-054e109a21e46be81
+            FGTVM64PAYG648: ami-051e27704ae2dcd5a
+            FGTVM64PAYG647: ami-0ba4f0fba1775c25c
+            FAZVM64PAYG647: ami-05fdf75462fc4e17f
         us-west-1:
             FGTVM64BYOL702: ami-02b8386b83b22a768
             FGTVM64PAYG702: ami-095959eb30adfa9a3
