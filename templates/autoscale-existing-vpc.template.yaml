@@ -119,11 +119,12 @@ Parameters:
             more information, see https://aws.amazon.com/ec2/instance-types/.
     FortiOSVersion:
         Type: String
-        Default: 7.0.2
+        Default: 7.0.3
         AllowedValues:
+            - 7.0.3
             - 7.0.2
-            - 7.0.1
-            - 6.4.6
+            - 6.4.8
+            - 6.4.7
         ConstraintDescription: must be a valid FortiOS version from the selection.
         Description: FortiOS version supported by FortiGate Autoscale for AWS.
     LifecycleHookTimeout:
@@ -432,9 +433,9 @@ Parameters:
             https://aws.amazon.com/ec2/instance-types/
     FortiAnalyzerVersion:
         Type: String
-        Default: 6.4.6
+        Default: 6.4.7
         AllowedValues:
-            - 6.4.6
+            - 6.4.7
         ConstraintDescription: must choose from the provided options.
         Description: >-
             The FortiAnalyzer version supported by Fortinet FortiGate Auto
