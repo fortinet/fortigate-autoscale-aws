@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-    FortiGate Autoscale Solution (version 3.5.0) [in a new VPC]. This template
+    FortiGate Autoscale Solution (version 3.5.1) [in a new VPC]. This template
     creates a new VPC and deploys FortiGate Autoscale into it. For more details,
     please see the FortiGate Autoscale documentation. **WARNING** You will be
     billed for the FortiGate On-Demand instances and related AWS resources if
@@ -984,4 +984,4 @@ Outputs:
             - Outputs.AutoscaleSNSTopicArn
     DeploymentPackageVersion:
         Description: Deployment package version
-        Value: 3.5.0
+        Value: 3.5.1
