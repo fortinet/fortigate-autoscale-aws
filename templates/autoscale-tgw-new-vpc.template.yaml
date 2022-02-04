@@ -10,7 +10,7 @@ Parameters:
     AutoscaleNotificationSubscriberEmail:
         AllowedPattern: ^$|^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$
         ConstraintDescription: must be a valid email address.
-        Description: The email address (AWS SNS Topic subscriber) to receive Autoscale notifications. If provided, the template can only accept one email address. An email will be sent to the address to confirm the subscription.
+        Description: The email address (AWS SNS Topic subscriber) to receive Autoscale notifications. If provided, the template can only accept one email address. An email is sent to the address to confirm the subscription.
         Type: String
     AvailabilityZones:
         Description: The list of Availability Zones to use for the subnets in the VPC. The FortiGate Autoscale solution uses two Availability Zones from your list and preserves the logical order you specify.

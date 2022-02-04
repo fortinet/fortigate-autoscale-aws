@@ -325,7 +325,7 @@ Parameters:
         Description: The CIDR block of the selected existing VPC. This can be found in parentheses in the VPC ID parameter selection.
         Type: String
     VpcEndpointId:
-        Description: ID of the Private VPC Endpoint associated with the existing VPC. The Private VPC Endpoint must has enabled the 'Private DNS names'.
+        Description: ID of the private VPC endpoint associated with the existing VPC. The Private VPC Endpoint must have enabled the 'Private DNS names'.
         Type: String
     VpcId:
         Description: ID of the existing VPC where FortiGate Autoscale will be deployed. The VPC must have the option DNS hostnames enabled and each of the two Availability Zones in the VPC must have at least 1 public subnet and at least 1 private subnet.
