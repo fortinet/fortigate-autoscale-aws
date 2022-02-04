@@ -29,6 +29,15 @@ To obtain the deployment package, use one of the following:
     4. Run `npm run build-artifacts` to generate the local deployment package.
     5. The deployment package **aws-cloudformation.zip** will be available in the **dist/artifacts** directory.
 
+## Architectural diagrams
+
+
+![Autoscale 3.0 architectural diagram](docs/diagrams/Autoscale_3.0_architectural_diagram_aws.png)
+
+More diagrams are available in [docs/diagrams](docs/diagrams)
+## Technical documentation
+* [Deployment templates](docs/deployment_templates.md)
+* [Autoscale Core related documentation](https://github.com/fortinet/autoscale-core#technical-documentation)
 ## Deployment guide
 
 Deployment guides are available from the Fortinet Document Library:
