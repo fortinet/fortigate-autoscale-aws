@@ -28,7 +28,7 @@ Required parameters will have a bold font on their label column in the table bel
 
 | Name | Label | Default | Description |
 | --- | --- | --- | --- |
-| AutoscaleNotificationSubscriberEmail | Autoscale notifications subscriber email | | The email address (AWS SNS Topic subscriber) to receive Autoscale notifications. If provided, the template can only accept one email address. An email will be sent to the address to confirm the subscription. |
+| AutoscaleNotificationSubscriberEmail | Autoscale notifications subscriber email | | The email address (AWS SNS Topic subscriber) to receive Autoscale notifications. If provided, the template can only accept one email address. An email is sent to the address to confirm the subscription. |
 | AvailabilityZones | **Availability Zones** | |  List of Availability Zones to use for the subnets in the VPC. The FortiGate Autoscale solution uses two Availability Zones from your list and preserves the logical order you specify. | | CustomAssetContainer | **Custom asset S3 bucket** | |  The name of the S3 bucket which contains your custom assets. Required if **use custom asset location** is set to **yes**. |
 | CustomAssetDirectory | **Custom asset folder** | |  The sub path within the **custom asset container** which serves as the top level directory of all your custom assets. If **use custom asset location** is set to **yes**, and this value is left empty, the **custom asset container** will serve as the top level directory. |
 | CustomIdentifier | **Resource name prefix** | fgtASG | An alternative name prefix to be used on a resource that the **Resource tag prefix** cannot apply to. Can only contain numbers, lowercase letters, and uppercase letters. Max length is 10. |
@@ -104,7 +104,7 @@ Required parameters will have a bold font on their label column in the table bel
 
 | Name | Label | Default | Description |
 | --- | --- | --- | --- |
-| AutoscaleNotificationSubscriberEmail | Autoscale notifications subscriber email | | The email address (AWS SNS Topic subscriber) to receive Autoscale notifications. If provided, the template can only accept one email address. An email will be sent to the address to confirm the subscription. |
+| AutoscaleNotificationSubscriberEmail | Autoscale notifications subscriber email | | The email address (AWS SNS Topic subscriber) to receive Autoscale notifications. If provided, the template can only accept one email address. An email is sent to the address to confirm the subscription. |
 | CustomAssetContainer | **Custom asset S3 bucket** | |  The name of the S3 bucket which contains your custom assets. Required if **use custom asset location** is set to **yes**. |
 | CustomAssetDirectory | **Custom asset folder** | |  The sub path within the **custom asset container** which serves as the top level directory of all your custom assets. If **use custom asset location** is set to **yes**, and this value is left empty, the **custom asset container** will serve as the top level directory. |
 | CustomIdentifier | **Resource name prefix** | fgtASG | An alternative name prefix to be used on a resource that the **Resource tag prefix** cannot apply to. Can only contain numbers, lowercase letters, and uppercase letters. Max length is 10. |
@@ -154,7 +154,7 @@ Required parameters will have a bold font on their label column in the table bel
 | TerminateUnhealthyVm | Terminate unhealthy VM | no | Terminate any VM that is deemed unhealthy by the Autoscale. |
 | UseCustomAssetLocation | Use custom asset location | no | Set to yes to use a custom S3 location for custom assets such as licenses and customized configsets. |
 | VpcCidr | **VPC CIDR** | |  Classless Inter-Domain Routing (CIDR) block for the FortiGate Autoscale VPC. |
-| VpcEndpointId | **Private VPC Endpoint ID** | |  ID of the Private VPC Endpoint associated with the existing VPC. The Private VPC Endpoint must has enabled the **Private DNS names**. |
+| VpcEndpointId | **Private VPC Endpoint ID** | |  ID of the private VPC endpoint associated with the existing VPC. The Private VPC Endpoint must has enabled the **Private DNS names**. |
 | VpcId | **VPC ID** | |  ID of the existing VPC where FortiGate Autoscale will be deployed. The VPC must have the option DNS hostnames enabled and each of the two Availability Zones in the VPC must have at least 1 public subnet and at least 1 private subnet. |
 
 ## Deploy Autoscale into a new VPC with Transit Gateway integration
@@ -183,7 +183,7 @@ Required parameters will have a bold font on their label column in the table bel
 
 | Name | Label | Default | Description |
 | --- | --- | --- | --- |
-| AutoscaleNotificationSubscriberEmail | Autoscale notifications subscriber email | | The email address (AWS SNS Topic subscriber) to receive Autoscale notifications. If provided, the template can only accept one email address. An email will be sent to the address to confirm the subscription. |
+| AutoscaleNotificationSubscriberEmail | Autoscale notifications subscriber email | | The email address (AWS SNS Topic subscriber) to receive Autoscale notifications. If provided, the template can only accept one email address. An email is sent to the address to confirm the subscription. |
 | AvailabilityZones | **Availability Zones** | |  List of Availability Zones to use for the subnets in the VPC. The FortiGate Autoscale solution uses two Availability Zones from your list and preserves the logical order you specify. |
 | BGP ASN | **BgpAsn** | 65000 | The Border Gateway Protocol (BGP) Autonomous System Number (ASN) of the Customer Gateway of each FortiGate-VM instance in the Auto Scaling group. This value ranges from 64512 to 65534. |
 | CustomAssetContainer | **Custom asset S3 bucket** | |  The name of the S3 bucket which contains your custom assets. Required if **use custom asset location** is set to **yes**. |
