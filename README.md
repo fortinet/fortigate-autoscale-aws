@@ -29,7 +29,8 @@ To obtain the deployment package, use one of the following:
     4. Run `npm run build-artifacts` to generate the local deployment package.
     5. The deployment package **aws-cloudformation.zip** will be available in the **dist/artifacts** directory.
 
-## Architectural Diagrams
+## Architectural diagrams
+
 
 ![Autoscale 3.0 architectural diagram](docs/diagrams/Autoscale_3.0_architectural_diagram_aws.png)
 
