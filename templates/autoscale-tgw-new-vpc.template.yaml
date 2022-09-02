@@ -225,9 +225,11 @@ Parameters:
         Type: String
     FortiAnalyzerVersion:
         AllowedValues:
+            - 7.2.0
+            - 6.4.8
             - 6.4.7
         ConstraintDescription: must choose from the provided options.
-        Default: 6.4.7
+        Default: 7.2.0
         Description: >-
             The FortiAnalyzer version supported by Fortinet FortiGate Auto
             Scaling. **IMPORTANT!** Requires a subscription to the Fortinet
@@ -282,10 +284,7 @@ Parameters:
     FortiOSVersion:
         AllowedValues:
             - 7.2.1
-            - 7.0.6
-            - 7.0.3
             - 6.4.9
-            - 6.4.8
         ConstraintDescription: must be a valid FortiOS version from the selection.
         Default: 7.2.1
         Description: FortiOS version supported by FortiGate Autoscale for AWS.
