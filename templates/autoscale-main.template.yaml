@@ -658,6 +658,14 @@ Mappings:
             FAZVM64PAYG720: >-
                 aws-marketplace/FortiAnalyzer VM64-AWSOnDemand build1124 (7.2.0)
                 GA-5bc06b01-2e8b-4205-b84c-8ac24e5925cb
+        af-south-1:
+            FGTVM64BYOL721: ami-0708eb366fe788d48
+            FGTVM64BYOL649: ami-0a9b203ffbbb1bc70
+            FGTVM64PAYG721: ami-02a335d85bbacb1ee
+            FGTVM64PAYG649: ami-08ebd6b4249f25f07
+            FAZVM64PAYG720: ami-04ba14119a76349a4
+            FAZVM64PAYG648: ami-084ccc87e9e820d7c
+            FAZVM64PAYG647: ami-0fa989e55ecd62880
         ap-east-1:
             FGTVM64BYOL721: ami-033d430c9c34b9568
             FGTVM64PAYG721: ami-0dc8de840415f3336
@@ -691,6 +699,14 @@ Mappings:
             FAZVM64BYOL647: ami-0fe8e09f57a1c03b1
             FAZVM64BYOL720: ami-09495a9ff27ca9029
             FAZVM64PAYG720: ami-0c1733490fc13f73b
+        ap-northeast-3:
+            FGTVM64BYOL721: ami-0e3a167f16247b5de
+            FGTVM64BYOL649: ami-0b50bafc54151aa33
+            FGTVM64PAYG721: ami-00344c85607641e14
+            FGTVM64PAYG649: ami-081f78a639dcd9062
+            FAZVM64PAYG720: ami-05120d86810b71b03
+            FAZVM64PAYG648: ami-0d4c726bde805a135
+            FAZVM64PAYG647: ami-03b6e3de2d797a79f
         ap-south-1:
             FGTVM64BYOL721: ami-0482181325cfb5fc5
             FGTVM64PAYG721: ami-0549369768f687d54
@@ -724,6 +740,14 @@ Mappings:
             FAZVM64BYOL647: ami-0ffd9c2f2c1ccab1f
             FAZVM64BYOL720: ami-0ad61b44f21cd99c9
             FAZVM64PAYG720: ami-0a5eaf8e4b7969c83
+        ap-southeast-3:
+            FGTVM64BYOL721: ami-0dd9467e480184f48
+            FGTVM64BYOL649: ami-06f0bc2402ee9001a
+            FGTVM64PAYG721: ami-0a2d1535fdc0f67ad
+            FGTVM64PAYG649: ami-0237ad7f5131d3f3e
+            FAZVM64PAYG720: ami-00e11faa584fcf061
+            FAZVM64PAYG648: ami-08bc1dcb31eea24aa
+            FAZVM64PAYG647: ami-09e7207f146001611
         ca-central-1:
             FGTVM64BYOL721: ami-0adb50cbbca913d5d
             FGTVM64PAYG721: ami-05c0fd18673a4d06b
@@ -757,6 +781,14 @@ Mappings:
             FAZVM64BYOL647: ami-0440177ce7446ae9e
             FAZVM64BYOL720: ami-0ca66590c91dbdeeb
             FAZVM64PAYG720: ami-0b76ce50ae2906a91
+        eu-south-1:
+            FGTVM64BYOL721: ami-01a43fc8a276d2343
+            FGTVM64BYOL649: ami-0a00fe234a92aaeb1
+            FGTVM64PAYG721: ami-03de21f74b767d59f
+            FGTVM64PAYG649: ami-05fbdb2537b30741a
+            FAZVM64PAYG720: ami-0f436995caef03783
+            FAZVM64PAYG648: ami-0eb7b28c048a1ee95
+            FAZVM64PAYG647: ami-048d5c8000f20367e
         eu-west-1:
             FGTVM64BYOL721: ami-0b4e1809774cb7b1d
             FGTVM64PAYG721: ami-0230d7f3a27a4b312
@@ -834,8 +866,22 @@ Mappings:
             FAZVM64BYOL647: ami-09b51f5b51624c211
             FAZVM64BYOL720: ami-0a261e4f1e2740bde
             FAZVM64PAYG720: ami-0f46f120a755d9d52
-        us-gov-east-1: {}
-        us-gov-west-1: {}
+        us-gov-east-1:
+            FGTVM64BYOL721: ami-031894b40676a54c4
+            FGTVM64PAYG721: ami-03b1da99ff3f5e809
+            FGTVM64BYOL649: ami-0f38b28f9593e64a2
+            FGTVM64PAYG649: ami-0fb16f7db4c676a2c
+            FAZVM64PAYG648: ami-0f545d6241a8888c1
+            FAZVM64PAYG647: ami-010fb04956c267dc4
+            FAZVM64PAYG720: ami-06b0cbbbf3639247e
+        us-gov-west-1:
+            FGTVM64BYOL721: ami-0c8d39ed53e2a084c
+            FGTVM64PAYG721: ami-092e3c4f8c93a44dc
+            FGTVM64BYOL649: ami-056f389673ff247e3
+            FGTVM64PAYG649: ami-0fa20c6f752194710
+            FAZVM64PAYG648: ami-0a833a23cd44691e3
+            FAZVM64PAYG647: ami-05fdf75462fc4e17f
+            FAZVM64PAYG720: ami-044967835fd0ad828
         us-west-1:
             FGTVM64BYOL721: ami-084283cfda81157b5
             FGTVM64PAYG721: ami-002828408925ee484
