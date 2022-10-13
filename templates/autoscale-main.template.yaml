@@ -613,11 +613,9 @@ Conditions:
 Mappings:
     ProductVersionMap:
         FortiGateByol:
-            '649': FGTVM64BYOL649
-            '721': FGTVM64BYOL721
+            '722': FGTVM64BYOL722
         FortiGatePayg:
-            '649': FGTVM64PAYG649
-            '721': FGTVM64PAYG721
+            '722': FGTVM64PAYG722
         FortiAnalyzerPayg:
             '647': FAZVM64PAYG647
             '648': FAZVM64PAYG648
@@ -628,18 +626,6 @@ Mappings:
             '720': FAZVM64BYOL720
     AWSAMIRegionMap:
         AMI:
-            FGTVM64BYOL721: >-
-                aws-marketplace/FortiGate-VM64-AWS build1254 (7.2.1)
-                GA-e5936f4a-0d69-479f-919c-d5e158bd4d12
-            FGTVM64PAYG721: >-
-                aws-marketplace/FortiGate-VM64-AWSONDEMAND build1254 (7.2.1)
-                GA-3124a694-441c-4ff1-8bf7-4d153be424a6
-            FGTVM64BYOL649: >-
-                aws-marketplace/FortiGate-VM64-AWS build1966 (6.4.9)
-                GA-e5936f4a-0d69-479f-919c-d5e158bd4d12
-            FGTVM64PAYG649: >-
-                aws-marketplace/FortiGate-VM64-AWSONDEMAND build1966 (6.4.9)
-                GA-3124a694-441c-4ff1-8bf7-4d153be424a6
             FAZVM64PAYG648: >-
                 aws-marketplace/FortiAnalyzer VM64-AWSOnDemand build2473 (6.4.8)
                 GA-5bc06b01-2e8b-4205-b84c-8ac24e5925cb
@@ -658,252 +644,210 @@ Mappings:
             FAZVM64PAYG720: >-
                 aws-marketplace/FortiAnalyzer VM64-AWSOnDemand build1124 (7.2.0)
                 GA-5bc06b01-2e8b-4205-b84c-8ac24e5925cb
+            FGTVM64BYOL722: >-
+                aws-marketplace/FortiGate-VM64-AWS build1255 (7.2.2)
+                GA-e5936f4a-0d69-479f-919c-d5e158bd4d12
+            FGTVM64PAYG722: >-
+                aws-marketplace/FortiGate-VM64-AWSONDEMAND build1255 (7.2.2)
+                GA-3124a694-441c-4ff1-8bf7-4d153be424a6
         af-south-1:
-            FGTVM64BYOL721: ami-0708eb366fe788d48
-            FGTVM64BYOL649: ami-0a9b203ffbbb1bc70
-            FGTVM64PAYG721: ami-02a335d85bbacb1ee
-            FGTVM64PAYG649: ami-08ebd6b4249f25f07
             FAZVM64PAYG720: ami-04ba14119a76349a4
             FAZVM64PAYG648: ami-084ccc87e9e820d7c
             FAZVM64PAYG647: ami-0fa989e55ecd62880
+            FGTVM64BYOL722: ami-01218edaf747f9d1d
+            FGTVM64PAYG722: ami-0b435d1cf16aa90e7
         ap-east-1:
-            FGTVM64BYOL721: ami-033d430c9c34b9568
-            FGTVM64PAYG721: ami-0dc8de840415f3336
-            FGTVM64BYOL649: ami-0e2ef7a4ba7ada04f
-            FGTVM64PAYG649: ami-0d401bf739ab56823
             FAZVM64PAYG648: ami-0d4081612e7960186
             FAZVM64PAYG647: ami-073f07460e7df3157
             FAZVM64BYOL648: ami-0500825947d1a35d3
             FAZVM64BYOL647: ami-09f49dfaf16ca9202
             FAZVM64BYOL720: ami-03c66d32d2f1b53a1
             FAZVM64PAYG720: ami-03dad26c4a5e41395
+            FGTVM64BYOL722: ami-07364323dc297ad03
+            FGTVM64PAYG722: ami-06c01d5bc4b43dc06
         ap-northeast-1:
-            FGTVM64BYOL721: ami-06bc1ba12b6f3676a
-            FGTVM64PAYG721: ami-007f505b0a7bcad76
-            FGTVM64BYOL649: ami-0913902f07a4802df
-            FGTVM64PAYG649: ami-03f182facef0d7e85
             FAZVM64PAYG648: ami-0d35fca6934035ad2
             FAZVM64PAYG647: ami-05a953b4323ac8a65
             FAZVM64BYOL648: ami-06c46d65c4ad5fb64
             FAZVM64BYOL647: ami-011dc9fc2588b6b78
             FAZVM64BYOL720: ami-09a44c4675ea5f8ae
             FAZVM64PAYG720: ami-075c471566add597d
+            FGTVM64BYOL722: ami-08092592378d8d6ec
+            FGTVM64PAYG722: ami-08479d0bce02ca48b
         ap-northeast-2:
-            FGTVM64BYOL721: ami-09986d3a2221c3d7f
-            FGTVM64PAYG721: ami-0bdea1802f93b4ee8
-            FGTVM64BYOL649: ami-0def34e9453fa9612
-            FGTVM64PAYG649: ami-046624de2b16521d9
             FAZVM64PAYG648: ami-08e7f56b3acd5bddc
             FAZVM64PAYG647: ami-002425aa8439afe9c
             FAZVM64BYOL648: ami-0a89e567d37a871a7
             FAZVM64BYOL647: ami-0fe8e09f57a1c03b1
             FAZVM64BYOL720: ami-09495a9ff27ca9029
             FAZVM64PAYG720: ami-0c1733490fc13f73b
+            FGTVM64BYOL722: ami-0b70c933cd19ea860
+            FGTVM64PAYG722: ami-0b9054cc488c2d27f
         ap-northeast-3:
-            FGTVM64BYOL721: ami-0e3a167f16247b5de
-            FGTVM64BYOL649: ami-0b50bafc54151aa33
-            FGTVM64PAYG721: ami-00344c85607641e14
-            FGTVM64PAYG649: ami-081f78a639dcd9062
             FAZVM64PAYG720: ami-05120d86810b71b03
             FAZVM64PAYG648: ami-0d4c726bde805a135
             FAZVM64PAYG647: ami-03b6e3de2d797a79f
+            FGTVM64BYOL722: ami-069b0c703ea29d83e
+            FGTVM64PAYG722: ami-024cf678856ba0c03
         ap-south-1:
-            FGTVM64BYOL721: ami-0482181325cfb5fc5
-            FGTVM64PAYG721: ami-0549369768f687d54
-            FGTVM64BYOL649: ami-0dfd18c39adc96791
-            FGTVM64PAYG649: ami-0e177bb482b3a585d
             FAZVM64PAYG648: ami-0f9a4bbc1bf7ce340
             FAZVM64PAYG647: ami-008f650af31719a67
             FAZVM64BYOL648: ami-041ccea495d888882
             FAZVM64BYOL647: ami-08f2cd0ce1e5202a3
             FAZVM64BYOL720: ami-02ad965118b60d197
             FAZVM64PAYG720: ami-0751943b6315d2b4d
+            FGTVM64BYOL722: ami-0209d99105fdb7698
+            FGTVM64PAYG722: ami-024311ffde39d2c03
         ap-southeast-1:
-            FGTVM64BYOL721: ami-076f7b6b3a597d1b4
-            FGTVM64PAYG721: ami-052f4d53266eb4aef
-            FGTVM64BYOL649: ami-0daab19c3e8525958
-            FGTVM64PAYG649: ami-07580e8214f83f30b
             FAZVM64PAYG648: ami-0ff8a80b9265bad5e
             FAZVM64PAYG647: ami-03c48658c768f3cc9
             FAZVM64BYOL648: ami-05b8498301ae6eeca
             FAZVM64BYOL647: ami-0dea9136021058609
             FAZVM64BYOL720: ami-0260ffa83c666083f
             FAZVM64PAYG720: ami-07e2c0d3b561aa99e
+            FGTVM64BYOL722: ami-0fd47fb54f2930d82
+            FGTVM64PAYG722: ami-0e88fb5c5083105d0
         ap-southeast-2:
-            FGTVM64BYOL721: ami-0b3e0e0a0e65ac32c
-            FGTVM64PAYG721: ami-0345b2e4ad338d622
-            FGTVM64BYOL649: ami-09dd5ead645f72f64
-            FGTVM64PAYG649: ami-0b7430057dda05b4d
             FAZVM64PAYG648: ami-0b33c48694565877c
             FAZVM64PAYG647: ami-06d5d4af9c364ef9b
             FAZVM64BYOL648: ami-0c426b61d79ab0a71
             FAZVM64BYOL647: ami-0ffd9c2f2c1ccab1f
             FAZVM64BYOL720: ami-0ad61b44f21cd99c9
             FAZVM64PAYG720: ami-0a5eaf8e4b7969c83
+            FGTVM64BYOL722: ami-0eb58e93476e4cc4d
+            FGTVM64PAYG722: ami-0e61c467e7f353497
         ap-southeast-3:
-            FGTVM64BYOL721: ami-0dd9467e480184f48
-            FGTVM64BYOL649: ami-06f0bc2402ee9001a
-            FGTVM64PAYG721: ami-0a2d1535fdc0f67ad
-            FGTVM64PAYG649: ami-0237ad7f5131d3f3e
             FAZVM64PAYG720: ami-00e11faa584fcf061
             FAZVM64PAYG648: ami-08bc1dcb31eea24aa
             FAZVM64PAYG647: ami-09e7207f146001611
+            FGTVM64BYOL722: ami-0a41dc6f803263e2c
+            FGTVM64PAYG722: ami-033647feb863a9186
         ca-central-1:
-            FGTVM64BYOL721: ami-0adb50cbbca913d5d
-            FGTVM64PAYG721: ami-05c0fd18673a4d06b
-            FGTVM64BYOL649: ami-0eded337d65c9b314
-            FGTVM64PAYG649: ami-0b96d7a2dc07603cf
             FAZVM64PAYG648: ami-0636bb49bb9aae0ff
             FAZVM64PAYG647: ami-0986ab9b770252af6
             FAZVM64BYOL648: ami-0096359924f0f770e
             FAZVM64BYOL647: ami-097b21c00480e766a
             FAZVM64BYOL720: ami-0ff65aa1bb88acdf3
             FAZVM64PAYG720: ami-0e39ecadd4f630f5c
+            FGTVM64BYOL722: ami-056f5286aafab5205
+            FGTVM64PAYG722: ami-0036e95e21ec5a86b
         eu-central-1:
-            FGTVM64BYOL721: ami-031da2ed752eb2481
-            FGTVM64PAYG721: ami-004186c2ec8a32998
-            FGTVM64BYOL649: ami-0fe6829e18e0401fe
-            FGTVM64PAYG649: ami-0fed1550c0813edc6
             FAZVM64PAYG648: ami-08bde39cf808909ca
             FAZVM64PAYG647: ami-0080b085ec4b12059
             FAZVM64BYOL648: ami-01cbd0a4199c7f55f
             FAZVM64BYOL647: ami-0a546403dbae3ea81
             FAZVM64BYOL720: ami-0683e79095921c997
             FAZVM64PAYG720: ami-01b91e1330eb48d4f
+            FGTVM64BYOL722: ami-037f93ac7ef8ce5bd
+            FGTVM64PAYG722: ami-09694024ef925305f
         eu-north-1:
-            FGTVM64BYOL721: ami-0f4157d75891a3d2e
-            FGTVM64PAYG721: ami-083f055f53e54a627
-            FGTVM64BYOL649: ami-0b8a340cb37896f33
-            FGTVM64PAYG649: ami-0719da9ff0d411e04
             FAZVM64PAYG648: ami-00b3b34252eb1404c
             FAZVM64PAYG647: ami-09989ba66e0e80029
             FAZVM64BYOL648: ami-0d904a31dd2ecb147
             FAZVM64BYOL647: ami-0440177ce7446ae9e
             FAZVM64BYOL720: ami-0ca66590c91dbdeeb
             FAZVM64PAYG720: ami-0b76ce50ae2906a91
+            FGTVM64BYOL722: ami-068d7475d3b1be847
+            FGTVM64PAYG722: ami-092c7f33e96a66602
         eu-south-1:
-            FGTVM64BYOL721: ami-01a43fc8a276d2343
-            FGTVM64BYOL649: ami-0a00fe234a92aaeb1
-            FGTVM64PAYG721: ami-03de21f74b767d59f
-            FGTVM64PAYG649: ami-05fbdb2537b30741a
             FAZVM64PAYG720: ami-0f436995caef03783
             FAZVM64PAYG648: ami-0eb7b28c048a1ee95
             FAZVM64PAYG647: ami-048d5c8000f20367e
+            FGTVM64BYOL722: ami-03e98ed7e18e42a0b
+            FGTVM64PAYG722: ami-0f99c3f1f118ec33b
         eu-west-1:
-            FGTVM64BYOL721: ami-0b4e1809774cb7b1d
-            FGTVM64PAYG721: ami-0230d7f3a27a4b312
-            FGTVM64BYOL649: ami-070d3a6692895046f
-            FGTVM64PAYG649: ami-0c252edf49145be91
             FAZVM64PAYG648: ami-08a25d2f77772edc3
             FAZVM64PAYG647: ami-0254193637b1467bf
             FAZVM64BYOL648: ami-0511dad6b89da73c5
             FAZVM64BYOL647: ami-0a67636e48394139a
             FAZVM64BYOL720: ami-0678b1a535ee1aa85
             FAZVM64PAYG720: ami-0fdb7ec3353098363
+            FGTVM64BYOL722: ami-0b7c2f464c014fcf8
+            FGTVM64PAYG722: ami-08128bac5135f4515
         eu-west-2:
-            FGTVM64BYOL721: ami-0182a6e569579d1a0
-            FGTVM64PAYG721: ami-07b71197286f82ce2
-            FGTVM64BYOL649: ami-0a9b52ed3ff60ca43
-            FGTVM64PAYG649: ami-07e5ca47bfe07a0b0
             FAZVM64PAYG648: ami-0ac3a11494abbe83c
             FAZVM64PAYG647: ami-0f2407e49ed277e45
             FAZVM64BYOL648: ami-0752007a6dccacfbe
             FAZVM64BYOL647: ami-0e058707964984aac
             FAZVM64BYOL720: ami-0d47bb905d28d0692
             FAZVM64PAYG720: ami-03a6a797a03e6a984
+            FGTVM64BYOL722: ami-058b5a72d11f1d273
+            FGTVM64PAYG722: ami-010a33c56a41769be
         eu-west-3:
-            FGTVM64BYOL721: ami-0a2a273a1afce11a6
-            FGTVM64PAYG721: ami-0fb094f83a92ee77d
-            FGTVM64BYOL649: ami-085e05929dbd58f31
-            FGTVM64PAYG649: ami-0e08b07a462837b4e
             FAZVM64PAYG648: ami-05461db0f92243f22
             FAZVM64PAYG647: ami-0ac78a06b8c12d449
             FAZVM64BYOL648: ami-0cd935504ae1e886b
             FAZVM64BYOL647: ami-017bf555abc7d272e
             FAZVM64BYOL720: ami-0174aed26d86673ab
             FAZVM64PAYG720: ami-0c39435ada65ac622
+            FGTVM64BYOL722: ami-02c432f95b9fd7751
+            FGTVM64PAYG722: ami-054bd339074d2f4f2
         me-south-1:
-            FGTVM64BYOL721: ami-017380833397261cf
-            FGTVM64PAYG721: ami-066d505430ad345a0
-            FGTVM64BYOL649: ami-0d8c12ef3a474d104
-            FGTVM64PAYG649: ami-04127b62de31f8688
             FAZVM64PAYG648: ami-0bb85e5aa1ffd7cd0
             FAZVM64PAYG647: ami-08b8ff480ac9d357a
             FAZVM64BYOL648: ami-0d7f7c2b2cf741696
             FAZVM64BYOL647: ami-069ef6a5bb006e922
             FAZVM64BYOL720: ami-0c2cb36412eb5b5b7
             FAZVM64PAYG720: ami-0c6fb1f4d53fcabd0
+            FGTVM64BYOL722: ami-070a27dae920ae9b0
+            FGTVM64PAYG722: ami-0234ecd760256557f
         sa-east-1:
-            FGTVM64BYOL721: ami-0f5062c1f266f9c30
-            FGTVM64PAYG721: ami-078010c2bb8331dac
-            FGTVM64BYOL649: ami-01208677c1520130e
-            FGTVM64PAYG649: ami-08756b9ee7f69aaba
             FAZVM64PAYG648: ami-0c8614f330c72fb52
             FAZVM64PAYG647: ami-092d09c43615f60fe
             FAZVM64BYOL648: ami-058df8cc459439f21
             FAZVM64BYOL647: ami-0bd3f5c00bd5c60e1
             FAZVM64BYOL720: ami-0941b18038e6104c2
             FAZVM64PAYG720: ami-0a5d1122bd8bb95b1
+            FGTVM64BYOL722: ami-06b457a922e700066
+            FGTVM64PAYG722: ami-0f812ef9070aba55b
         us-east-1:
-            FGTVM64BYOL721: ami-04a997b43f50bd2e8
-            FGTVM64PAYG721: ami-088a648de0cf2a8d0
-            FGTVM64BYOL649: ami-022402065f635b26e
-            FGTVM64PAYG649: ami-0b1212821986e9040
             FAZVM64PAYG648: ami-0a8ebe61187197aeb
             FAZVM64PAYG647: ami-0a0f71766a5d2c79b
             FAZVM64BYOL648: ami-004ca307cad5278be
             FAZVM64BYOL647: ami-0096927bcfcaf73e2
             FAZVM64BYOL720: ami-0eea1c8f01df1db12
             FAZVM64PAYG720: ami-099df0cceccf86db7
+            FGTVM64BYOL722: ami-0b3319db6548e6ba9
+            FGTVM64PAYG722: ami-0cd6ef98ec787702b
         us-east-2:
-            FGTVM64BYOL721: ami-044408b80d602fd14
-            FGTVM64PAYG721: ami-081522f5e5c6464ac
-            FGTVM64BYOL649: ami-0c2ec5ada90b22259
-            FGTVM64PAYG649: ami-00ce59d27cd3ecd7b
             FAZVM64PAYG648: ami-02bd64ad81aee1623
             FAZVM64PAYG647: ami-0d429f30f7ec705fc
             FAZVM64BYOL648: ami-02d59a86699048324
             FAZVM64BYOL647: ami-09b51f5b51624c211
             FAZVM64BYOL720: ami-0a261e4f1e2740bde
             FAZVM64PAYG720: ami-0f46f120a755d9d52
+            FGTVM64BYOL722: ami-06a058dbebecb20ba
+            FGTVM64PAYG722: ami-0311d5e799e37bc0a
         us-gov-east-1:
-            FGTVM64BYOL721: ami-031894b40676a54c4
-            FGTVM64PAYG721: ami-03b1da99ff3f5e809
-            FGTVM64BYOL649: ami-0f38b28f9593e64a2
-            FGTVM64PAYG649: ami-0fb16f7db4c676a2c
             FAZVM64PAYG648: ami-0f545d6241a8888c1
             FAZVM64PAYG647: ami-010fb04956c267dc4
             FAZVM64PAYG720: ami-06b0cbbbf3639247e
+            FGTVM64BYOL722: ami-0b9fc5dbcc511c1f1
+            FGTVM64PAYG722: ami-09d7a91ca324da838
         us-gov-west-1:
-            FGTVM64BYOL721: ami-0c8d39ed53e2a084c
-            FGTVM64PAYG721: ami-092e3c4f8c93a44dc
-            FGTVM64BYOL649: ami-056f389673ff247e3
-            FGTVM64PAYG649: ami-0fa20c6f752194710
             FAZVM64PAYG648: ami-0a833a23cd44691e3
             FAZVM64PAYG647: ami-05fdf75462fc4e17f
             FAZVM64PAYG720: ami-044967835fd0ad828
+            FGTVM64BYOL722: ami-03b17925cbde86d5c
+            FGTVM64PAYG722: ami-0c0401ded5895d94b
         us-west-1:
-            FGTVM64BYOL721: ami-084283cfda81157b5
-            FGTVM64PAYG721: ami-002828408925ee484
-            FGTVM64BYOL649: ami-0d3cb284cbb8815cf
-            FGTVM64PAYG649: ami-00cbf3ff684afd8ee
             FAZVM64PAYG648: ami-032eba7b365d186eb
             FAZVM64PAYG647: ami-054b6a1f6bea49358
             FAZVM64BYOL648: ami-0f431f97777602d87
             FAZVM64BYOL647: ami-03eeb0981335c8cad
             FAZVM64BYOL720: ami-01c64c7601a873f41
             FAZVM64PAYG720: ami-066ee1c80a70637f8
+            FGTVM64BYOL722: ami-088f6e6cd7e2d1e80
+            FGTVM64PAYG722: ami-0b107a3fa2ea40b90
         us-west-2:
-            FGTVM64BYOL721: ami-0f323f6cddf382b3c
-            FGTVM64PAYG721: ami-0e9f40ac7253a4689
-            FGTVM64BYOL649: ami-05a92b1bc16aca610
-            FGTVM64PAYG649: ami-06f026c4b045b60fe
             FAZVM64PAYG648: ami-0658b354570742857
             FAZVM64PAYG647: ami-0dd63c7f562d191d1
             FAZVM64BYOL648: ami-08e2a9c176bce54ca
             FAZVM64BYOL647: ami-09e13dec535cb9aaf
             FAZVM64BYOL720: ami-07391caea8c8a59fd
             FAZVM64PAYG720: ami-04a808211c9b6fcdf
+            FGTVM64BYOL722: ami-0eaa5af24f037c62f
+            FGTVM64PAYG722: ami-0a70f5380706e13ac
     ProtocolPortMap:
         HTTP:
             defaultport: '80'
