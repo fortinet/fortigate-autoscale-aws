@@ -67,6 +67,19 @@
                     "HealthStatus": "Healthy",
                     "LifecycleState": "InService",
                     "InstanceType": "c5.large"
+                },
+                {
+                    "ProtectedFromScaleIn": false,
+                    "AvailabilityZone": "no-where-1a",
+                    "LaunchTemplate": {
+                        "LaunchTemplateName": "fortigate-autoscale-has-a-very-long-res-tag-prefix-69e58ed0-fortigate-byol-autoscale-launch-template",
+                        "Version": "1",
+                        "LaunchTemplateId": "lt-0791658236ec9a6b8"
+                    },
+                    "InstanceId": "i-0000000000byol002",
+                    "HealthStatus": "Healthy",
+                    "LifecycleState": "InService",
+                    "InstanceType": "c5.large"
                 }
             ],
             "MaxSize": 2,
