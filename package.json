@@ -34,7 +34,7 @@
     "author": "Fortinet <github@fortinet.com>",
     "license": "MIT",
     "dependencies": {
-        "@fortinet/fortigate-autoscale": "https://github.com/fortinet/autoscale-core/releases/download/3.4.0/fortinet-fortigate-autoscale-3.4.0.tgz",
+        "@fortinet/fortigate-autoscale": "https://github.com/fortinet/autoscale-core/releases/download/3.5.1/fortinet-fortigate-autoscale-3.5.1.tgz",
         "@types/aws-lambda": "^8.10.46",
         "@types/node": "^13.9.2",
         "aws-sdk": "^2.657.0",

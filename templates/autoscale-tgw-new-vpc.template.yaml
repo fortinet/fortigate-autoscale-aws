@@ -283,10 +283,9 @@ Parameters:
         Type: String
     FortiOSVersion:
         AllowedValues:
-            - 7.2.1
-            - 6.4.9
+            - 7.2.2
         ConstraintDescription: must be a valid FortiOS version from the selection.
-        Default: 7.2.1
+        Default: 7.2.2
         Description: FortiOS version supported by FortiGate Autoscale for AWS.
         Type: String
     GetLicenseGracePeriod:
