@@ -1,0 +1,6 @@
+resources:
+    - name: fortigate-autoscale-aws
+      type: git
+      icon: github
+      source:
+          uri: https://github.com/fortinet/fortigate-autoscale-aws.git

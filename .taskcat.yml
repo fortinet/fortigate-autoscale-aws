@@ -1,0 +1,136 @@
+project:
+  name: fortigate-autoscale
+  regions:
+    - us-east-1
+  s3_bucket: taskcat-bucket-sep13
+tests:
+  # newvpc:
+  #   template: ./templates/autoscale-new-vpc.template.yaml
+  #   regions:
+  #     -us-east-1
+  #   parameters:
+  #     ResourceTagPrefix: "taskcat-oct17"
+  #     S3BucketName: "fortios"
+  #     S3KeyPrefix: "353-dev0/"
+  #     AvailabilityZones: "$[taskcat_genaz_2]"
+  #     VpcCidr: "192.168.0.0/16"
+  #     PublicSubnet1Cidr: "192.168.0.0/24"
+  #     PublicSubnet2Cidr: "192.168.1.0/24"
+  #     PrivateSubnet1Cidr: "192.168.2.0/24"
+  #     PrivateSubnet2Cidr: "192.168.3.0/24"
+  #     FortiGateInstanceType: "c5.xlarge"
+  #     FortiOSVersion: "7.2.2"
+  #     FortiGatePskSecret: "$[taskcat_genpass_8A]"
+  #     FortiGateAdminCidr: "0.0.0.0/0"
+  #     # KeyPairName: "fortigate-autoscale-qa01"
+  #     KeyPairName: ""
+  #     FortiAnalyzerIntegrationOptions: "no"
+  #     AutoscaleNotificationSubscriberEmail: "fshuva@fortinet.com"
+  #     LifecycleHookTimeout: 480
+  #     PrimaryElectionTimeout: 300
+  #     SyncRecoveryCount: 3
+  #     GetLicenseGracePeriod: 600
+  #     HeartBeatDelayAllowance: 2
+  #     HeartBeatInterval: 30
+  #     HeartBeatLossCount: 10
+  #     FgtAsgCooldown: 300
+  #     FgtAsgDesiredCapacityByol: 2
+  #     FgtAsgDesiredCapacityPayg: 0
+  #     FgtAsgHealthCheckGracePeriod: 300
+  #     FgtAsgMaxSizeByol: 2
+  #     FgtAsgMaxSizePayg: 0
+  #     FgtAsgMinSizeByol: 2
+  #     FgtAsgMinSizePayg: 0
+  #     FgtAsgScaleInThreshold: 25
+  #     FgtAsgScaleOutThreshold: 80
+  #     FortiGateAdminPort: 8443
+  # existingvpc:
+  #   template: ./templates/autoscale-existing-vpc.template.yaml
+  #   regions:
+  #     - us-east-1
+  #   parameters:
+  #     AutoscaleNotificationSubscriberEmail: "fshuva@fortinet.com"
+  #     AvailabilityZones: "$[taskcat_genaz_2]"
+  #     FgtAsgCooldown: 300
+  #     FgtAsgDesiredCapacityByol: 2
+  #     FgtAsgDesiredCapacityPayg: 2
+  #     FgtAsgHealthCheckGracePeriod: 300
+  #     FgtAsgMaxSizeByol: 2
+  #     FgtAsgMaxSizePayg: 2
+  #     FgtAsgMinSizeByol: 2
+  #     FgtAsgMinSizePayg: 2
+  #     FgtAsgScaleInThreshold: 25
+  #     FgtAsgScaleOutThreshold: 80
+  #     FortiAnalyzerIntegrationOptions: "no"
+  #     FortiGateAdminCidr: "0.0.0.0/0"
+  #     FortiGateAdminPort: 8443
+  #     FortiGateInstanceType: "c5.xlarge"
+  #     FortiGatePskSecret: "$[taskcat_genpass_8A]"
+  #     FortiOSVersion: "7.2.2"
+  #     GetLicenseGracePeriod: 600
+  #     HeartBeatDelayAllowance: 2
+  #     HeartBeatInterval: 30
+  #     HeartBeatLossCount: 10
+  #     KeyPairName: "fortigate-autoscale-qa01"
+  #     LifecycleHookTimeout: 480
+  #     PrimaryElectionTimeout: 300
+  #     PrivateSubnet1: subnet-0bdce3e1747baca17
+  #     PrivateSubnet2: subnet-0df25e31940d1890e
+  #     PrivateSubnetRouteTable: rtb-0512bf82d1b7f1950
+  #     PublicSubnet1: subnet-0da8971b0d69fa5ec
+  #     PublicSubnet2: subnet-041e0a1ba34edac2e
+  #     ResourceTagPrefix: "tcat-fortiasg-existvpc-sep13"
+  #     S3BucketName: "fortios"
+  #     S3KeyPrefix: "353-dev0/"
+  #     SyncRecoveryCount: 3
+  #     VpcCidr: "10.0.0.0/16"
+  #     VpcEndpointId: vpce-037a05b7ca309b3fb
+  #     VpcId: vpc-0bd0abd0e8168463b
+  tgwnewvpc:
+    template: ./templates/autoscale-tgw-new-vpc.template.yaml
+    regions:
+      - us-east-1
+    parameters:
+      AutoscaleNotificationSubscriberEmail: "fshuva@fortinet.com"
+      AvailabilityZones: "$[taskcat_genaz_2]"
+      BgpAsn: 65000
+      CustomIdentifier: "fgtASG"
+      FgtAsgCooldown: 300
+      FgtAsgDesiredCapacityByol: 0
+      FgtAsgDesiredCapacityPayg: 2
+      FgtAsgHealthCheckGracePeriod: 300
+      FgtAsgMaxSizeByol: 0
+      FgtAsgMaxSizePayg: 2
+      FgtAsgMinSizeByol: 0
+      FgtAsgMinSizePayg: 2
+      FgtAsgScaleInThreshold: 25
+      FgtAsgScaleOutThreshold: 80
+      # FortiAnalyzerAutoscaleAdminPassword
+      # FortiAnalyzerAutoscaleAdminUsername
+      # FortiAnalyzerCustomPrivateIpAddress
+      FortiAnalyzerIntegrationOptions: "no"
+      FortiAnalyzerVersion: 7.2.0
+      FortiAnalyzerInstanceType: "m5.large"
+      FortiGateAdminCidr: "0.0.0.0/0"
+      FortiGateAdminPort: 8443
+      FortiGateInstanceType: "c5.xlarge"
+      FortiGatePskSecret: "$[taskcat_genpass_8A]"
+      FortiOSVersion: 7.2.2
+      GetLicenseGracePeriod: 600
+      HeartBeatDelayAllowance: 2
+      HeartBeatInterval: 30
+      HeartBeatLossCount: 10
+      KeyPairName: "fshua_ed25519"
+      LifecycleHookTimeout: 480
+      PrimaryElectionTimeout: 300
+      PublicSubnet1Cidr: "192.168.0.0/24"
+      PublicSubnet2Cidr: "192.168.1.0/24"
+      ResourceTagPrefix: "tcat-fortiasg-tgwpayg"
+      S3BucketName: "fortiosuseast2"
+      S3KeyPrefix: "353dev0/"
+      SyncRecoveryCount: 3
+      TerminateUnhealthyVm: no
+      # TransitGatewayId:
+      TransitGatewaySupportOptions: "create one"
+      UseCustomAssetLocation: no
+      VpcCidr: "192.168.0.0/16"
