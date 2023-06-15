@@ -316,7 +316,7 @@ Resources:
                 - - !Ref CustomIdentifier
                   - !Ref UniqueId
                   - faz-handler
-            Runtime: nodejs12.x
+            Runtime: nodejs18.x
             MemorySize: 256
             Code:
                 S3Bucket: !GetAtt
@@ -452,7 +452,7 @@ Resources:
                 - - !Ref CustomIdentifier
                   - !Ref UniqueId
                   - faz-handler-service
-            Runtime: nodejs12.x
+            Runtime: nodejs18.x
             MemorySize: 256
             Code:
                 S3Bucket: !GetAtt
